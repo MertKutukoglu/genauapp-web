@@ -51,11 +51,7 @@ export function TryDemoCard({
         "md:gap-4 md:p-6",
         isSolid
           ? "bg-accent text-white shadow-[0_16px_40px_-22px_color-mix(in_srgb,var(--accent)_60%,transparent)]"
-          : [
-              "border border-[color:color-mix(in_srgb,var(--accent)_28%,var(--border))]",
-              "bg-[color:color-mix(in_srgb,var(--accent)_6%,var(--surface-card))]",
-              "text-fg shadow-[0_16px_40px_-22px_rgba(26,19,18,0.18)]",
-            ],
+          : "border border-[color:color-mix(in_srgb,var(--accent)_28%,var(--border))] bg-[color:color-mix(in_srgb,var(--accent)_6%,var(--surface-card))] text-fg shadow-[0_16px_40px_-22px_rgba(26,19,18,0.18)]",
         className,
       )}
     >
