@@ -7,17 +7,17 @@ const meta: Meta<typeof WorkoutSlide> = {
   tags: ["autodocs"],
   parameters: { layout: "fullscreen", viewport: { defaultViewport: "desktop" } },
   argTypes: {
-    cycleMs: { control: { type: "range", min: 600, max: 4000, step: 200 } },
-    streakDays: { control: { type: "number", min: 0, max: 365 } },
+    cycleMs: { control: { type: "range", min: 600, max: 5000, step: 200 } },
+    isActiveSlide: { control: "boolean" },
   },
-  args: { cycleMs: 1600, streakDays: 7 },
+  args: { cycleMs: 2600, isActiveSlide: true },
 };
 export default meta;
 type Story = StoryObj<typeof WorkoutSlide>;
 
 export const Playground: Story = {
   render: (args) => (
-    <div className="mx-auto w-[min(100%,560px)] p-6">
+    <div className="mx-auto w-[min(100%,620px)] bg-bg p-6">
       <WorkoutSlide {...args} />
     </div>
   ),
@@ -26,8 +26,21 @@ export const Playground: Story = {
 export const Mobile: Story = {
   parameters: { viewport: { defaultViewport: "mobile1" } },
   render: (args) => (
-    <div className="mx-auto w-[min(100%,420px)] p-3">
+    <div className="mx-auto w-[min(100%,420px)] bg-bg p-3">
       <WorkoutSlide {...args} />
+    </div>
+  ),
+};
+
+export const Paused: Story = {
+  args: { isActiveSlide: false },
+  render: (args) => (
+    <div className="mx-auto w-[min(100%,620px)] bg-bg p-6">
+      <WorkoutSlide {...args} />
+      <p className="mt-4 text-center text-sm text-fg-muted">
+        Cycling is paused — this story simulates when the slide isn&apos;t the
+        active carousel slide. Click any chip to jump manually.
+      </p>
     </div>
   ),
 };

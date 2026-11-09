@@ -15,16 +15,35 @@ type Story = StoryObj<typeof CarouselShell>;
  * Only Slide 1 (Workout) is wired in this phase. Slides 2-4 land in 3.3b-d.
  * The pager still renders four bars so the shell behavior is testable —
  * pressing them jumps to a blank "coming soon" slide.
+ *
+ * Dwell time for Workout is 15.6s (6 chips × 2.6s cycle) so each tick of
+ * the inner chip cycler completes once before the carousel advances.
  */
 export const Phase3_3a: Story = {
   render: () => (
-    <div className="mx-auto w-[min(100%,620px)] p-6">
+    <div className="mx-auto w-[min(100%,680px)] p-6">
       <CarouselShell
         slides={[
-          { id: "workout",  dwellMs: 9600, render: () => <WorkoutSlide /> },
-          { id: "practice", dwellMs: 6000, render: () => <Placeholder label="Practice — Phase 3.3b" /> },
-          { id: "progress", dwellMs: 6000, render: () => <Placeholder label="Your Progress — Phase 3.3c" /> },
-          { id: "packs",    dwellMs: 6000, render: () => <Placeholder label="Packs — Phase 3.3d" /> },
+          {
+            id: "workout",
+            dwellMs: 6 * 2600,
+            render: ({ isActive }) => <WorkoutSlide isActiveSlide={isActive} />,
+          },
+          {
+            id: "practice",
+            dwellMs: 6000,
+            render: () => <Placeholder label="Practice — Phase 3.3b" />,
+          },
+          {
+            id: "progress",
+            dwellMs: 6000,
+            render: () => <Placeholder label="Your Progress — Phase 3.3c" />,
+          },
+          {
+            id: "packs",
+            dwellMs: 6000,
+            render: () => <Placeholder label="Packs — Phase 3.3d" />,
+          },
         ]}
       />
     </div>

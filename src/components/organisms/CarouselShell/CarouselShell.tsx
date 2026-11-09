@@ -12,14 +12,16 @@ import { PagerStrip } from "@/components/molecules/PagerStrip/PagerStrip";
  * (opacity + z-index swap) so cycling snippets inside slides keep
  * their state.
  *
- * Each slide declares its own dwell time via `dwellMs`; the shell
- * passes it into PagerStrip, which fires onChange when the bar fills.
+ * Each slide's `render` receives `isActive` so it can pause its own
+ * inner cycler when the carousel moves to another slide (per the
+ * production spec — the Workout chip cycler resets to Grammar on
+ * re-activation).
  */
 
 export interface Slide {
   id: string;
   dwellMs: number;
-  render: () => React.ReactNode;
+  render: (ctx: { isActive: boolean }) => React.ReactNode;
 }
 
 export interface CarouselShellProps {
@@ -35,10 +37,7 @@ export function CarouselShell({ slides, className }: CarouselShellProps) {
 
   return (
     <div
-      className={clsx(
-        "flex flex-col gap-4",
-        className,
-      )}
+      className={clsx("flex flex-col gap-4", className)}
       role="region"
       aria-roledescription="carousel"
       aria-label="GenauApp feature showcase"
@@ -64,7 +63,7 @@ export function CarouselShell({ slides, className }: CarouselShellProps) {
             )}
             aria-hidden={i !== index}
           >
-            {s.render()}
+            {s.render({ isActive: i === index })}
           </div>
         ))}
       </div>
