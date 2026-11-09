@@ -52,17 +52,20 @@ export const viewport: Viewport = {
  * Inline theme script — set data-theme BEFORE the first paint to avoid FOUC.
  * Uses the same storage key as the live landing ("genauapp-landing-theme")
  * so a user's saved preference carries across the domain cutover.
+ *
+ * Default theme is DARK — the brand reads best there, so first-time
+ * visitors land in dark mode regardless of their OS setting. Once they
+ * toggle, their choice persists in localStorage and overrides the default.
  */
 const themeScript = `
 (function () {
   try {
     var stored = localStorage.getItem('genauapp-landing-theme');
-    var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = stored === 'light' || stored === 'dark'
-      ? stored
-      : (sysDark ? 'dark' : 'light');
+    var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
     document.documentElement.setAttribute('data-theme', theme);
-  } catch (_) {}
+  } catch (_) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
 })();
 `.trim();
 
