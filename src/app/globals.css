@@ -247,6 +247,24 @@ body {
   transform-origin: center;
 }
 
+/*
+ * Pack marquee (Packs Slide). Translates the two-grid stack up by
+ * exactly one grid-height + its row-gap per cycle, so the second grid
+ * lands where the first one started — a pixel-seamless loop.
+ * `--pack-marquee-dist` is set by JS after measuring the first grid.
+ */
+@keyframes pack-scroll {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-1 * var(--pack-marquee-dist, 600px))); }
+}
+.animate-pack-scroll {
+  animation: pack-scroll 22s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-pack-scroll { animation: none; }
+}
+
 .iosbeta-rotator-item {
   position: absolute;
   inset: 0;
