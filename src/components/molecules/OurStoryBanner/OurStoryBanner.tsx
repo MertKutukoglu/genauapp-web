@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
+import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
  * Mobile promo banner that slides under the topnav pill, pointing to the
@@ -28,20 +29,9 @@ export function OurStoryBanner({
         className,
       )}
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-        className="w-4 h-4 text-accent"
-      >
-        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-      </svg>
+      <Icon name="book" className="w-4 h-4 text-accent" />
       <span>Our story: how Genau started</span>
-      <span aria-hidden className="text-accent">→</span>
+      <Icon name="arrow-right" className="w-4 h-4 text-accent" />
     </Link>
   );
 }

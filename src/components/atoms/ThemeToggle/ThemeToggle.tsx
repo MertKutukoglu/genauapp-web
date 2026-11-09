@@ -3,12 +3,13 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { track } from "@/lib/analytics/track";
+import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
  * ThemeToggle — sun/moon round button.
  *
  * Reads/writes the same localStorage key as the live landing
- * ("genauapp-landing-theme") so user preference carries across the
+ * ("genauapp-landing-theme") so a user's preference carries across the
  * domain cutover. Toggling fires the "theme_toggle" analytics event
  * (not in the DemoEvent union because it isn't a demo event, hence
  * the raw window.__track call).
@@ -31,7 +32,6 @@ export interface ThemeToggleProps
 export function ThemeToggle({ className, ...rest }: ThemeToggleProps) {
   const [theme, setTheme] = React.useState<Theme>("light");
 
-  // Sync to whatever the inline bootstrap script set on <html>.
   React.useEffect(() => {
     setTheme(readCurrent());
   }, []);
@@ -45,7 +45,6 @@ export function ThemeToggle({ className, ...rest }: ThemeToggleProps) {
       /* ignore quota / private-mode errors */
     }
     setTheme(next);
-    // Fire-and-forget; typed `track()` only knows demo events.
     if (typeof window !== "undefined") {
       try {
         window.__track?.("theme_toggle", { to: next, from: theme });
@@ -53,7 +52,6 @@ export function ThemeToggle({ className, ...rest }: ThemeToggleProps) {
         /* no-op */
       }
     }
-    // Silence the unused-import warning while keeping the helper handy.
     void track;
   };
 
@@ -74,36 +72,7 @@ export function ThemeToggle({ className, ...rest }: ThemeToggleProps) {
       )}
       {...rest}
     >
-      {isDark ? (
-        // Sun — shown on dark theme to signal "click for light"
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          className="w-4 h-4"
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
-      ) : (
-        // Moon
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          className="w-4 h-4"
-        >
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      )}
+      <Icon name={isDark ? "sun" : "moon"} className="w-4 h-4" />
     </button>
   );
 }
