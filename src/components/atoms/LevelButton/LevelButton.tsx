@@ -62,11 +62,9 @@ export function LevelButton({
         "transition-[transform,border-color,background-color,box-shadow]",
         "duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)]",
         // Interactive
-        !inert && [
-          "cursor-pointer",
-          "hover:-translate-y-0.5 hover:border-accent",
+        !inert && "cursor-pointer hover:-translate-y-0.5 hover:border-accent",
+        !inert &&
           "hover:shadow-[0_12px_28px_-16px_color-mix(in_srgb,var(--accent)_45%,transparent)]",
-        ],
         // Selected
         selected && "border-accent",
         selected && "shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_20%,transparent)]",
