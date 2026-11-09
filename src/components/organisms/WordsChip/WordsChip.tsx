@@ -63,8 +63,9 @@ export function WordsChip({
   // remounting WordsChip.
   const wordsKey = React.useMemo(() => words.map((w) => w.id).join("|"), [words]);
   React.useEffect(() => {
+    // Intentional state-from-external-input sync: new deck → reseed.
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     setRemaining(words);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordsKey]);
 
   const deckSize = words.length;
