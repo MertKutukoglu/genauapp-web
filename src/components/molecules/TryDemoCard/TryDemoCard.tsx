@@ -55,14 +55,6 @@ export function TryDemoCard({
         className,
       )}
     >
-      {/* Accent flag on the left edge for the soft variant */}
-      {!isSolid ? (
-        <span
-          aria-hidden
-          className="absolute inset-y-4 left-0 w-[3px] rounded-r-full bg-accent"
-        />
-      ) : null}
-
       <div className="flex items-start gap-3">
         <span
           aria-hidden

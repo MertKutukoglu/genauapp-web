@@ -159,11 +159,12 @@ export const ICONS = {
     />
   ),
   sparkle: (
+    // 4-point sparkle star, centered in the 24x24 viewBox so it renders
+    // at any size. Fill-based so parent `text-{color}` drives the tint.
     <path
-      d="M16.96 3.13v-.52c-1.44 0-2.6-1.17-2.6-2.61h-.53c0 1.44-1.17 2.61-2.61 2.61v.52c1.44 0 2.61 1.17 2.61 2.61h.53c0-1.44 1.17-2.61 2.6-2.61z"
+      d="M12 2 L13.6 10.4 L22 12 L13.6 13.6 L12 22 L10.4 13.6 L2 12 L10.4 10.4 Z"
       fill="currentColor"
       stroke="none"
-      fillOpacity="0.9"
     />
   ),
   mail: (
