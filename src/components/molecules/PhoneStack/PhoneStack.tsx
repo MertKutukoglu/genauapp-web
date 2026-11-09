@@ -4,11 +4,13 @@ import { clsx } from "@/lib/utils/clsx";
 /**
  * PhoneStack — three stacked iOS phones in the hero.
  *
- * No bottom mask / no crop. Each phone image is `object-contain` inside
- * a slot whose height tracks the parent — so phones shrink as the
- * available space shrinks, but they never crop. Center phone slightly
- * taller / up front; back-left and back-right 80% of center, rotated
- * ±9deg and dropped a touch.
+ * - Side phones (Prepositions / Word card) inset from the card edges
+ *   so they don't touch the card wall; respects a horizontal rhythm.
+ * - Bottom mask fade (black → transparent over the last ~30%) so the
+ *   phones dissolve into the TryDemoCard below instead of cutting with
+ *   a hard edge. The TryDemoCard overlaps the fade with a negative
+ *   margin in HeroLeftPanelPhone so it sits cleanly over the dissolved
+ *   phones.
  *
  * Theme swap via .theme-light-only / .theme-dark-only utilities.
  */
@@ -27,10 +29,18 @@ export function PhoneStack({ className }: PhoneStackProps) {
         "relative mx-auto flex h-full w-full items-center justify-center",
         className,
       )}
+      style={{
+        // Bottom fade — phones dissolve, no hard crop line.
+        WebkitMaskImage:
+          "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
+        maskImage:
+          "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
+      }}
     >
-      {/* Back-left — Prepositions */}
+      {/* Back-left — Prepositions. Inset from the card edge by 4% so
+          it has breathing room against the card boundary. */}
       <Slot
-        className="absolute inset-y-2 left-0 w-[32%] -rotate-[9deg] translate-y-3"
+        className="absolute inset-y-0 left-[4%] w-[30%] -rotate-[9deg] translate-y-4"
         filter={dropShadowSide}
       >
         <Img
@@ -40,9 +50,9 @@ export function PhoneStack({ className }: PhoneStackProps) {
         />
       </Slot>
 
-      {/* Back-right — Word card */}
+      {/* Back-right — Word card, same inset on the right. */}
       <Slot
-        className="absolute inset-y-2 right-0 w-[32%] rotate-[9deg] translate-y-3"
+        className="absolute inset-y-0 right-[4%] w-[30%] rotate-[9deg] translate-y-4"
         filter={dropShadowSide}
       >
         <Img
@@ -52,9 +62,9 @@ export function PhoneStack({ className }: PhoneStackProps) {
         />
       </Slot>
 
-      {/* Center — Home */}
+      {/* Center — Home, up front. */}
       <Slot
-        className="relative z-20 inset-y-0 h-full w-[38%]"
+        className="relative z-20 inset-y-0 h-full w-[36%]"
         filter={dropShadowBig}
       >
         <Img
