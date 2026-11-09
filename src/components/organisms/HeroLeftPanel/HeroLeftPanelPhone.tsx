@@ -1,6 +1,6 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
-import { WaitlistForm } from "@/components/molecules/WaitlistForm/WaitlistForm";
+import { TryDemoCard } from "@/components/molecules/TryDemoCard/TryDemoCard";
 
 /**
  * HeroLeftPanelPhone — phone-forward composition. Big Fraunces headline
@@ -74,9 +74,9 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
         />
       </div>
 
-      {/* Waitlist pinned at the bottom */}
+      {/* Try-demo invitation pinned at the bottom */}
       <div className="mt-auto w-full max-w-[460px]">
-        <WaitlistForm />
+        <TryDemoCard variant="soft" />
       </div>
     </div>
   );
