@@ -54,7 +54,12 @@ export function PackMarqueeCard({
             alt={imageAlt ?? ""}
             width={240}
             height={240}
-            loading="lazy"
+            // No loading="lazy" — the Packs slide sits inside the
+            // opacity:0 inactive slides of the carousel, and Safari
+            // mobile sometimes defers lazy images inside hidden
+            // containers past the point where the carousel reveals
+            // them. Eager-load the pack covers so they're ready as
+            // soon as the marquee becomes visible.
             decoding="async"
             className="h-full w-full object-cover"
           />
