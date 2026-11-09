@@ -42,6 +42,7 @@ export function ChipList({ className }: ChipListProps) {
   const progress = useChipStore((s) => s.progress);
   const selected = useChipStore((s) => s.selected);
   const openChip = useChipStore((s) => s.openChip);
+  const closeChip = useChipStore((s) => s.closeChip);
 
   return (
     <ul
@@ -71,7 +72,7 @@ export function ChipList({ className }: ChipListProps) {
               state={state}
               title={c.title}
               meta={c.meta}
-              onClick={() => openChip(c.id)}
+              onClick={() => (isSelected ? closeChip() : openChip(c.id))}
             />
           </li>
         );

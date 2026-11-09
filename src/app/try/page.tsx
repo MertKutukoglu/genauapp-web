@@ -6,7 +6,7 @@ import { useChipStore } from "@/stores/chipStore";
 import { LevelPicker } from "@/components/templates/LevelPicker/LevelPicker";
 import { TryLayout } from "@/components/templates/TryLayout/TryLayout";
 import { LeftCard } from "@/components/templates/LeftCard/LeftCard";
-import { RightCardPlaceholder } from "@/components/molecules/RightCardPlaceholder/RightCardPlaceholder";
+import { RightCardRouter } from "@/components/organisms/RightCardRouter/RightCardRouter";
 
 /**
  * /try/ — the interactive taste demo.
@@ -44,7 +44,6 @@ function TryPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedLevel = useChipStore((s) => s.selectedLevel);
-  const selectedChip = useChipStore((s) => s.selected);
   const setLevel = useChipStore((s) => s.setLevel);
   const resetAll = useChipStore((s) => s.resetAll);
 
@@ -65,11 +64,8 @@ function TryPageInner() {
     return <LevelPicker onSelect={setLevel} />;
   }
 
-  // Demo flow: left card + right slot.
-  return (
-    <TryLayout
-      left={<LeftCard />}
-      right={<RightCardPlaceholder selectedChip={selectedChip} />}
-    />
-  );
+  // Demo flow: left card + right slot. RightCardRouter resolves
+  // chipStore.selected to the right-column content and handles the
+  // mobile auto-focus scroll on chip open.
+  return <TryLayout left={<LeftCard />} right={<RightCardRouter />} />;
 }
