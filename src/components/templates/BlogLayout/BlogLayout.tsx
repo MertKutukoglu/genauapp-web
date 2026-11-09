@@ -46,24 +46,14 @@ export function BlogLayout({ slug, toc, children, className }: BlogLayoutProps) 
   return (
     <div
       className={clsx(
-        "w-full mx-auto max-w-[1400px] px-3 pt-3 pb-6 md:px-4",
+        "w-full mx-auto max-w-[1180px] px-6 pt-6 pb-16 md:px-10 md:pt-10 md:pb-24",
         className,
       )}
     >
-      <section
-        className={clsx(
-          "relative mx-auto flex max-w-[1180px] flex-col overflow-hidden rounded-[32px] px-6 py-10 md:px-10 md:py-14",
-          "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.04),rgba(255,255,255,0.10))]",
-          "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.14)]",
-          "[html:not([data-theme=dark])_&]:bg-[linear-gradient(to_bottom,rgba(14,10,10,0.03),rgba(14,10,10,0.07))]",
-          "[html:not([data-theme=dark])_&]:shadow-[inset_0_1px_0_0_rgba(14,10,10,0.08)]",
-        )}
-      >
-        <div className="mx-auto grid w-full max-w-[1020px] gap-10 lg:grid-cols-[220px_1fr]">
-          <BlogTOC items={toc} slug={slug} />
-          <article className="blog-article min-w-0">{children}</article>
-        </div>
-      </section>
+      <div className="mx-auto grid w-full max-w-[1020px] gap-10 lg:grid-cols-[220px_1fr]">
+        <BlogTOC items={toc} slug={slug} />
+        <article className="blog-article min-w-0">{children}</article>
+      </div>
     </div>
   );
 }
