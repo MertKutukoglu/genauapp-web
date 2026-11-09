@@ -6,6 +6,7 @@ import { PostHogProvider } from "@/lib/analytics/posthog-provider";
 import { Topnav } from "@/components/organisms/Topnav/Topnav";
 import { OurStoryBanner } from "@/components/molecules/OurStoryBanner/OurStoryBanner";
 import { Footer } from "@/components/organisms/Footer/Footer";
+import { CookieConsent } from "@/components/molecules/CookieConsent/CookieConsent";
 import "./globals.css";
 
 /**
@@ -110,6 +111,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <OurStoryBanner />
           <main className="flex-1 min-h-0 flex flex-col">{children}</main>
           <Footer />
+          <CookieConsent />
         </PostHogProvider>
         <Analytics />
         <SpeedInsights />

@@ -1,4 +1,5 @@
 import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
+import { ChangeConsentButton } from "@/components/molecules/CookieConsent/ChangeConsentButton";
 
 export const metadata = {
   title: "Cookie Policy",
@@ -52,9 +53,12 @@ export default function CookiePolicyPage() {
 
       <h2>Manage your cookie preferences</h2>
       <p>
-        You can change your cookie preferences at any time through your browser
-        settings, or by contacting us.
+        You can change your analytics-cookie choice at any time with the
+        button below. This clears the stored preference and re-opens our
+        cookie banner so you can accept or reject again. You can also
+        clear cookies through your browser settings.
       </p>
+      <ChangeConsentButton />
 
       <h2>Contact us</h2>
       <p>
