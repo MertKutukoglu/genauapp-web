@@ -51,8 +51,11 @@ export function RightCardPlaceholder({
         // Frame — mirrors LeftCard chrome
         "bg-surface-card border border-border rounded-[22px] p-5",
         "shadow-[0_18px_44px_-28px_rgba(26,19,18,0.26)]",
-        // Fill the right column, grow to roughly match LeftCard height
-        "flex flex-1 min-h-[520px]",
+        // Fill the right column. On desktop the parent grid stretches
+        // us to match the LeftCard's row height (via items-stretch);
+        // mobile keeps a sensible floor so the empty state doesn't
+        // collapse against the LeftCard above.
+        "flex flex-1 min-h-[520px] lg:min-h-0",
         className,
       )}
     >

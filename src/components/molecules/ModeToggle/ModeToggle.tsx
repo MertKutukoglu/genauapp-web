@@ -36,7 +36,10 @@ export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
       aria-label="Card mode"
       className={clsx(
         "flex items-center p-1.5 rounded-full",
-        "bg-[color:color-mix(in_srgb,var(--fg)_6%,transparent)]",
+        // Sunken surface token — the lighter gray used elsewhere for
+        // nested/pressed-looking backgrounds. Keeps the active pill
+        // (--surface-card) distinct against the track.
+        "bg-surface-sunk",
         className,
       )}
     >

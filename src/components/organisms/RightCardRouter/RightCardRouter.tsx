@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { clsx } from "@/lib/utils/clsx";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { RightCardPlaceholder } from "@/components/molecules/RightCardPlaceholder/RightCardPlaceholder";
 import { WordsChip } from "@/components/organisms/WordsChip/WordsChip";
@@ -68,11 +69,24 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   }, [selected]);
 
   return (
-    <div ref={containerRef} className={className} style={{ scrollMarginTop: 84 }}>
+    <div
+      ref={containerRef}
+      className={clsx(
+        // Desktop: fill the grid row so the right column matches the
+        // LeftCard's height when its own content is shorter. Inner
+        // children drop `lg:h-full` to actually stretch.
+        "flex flex-col lg:h-full",
+        className,
+      )}
+      style={{ scrollMarginTop: 84 }}
+    >
       {selected === "words" ? (
-        <WordsChip words={WORDS_A1} />
+        <WordsChip words={WORDS_A1} className="lg:flex-1 lg:h-full" />
       ) : (
-        <RightCardPlaceholder selectedChip={selected} />
+        <RightCardPlaceholder
+          selectedChip={selected}
+          className="lg:flex-1 lg:h-full"
+        />
       )}
     </div>
   );

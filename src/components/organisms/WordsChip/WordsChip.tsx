@@ -112,28 +112,34 @@ export function WordsChip({
   }, []);
 
   return (
-    <div className={clsx("flex flex-col gap-4", className)}>
+    <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
       <ModeToggle mode={mode} onChange={setMode} />
 
-      {mode === "learn" ? (
-        learnCompleted ? (
-          <LearnCompletion onSwitchToExercise={() => setMode("exercise")} />
-        ) : current ? (
-          <LearnCardSwitch
-            key={current.learn.word}
-            variant={variant}
-            word={current}
-            current={currentIndex}
-            total={deckSize}
-            onRepeat={handleRepeat}
-            onIKnow={handleIKnow}
-          />
+      {/* The active card wrapper. `lg:flex-1` lets the card grow to
+          match the LeftCard's row height on desktop when its content is
+          shorter; `flex` + `*:flex-1` passes the stretch down so the
+          inner surface-card actually fills. */}
+      <div className="lg:flex-1 lg:flex lg:flex-col [&>*]:lg:flex-1">
+        {mode === "learn" ? (
+          learnCompleted ? (
+            <LearnCompletion onSwitchToExercise={() => setMode("exercise")} />
+          ) : current ? (
+            <LearnCardSwitch
+              key={current.learn.word}
+              variant={variant}
+              word={current}
+              current={currentIndex}
+              total={deckSize}
+              onRepeat={handleRepeat}
+              onIKnow={handleIKnow}
+            />
+          ) : (
+            <EmptyDeck />
+          )
         ) : (
-          <EmptyDeck />
-        )
-      ) : (
-        <ExerciseStub onBackToLearn={() => setMode("learn")} />
-      )}
+          <ExerciseStub onBackToLearn={() => setMode("learn")} />
+        )}
+      </div>
     </div>
   );
 }

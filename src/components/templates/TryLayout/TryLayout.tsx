@@ -34,7 +34,12 @@ export function TryLayout({ left, right, className }: TryLayoutProps) {
           "grid gap-3 md:gap-4",
           "grid-cols-1",
           "lg:grid-cols-[360px_minmax(0,1fr)]",
-          "items-start",
+          // Mobile stacks top-aligned; desktop stretches so the right
+          // column inherits the left card's height when its own content
+          // is shorter. LeftCard overrides this with its own
+          // `lg:self-start` so it stays at its natural height for the
+          // sticky behavior.
+          "items-start lg:items-stretch",
         )}
       >
         {left}
