@@ -33,14 +33,15 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
         A sharp, honest companion for active learners.
       </p>
 
-      {/* Phone stack — full width, soaks remaining vertical space. */}
-      <div className="relative min-h-0 flex-1 w-full flex items-start justify-center pt-4">
-        <PhoneStack className="h-full max-w-[560px]" />
+      {/* Phone stack — full width, soaks remaining vertical space.
+          Images are object-contain so they shrink to fit this slot
+          and never crop. */}
+      <div className="relative min-h-0 flex-1 w-full flex items-center justify-center py-2">
+        <PhoneStack className="h-full max-w-[640px]" />
       </div>
 
-      {/* Try-demo invitation pinned at the bottom — full width of the
-          card (hero padding provides the breathing room on either side). */}
-      <div className="relative z-30 -mt-6 w-full">
+      {/* Try-demo invitation pinned at the bottom, full card width. */}
+      <div className="w-full">
         <TryDemoCard variant="soft" />
       </div>
     </div>

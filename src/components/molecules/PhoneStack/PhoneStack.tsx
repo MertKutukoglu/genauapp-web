@@ -2,79 +2,86 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * PhoneStack — three stacked iOS screens in the "multi-phone hero"
- * composition: a large center phone (Home), a back-left phone rotated
- * -8deg (Prepositions), a back-right phone rotated +8deg (Word card).
+ * PhoneStack — three stacked iOS phones in the hero.
  *
- * The whole stack is masked from the bottom so the phones dissolve
- * into the card surface instead of cropping with a hard edge —
- * matches the reference layout the user shared.
+ * No bottom mask / no crop. Each phone image is `object-contain` inside
+ * a slot whose height tracks the parent — so phones shrink as the
+ * available space shrinks, but they never crop. Center phone slightly
+ * taller / up front; back-left and back-right 80% of center, rotated
+ * ±9deg and dropped a touch.
  *
- * Per-theme swap uses the .theme-light-only / .theme-dark-only
- * utilities in globals.css so each phone shows its correct screen
- * per theme with no JS.
- *
- * Assets expected in public/:
- *   app-home-{light,dark}.png  — framed Home (center)
- *   app-prep-{light,dark}.png  — framed Prepositions detail (back-left)
- *   app-word-{light,dark}.png  — Word learn card, screen-only (back-right)
+ * Theme swap via .theme-light-only / .theme-dark-only utilities.
  */
 
 export interface PhoneStackProps {
   className?: string;
 }
 
+const dropShadowBig = "drop-shadow(0 30px 40px rgba(0,0,0,0.45))";
+const dropShadowSide = "drop-shadow(0 20px 30px rgba(0,0,0,0.35))";
+
 export function PhoneStack({ className }: PhoneStackProps) {
   return (
     <div
       className={clsx(
-        "relative mx-auto w-full",
+        "relative mx-auto flex h-full w-full items-center justify-center",
         className,
       )}
-      style={{
-        WebkitMaskImage:
-          "linear-gradient(to bottom, black 0%, black 72%, transparent 100%)",
-        maskImage:
-          "linear-gradient(to bottom, black 0%, black 72%, transparent 100%)",
-      }}
     >
-      <div className="relative aspect-[5/4] w-full">
-        {/* Back-left — Prepositions, angled behind the center phone */}
-        <div
-          className="absolute left-[-6%] top-[12%] z-10 w-[42%] -rotate-[9deg]"
-          style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))" }}
-        >
-          <Img
-            lightSrc="/app-prep-light.png"
-            darkSrc="/app-prep-dark.png"
-            alt="GenauApp Prepositions screen"
-          />
-        </div>
+      {/* Back-left — Prepositions */}
+      <Slot
+        className="absolute inset-y-2 left-0 w-[32%] -rotate-[9deg] translate-y-3"
+        filter={dropShadowSide}
+      >
+        <Img
+          lightSrc="/app-prep-light.png"
+          darkSrc="/app-prep-dark.png"
+          alt="GenauApp Prepositions screen"
+        />
+      </Slot>
 
-        {/* Back-right — Word card, angled the other way */}
-        <div
-          className="absolute right-[-6%] top-[12%] z-10 w-[42%] rotate-[9deg]"
-          style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))" }}
-        >
-          <Img
-            lightSrc="/app-word-light.png"
-            darkSrc="/app-word-dark.png"
-            alt="GenauApp Word learn card"
-          />
-        </div>
+      {/* Back-right — Word card */}
+      <Slot
+        className="absolute inset-y-2 right-0 w-[32%] rotate-[9deg] translate-y-3"
+        filter={dropShadowSide}
+      >
+        <Img
+          lightSrc="/app-word-light.png"
+          darkSrc="/app-word-dark.png"
+          alt="GenauApp Word learn card"
+        />
+      </Slot>
 
-        {/* Center — Home, big and up front */}
-        <div
-          className="absolute left-1/2 top-0 z-20 w-[48%] -translate-x-1/2"
-          style={{ filter: "drop-shadow(0 30px 40px rgba(0,0,0,0.45))" }}
-        >
-          <Img
-            lightSrc="/app-home-light.png"
-            darkSrc="/app-home-dark.png"
-            alt="GenauApp Home screen"
-          />
-        </div>
-      </div>
+      {/* Center — Home */}
+      <Slot
+        className="relative z-20 inset-y-0 h-full w-[38%]"
+        filter={dropShadowBig}
+      >
+        <Img
+          lightSrc="/app-home-light.png"
+          darkSrc="/app-home-dark.png"
+          alt="GenauApp Home screen"
+        />
+      </Slot>
+    </div>
+  );
+}
+
+function Slot({
+  children,
+  className,
+  filter,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  filter?: string;
+}) {
+  return (
+    <div
+      className={clsx("flex items-center justify-center", className)}
+      style={{ filter }}
+    >
+      {children}
     </div>
   );
 }
@@ -98,7 +105,7 @@ function Img({
         height={820}
         loading="eager"
         decoding="async"
-        className="theme-light-only h-auto w-full"
+        className="theme-light-only h-full max-h-full w-auto max-w-full object-contain"
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -109,7 +116,7 @@ function Img({
         height={820}
         loading="eager"
         decoding="async"
-        className="theme-dark-only h-auto w-full"
+        className="theme-dark-only h-full max-h-full w-auto max-w-full object-contain"
       />
     </>
   );
