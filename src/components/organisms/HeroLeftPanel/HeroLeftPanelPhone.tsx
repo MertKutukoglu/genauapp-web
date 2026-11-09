@@ -38,8 +38,9 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
         <PhoneStack className="h-full max-w-[560px]" />
       </div>
 
-      {/* Try-demo invitation pinned at the bottom */}
-      <div className="w-full max-w-[460px] -mt-6 relative z-30">
+      {/* Try-demo invitation pinned at the bottom — full width of the
+          card (hero padding provides the breathing room on either side). */}
+      <div className="relative z-30 -mt-6 w-full">
         <TryDemoCard variant="soft" />
       </div>
     </div>
