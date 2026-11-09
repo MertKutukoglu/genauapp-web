@@ -35,9 +35,7 @@ export default function OriginsOfGenauPage() {
   return (
     <BlogLayout slug="origins-of-genau" toc={TOC}>
       <h1 className="title">Origins of Genau</h1>
-      <p className="byline">
-        By Mert · <span className="read-time">8 min read</span>
-      </p>
+      <p className="byline">By Mert · November 2026</p>
 
       <p>
         If you have ever tried to learn German as an adult, you probably know
