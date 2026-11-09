@@ -4,26 +4,31 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { EmailInput } from "@/components/atoms/EmailInput/EmailInput";
 import { Button } from "@/components/atoms/Button/Button";
+import {
+  useWaitlistSubmit,
+  type WaitlistLevel,
+} from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
- * WaitlistForm — email + submit, with idle / submitting / success states.
+ * WaitlistForm — email + submit for the landing hero and taste-summary
+ * CTAs. Writes to public.waitlist_emails in Supabase through
+ * useWaitlistSubmit, which also captures UTM + referrer + landing_url
+ * and fires the waitlist_submit_* PostHog event family.
  *
- * Writes `taste_email` to localStorage and fires the
- * `demo_waitlist_email` analytics event — both to match the handoff
- * (handoff §10 catalog entry, §11 storage key). Supabase wiring lands
- * in Phase 5; right now it's localStorage + analytics only.
+ * `demo_waitlist_email` is still fired when `level` is set, for the
+ * taste-flow funnel; it is independent of waitlist_submit_* and
+ * existing dashboards keep working either way.
  */
-
-type Status = "idle" | "submitting" | "success" | "error";
-const STORAGE_KEY = "taste_email";
 
 export interface WaitlistFormProps {
   /** Shown above the input. Omit for just the field. */
   heading?: React.ReactNode;
   /** Shown between heading and input. */
   sub?: React.ReactNode;
-  /** Optional context ("waitlist"/"summary") passed to the analytics event. */
-  level?: string;
+  /** CEFR level (A1/A2/B1/B2) when the form is submitted from the demo. */
+  level?: WaitlistLevel;
+  /** Analytics tag, e.g. "landing-hero" or "try-summary". Required. */
+  source?: string;
   className?: string;
 }
 
@@ -31,38 +36,31 @@ export function WaitlistForm({
   heading,
   sub,
   level,
+  source = "landing-hero",
   className,
 }: WaitlistFormProps) {
   const [email, setEmail] = React.useState("");
-  const [status, setStatus] = React.useState<Status>("idle");
+  const { state, submit } = useWaitlistSubmit();
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@") || !email.includes(".")) {
-      setStatus("error");
-      return;
-    }
-    setStatus("submitting");
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ email, at: new Date().toISOString() }),
-      );
-    } catch {
-      /* ignore quota / private-mode */
-    }
-    if (typeof window !== "undefined") {
+    const result = await submit({ email, source, level });
+
+    // Demo-flow analytics stay on their original event name so the
+    // try-flow funnel keeps working alongside the generic waitlist
+    // metrics.
+    if (level && (result === "success" || result === "duplicate")) {
       try {
-        window.__track?.("demo_waitlist_email", level ? { level } : {});
+        window.__track?.("demo_waitlist_email", { level });
       } catch {
         /* no-op */
       }
     }
-    // Simulate async for a hint of feedback; Supabase wiring in Phase 5.
-    setTimeout(() => setStatus("success"), 250);
   };
 
-  if (status === "success") {
+  const isDone = state === "success" || state === "duplicate";
+
+  if (isDone) {
     return (
       <div
         className={clsx(
@@ -71,7 +69,9 @@ export function WaitlistForm({
         )}
       >
         <p className="font-display text-lg font-semibold text-fg">
-          You&apos;re on the list.
+          {state === "duplicate"
+            ? "You're already on the list."
+            : "You're on the list."}
         </p>
         <p className="text-sm text-fg-muted">
           We&apos;ll mail you the moment the iOS beta drops.
@@ -84,6 +84,7 @@ export function WaitlistForm({
     <form
       onSubmit={onSubmit}
       className={clsx("flex flex-col gap-3", className)}
+      data-source={source}
       noValidate
     >
       {heading ? (
@@ -96,28 +97,25 @@ export function WaitlistForm({
       <div className="relative flex items-center gap-2 rounded-full bg-surface-sunk p-1.5 pl-3 sm:pl-5">
         <EmailInput
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (status === "error") setStatus("idle");
-          }}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           className="!h-11 flex-1 !bg-transparent !px-0"
           required
-          aria-invalid={status === "error" || undefined}
+          aria-invalid={state === "error" || undefined}
         />
         <Button
           type="submit"
           tone="primary"
           size="sm"
-          disabled={status === "submitting"}
+          disabled={state === "loading"}
         >
-          {status === "submitting" ? "Joining…" : "Join waitlist"}
+          {state === "loading" ? "Joining…" : "Join waitlist"}
         </Button>
       </div>
 
-      {status === "error" ? (
+      {state === "error" ? (
         <p role="alert" className="text-sm text-accent">
-          That doesn&apos;t look like a valid email. Try again.
+          Something went wrong. Try again?
         </p>
       ) : (
         <p className="text-xs text-fg-faint">

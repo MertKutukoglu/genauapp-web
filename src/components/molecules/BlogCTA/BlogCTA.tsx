@@ -4,34 +4,31 @@ import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { useWaitlistSubmit } from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
- * BlogCTA — the end-of-post waitlist invite from
- * /blog/origins-of-genau.
+ * BlogCTA — the end-of-post waitlist invite from /blog/*.
  *
  * "Dein Deutsch, dein Workout." + a one-line body + email form.
- * Submit writes { email, source, at } to localStorage under
- * taste_email (same key the landing WaitlistForm uses) and fires
- * waitlist_submit + blog_cta_focus events to PostHog + Vercel.
+ * Submit writes to public.waitlist_emails in Supabase through
+ * useWaitlistSubmit (anon POST, UTM + referrer + landing_url
+ * captured, waitlist_submit_* PostHog events fired with the same
+ * names the legacy landing uses). 409 duplicate counts as success
+ * for the reader.
  *
- * Supabase wiring lives in Phase 5 (the production blog posts to a
- * Supabase waitlist_emails table directly from the browser). For
- * now we persist locally and trust the analytics event so the
- * conversion is captured even before the DB is live.
+ * blog_cta_focus (one-shot, on first focus of the email input) and
+ * blog_back_to_landing_click are the blog-specific events.
  */
 
 export interface BlogCTAProps {
-  /** Passed into the analytics payload so dashboards can filter. */
+  /** Passed into the Supabase row + analytics source tag. */
   source?: string;
   className?: string;
 }
 
-type Status = "idle" | "submitting" | "success" | "error";
-const STORAGE_KEY = "taste_email";
-
 export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
   const [email, setEmail] = React.useState("");
-  const [status, setStatus] = React.useState<Status>("idle");
+  const { state, submit } = useWaitlistSubmit();
   const firstFocusFired = React.useRef(false);
 
   const onFocus = () => {
@@ -46,30 +43,12 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
     }
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.includes("@") || !email.includes(".")) {
-      setStatus("error");
-      return;
-    }
-    setStatus("submitting");
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ email, source, at: new Date().toISOString() }),
-      );
-    } catch {
-      /* ignore private-mode / quota */
-    }
-    if (typeof window !== "undefined") {
-      try {
-        window.__track?.("waitlist_submit", { source, status: "new" });
-      } catch {
-        /* no-op */
-      }
-    }
-    setTimeout(() => setStatus("success"), 250);
+    await submit({ email, source });
   };
+
+  const isDone = state === "success" || state === "duplicate";
 
   return (
     <div
@@ -86,10 +65,12 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
         Join the waitlist. We will let you know when GenauApp launches.
       </p>
 
-      {status === "success" ? (
+      {isDone ? (
         <p className="mt-5 inline-flex items-center gap-2 font-sans text-[15px] font-semibold text-[color:var(--ok)]">
           <Icon name="check" className="h-5 w-5 text-[color:var(--ok)]" />
-          You are in. We will let you know.
+          {state === "duplicate"
+            ? "You're already on the list. We'll let you know."
+            : "You are in. We will let you know."}
         </p>
       ) : (
         <form
@@ -108,22 +89,19 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
             spellCheck={false}
             value={email}
             onFocus={onFocus}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (status === "error") setStatus("idle");
-            }}
+            onChange={(e) => setEmail(e.target.value)}
             className={clsx(
               "flex-1 min-w-0 rounded-full border border-border-strong bg-bg px-[18px] py-3 font-sans text-[15px] font-medium text-fg",
               "placeholder:text-fg-faint",
               "outline-none transition",
               "focus:border-accent focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_16%,transparent)]",
-              status === "error" && "border-accent",
+              state === "error" && "border-accent",
             )}
-            aria-invalid={status === "error" || undefined}
+            aria-invalid={state === "error" || undefined}
           />
           <button
             type="submit"
-            disabled={status === "submitting"}
+            disabled={state === "loading"}
             className={clsx(
               "rounded-full bg-accent px-6 py-3 font-sans text-[15px] font-semibold text-white whitespace-nowrap",
               "transition hover:-translate-y-px hover:brightness-110",
@@ -131,14 +109,14 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
               "max-[480px]:w-full",
             )}
           >
-            {status === "submitting" ? "…" : "Join"}
+            {state === "loading" ? "…" : "Join"}
           </button>
         </form>
       )}
 
-      {status === "error" ? (
+      {state === "error" ? (
         <p role="alert" className="mt-3 text-xs text-accent">
-          That doesn&apos;t look like a valid email. Try again.
+          Something went wrong. Try again?
         </p>
       ) : null}
 
