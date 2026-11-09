@@ -4,14 +4,17 @@ import { clsx } from "@/lib/utils/clsx";
 /**
  * LandingLayout — the two-column shell for the home page.
  *
- * Desktop (≥ 1024px): fits the viewport — no outer scroll. The layout
- * fills the main element's `flex-1` space (the parent body is a
- * flex column with topnav + main + footer), and the two cards fill
- * that height with `h-full + min-h-0` so their inner content
- * (phone mockup, carousel) does the sizing, not the other way around.
+ * Card treatment matches the Figma testimonial card
+ * (file KKZjlNDb3FQM8lAbt6534y, node 2555:172):
+ *   - Rounded 32px corners
+ *   - Very subtle vertical translucent gradient (6% → 12% fg) — reads
+ *     as a soft "lift" in either theme without hard borders
+ *   - An inset 1px white (or theme-fg translucent) top-edge highlight
+ *     — the glass sheen along the top of the card
+ *   - No stroke; the treatment is all surface + light
  *
- * Mobile / tablet: single-column stack, both cards flow at natural
- * height; the page scrolls as usual.
+ * Desktop (≥ 1024px): the layout fits the viewport. On mobile/tablet
+ * it stacks and the page scrolls naturally.
  */
 
 export interface LandingLayoutProps {
@@ -19,6 +22,21 @@ export interface LandingLayoutProps {
   right: React.ReactNode;
   className?: string;
 }
+
+/**
+ * Shared card chrome. Painted as a wrapper with a pseudo-background
+ * overlay so the gradient lives on top of the token-driven bg instead
+ * of replacing it.
+ */
+const cardChrome = clsx(
+  "relative min-h-0 flex flex-col overflow-hidden rounded-[32px]",
+  // Translucent gradient — works on light and dark via --fg.
+  "bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--fg)_6%,transparent),color-mix(in_srgb,var(--fg)_12%,transparent))]",
+  // Hairline top-edge highlight. Inset shadow so it sits just inside
+  // the radius; translucent --fg so it's a subtle sheen in dark theme
+  // and a soft dark hairline in light theme.
+  "shadow-[inset_0_1px_0_0_color-mix(in_srgb,var(--fg)_22%,transparent)]",
+);
 
 export function LandingLayout({ left, right, className }: LandingLayoutProps) {
   return (
@@ -34,25 +52,11 @@ export function LandingLayout({ left, right, className }: LandingLayoutProps) {
           "grid-cols-1 lg:grid-cols-[1fr_1fr]",
         )}
       >
-        {/* LEFT card */}
-        <section
-          aria-label="Introduction"
-          className={clsx(
-            "min-h-0 flex flex-col overflow-hidden rounded-[28px]",
-            "border border-border bg-[color:color-mix(in_srgb,var(--accent)_3%,var(--surface-card))]",
-          )}
-        >
+        <section aria-label="Introduction" className={cardChrome}>
           {left}
         </section>
 
-        {/* RIGHT card */}
-        <section
-          aria-label="What it looks like"
-          className={clsx(
-            "min-h-0 flex flex-col overflow-hidden rounded-[28px] p-4 md:p-5",
-            "border border-border bg-surface-card",
-          )}
-        >
+        <section aria-label="What it looks like" className={clsx(cardChrome, "p-4 md:p-5")}>
           {right}
         </section>
       </div>
