@@ -62,8 +62,10 @@ export function WordsChip({
     // Intentional state-from-external-input sync: new deck → reseed.
     // Dep is wordsKey (not words) so we don't fire on array-identity
     // changes that carry the same content.
-    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRemaining(words);
+    // wordsKey is the content hash of words; using it keeps us off
+    // identity-only changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordsKey]);
 
@@ -81,6 +83,8 @@ export function WordsChip({
   const variant: LearnCardVariant = React.useMemo(() => {
     if (!currentChunks) return "normal";
     return pickLearnCardType({ chunks: currentChunks });
+    // currentWord re-keys the variant when a new card advances.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWord, currentChunks]);
 
   const handleRepeat = React.useCallback(() => {

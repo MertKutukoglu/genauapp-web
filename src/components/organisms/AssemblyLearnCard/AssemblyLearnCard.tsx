@@ -129,6 +129,7 @@ export function AssemblyLearnCard({
       <AssemblyArea
         pieces={pieces}
         seed={seed}
+        keyboardEnabled={mode === "scrambled"}
         onChange={(s) => setIsCorrect(s.isCorrect)}
       />
     </div>

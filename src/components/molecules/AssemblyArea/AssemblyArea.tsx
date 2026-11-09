@@ -4,28 +4,31 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * AssemblyArea — the shared tile-puzzle mechanic used by Scrambled and
- * ChunkCompose Learn cards.
+ * AssemblyArea — shared tile-puzzle mechanic for the Scrambled +
+ * ChunkCompose Learn variants.
  *
  * Caller hands the component `pieces` — the target string split into
  * the ordered sequence the user needs to reconstruct. For Scrambled
  * that's the word split into single letters; for ChunkCompose it's
- * the syllable chunks from the content file.
+ * the syllable chunks.
  *
- * Shape (mirrors iOS Learn-card variants):
- *   - Answer row: thin horizontal dash per empty slot; filled slots
- *     show the piece in bold white (or on completion, the article
- *     color — passed via onChange's isCorrect so the parent can tint)
- *   - Tile pool: bigger rectangular tiles, Open Sans bold 22, with a
- *     backspace tile at the end of the row that removes the last pick
+ * Shape (per iOS reference):
+ *   - Slot row: one dash per CHARACTER in the target (not per piece).
+ *     Placed pieces fill characters left-to-right, so a chunk like
+ *     "Fa" fills slots 0 + 1. The assembled characters read as a
+ *     single continuous word — no visible gap between consecutive
+ *     filled characters, which was the bug the chunk layout had
+ *     previously.
+ *   - Tile pool: pieces as bigger rectangular tiles + backspace at
+ *     the end of the row; backspace removes the last-placed piece.
  *
- * Tiles carry their original index so duplicate pieces (two "n"s in
- * "sprechen") stay independently selectable. The answer is the array
- * of selected indices; the target check compares the user's string to
- * the joined pieces, so any valid ordering wins.
+ * `keyboardEnabled` adds desktop keyboard support (letter key → pick
+ * matching tile, Backspace → remove last). Scrambled turns this on;
+ * ChunkCompose keeps it off because typing one letter against
+ * multi-char tiles doesn't map cleanly.
  *
- * Callers get `{ assembled, isCorrect }` via `onChange`. Parents use
- * `isCorrect` to auto-advance or light up a continue affordance.
+ * Callers get `{ assembled, isCorrect }` via `onChange` and gate their
+ * next step on isCorrect (auto-advance in the Learn card variants).
  */
 
 export interface AssemblyAreaProps {
@@ -37,16 +40,18 @@ export interface AssemblyAreaProps {
    * within one mount the shuffle stays put.
    */
   seed?: string;
-  /** Fires on every pick/unpick so the parent can react to completion. */
+  /**
+   * When true, window keydown listeners translate letter presses into
+   * tile picks and Backspace into the backspace action. Scrambled
+   * variants turn this on for desktop typists.
+   */
+  keyboardEnabled?: boolean;
+  /** Fires on every pick/backspace so the parent can react to completion. */
   onChange?: (state: { assembled: string; isCorrect: boolean }) => void;
   className?: string;
 }
 
-/**
- * Deterministic Fisher-Yates shuffle keyed on a string. Same seed →
- * same order. Lifted into a util so the mount-time shuffle doesn't
- * jitter on every re-render.
- */
+/** Fisher-Yates shuffle keyed on a string so same seed → same order. */
 function shuffleWithSeed<T>(arr: T[], seed: string): T[] {
   let h = 2166136261;
   for (let i = 0; i < seed.length; i++) {
@@ -65,18 +70,19 @@ function shuffleWithSeed<T>(arr: T[], seed: string): T[] {
 export function AssemblyArea({
   pieces,
   seed,
+  keyboardEnabled = false,
   onChange,
   className,
 }: AssemblyAreaProps) {
   const piecesKey = pieces.join("|");
+  const target = pieces.join("");
+  const targetChars = target.split("");
 
   // Pool of tiles with stable indices into `pieces`. Shuffle fixed per mount.
   const pool = React.useMemo(() => {
     const indexed = pieces.map((p, i) => ({ piece: p, idx: i }));
     const s = seed ?? pieces.join("-");
     const shuffled = shuffleWithSeed(indexed, s);
-    // If the shuffle landed in target order, swap the first two so the
-    // user still has something to do.
     if (
       shuffled.length >= 2 &&
       shuffled.every((t, i) => t.idx === i)
@@ -89,7 +95,6 @@ export function AssemblyArea({
 
   const [picked, setPicked] = React.useState<number[]>([]);
 
-  const target = pieces.join("");
   const assembled = picked.map((i) => pieces[i]).join("");
   const isCorrect = assembled === target;
   const isFull = picked.length === pieces.length;
@@ -98,69 +103,110 @@ export function AssemblyArea({
     onChange?.({ assembled, isCorrect });
   }, [assembled, isCorrect, onChange]);
 
-  const pickTile = (idx: number) => {
-    if (isFull) return;
-    if (picked.includes(idx)) return;
-    setPicked((p) => [...p, idx]);
-  };
+  const pickTile = React.useCallback(
+    (idx: number) => {
+      setPicked((p) => {
+        if (p.length >= pieces.length) return p;
+        if (p.includes(idx)) return p;
+        return [...p, idx];
+      });
+    },
+    [pieces.length],
+  );
 
-  const backspace = () => {
+  const backspace = React.useCallback(() => {
     setPicked((p) => (p.length === 0 ? p : p.slice(0, -1)));
-  };
+  }, []);
+
+  // Desktop keyboard support (Scrambled only). Each un-picked tile
+  // whose piece matches the typed key becomes available; the first
+  // one found gets picked.
+  React.useEffect(() => {
+    if (!keyboardEnabled) return;
+    if (typeof window === "undefined") return;
+
+    const onKey = (e: KeyboardEvent) => {
+      // Don't steal keystrokes when the user is typing in an input/textarea.
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) {
+        return;
+      }
+
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        backspace();
+        return;
+      }
+
+      // Single-character keys only (no Shift, Meta, F1 etc.)
+      if (e.key.length !== 1) return;
+      // Skip if any modifier is held
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const needle = e.key.toLowerCase();
+      const matchIdx = pool.findIndex(
+        ({ piece, idx }) =>
+          !picked.includes(idx) && piece.toLowerCase() === needle,
+      );
+      if (matchIdx >= 0) {
+        e.preventDefault();
+        pickTile(pool[matchIdx].idx);
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [keyboardEnabled, picked, pool, pickTile, backspace]);
 
   const slotColor = isCorrect ? "var(--ok)" : "var(--fg)";
 
   return (
     <div className={clsx("flex flex-col gap-6 items-center", className)}>
-      {/* Answer slots — thin horizontal dashes, piece rendered on top
-          of the dash when filled. iOS shows the dash disappear into
-          the glyph as soon as content lands; we keep both for clarity. */}
-      <div className="flex flex-wrap items-end justify-center gap-3">
-        {pieces.map((piece, slotIdx) => {
-          const filledWith = picked[slotIdx];
-          const hasContent = filledWith !== undefined;
-          const content = hasContent ? pieces[filledWith] : "";
+      {/* Slot row — one entry per CHARACTER in the target. Filled chars
+          sit directly beside each other with no gap so chunks assemble
+          into a single continuous word (fixing the "Fa mi lie" look). */}
+      <div
+        className="flex items-end justify-center"
+        style={{ columnGap: 2 }}
+      >
+        {targetChars.map((char, i) => {
+          const filled = i < assembled.length;
+          const display = filled ? assembled[i] : "";
 
           return (
             <div
-              key={slotIdx}
-              className="flex flex-col items-center gap-1.5"
-              style={{ minWidth: hasContent ? "auto" : 24 }}
+              key={i}
+              className="flex flex-col items-center"
+              style={{ minWidth: 14 }}
             >
-              {hasContent ? (
-                <span
-                  className="font-sans font-bold text-[28px] leading-none whitespace-pre"
-                  style={{ color: slotColor }}
-                >
-                  {content}
-                </span>
-              ) : (
-                <span
-                  className="font-sans font-bold text-[28px] leading-none opacity-0 whitespace-pre"
-                  aria-hidden
-                >
-                  {piece}
-                </span>
-              )}
+              <span
+                className="font-sans font-bold text-[28px] leading-none whitespace-pre"
+                style={{
+                  color: slotColor,
+                  // Reserve the character's own natural width even when
+                  // empty, so the dashes below line up under the real
+                  // glyphs they'll become.
+                  visibility: filled ? "visible" : "hidden",
+                }}
+              >
+                {filled ? display : char}
+              </span>
               <span
                 aria-hidden
                 className={clsx(
-                  "block h-[3px] rounded-full",
-                  hasContent
+                  "block h-[3px] rounded-full mt-1.5",
+                  filled
                     ? "bg-transparent"
                     : "bg-[color:color-mix(in_srgb,var(--fg)_22%,transparent)]",
                 )}
-                style={{
-                  width: hasContent ? "100%" : 24,
-                  minWidth: 24,
-                }}
+                style={{ width: Math.max(14, char.length * 10) }}
               />
             </div>
           );
         })}
       </div>
 
-      {/* Tile pool — larger rectangular tiles + backspace at the end. */}
+      {/* Tile pool + backspace. */}
       <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-full">
         {pool.map(({ piece, idx }) => {
           const used = picked.includes(idx);
@@ -188,12 +234,12 @@ export function AssemblyArea({
           );
         })}
 
-        {/* Backspace tile — always visible, removes the last-placed piece. */}
         <button
           type="button"
           onClick={backspace}
           disabled={picked.length === 0}
           aria-label="Remove last letter"
+          title={keyboardEnabled ? "Backspace" : undefined}
           className={clsx(
             "min-w-[52px] h-[56px] px-5 rounded-2xl",
             "inline-flex items-center justify-center",
@@ -222,6 +268,12 @@ export function AssemblyArea({
           </svg>
         </button>
       </div>
+
+      {keyboardEnabled ? (
+        <p className="font-sans text-[11px] text-fg-faint tracking-wide uppercase">
+          Type on your keyboard · Backspace to undo
+        </p>
+      ) : null}
     </div>
   );
 }
