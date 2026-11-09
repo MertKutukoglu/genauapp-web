@@ -40,25 +40,35 @@ const sourceSerif = Source_Serif_4({
   weight: ["400", "500", "600", "700"],
 });
 
+// Verbatim from claude/GenauApp_Web_OG_Image.md §4 — matches the live
+// landing's current social meta exactly, so unfurls in Slack / iMessage /
+// LinkedIn / Twitter look identical to the old deploy.
+const OG_TITLE =
+  "GenauApp — You keep learning German. We keep it from fading.";
+const OG_DESCRIPTION =
+  "A sharp, honest companion for active German learners. Built in Berlin.";
+
 export const metadata: Metadata = {
   title: {
-    default: "GenauApp — refresh your German",
+    default: OG_TITLE,
     template: "%s · GenauApp",
   },
-  description:
-    "A SwiftUI German practice companion for people refreshing existing German. Try the browser demo in 5 minutes.",
-  metadataBase: new URL("https://genauapp.io"),
+  description: OG_DESCRIPTION,
+  metadataBase: new URL("https://www.genauapp.io"),
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "GenauApp",
-    url: "https://genauapp.io",
+    url: "https://www.genauapp.io/",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    // images come from app/opengraph-image.tsx (Next 16 convention) —
+    // it's picked up automatically, no need to list it here.
   },
   twitter: {
     card: "summary_large_image",
-    title: "GenauApp — refresh your German",
-    description:
-      "A SwiftUI German practice companion for people refreshing existing German. Try the browser demo in 5 minutes.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
   },
   alternates: {
     canonical: "/",
