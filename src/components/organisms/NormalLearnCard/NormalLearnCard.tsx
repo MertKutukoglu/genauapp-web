@@ -1,0 +1,84 @@
+import * as React from "react";
+import { clsx } from "@/lib/utils/clsx";
+import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
+import { WordSection, type ArticleColor } from "@/components/molecules/WordSection/WordSection";
+import { GrammarTagPills, type GrammarTag } from "@/components/molecules/GrammarTagPills/GrammarTagPills";
+import { SampleSentence } from "@/components/molecules/SampleSentence/SampleSentence";
+import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
+import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
+
+/**
+ * NormalLearnCard — the canonical Learn-mode card for the Words chip.
+ *
+ * Composes the six spec blocks top-to-bottom:
+ *   1. CardToolbar (speaker + counter)
+ *   2. WordSection (DE + EN)
+ *   3. GrammarTagPills (verb only, optional)
+ *   4. SampleSentence (optional)
+ *   5. RuleCard (optional)
+ *   6. LearnActions (Repeat / I know)
+ *
+ * Every optional block renders only when its data is present. Missing
+ * blocks collapse cleanly — the card's padding + shadow still make it
+ * feel complete.
+ *
+ * Spec: claude/GenauApp_Web_Try_Words_Learn_Card.md §2–§7.
+ *
+ * Only the `normal` variant ships in v1. The scrambled + chunkCompose
+ * variants need word-specific content prep and can land in v2 if
+ * demo retention asks for more friction.
+ */
+
+export interface NormalLearnCardProps {
+  german: string;
+  english: string;
+  article?: ArticleColor;
+  grammarTags?: GrammarTag[];
+  example?: string;
+  rule?: string;
+  /** Deck position for the counter pill. */
+  current: number;
+  total: number;
+  onRepeat?: () => void;
+  onIKnow?: () => void;
+  className?: string;
+}
+
+export function NormalLearnCard({
+  german,
+  english,
+  article,
+  grammarTags,
+  example,
+  rule,
+  current,
+  total,
+  onRepeat,
+  onIKnow,
+  className,
+}: NormalLearnCardProps) {
+  // Speaker reads the full display form (`das Brot`, not just `Brot`)
+  // so the article gets its own TTS pronunciation.
+  const speakText = article ? `${article} ${german}` : german;
+
+  return (
+    <div
+      className={clsx(
+        "bg-surface-card rounded-3xl p-5",
+        "shadow-[0_4px_12px_rgba(0,0,0,0.06)]",
+        "[html[data-theme=dark]_&]:shadow-[0_4px_12px_rgba(0,0,0,0.45)]",
+        "flex flex-col gap-5",
+        className,
+      )}
+    >
+      <CardToolbar speakText={speakText} current={current} total={total} />
+      <WordSection german={german} english={english} article={article} />
+      {grammarTags && grammarTags.length > 0 ? (
+        <GrammarTagPills tags={grammarTags} />
+      ) : null}
+      {example ? <SampleSentence sentence={example} /> : null}
+      {rule ? <RuleCard article={article} body={rule} /> : null}
+      <LearnActions onRepeat={onRepeat} onIKnow={onIKnow} />
+    </div>
+  );
+}
