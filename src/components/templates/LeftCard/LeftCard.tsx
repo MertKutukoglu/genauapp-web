@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { WorkoutCounter } from "@/components/atoms/WorkoutCounter/WorkoutCounter";
+import { SkillStrip } from "@/components/molecules/SkillStrip/SkillStrip";
 import { ChipList } from "@/components/organisms/ChipList/ChipList";
 import { useChipStore } from "@/stores/chipStore";
 
@@ -30,8 +31,13 @@ import { useChipStore } from "@/stores/chipStore";
  */
 
 export interface LeftCardProps {
-  /** Slot for the SkillStrip organism; rendered between subtitle and chip list. */
-  skillStrip?: React.ReactNode;
+  /**
+   * Override for the SkillStrip slot between subtitle and chip list.
+   * When `undefined` (default) an empty SkillStrip renders. Pass `null`
+   * to suppress it, or any React node to swap in a connected strip
+   * (e.g. one wired to the skill store).
+   */
+  skillStrip?: React.ReactNode | null;
   className?: string;
 }
 
@@ -39,6 +45,11 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
   const doneCount = useChipStore((s) =>
     Object.values(s.progress).filter((v) => v === "done").length,
   );
+
+  // Default strip: all four skills empty. Caller can override via the
+  // skillStrip prop once the collect mechanic + skill store land.
+  const stripNode =
+    skillStrip === undefined ? <SkillStrip /> : skillStrip;
 
   return (
     <aside
@@ -70,9 +81,10 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         Four workouts, five questions each. Tap any to begin, all four are open.
       </p>
 
-      {/* SkillStrip slot (populated in a later round) */}
-      {skillStrip ? (
-        <div className="my-2.5 mb-3.5">{skillStrip}</div>
+      {/* Skill strip — spec §8 placement: between subtitle and chip list,
+          `margin: 10px 0 14px`. */}
+      {stripNode ? (
+        <div className="mt-2.5 mb-3.5">{stripNode}</div>
       ) : null}
 
       {/* The picker itself */}

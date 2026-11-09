@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import * as React from "react";
 import { LeftCard } from "./LeftCard";
+import { SkillStrip } from "@/components/molecules/SkillStrip/SkillStrip";
 import { useChipStore } from "@/stores/chipStore";
 
 const meta: Meta<typeof LeftCard> = {
@@ -122,26 +123,13 @@ export const WithSelection: Story = {
   },
 };
 
-export const WithSkillStripPlaceholder: Story = {
+export const SkillStripWithProgress: Story = {
   render: () => (
     <LeftCard
       skillStrip={
-        <div
-          style={{
-            display: "flex",
-            gap: 10,
-            padding: "10px",
-            border: "1px dashed var(--border-strong)",
-            borderRadius: 14,
-            background: "var(--surface-sunk)",
-            fontFamily: "var(--font-body)",
-            fontSize: 11,
-            color: "var(--fg-faint)",
-            justifyContent: "center",
-          }}
-        >
-          SkillStrip slot (next round)
-        </div>
+        <SkillStrip
+          progress={{ vocab: 0.5, grammar: 0.25, reading: 0.75, writing: 0.25 }}
+        />
       }
     />
   ),
@@ -149,7 +137,40 @@ export const WithSkillStripPlaceholder: Story = {
     docs: {
       description: {
         story:
-          "LeftCard with its `skillStrip` slot populated by a placeholder, showing where the SegmentedSkillRing row will sit when its own round lands.",
+          "Override the default empty strip with partial progress. Shows how the ring fill reads at a glance under the subtitle.",
+      },
+    },
+  },
+};
+
+export const SkillStripWithPending: Story = {
+  render: () => (
+    <LeftCard
+      skillStrip={
+        <SkillStrip
+          progress={{ vocab: 0.25, grammar: 0.5 }}
+          pending={{ reading: true, writing: true }}
+        />
+      }
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Two badges carry the cherry collect-me indicator to show the strip's attention state.",
+      },
+    },
+  },
+};
+
+export const SkillStripSuppressed: Story = {
+  render: () => <LeftCard skillStrip={null} />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Passing `null` to `skillStrip` hides the row entirely — useful for surfaces that don't need the skills signal.",
       },
     },
   },
