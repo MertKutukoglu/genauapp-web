@@ -126,6 +126,21 @@ export const ICONS = {
       <path d="M22 5s-3-1.5-10-1.5V20s7-1.5 10 0V5z" />
     </>
   ),
+  "chip-story": (
+    <>
+      {/* Chat bubble with ellipsis. */}
+      <path d="M21 15a2 2 0 0 1-2 2H9l-4 4v-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <circle cx="9" cy="10" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="10" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="10" r="0.8" fill="currentColor" stroke="none" />
+    </>
+  ),
+  "chip-pronunciation": (
+    <>
+      {/* Waveform bars. */}
+      <path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4" />
+    </>
+  ),
 
   // ---------- Status / feedback ----------
   "thumbs-up": (

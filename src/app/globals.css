@@ -96,10 +96,12 @@
   --article-die:      var(--color-article-die-light);
   --article-das:      var(--color-article-das-light);
 
-  --chip-words-color:    var(--color-skill-vocab);     /* pink */
-  --chip-grammar-color:  var(--color-skill-grammar);   /* purple */
-  --chip-sentence-color: #14B8A6;                      /* teal — NOT writing-green */
-  --chip-reading-color:  var(--color-skill-reading);   /* blue */
+  --chip-words-color:         var(--color-skill-vocab);     /* pink */
+  --chip-grammar-color:       var(--color-skill-grammar);   /* purple */
+  --chip-sentence-color:      #14B8A6;                      /* teal — NOT writing-green */
+  --chip-reading-color:       var(--color-skill-reading);   /* blue */
+  --chip-story-color:         #F97316;                      /* orange — chat/story */
+  --chip-pronunciation-color: var(--color-skill-listening); /* amber */
 }
 
 /* Dark theme — swap semantics only, primitives stay. */
@@ -218,6 +220,18 @@ body {
 }
 .animate-skill-bump {
   animation: skill-bump 620ms cubic-bezier(0.5, 1.6, 0.4, 1);
+}
+
+/*
+ * ActiveSlot fade — short cross-fade when the workout chip rotation
+ * swaps the slot content underneath it.
+ */
+@keyframes slot-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slot-in {
+  animation: slot-in 320ms ease-out;
 }
 
 .iosbeta-rotator-item {

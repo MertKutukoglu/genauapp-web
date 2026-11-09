@@ -1,0 +1,77 @@
+"use client";
+
+import * as React from "react";
+import { clsx } from "@/lib/utils/clsx";
+import { PagerStrip } from "@/components/molecules/PagerStrip/PagerStrip";
+
+/**
+ * CarouselShell — the right-column carousel container.
+ *
+ * Owns `activeIndex` + `paused` + pause-on-hover + pause-on-interaction.
+ * Every slide stays mounted but only the active one is visible
+ * (opacity + z-index swap) so cycling snippets inside slides keep
+ * their state.
+ *
+ * Each slide declares its own dwell time via `dwellMs`; the shell
+ * passes it into PagerStrip, which fires onChange when the bar fills.
+ */
+
+export interface Slide {
+  id: string;
+  dwellMs: number;
+  render: () => React.ReactNode;
+}
+
+export interface CarouselShellProps {
+  slides: Slide[];
+  className?: string;
+}
+
+export function CarouselShell({ slides, className }: CarouselShellProps) {
+  const [index, setIndex] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+
+  const active = slides[index];
+
+  return (
+    <div
+      className={clsx(
+        "flex flex-col gap-4",
+        className,
+      )}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="GenauApp feature showcase"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <PagerStrip
+        count={slides.length}
+        activeIndex={index}
+        paused={paused}
+        durationMs={active.dwellMs}
+        onChange={setIndex}
+        onPauseToggle={setPaused}
+      />
+
+      <div className="relative min-h-[520px]">
+        {slides.map((s, i) => (
+          <div
+            key={s.id}
+            className={clsx(
+              "absolute inset-0 transition-opacity duration-500",
+              i === index ? "opacity-100" : "pointer-events-none opacity-0",
+            )}
+            aria-hidden={i !== index}
+          >
+            {s.render()}
+          </div>
+        ))}
+      </div>
+
+      <p className="sr-only" aria-live="polite">
+        Slide {index + 1} of {slides.length}
+      </p>
+    </div>
+  );
+}

@@ -17,7 +17,13 @@ import { Icon, type IconName } from "@/components/atoms/Icon/Icon";
  * square. iOS-app shape.
  */
 
-export type ChipFlavor = "words" | "grammar" | "sentence" | "reading";
+export type ChipFlavor =
+  | "words"
+  | "grammar"
+  | "sentence"
+  | "reading"
+  | "story"
+  | "pronunciation";
 export type ChipState = "default" | "selected" | "done";
 
 const flavorMeta: Record<
@@ -43,6 +49,16 @@ const flavorMeta: Record<
     colorVar: "var(--chip-reading-color)",
     label: "Reading",
     icon: "chip-reading",
+  },
+  story: {
+    colorVar: "var(--chip-story-color)",
+    label: "Story",
+    icon: "chip-story",
+  },
+  pronunciation: {
+    colorVar: "var(--chip-pronunciation-color)",
+    label: "Pronunciation",
+    icon: "chip-pronunciation",
   },
 };
 
