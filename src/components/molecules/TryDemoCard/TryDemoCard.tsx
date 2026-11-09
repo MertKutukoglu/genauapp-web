@@ -37,7 +37,7 @@ export function TryDemoCard({
   heading = "Not sure yet? Try it first.",
   body = "Five minutes in your browser. Four workouts, zero signup.",
   ctaLabel = "Try it in your browser",
-  footnote = "No email, no account. Just the app.",
+  footnote = null,
   className,
 }: TryDemoCardProps) {
   const isSolid = variant === "solid";
