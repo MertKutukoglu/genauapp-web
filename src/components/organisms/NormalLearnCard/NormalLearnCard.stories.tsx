@@ -22,13 +22,14 @@ type Story = StoryObj<typeof NormalLearnCard>;
 
 export const NounDas: Story = {
   args: {
+    topic: "Food",
     german: "Brot",
     english: "bread",
     article: "das",
-    rule: "Nouns ending in -brot are neuter. → das Brot.",
-    example: "Ich esse Brot zum Frühstück.",
+    rule: "Nouns ending in -brot are neuter → das.",
+    example: "Ich esse ein Brot mit Käse.",
     current: 1,
-    total: 5,
+    total: 20,
   },
 };
 

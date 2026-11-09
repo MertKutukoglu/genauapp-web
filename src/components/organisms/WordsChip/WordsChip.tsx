@@ -4,15 +4,18 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { ModeToggle, type WordsMode } from "@/components/molecules/ModeToggle/ModeToggle";
 import { NormalLearnCard } from "@/components/organisms/NormalLearnCard/NormalLearnCard";
+import { AssemblyLearnCard } from "@/components/organisms/AssemblyLearnCard/AssemblyLearnCard";
 import { LearnCompletion } from "@/components/organisms/LearnCompletion/LearnCompletion";
-import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
-import type { GrammarTag } from "@/components/molecules/GrammarTagPills/GrammarTagPills";
+import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnCardType";
+import type { WordItem } from "@/content/words-a1";
 
 /**
  * WordsChip — the right-card experience when the user picks the Words
  * chip. Owns:
  *   - mode (learn / exercise) via the ModeToggle at the top
- *   - the Learn deck's remaining-words state + Repeat/I-know mechanics
+ *   - the Learn deck's remaining-items state + Repeat/I-know mechanics
+ *   - Learn-variant routing per card (normal / scrambled / chunkCompose)
+ *     via pickLearnCardType, random per card per spec §3.1
  *   - routing between Learn card / Learn completion / Exercise stub
  *
  * Deck mechanics (spec §8):
@@ -22,29 +25,19 @@ import type { GrammarTag } from "@/components/molecules/GrammarTagPills/GrammarT
  *   - Counter: `currentIndex = deckSize - remainingCount + 1`
  *     Repeat does NOT advance the counter; I-know does.
  *
- * Exercise mode in this round is a placeholder — the Exercise cards
- * (article picker + translation quiz + keyboard write + feedback
- * banner) land in their own spec'd round. The toggle + completion
- * flow are wired now so the shell is testable end-to-end.
+ * The Learn variant is picked when the current card changes (via
+ * remainingKey). Same word on Repeat gets a fresh pick, which keeps
+ * the walk visually fresh. ChunkCompose only enters the pool when the
+ * word's chunks have ≥ 2 elements; single-chunk words fall back to
+ * [normal, scrambled].
  *
- * State is local to the component (useState). If we later need deck
- * state across refreshes, migrate to a dedicated wordsStore — the
- * refactor is one find-replace.
+ * Exercise mode in this round is a placeholder — the Exercise cards
+ * land in their own spec'd round.
  */
 
-export interface WordsChipWord {
-  id: string;
-  german: string;
-  english: string;
-  article?: ArticleColor;
-  grammarTags?: GrammarTag[];
-  example?: string;
-  rule?: string;
-}
-
 export interface WordsChipProps {
-  /** The Learn deck. For the taste demo: 5 words (3 nouns + 2 verbs). */
-  words: WordsChipWord[];
+  /** The full Learn+Exercise deck (20 items for the A1 taste demo). */
+  words: WordItem[];
   /** Initial mode when the chip mounts. Defaults to 'learn'. */
   initialMode?: WordsMode;
   className?: string;
@@ -56,16 +49,22 @@ export function WordsChip({
   className,
 }: WordsChipProps) {
   const [mode, setMode] = React.useState<WordsMode>(initialMode);
-  const [remaining, setRemaining] = React.useState<WordsChipWord[]>(words);
+  const [remaining, setRemaining] = React.useState<WordItem[]>(words);
 
   // Re-seed the deck whenever the input words array changes. Lets the
   // parent swap decks (different chip, different level) without
   // remounting WordsChip.
-  const wordsKey = React.useMemo(() => words.map((w) => w.id).join("|"), [words]);
+  const wordsKey = React.useMemo(
+    () => words.map((w) => w.learn.word).join("|"),
+    [words],
+  );
   React.useEffect(() => {
     // Intentional state-from-external-input sync: new deck → reseed.
+    // Dep is wordsKey (not words) so we don't fire on array-identity
+    // changes that carry the same content.
     // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     setRemaining(words);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordsKey]);
 
   const deckSize = words.length;
@@ -74,12 +73,21 @@ export function WordsChip({
   const current = remaining[0];
   const learnCompleted = remainingCount === 0 && deckSize > 0;
 
+  // Pick a Learn variant for the current card. Keyed on the card's
+  // word so Repeat on the same card gets a fresh variant; different
+  // deck entirely also triggers a fresh pick.
+  const currentWord = current?.learn.word;
+  const currentChunks = current?.chunks;
+  const variant: LearnCardVariant = React.useMemo(() => {
+    if (!currentChunks) return "normal";
+    return pickLearnCardType({ chunks: currentChunks });
+  }, [currentWord, currentChunks]);
+
   const handleRepeat = React.useCallback(() => {
     setRemaining((r) => {
       if (r.length === 0) return r;
-      if (r.length === 1) return r; // one card left → stays in slot 0
+      if (r.length === 1) return r;
       const [head, ...rest] = r;
-      // Insert at a random index in 1..rest.length (never back to head)
       const idx = 1 + Math.floor(Math.random() * rest.length);
       return [...rest.slice(0, idx), head, ...rest.slice(idx)];
     });
@@ -107,17 +115,10 @@ export function WordsChip({
         learnCompleted ? (
           <LearnCompletion onSwitchToExercise={() => setMode("exercise")} />
         ) : current ? (
-          <NormalLearnCard
-            // key on word id → React remounts the card on each swap,
-            // which is the fade + slide in disguise once we wire
-            // AnimatePresence. For now it's a clean cut.
-            key={current.id}
-            german={current.german}
-            english={current.english}
-            article={current.article}
-            grammarTags={current.grammarTags}
-            example={current.example}
-            rule={current.rule}
+          <LearnCardSwitch
+            key={current.learn.word}
+            variant={variant}
+            word={current}
             current={currentIndex}
             total={deckSize}
             onRepeat={handleRepeat}
@@ -130,6 +131,55 @@ export function WordsChip({
         <ExerciseStub onBackToLearn={() => setMode("learn")} />
       )}
     </div>
+  );
+}
+
+interface LearnCardSwitchProps {
+  variant: LearnCardVariant;
+  word: WordItem;
+  current: number;
+  total: number;
+  onRepeat?: () => void;
+  onIKnow?: () => void;
+}
+
+function LearnCardSwitch({
+  variant,
+  word,
+  current,
+  total,
+  onRepeat,
+  onIKnow,
+}: LearnCardSwitchProps) {
+  const base = {
+    topic: word.topic,
+    english: word.learn.english,
+    article: word.learn.article,
+    example: word.learn.sample.de,
+    rule: word.learn.rule,
+    current,
+    total,
+    onRepeat,
+    onIKnow,
+  } as const;
+
+  if (variant === "normal") {
+    return (
+      <NormalLearnCard
+        {...base}
+        german={word.learn.word}
+        grammarTags={word.grammarTags}
+      />
+    );
+  }
+
+  return (
+    <AssemblyLearnCard
+      {...base}
+      mode={variant === "scrambled" ? "scrambled" : "chunkCompose"}
+      word={word.learn.word}
+      chunks={word.chunks}
+    />
   );
 }
 

@@ -25,7 +25,15 @@ import { clsx } from "@/lib/utils/clsx";
 export interface LearnActionsProps {
   onRepeat?: () => void;
   onIKnow?: () => void;
+  /** Disables both buttons (card-level lock). */
   disabled?: boolean;
+  /** Disables Repeat alone — e.g. when the deck is in a transient state. */
+  repeatDisabled?: boolean;
+  /**
+   * Disables I know alone — used by the assembly variants to gate
+   * advancement until the puzzle is solved.
+   */
+  iKnowDisabled?: boolean;
   className?: string;
 }
 
@@ -33,11 +41,17 @@ export function LearnActions({
   onRepeat,
   onIKnow,
   disabled,
+  repeatDisabled,
+  iKnowDisabled,
   className,
 }: LearnActionsProps) {
   return (
     <div className={clsx("flex gap-3", className)}>
-      <ActionButton onClick={onRepeat} disabled={disabled} label="Repeat">
+      <ActionButton
+        onClick={onRepeat}
+        disabled={disabled || repeatDisabled}
+        label="Repeat"
+      >
         {/* arrow.counterclockwise, 2.2 stroke */}
         <svg
           viewBox="0 0 24 24"
@@ -53,7 +67,11 @@ export function LearnActions({
           <path d="M3 4v4h4" />
         </svg>
       </ActionButton>
-      <ActionButton onClick={onIKnow} disabled={disabled} label="I know">
+      <ActionButton
+        onClick={onIKnow}
+        disabled={disabled || iKnowDisabled}
+        label="I know"
+      >
         {/* hand.thumbsup.fill */}
         <svg
           viewBox="0 0 24 24"

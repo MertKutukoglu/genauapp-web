@@ -36,6 +36,8 @@ export interface NormalLearnCardProps {
   grammarTags?: GrammarTag[];
   example?: string;
   rule?: string;
+  /** Small uppercase eyebrow above the toolbar (e.g. "Food"). */
+  topic?: string;
   /** Deck position for the counter pill. */
   current: number;
   total: number;
@@ -51,6 +53,7 @@ export function NormalLearnCard({
   grammarTags,
   example,
   rule,
+  topic,
   current,
   total,
   onRepeat,
@@ -72,6 +75,11 @@ export function NormalLearnCard({
       )}
     >
       <CardToolbar speakText={speakText} current={current} total={total} />
+      {topic ? (
+        <div className="text-[11px] font-sans font-bold uppercase tracking-[0.1em] text-fg-faint -mt-1">
+          {topic}
+        </div>
+      ) : null}
       <WordSection german={german} english={english} article={article} />
       {grammarTags && grammarTags.length > 0 ? (
         <GrammarTagPills tags={grammarTags} />
