@@ -45,19 +45,33 @@ function TryPageInner() {
   const searchParams = useSearchParams();
   const selectedLevel = useChipStore((s) => s.selectedLevel);
   const setLevel = useChipStore((s) => s.setLevel);
+  const clearLevel = useChipStore((s) => s.clearLevel);
   const resetAll = useChipStore((s) => s.resetAll);
 
-  // Honor ?reset — wipe everything, then strip the query so refreshes
-  // don't re-reset. Runs exactly once on mount.
-  const resetHandled = React.useRef(false);
+  // Honor query params — handled once on mount, then stripped from the
+  // URL so a refresh doesn't re-fire them.
+  //   ?reset  → full wipe (level + progress + selected)
+  //   ?level  → clear only selectedLevel, keeping progress (used by the
+  //             landing "Try it in your browser" CTA so returning
+  //             visitors can pick a different level without losing done
+  //             chips)
+  const queryHandled = React.useRef(false);
   React.useEffect(() => {
-    if (resetHandled.current) return;
-    if (searchParams?.get("reset") !== null && searchParams?.get("reset") !== undefined) {
-      resetHandled.current = true;
+    if (queryHandled.current) return;
+    if (!searchParams) return;
+
+    const hasReset = searchParams.get("reset") !== null;
+    const hasLevel = searchParams.get("level") !== null;
+    if (!hasReset && !hasLevel) return;
+
+    queryHandled.current = true;
+    if (hasReset) {
       resetAll();
-      router.replace("/try", { scroll: false });
+    } else if (hasLevel) {
+      clearLevel();
     }
-  }, [searchParams, resetAll, router]);
+    router.replace("/try", { scroll: false });
+  }, [searchParams, resetAll, clearLevel, router]);
 
   // Gateway: no level picked yet.
   if (!selectedLevel) {

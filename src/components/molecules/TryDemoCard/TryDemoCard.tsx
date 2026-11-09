@@ -35,7 +35,11 @@ export interface TryDemoCardProps {
 }
 
 export function TryDemoCard({
-  href = "/try",
+  // ?level forces the /try gateway to re-show the LevelPicker even when
+  // a level is already persisted from a previous visit. Progress is
+  // preserved — only selectedLevel gets cleared. Deep links to plain
+  // /try keep the resume-last-level behavior.
+  href = "/try?level",
   variant = "soft",
   heading,
   body,
