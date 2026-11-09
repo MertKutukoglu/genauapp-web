@@ -234,6 +234,19 @@ body {
   animation: slot-in 320ms ease-out;
 }
 
+/*
+ * Pronunciation waveform pulse (Practice Slide, Snippet 9).
+ * Gentle 1.6s breathing so the audio card feels alive.
+ */
+@keyframes pr-wave {
+  0%, 100% { opacity: 0.45; transform: scaleY(0.6); }
+  50%      { opacity: 0.9;  transform: scaleY(1.2); }
+}
+.animate-pr-wave {
+  animation: pr-wave 1.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
 .iosbeta-rotator-item {
   position: absolute;
   inset: 0;
