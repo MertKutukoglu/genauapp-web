@@ -9,7 +9,7 @@ const meta: Meta<typeof AssemblyArea> = {
     docs: {
       description: {
         component:
-          "Shared tile-puzzle mechanic for the Scrambled + ChunkCompose Learn variants. Caller hands it the target split into ordered pieces; the component shuffles into a tile pool and tracks the user's assembly.",
+          "Shared tile-puzzle mechanic for the Scrambled + ChunkCompose Learn variants. Thin horizontal dashes for empty slots, bold tiles, backspace at the end of the tile row. Slots turn green when the assembled sequence matches the target.",
       },
     },
   },
@@ -21,7 +21,6 @@ type Story = StoryObj<typeof AssemblyArea>;
 export const ScrambledLetters: Story = {
   args: {
     pieces: "Brot".split(""),
-    article: "das",
     seed: "scrambled:Brot",
   },
 };
@@ -29,30 +28,20 @@ export const ScrambledLetters: Story = {
 export const ChunkPieces: Story = {
   args: {
     pieces: ["Fa", "mi", "lie"],
-    article: "die",
     seed: "chunkCompose:Familie",
   },
 };
 
-export const VerbScramble: Story = {
+export const LongScramble: Story = {
   args: {
     pieces: "schreiben".split(""),
     seed: "scrambled:schreiben",
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "No article → completed slots stay on --fg (no article-color tint).",
-      },
-    },
-  },
 };
 
-export const LongChunks: Story = {
+export const TwoChunks: Story = {
   args: {
     pieces: ["Schlüs", "sel"],
-    article: "der",
     seed: "chunkCompose:Schlüssel",
   },
 };

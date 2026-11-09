@@ -151,34 +151,37 @@ function LearnCardSwitch({
   onRepeat,
   onIKnow,
 }: LearnCardSwitchProps) {
-  const base = {
-    topic: word.topic,
-    english: word.learn.english,
-    article: word.learn.article,
-    example: word.learn.sample.de,
-    rule: word.learn.rule,
-    current,
-    total,
-    onRepeat,
-    onIKnow,
-  } as const;
-
   if (variant === "normal") {
     return (
       <NormalLearnCard
-        {...base}
+        topic={word.topic}
         german={word.learn.word}
+        english={word.learn.english}
+        article={word.learn.article}
         grammarTags={word.grammarTags}
+        example={word.learn.sample.de}
+        rule={word.learn.rule}
+        current={current}
+        total={total}
+        onRepeat={onRepeat}
+        onIKnow={onIKnow}
       />
     );
   }
 
+  // Assembly variants: no sample / rule / Repeat per Mert's iOS reference.
+  // Auto-advance handles the deck step when the user solves the puzzle.
   return (
     <AssemblyLearnCard
-      {...base}
       mode={variant === "scrambled" ? "scrambled" : "chunkCompose"}
+      topic={word.topic}
       word={word.learn.word}
+      english={word.learn.english}
+      article={word.learn.article}
       chunks={word.chunks}
+      current={current}
+      total={total}
+      onIKnow={onIKnow}
     />
   );
 }

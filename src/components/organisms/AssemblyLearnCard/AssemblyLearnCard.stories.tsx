@@ -9,7 +9,7 @@ const meta: Meta<typeof AssemblyLearnCard> = {
     docs: {
       description: {
         component:
-          "Shared Learn card frame for the Scrambled + ChunkCompose variants. Same frame, different piece source. I-know stays disabled until the puzzle resolves.",
+          "Shared Learn-card frame for the Scrambled + ChunkCompose variants. Same layout as the iOS reference: toolbar, topic + prompt eyebrow, big English hero with inline speaker, slot row + tile pool + backspace. No sample, no rule, no action buttons — once the puzzle solves, the card auto-advances via `onIKnow` after ~900ms.",
       },
     },
   },
@@ -25,8 +25,6 @@ export const ScrambledNoun: Story = {
     word: "Brot",
     english: "bread",
     article: "das",
-    rule: "Nouns ending in -brot are neuter → das.",
-    example: "Ich esse ein Brot mit Käse.",
     current: 1,
     total: 20,
   },
@@ -38,9 +36,19 @@ export const ScrambledVerb: Story = {
     topic: "Motion verbs",
     word: "gehen",
     english: "to go (on foot)",
-    rule: "Regular (weak) verb, ich gehe, du gehst, er geht.",
-    example: "Ich gehe nach Hause.",
     current: 3,
+    total: 20,
+  },
+};
+
+export const ScrambledLong: Story = {
+  args: {
+    mode: "scrambled",
+    topic: "Relationships",
+    word: "Freundin",
+    english: "girlfriend / female friend",
+    article: "die",
+    current: 20,
     total: 20,
   },
 };
@@ -53,8 +61,6 @@ export const ChunkComposeNoun: Story = {
     english: "family",
     article: "die",
     chunks: ["Fa", "mi", "lie"],
-    rule: "Most nouns ending in -ie are feminine → die.",
-    example: "Meine Familie wohnt in Berlin.",
     current: 2,
     total: 20,
   },
@@ -67,9 +73,20 @@ export const ChunkComposeVerb: Story = {
     word: "sprechen",
     english: "to speak",
     chunks: ["spre", "chen"],
-    rule: "Strong verb, stem change in du/er: du sprichst, er spricht.",
-    example: "Ich spreche Deutsch und Englisch.",
     current: 14,
+    total: 20,
+  },
+};
+
+export const ChunkComposeThreeChunks: Story = {
+  args: {
+    mode: "chunkCompose",
+    topic: "Daily items",
+    word: "Schlüssel",
+    english: "key",
+    article: "der",
+    chunks: ["Schlüs", "sel"],
+    current: 5,
     total: 20,
   },
 };
