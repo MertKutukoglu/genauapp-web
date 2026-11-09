@@ -34,18 +34,14 @@ interface Pack {
 }
 
 const PACKS: Pack[] = [
-  // Pack illustrations are served by the live landing on Vercel until
-  // we copy the files into this repo's public/ folder (see
-  // claude/GenauApp_Web_Pack_Illustrations.md). Plain <img> tags
-  // (PackMarqueeCard uses them), so no next.config remotePatterns
-  // is required. After DNS cutover these can flip back to local
-  // "/pack-*.webp" paths without any other code change.
-  { title: "Daily Life",        level: "A1", image: "https://genauapp.io/pack-dailylife.webp" },
-  { title: "Bürgeramt",         level: "B2", image: "https://genauapp.io/pack-officialappointments.webp" },
-  { title: "Hairdresser",       level: "A2", image: "https://genauapp.io/pack-hairdresser.webp" },
-  { title: "Pharmacy & Doctor", level: "C1", image: "https://genauapp.io/pack-gesundheit.webp" },
-  { title: "Food & Drink",      level: "B1", image: "https://genauapp.io/pack-fooddrink.webp" },
-  { title: "Shopping",          level: "C2", image: "https://genauapp.io/pack-shopping.webp" },
+  // Pack illustrations live in public/ (see
+  // claude/GenauApp_Web_Pack_Illustrations.md for filename map).
+  { title: "Daily Life",        level: "A1", image: "/pack-dailylife.webp" },
+  { title: "Bürgeramt",         level: "B2", image: "/pack-officialappointments.webp" },
+  { title: "Hairdresser",       level: "A2", image: "/pack-hairdresser.webp" },
+  { title: "Pharmacy & Doctor", level: "C1", image: "/pack-gesundheit.webp" },
+  { title: "Food & Drink",      level: "B1", image: "/pack-fooddrink.webp" },
+  { title: "Shopping",          level: "C2", image: "/pack-shopping.webp" },
 ];
 
 export interface PacksSlideProps {
