@@ -7,7 +7,7 @@ const meta: Meta<typeof SkillRing> = {
   tags: ["autodocs"],
   args: {
     skill: "vocab",
-    progress: 0.35,
+    progress: 0.4,
     size: "md",
   },
   argTypes: {
@@ -22,13 +22,15 @@ const meta: Meta<typeof SkillRing> = {
       control: "inline-radio",
       options: ["sm", "md", "lg"],
     },
+    pending: { control: "boolean" },
     hideLabel: { control: "boolean" },
   },
 };
 export default meta;
 type Story = StoryObj<typeof SkillRing>;
 
-export const Default: Story = {};
+/** Interactive playground — slide progress and watch the 4 segments fill in order. */
+export const Playground: Story = {};
 
 export const AllSkills: Story = {
   render: () => {
@@ -36,7 +38,7 @@ export const AllSkills: Story = {
     return (
       <div className="flex flex-wrap items-end gap-6">
         {skills.map((s, i) => (
-          <SkillRing key={s} skill={s} progress={(i + 2) * 0.15} />
+          <SkillRing key={s} skill={s} progress={(i + 1) * 0.2} />
         ))}
       </div>
     );
@@ -53,6 +55,7 @@ export const AllSizes: Story = {
   ),
 };
 
+/** Four segment fills — 0.25 fills one, 0.5 fills two, 0.75 fills three, 1.0 fills all four. */
 export const ProgressStates: Story = {
   render: () => (
     <div className="flex flex-wrap items-end gap-6">
@@ -65,14 +68,19 @@ export const ProgressStates: Story = {
   ),
 };
 
-/** The hero-arc preview — 5 skill rings sitting in a gentle arc like the live landing. */
+/** Pending indicator — cherry collect-me arrow on the top-right, pulsing. */
+export const PendingBadge: Story = {
+  args: { pending: true, progress: 0.25, skill: "writing" },
+};
+
+/** Hero-arc preview — the 5 rings in a gentle arc like the live landing sticky hero. */
 export const HeroArc: Story = {
   parameters: {
     layout: "fullscreen",
     viewport: { defaultViewport: "desktop" },
   },
   render: () => (
-    <div className="relative mx-auto flex h-[220px] w-[520px] items-end justify-center gap-4">
+    <div className="relative mx-auto flex h-[220px] w-[560px] items-end justify-center gap-5">
       {(
         [
           { skill: "vocab",     progress: 0.6,  offset: 10 },
