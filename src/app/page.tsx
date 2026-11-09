@@ -1,10 +1,12 @@
+import { Button } from "@/components/atoms/Button/Button";
+
 /**
- * Landing placeholder — Phase 1 scaffold only.
- * Real hero / skill rings / pack cards land in Phase 3.
+ * Landing placeholder — Phase 2 scope ships the topnav + footer via
+ * layout.tsx. The real hero / skill rings / scene pager land in Phase 3.
  */
 export default function LandingPage() {
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col items-center justify-center gap-6 px-6 py-24 text-center">
+    <section className="mx-auto flex flex-1 max-w-2xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
       <p className="font-display text-sm uppercase tracking-[0.2em] text-fg-faint">
         GenauApp
       </p>
@@ -17,16 +19,12 @@ export default function LandingPage() {
         A 5-minute browser taste of the iOS app that lives at your pace. Ships
         Q1 2027.
       </p>
-      <a
-        href="/try"
-        className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-base font-semibold text-white shadow-md transition hover:-translate-y-px hover:shadow-lg"
-      >
-        Try it in your browser
-        <span aria-hidden>→</span>
-      </a>
+      <Button tone="primary" size="lg">
+        Try it in your browser →
+      </Button>
       <p className="mt-10 text-xs text-fg-faint">
-        Phase 1 scaffold. Full landing lands in Phase 3.
+        Phase 2 shipped. Phase 3 lands the real hero + scene pager.
       </p>
-    </main>
+    </section>
   );
 }

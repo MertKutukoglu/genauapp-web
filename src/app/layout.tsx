@@ -3,6 +3,9 @@ import { Fraunces, Open_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PostHogProvider } from "@/lib/analytics/posthog-provider";
+import { Topnav } from "@/components/organisms/Topnav/Topnav";
+import { OurStoryBanner } from "@/components/molecules/OurStoryBanner/OurStoryBanner";
+import { Footer } from "@/components/organisms/Footer/Footer";
 import "./globals.css";
 
 /**
@@ -47,12 +50,13 @@ export const viewport: Viewport = {
 
 /**
  * Inline theme script — set data-theme BEFORE the first paint to avoid FOUC.
- * Reads localStorage.theme first, falls back to prefers-color-scheme.
+ * Uses the same storage key as the live landing ("genauapp-landing-theme")
+ * so a user's saved preference carries across the domain cutover.
  */
 const themeScript = `
 (function () {
   try {
-    var stored = localStorage.getItem('theme');
+    var stored = localStorage.getItem('genauapp-landing-theme');
     var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     var theme = stored === 'light' || stored === 'dark'
       ? stored
@@ -73,7 +77,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full flex flex-col bg-bg text-fg font-sans">
-        <PostHogProvider>{children}</PostHogProvider>
+        <PostHogProvider>
+          <Topnav />
+          <OurStoryBanner />
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Footer />
+        </PostHogProvider>
         <Analytics />
         <SpeedInsights />
       </body>

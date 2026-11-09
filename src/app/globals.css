@@ -163,6 +163,44 @@ body {
   font-family: var(--font-body);
 }
 
+/* ---------- Component keyframes ---------- */
+
+/*
+ * iOS beta pill rotator (mobile only). A 9-second cycle that fades each
+ * label in for ~3 seconds. Matches the live topnav's cadence.
+ */
+@keyframes iosbeta-rotate {
+  0%, 25%   { opacity: 1; transform: translateY(0); }
+  33%, 100% { opacity: 0; transform: translateY(-100%); }
+}
+
+/*
+ * "Our story" book icon nudge — gentle 6s page-flutter.
+ * Rotates around the lower-left spine corner.
+ */
+@keyframes nav-origins-nudge {
+  0%, 85%, 100% { transform: rotate(0deg); }
+  90% { transform: rotate(-6deg); }
+  95% { transform: rotate(2deg); }
+}
+
+.animate-nav-origins-nudge {
+  animation: nav-origins-nudge 6s ease-in-out infinite;
+}
+
+.iosbeta-rotator-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  opacity: 0;
+  animation: iosbeta-rotate 9s ease-in-out infinite;
+}
+.iosbeta-rotator-item-1 { animation-delay: 0s; }
+.iosbeta-rotator-item-2 { animation-delay: 3s; }
+.iosbeta-rotator-item-3 { animation-delay: 6s; }
+
 /* Reduced motion — honor the OS setting. */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -172,4 +210,8 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* Freeze the rotator on the first label when the viewer prefers less motion. */
+  .iosbeta-rotator-item { animation: none; opacity: 1; }
+  .iosbeta-rotator-item-2,
+  .iosbeta-rotator-item-3 { display: none; }
 }
