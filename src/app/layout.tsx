@@ -44,11 +44,21 @@ export const metadata: Metadata = {
   },
   description:
     "A SwiftUI German practice companion for people refreshing existing German. Try the browser demo in 5 minutes.",
-  metadataBase: new URL("https://genauapp.com"),
+  metadataBase: new URL("https://genauapp.io"),
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "GenauApp",
+    url: "https://genauapp.io",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GenauApp — refresh your German",
+    description:
+      "A SwiftUI German practice companion for people refreshing existing German. Try the browser demo in 5 minutes.",
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 

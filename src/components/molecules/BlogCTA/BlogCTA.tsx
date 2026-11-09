@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 
@@ -142,7 +143,7 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
       ) : null}
 
       <p className="mt-4 font-sans text-xs text-fg-faint">
-        <a
+        <Link
           href="/"
           className="text-fg-muted transition hover:text-fg"
           onClick={() => {
@@ -156,7 +157,7 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
           }}
         >
           Back to GenauApp →
-        </a>
+        </Link>
       </p>
     </div>
   );

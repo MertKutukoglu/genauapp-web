@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * /try/ — the interactive taste demo.
  * Phase 1-2 placeholder. The real TasteApp (LevelPicker → WorkoutShell →
@@ -13,9 +15,9 @@ export default function TryPage() {
         Level picker, 4 workouts, skill rings, celebration — scaffold ready,
         implementation in Phase 4.
       </p>
-      <a href="/" className="text-accent underline underline-offset-4">
+      <Link href="/" className="text-accent underline underline-offset-4">
         ← Back home
-      </a>
+      </Link>
     </section>
   );
 }
