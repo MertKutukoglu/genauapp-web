@@ -79,10 +79,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      {/* On desktop the page fits the viewport (no outer scroll); on mobile
-          it scrolls naturally. lg:h-screen + lg:overflow-hidden flips the
-          constraint on at the lg breakpoint; below that the body can grow. */}
-      <body className="min-h-screen flex flex-col bg-bg text-fg font-sans lg:h-screen lg:overflow-hidden">
+      {/* Body scrolls on all breakpoints; the LandingLayout container
+          constrains itself to the viewport on desktop so the home page
+          stays fit-to-screen without needing a body-level overflow
+          lock that would break legal / blog / longform pages. */}
+      <body className="min-h-screen flex flex-col bg-bg text-fg font-sans">
         <PostHogProvider>
           <Topnav />
           <OurStoryBanner />
