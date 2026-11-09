@@ -75,6 +75,16 @@ function segmentsFor(progress: number) {
   });
 }
 
+/**
+ * Visual packaging of the ring.
+ *   "bare"  — ring + text label beneath. No background around it.
+ *             Used when the parent already provides its own surface.
+ *   "boxed" — label on TOP in Fraunces; ring sits inside a soft tinted
+ *             dark card below. The showcase treatment from the live
+ *             landing's "boxed" rings row.
+ */
+export type SkillRingVariant = "bare" | "boxed";
+
 export interface SkillRingProps {
   skill: Skill;
   /** 0..1 — spread across 4 segments sequentially (0.25/0.5/0.75/1 fill 1/2/3/4). */
@@ -82,6 +92,7 @@ export interface SkillRingProps {
   size?: SkillRingSize;
   label?: string;
   hideLabel?: boolean;
+  variant?: SkillRingVariant;
   /**
    * When true, a cherry "collect-me" arrow badge appears top-right.
    * Used in the /try/ demo's skill strip to indicate pending progress.
@@ -96,21 +107,40 @@ export function SkillRing({
   size = "md",
   label,
   hideLabel = false,
+  variant = "bare",
   pending = false,
   className,
 }: SkillRingProps) {
   const { colorVar, label: defaultLabel } = skillMeta[skill];
   const { outer, labelCls } = sizePx[size];
   const segments = segmentsFor(progress);
+  const isBoxed = variant === "boxed";
 
   return (
     <div
-      className={clsx("inline-flex flex-col items-center gap-1.5", className)}
+      className={clsx(
+        "inline-flex flex-col items-center",
+        isBoxed
+          ? "gap-3 rounded-[28px] px-5 py-4 bg-[color:color-mix(in_oklab,var(--ring-color)_6%,var(--surface-card))] border border-[color:color-mix(in_oklab,var(--ring-color)_12%,var(--border))]"
+          : "gap-1.5",
+        className,
+      )}
       style={{
         ["--ring-color" as string]: colorVar,
         ["--ring-ghost" as string]: `color-mix(in oklab, ${colorVar} 18%, transparent)`,
       }}
     >
+      {isBoxed && !hideLabel ? (
+        <span
+          className={clsx(
+            "font-display font-semibold text-fg leading-none",
+            size === "sm" ? "text-sm" : size === "md" ? "text-lg" : "text-xl",
+          )}
+        >
+          {label ?? defaultLabel}
+        </span>
+      ) : null}
+
       <div
         className="relative inline-block"
         style={{ width: outer, height: outer }}
@@ -180,11 +210,13 @@ export function SkillRing({
         ) : null}
       </div>
 
-      {hideLabel ? null : (
+      {/* "bare" variant renders the label beneath the ring. "boxed" already
+          rendered it at the top, so skip it here. */}
+      {!isBoxed && !hideLabel ? (
         <span className={clsx("font-semibold text-fg", labelCls)}>
           {label ?? defaultLabel}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }

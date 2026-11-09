@@ -22,6 +22,7 @@ const meta: Meta<typeof SkillRing> = {
       control: "inline-radio",
       options: ["sm", "md", "lg"],
     },
+    variant: { control: "inline-radio", options: ["bare", "boxed"] },
     pending: { control: "boolean" },
     hideLabel: { control: "boolean" },
   },
@@ -71,6 +72,31 @@ export const ProgressStates: Story = {
 /** Pending indicator — cherry collect-me arrow on the top-right, pulsing. */
 export const PendingBadge: Story = {
   args: { pending: true, progress: 0.25, skill: "writing" },
+};
+
+/** Boxed variant — label on top, ring on a soft tinted dark card. */
+export const Boxed: Story = {
+  args: { variant: "boxed", progress: 0.5 },
+};
+
+export const BoxedRow: Story = {
+  parameters: { layout: "fullscreen", viewport: { defaultViewport: "desktop" } },
+  render: () => {
+    const items: Array<{ skill: Skill; progress: number }> = [
+      { skill: "vocab",     progress: 0.6 },
+      { skill: "grammar",   progress: 0.4 },
+      { skill: "reading",   progress: 0.85 },
+      { skill: "writing",   progress: 0.3 },
+      { skill: "listening", progress: 0.2 },
+    ];
+    return (
+      <div className="flex flex-wrap items-stretch gap-4 bg-black p-8">
+        {items.map(({ skill, progress }) => (
+          <SkillRing key={skill} skill={skill} progress={progress} variant="boxed" />
+        ))}
+      </div>
+    );
+  },
 };
 
 /** Hero-arc preview — the 5 rings in a gentle arc like the live landing sticky hero. */
