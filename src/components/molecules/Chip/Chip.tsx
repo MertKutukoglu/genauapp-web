@@ -127,10 +127,13 @@ export function Chip({
       aria-pressed={state === "selected"}
       style={style}
       className={clsx(
-        // Layout
-        "group relative w-full flex items-center gap-3.5",
-        "px-4 py-3.5 rounded-[18px]",
-        "text-left",
+        // Layout — mobile tiles vertically stacked content + centered
+        // alignment so 4 chips fit in a horizontal strip across the
+        // narrow left card on small screens. At lg+ the row-style chip
+        // from the spec returns (icon-left + title/meta right).
+        "group relative w-full rounded-[18px]",
+        "flex flex-col items-center gap-1 px-2.5 py-2.5 text-center",
+        "lg:flex-row lg:items-center lg:gap-3.5 lg:px-4 lg:py-3.5 lg:text-left",
         // Default surface — 14% chip-color mixed into the card
         "bg-[color-mix(in_srgb,var(--chip-color)_14%,var(--surface-card))]",
         "border border-transparent",
@@ -176,18 +179,32 @@ export function Chip({
         <ChipIcon kind={kind} />
       </span>
 
-      {/* Title + meta column */}
-      <span className="flex flex-col gap-0.5 min-w-0 flex-1">
+      {/* Title + meta column. On mobile tiles: just the title, centered,
+          smaller. At lg+: both lines, left-aligned, title 15px. Meta is
+          hidden on mobile — the strip has no vertical room for a second
+          line and the title alone identifies the chip. */}
+      <span
+        className={clsx(
+          "flex flex-col min-w-0 items-center gap-0",
+          "lg:items-start lg:flex-1 lg:gap-0.5",
+        )}
+      >
         <span
           className={clsx(
-            "font-sans font-bold text-[15px] leading-tight text-fg",
+            "font-sans font-bold leading-tight text-fg",
+            "text-[11px] lg:text-[15px]",
             // Done dims the title
             "group-data-[state=done]:text-fg-muted",
           )}
         >
           {title}
         </span>
-        <span className="font-sans font-normal text-xs text-fg-muted leading-tight">
+        <span
+          className={clsx(
+            "font-sans font-normal text-xs text-fg-muted leading-tight",
+            "hidden lg:block",
+          )}
+        >
           {meta}
         </span>
       </span>

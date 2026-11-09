@@ -46,7 +46,12 @@ export function ChipList({ className }: ChipListProps) {
   return (
     <ul
       className={clsx(
-        "list-none m-0 p-0 flex flex-col gap-2.5",
+        // Mobile strip: horizontal row, each chip flex-1 so the four
+        // share the card width evenly (no vertical scroll cost for the
+        // picker). At lg+ the spec §4 vertical stack returns so the
+        // meta line has room to breathe in the sticky sidebar.
+        "list-none m-0 p-0 flex flex-row gap-2",
+        "lg:flex-col lg:gap-2.5",
         className,
       )}
     >
@@ -60,7 +65,7 @@ export function ChipList({ className }: ChipListProps) {
         const state = isSelected ? "selected" : done ? "done" : "default";
 
         return (
-          <li key={c.id} className="m-0">
+          <li key={c.id} className="m-0 flex-1 lg:flex-none min-w-0">
             <Chip
               kind={c.id}
               state={state}
