@@ -24,18 +24,23 @@ export interface LandingLayoutProps {
 }
 
 /**
- * Shared card chrome. Painted as a wrapper with a pseudo-background
- * overlay so the gradient lives on top of the token-driven bg instead
- * of replacing it.
+ * Shared card chrome.
+ *
+ * Gradient uses pure neutral white/black (via dark/light theme) instead
+ * of --fg, because --fg is a warm cream in dark mode and leaves a
+ * faint pink tint when overlaid on the warm-dark page bg. Pure white
+ * reads as clean neutral in both themes.
+ *
+ * Top-edge inset shadow gives the glass sheen; same neutral white.
  */
 const cardChrome = clsx(
   "relative min-h-0 flex flex-col overflow-hidden rounded-[32px]",
-  // Translucent gradient — works on light and dark via --fg.
-  "bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--fg)_6%,transparent),color-mix(in_srgb,var(--fg)_12%,transparent))]",
-  // Hairline top-edge highlight. Inset shadow so it sits just inside
-  // the radius; translucent --fg so it's a subtle sheen in dark theme
-  // and a soft dark hairline in light theme.
-  "shadow-[inset_0_1px_0_0_color-mix(in_srgb,var(--fg)_22%,transparent)]",
+  "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.04),rgba(255,255,255,0.10))]",
+  "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.14)]",
+  // Light theme inverts — the white overlay would wash out on a cream bg,
+  // so swap to subtle dark gradient + dark top hairline.
+  "[html:not([data-theme=dark])_&]:bg-[linear-gradient(to_bottom,rgba(14,10,10,0.03),rgba(14,10,10,0.07))]",
+  "[html:not([data-theme=dark])_&]:shadow-[inset_0_1px_0_0_rgba(14,10,10,0.08)]",
 );
 
 export function LandingLayout({ left, right, className }: LandingLayoutProps) {

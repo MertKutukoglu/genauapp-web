@@ -40,14 +40,6 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
       {/* Phone mockup — real iOS screenshot per theme. Flex-1 lets it
           soak up remaining vertical space, min-h-0 so it can shrink. */}
       <div className="relative min-h-0 flex-1 w-full flex items-center justify-center my-2">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 translate-y-6 scale-110 rounded-[50%] blur-3xl"
-          style={{
-            background:
-              "radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%)",
-          }}
-        />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/app-home-light.png"
