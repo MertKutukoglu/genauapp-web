@@ -8,6 +8,7 @@ const meta: Meta<typeof Chip> = {
   args: {
     flavor: "words",
     state: "default",
+    density: "tile",
     caption: "20 questions · ~2 min",
   },
   argTypes: {
@@ -19,6 +20,10 @@ const meta: Meta<typeof Chip> = {
       control: "inline-radio",
       options: ["default", "selected", "done"],
     },
+    density: {
+      control: "inline-radio",
+      options: ["tile", "pill"],
+    },
   },
 };
 
@@ -28,6 +33,9 @@ type Story = StoryObj<typeof Chip>;
 export const Default: Story = {};
 export const Selected: Story = { args: { state: "selected" } };
 export const Done: Story = { args: { state: "done" } };
+export const Pill: Story = {
+  args: { density: "pill", caption: undefined },
+};
 
 export const AllFlavors: Story = {
   render: () => {
@@ -48,6 +56,25 @@ export const StatesSideBySide: Story = {
       <Chip flavor="grammar" state="default" caption="Default" />
       <Chip flavor="grammar" state="selected" caption="Selected" />
       <Chip flavor="grammar" state="done" caption="Done" />
+    </div>
+  ),
+};
+
+export const WorkoutRow: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Pill density — matches the horizontal chip row inside the Your-Workout card on the live landing.",
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Chip flavor="words" density="pill" />
+      <Chip flavor="grammar" density="pill" state="selected" />
+      <Chip flavor="sentence" density="pill" state="done" />
+      <Chip flavor="reading" density="pill" />
     </div>
   ),
 };

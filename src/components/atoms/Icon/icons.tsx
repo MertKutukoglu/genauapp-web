@@ -93,6 +93,40 @@ export const ICONS = {
     </>
   ),
 
+  // ---------- Workout chip glyphs (mirror the live Your-Workout row) ----------
+  "chip-words": (
+    <>
+      {/* A-book: open book spine with a bold "A" in the center. */}
+      <path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" />
+      <path d="M12 3v18" />
+      <path d="M9 14l1.5-5h3L15 14" stroke="currentColor" strokeWidth="2" />
+      <path d="M9.6 12.5h4.8" />
+    </>
+  ),
+  "chip-grammar": (
+    <>
+      {/* Paradigm: three stacked rows representing a conjugation table. */}
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+      <path d="M4 10h16M4 14h16" />
+      <path d="M10 4v16" />
+    </>
+  ),
+  "chip-sentence": (
+    <>
+      {/* Formula: 3 aligned dash-groups — subject · verb · object. */}
+      <path d="M4 8h5M11 8h4M17 8h3" />
+      <path d="M4 12h3M9 12h7M18 12h2" />
+      <path d="M4 16h6M12 16h3M17 16h3" />
+    </>
+  ),
+  "chip-reading": (
+    <>
+      {/* Open-book pages. */}
+      <path d="M2 5s3-1.5 10-1.5V20S5 18.5 2 20V5z" />
+      <path d="M22 5s-3-1.5-10-1.5V20s7-1.5 10 0V5z" />
+    </>
+  ),
+
   // ---------- Status / feedback ----------
   "thumbs-up": (
     <path d="M7 10v11H4V10h3zm3 0l3-7a2 2 0 0 1 2 2v5h5a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 1h-8V10z" />
