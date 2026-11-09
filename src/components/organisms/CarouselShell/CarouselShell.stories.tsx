@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { CarouselShell } from "./CarouselShell";
 import { WorkoutSlide } from "@/components/organisms/slides/WorkoutSlide/WorkoutSlide";
 import { PracticeSlide } from "@/components/organisms/slides/PracticeSlide/PracticeSlide";
+import { ProgressSlide } from "@/components/organisms/slides/ProgressSlide/ProgressSlide";
 
 const meta: Meta<typeof CarouselShell> = {
   title: "Organisms/CarouselShell",
@@ -13,14 +14,15 @@ export default meta;
 type Story = StoryObj<typeof CarouselShell>;
 
 /**
- * Slides 1 (Workout) and 2 (Practice) are live. Slides 3-4 land in the
- * next passes and show dashed placeholders until then.
+ * Slides 1-3 (Workout / Practice / Progress) are live. Slide 4 (Packs)
+ * lands in the next pass; shown here as a dashed placeholder.
  *
  * Dwell times match the inner cyclers:
- *   Workout  → 6 chips × 2.6s = 15.6s
+ *   Workout  → 6 chips × 2.6s  = 15.6s
  *   Practice → 9 snippets × 2.8s = 25.2s
+ *   Progress → 4 cards × 2.5s   = 10.0s
  */
-export const WorkoutAndPractice: Story = {
+export const WorkoutPracticeProgress: Story = {
   render: () => (
     <div className="mx-auto w-[min(100%,680px)] p-6">
       <CarouselShell
@@ -37,8 +39,8 @@ export const WorkoutAndPractice: Story = {
           },
           {
             id: "progress",
-            dwellMs: 6000,
-            render: () => <Placeholder label="Your Progress — next pass" />,
+            dwellMs: 4 * 2500,
+            render: ({ isActive }) => <ProgressSlide isActiveSlide={isActive} />,
           },
           {
             id: "packs",
