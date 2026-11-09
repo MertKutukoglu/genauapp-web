@@ -36,100 +36,12 @@ const meta: Meta<typeof ChipList> = {
 export default meta;
 type Story = StoryObj<typeof ChipList>;
 
-// Small dev toolbar so you can drive the store from Storybook without
-// opening devtools. Not part of the shipped component — stories only.
-function StoreTools() {
-  const progress = useChipStore((s) => s.progress);
-  const selected = useChipStore((s) => s.selected);
-  const completeChip = useChipStore((s) => s.completeChip);
-  const closeChip = useChipStore((s) => s.closeChip);
-  const resetAll = useChipStore((s) => s.resetAll);
-
-  return (
-    <div
-      style={{
-        marginTop: 20,
-        padding: 12,
-        borderRadius: 10,
-        background: "var(--surface-sunk)",
-        fontFamily: "var(--font-body)",
-        fontSize: 12,
-        color: "var(--fg-muted)",
-      }}
-    >
-      <div style={{ marginBottom: 8, fontWeight: 600, color: "var(--fg)" }}>
-        Store
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 10 }}>
-        <div>selected: <code>{selected ?? "null"}</code></div>
-        <div>progress: <code>{JSON.stringify(progress)}</code></div>
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-        {(["words", "grammar", "sentence", "reading"] as const).map((id) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => completeChip(id)}
-            style={{
-              padding: "4px 10px",
-              borderRadius: 999,
-              border: "1px solid var(--border-strong)",
-              background: "transparent",
-              font: "inherit",
-              color: "var(--fg)",
-              cursor: "pointer",
-            }}
-          >
-            Done: {id}
-          </button>
-        ))}
-        <button
-          type="button"
-          onClick={closeChip}
-          style={{
-            padding: "4px 10px",
-            borderRadius: 999,
-            border: "1px solid var(--border-strong)",
-            background: "transparent",
-            font: "inherit",
-            color: "var(--fg)",
-            cursor: "pointer",
-          }}
-        >
-          Close selected
-        </button>
-        <button
-          type="button"
-          onClick={resetAll}
-          style={{
-            padding: "4px 10px",
-            borderRadius: 999,
-            border: "1px solid var(--border-strong)",
-            background: "transparent",
-            font: "inherit",
-            color: "var(--fg)",
-            cursor: "pointer",
-          }}
-        >
-          Reset
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export const Default: Story = {
-  render: () => (
-    <>
-      <ChipList />
-      <StoreTools />
-    </>
-  ),
   parameters: {
     docs: {
       description: {
         story:
-          "Fresh picker with all 4 chips in `active` state. Click any chip to select it (border + glow), or use the toolbar below to mark chips done and see the ✓ badge + 10% tint treatment.",
+          "Fresh picker with all 4 chips in `active` state. Click any chip to select it (border + glow).",
       },
     },
   },
@@ -148,12 +60,7 @@ export const SeededAllDone: Story = {
         useChipStore.getState().resetAll();
       };
     }, []);
-    return (
-      <>
-        <ChipList />
-        <StoreTools />
-      </>
-    );
+    return <ChipList />;
   },
   parameters: {
     docs: {
@@ -173,12 +80,7 @@ export const WithSelection: Story = {
         useChipStore.getState().closeChip();
       };
     }, []);
-    return (
-      <>
-        <ChipList />
-        <StoreTools />
-      </>
-    );
+    return <ChipList />;
   },
   parameters: {
     docs: {
