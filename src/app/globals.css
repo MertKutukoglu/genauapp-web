@@ -248,6 +248,16 @@ body {
 }
 
 /*
+ * Theme-only visibility helpers. Mark an element with .theme-light-only
+ * or .theme-dark-only to show it only in that theme. Pairs well with
+ * swapping a <picture>/<img> for theme — the hidden one takes no space.
+ */
+.theme-light-only { display: block; }
+.theme-dark-only { display: none; }
+[data-theme="dark"] .theme-light-only { display: none; }
+[data-theme="dark"] .theme-dark-only { display: block; }
+
+/*
  * Pack marquee (Packs Slide). Translates the two-grid stack up by
  * exactly one grid-height + its row-gap per cycle, so the second grid
  * lands where the first one started — a pixel-seamless loop.
