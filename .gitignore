@@ -38,6 +38,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# storybook
+/storybook-static
+debug-storybook.log
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+*storybook.log
+storybook-static

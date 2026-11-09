@@ -38,15 +38,43 @@ src/
     globals.css        Design tokens (@theme)
     try/
       page.tsx         Taste demo entry (Phase 4+)
+  components/          Atomic Design
+    atoms/             Button, Badge, Chip, Input, Icon …
+    molecules/         RuleCard, WordCard, ChipList …
+    organisms/         LevelPicker, WorkoutShell, TasteSummary …
+    templates/         Page-level layouts
   lib/
     analytics/
       posthog-provider.tsx   Client-side PostHog boot + window.__track
       track.ts               Typed event wrapper
+    utils/
+      clsx.ts
   store/
     taste-store.ts     Zustand store for the demo
 content/
   exercises/           a1.json, a2.json, b1.json, b2.json — handoff §6
+.storybook/            Storybook config (mobile-first viewports)
 ```
+
+## Storybook
+
+```bash
+npm run storybook        # dev server on :6006
+npm run build-storybook  # static build to ./storybook-static
+```
+
+Open the "Foundations/Design tokens" page first — it is the source of
+truth for every color, radius, and type scale a component may use.
+Every atom lives under "Atoms/…" with viewport controls so you can
+review mobile and desktop side by side.
+
+## Responsive strategy
+
+**Mobile-first.** Every component is designed for the 375px iPhone-SE
+viewport first, then progressively enhanced at `sm:` (640), `md:` (768),
+`lg:` (1024), `xl:` (1280). Storybook's default viewport is mobile for
+the same reason — breaks caught on mobile beat breaks found after
+desktop sign-off.
 
 ## Phased rebuild
 
