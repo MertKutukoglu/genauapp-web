@@ -6,7 +6,7 @@ import { ProgressSlide } from "@/components/organisms/slides/ProgressSlide/Progr
 import { PacksSlide } from "@/components/organisms/slides/PacksSlide/PacksSlide";
 
 const meta: Meta<typeof CarouselShell> = {
-  title: "Organisms/CarouselShell",
+  title: "Organisms/CarouselShell/All slides",
   component: CarouselShell,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen", viewport: { defaultViewport: "desktop" } },

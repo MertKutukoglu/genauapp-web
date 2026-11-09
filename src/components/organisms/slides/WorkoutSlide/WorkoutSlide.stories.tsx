@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { WorkoutSlide } from "./WorkoutSlide";
 
 const meta: Meta<typeof WorkoutSlide> = {
-  title: "Organisms/Slides/WorkoutSlide",
+  title: "Organisms/CarouselShell/Workout",
   component: WorkoutSlide,
   tags: ["autodocs"],
   parameters: { layout: "fullscreen", viewport: { defaultViewport: "desktop" } },
