@@ -248,6 +248,134 @@ body {
 }
 
 /*
+ * Blog article prose. Verbatim port of the type system used at
+ * genauapp.io/blog/origins-of-genau (see
+ * claude/GenauApp_Web_Blog_Origins_Source.md). Serif body, Open Sans
+ * headings, cherry-colored h2 with a numbered "0X" label above.
+ * Article-color spans (color-das / color-der / color-die / color-akk
+ * / color-dat / color-gen) let the author highlight German words
+ * inline in prose.
+ */
+.blog-article {
+  counter-reset: h2;
+}
+.blog-article .title {
+  font-family: var(--font-body);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0 0 18px;
+}
+.blog-article .byline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-faint);
+  margin: 0 0 44px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.blog-article .byline .read-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.blog-article .byline .read-time::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+}
+.blog-article p {
+  font-family: var(--font-source-serif), "Source Serif 4", Georgia, serif;
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--fg);
+  margin: 0 0 22px;
+}
+.blog-article > p:first-of-type {
+  font-size: 21px;
+  line-height: 1.55;
+}
+.blog-article em {
+  font-style: italic;
+}
+.blog-article h2 {
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  color: var(--accent);
+  margin: 60px 0 22px;
+  scroll-margin-top: 32px;
+  counter-increment: h2;
+}
+.blog-article h2::before {
+  content: counter(h2, decimal-leading-zero);
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--fg-faint);
+  margin-bottom: 10px;
+}
+.blog-article .section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 56px 0 8px;
+  color: var(--fg-faint);
+}
+.blog-article .section-divider::before,
+.blog-article .section-divider::after {
+  content: "";
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: var(--border);
+}
+.blog-article .section-divider span {
+  font-family: var(--font-body);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  opacity: 0.7;
+}
+
+/*
+ * Article-color inline spans — used for highlighting German words
+ * in their gender/case color inline within prose. Colors match the
+ * article-color + accent + skill tokens so the whole site reads as
+ * one system.
+ */
+.color-das { color: var(--article-das); font-weight: 600; }
+.color-der { color: var(--article-der); font-weight: 600; }
+.color-die { color: var(--article-die); font-weight: 600; }
+.color-akk { color: var(--accent);      font-weight: 600; }
+.color-dat { color: var(--article-das); font-weight: 600; }
+.color-gen { color: var(--color-skill-grammar); font-weight: 600; }
+
+@media (max-width: 480px) {
+  .blog-article .title { font-size: 32px; }
+  .blog-article > p:first-of-type { font-size: 18px; }
+  .blog-article h2 { font-size: 20px; }
+}
+
+/*
  * Legal-page prose. Applies the typography + spacing the legal content
  * expects (h1 Fraunces big, h2 Fraunces medium, h3 uppercase small
  * Open Sans, muted body text, cherry links). Scoped to .legal-prose so
