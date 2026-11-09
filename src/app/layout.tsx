@@ -76,11 +76,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-full flex flex-col bg-bg text-fg font-sans">
+      {/* On desktop the page fits the viewport (no outer scroll); on mobile
+          it scrolls naturally. lg:h-screen + lg:overflow-hidden flips the
+          constraint on at the lg breakpoint; below that the body can grow. */}
+      <body className="min-h-screen flex flex-col bg-bg text-fg font-sans lg:h-screen lg:overflow-hidden">
         <PostHogProvider>
           <Topnav />
           <OurStoryBanner />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="flex-1 min-h-0 flex flex-col">{children}</main>
           <Footer />
         </PostHogProvider>
         <Analytics />

@@ -4,17 +4,14 @@ import { clsx } from "@/lib/utils/clsx";
 /**
  * LandingLayout — the two-column shell for the home page.
  *
- * Desktop (≥ 1024px): fixed-viewport 2-column split inside a max-width
- * container. Left panel is sticky so the hero stays visible as the
- * (small amount of) scroll happens; the right card hosts the carousel.
+ * Desktop (≥ 1024px): fits the viewport — no outer scroll. The layout
+ * fills the main element's `flex-1` space (the parent body is a
+ * flex column with topnav + main + footer), and the two cards fill
+ * that height with `h-full + min-h-0` so their inner content
+ * (phone mockup, carousel) does the sizing, not the other way around.
  *
- * Mobile (< 1024px): single-column stack — hero content first, then
- * the carousel beneath. Both columns breathe into their own natural
- * height.
- *
- * Padding + rounded card surfaces live here so page-level composition
- * can stay declarative: pass `left` + `right` nodes and the template
- * lays them out.
+ * Mobile / tablet: single-column stack, both cards flow at natural
+ * height; the page scrolls as usual.
  */
 
 export interface LandingLayoutProps {
@@ -27,24 +24,22 @@ export function LandingLayout({ left, right, className }: LandingLayoutProps) {
   return (
     <div
       className={clsx(
-        "mx-auto w-full max-w-[1400px] px-3 pb-10 pt-4 md:px-6 md:pt-6",
+        "flex-1 min-h-0 w-full mx-auto max-w-[1400px] px-3 pb-3 pt-3 md:px-4 md:pb-4 md:pt-2",
         className,
       )}
     >
       <div
         className={clsx(
-          "grid gap-4 md:gap-6",
+          "grid gap-3 md:gap-4 h-full min-h-0",
           "grid-cols-1 lg:grid-cols-[1fr_1fr]",
-          "lg:min-h-[calc(100vh-7.5rem)]",
         )}
       >
         {/* LEFT card */}
         <section
           aria-label="Introduction"
           className={clsx(
-            "flex flex-col overflow-hidden rounded-[32px]",
+            "min-h-0 flex flex-col overflow-hidden rounded-[28px]",
             "border border-border bg-[color:color-mix(in_srgb,var(--accent)_3%,var(--surface-card))]",
-            "lg:sticky lg:top-6 lg:self-start lg:h-[calc(100vh-7.5rem)]",
           )}
         >
           {left}
@@ -54,9 +49,8 @@ export function LandingLayout({ left, right, className }: LandingLayoutProps) {
         <section
           aria-label="What it looks like"
           className={clsx(
-            "flex flex-col overflow-hidden rounded-[32px] p-4 md:p-6",
+            "min-h-0 flex flex-col overflow-hidden rounded-[28px] p-4 md:p-5",
             "border border-border bg-surface-card",
-            "lg:self-start lg:min-h-[calc(100vh-7.5rem)]",
           )}
         >
           {right}
