@@ -1,20 +1,27 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 /**
  * Apple touch icon — iOS home-screen bookmark + a few Android launchers.
- * Same brand mark as /icon.tsx, scaled to 180×180 with the proportions
- * iOS squircle-masks correctly. iOS rounds the corners itself, so the
- * source stays a full-bleed square.
+ * Same brand mark as /icon.tsx scaled to 180×180. iOS squircle-masks
+ * the corners itself, so the source stays a full-bleed square.
+ *
+ * Font ships from the repo (src/assets/fonts/) for the same reason as
+ * icon.tsx — Google CDN fetches broke the build.
  */
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-const FRAUNCES_SEMIBOLD =
-  "https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff";
+async function loadFraunces(): Promise<Buffer> {
+  return readFile(
+    join(process.cwd(), "src/assets/fonts/fraunces-latin-600-normal.woff"),
+  );
+}
 
 export default async function AppleIcon() {
-  const fraunces = await fetch(FRAUNCES_SEMIBOLD).then((r) => r.arrayBuffer());
+  const fraunces = await loadFraunces();
 
   return new ImageResponse(
     (

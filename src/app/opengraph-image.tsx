@@ -1,8 +1,11 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 /**
- * Default Open Graph / Twitter card image — rendered at the edge via
- * @vercel/og, matching the verbatim landing design in
+ * Default Open Graph / Twitter card image — rendered at build time by
+ * Next's opengraph-image convention and cached forever by the CDN,
+ * matching the verbatim landing design in
  * claude/GenauApp_Web_OG_Image.md:
  *
  *   - 1200×630, deep ink base with a warm cherry gradient top-left
@@ -12,10 +15,11 @@ import { ImageResponse } from "next/og";
  *     from fading." — "from fading" in cherry rose italic
  *   - Footer: muted tagline on the left, URL in white on the right
  *
- * Fraunces + Open Sans are fetched at request time from the Google
- * Fonts CDN. Satori (the Vercel OG renderer) has no font fallback for
- * italic, so Fraunces-italic has to be loaded explicitly for the
- * accent span to render.
+ * Fraunces (normal + italic) and Open Sans ship from the repo at
+ * src/assets/fonts/ — an earlier version fetched them from Google's
+ * CDN and the build broke when Google returned a 404 HTML page
+ * instead of the font binary. Reading from disk is both reliable
+ * and faster at build time.
  *
  * Next 16's App Router convention: this file is picked up as the
  * default opengraph-image for every route that doesn't declare its
@@ -27,26 +31,15 @@ export const alt = "GenauApp — You keep learning German. We keep it from fadin
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Pinned Google Fonts CDN URLs for Fraunces + Open Sans. Stable
-// filenames — a font refresh here would need a Google Fonts upstream
-// change, which is rare.
-const FRAUNCES_SEMIBOLD =
-  "https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff";
-const FRAUNCES_ITALIC_SEMIBOLD =
-  "https://fonts.gstatic.com/s/fraunces/v32/6NUV8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff";
-const OPEN_SANS_REGULAR =
-  "https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4nY1M2xLER.woff";
-
-async function loadFont(url: string): Promise<ArrayBuffer> {
-  const res = await fetch(url);
-  return res.arrayBuffer();
+function fontPath(name: string): string {
+  return join(process.cwd(), "src/assets/fonts", name);
 }
 
 export default async function OGImage() {
   const [fraunces, frauncesItalic, openSans] = await Promise.all([
-    loadFont(FRAUNCES_SEMIBOLD),
-    loadFont(FRAUNCES_ITALIC_SEMIBOLD),
-    loadFont(OPEN_SANS_REGULAR),
+    readFile(fontPath("fraunces-latin-600-normal.woff")),
+    readFile(fontPath("fraunces-latin-600-italic.woff")),
+    readFile(fontPath("open-sans-latin-400-normal.woff")),
   ]);
 
   return new ImageResponse(

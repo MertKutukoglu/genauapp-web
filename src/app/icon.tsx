@@ -1,24 +1,30 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 /**
- * Brand favicon — rendered once at build/first-hit, cached forever
- * by the CDN. Matches the OG image's brand lockup but inverted for
- * legibility at 16-32px: cherry background with white G. Standing
- * out against both light and dark browser chrome without being noisy.
+ * Brand favicon — rendered at build time by Next's icon convention,
+ * cached forever by the CDN after first hit. Cherry background with
+ * white Fraunces G; inverted from the OG lockup (dark on white) so
+ * it stays legible on both light and dark browser chrome at 16-32px.
  *
- * Fraunces loaded so the G keeps its serif character; at 32px the
- * terminal flares are what makes it readable as GenauApp vs any
- * other G.
+ * Font ships from the repo (src/assets/fonts/) rather than being
+ * fetched from Google's CDN — the earlier CDN-fetch version broke
+ * the Vercel build when Google returned a 404 HTML page instead of
+ * the font binary.
  */
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-const FRAUNCES_SEMIBOLD =
-  "https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff";
+async function loadFraunces(): Promise<Buffer> {
+  return readFile(
+    join(process.cwd(), "src/assets/fonts/fraunces-latin-600-normal.woff"),
+  );
+}
 
 export default async function Icon() {
-  const fraunces = await fetch(FRAUNCES_SEMIBOLD).then((r) => r.arrayBuffer());
+  const fraunces = await loadFraunces();
 
   return new ImageResponse(
     (
