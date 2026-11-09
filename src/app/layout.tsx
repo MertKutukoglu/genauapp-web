@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Open_Sans, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Suspense } from "react";
 import { PostHogProvider } from "@/lib/analytics/posthog-provider";
+import { PostHogPageview } from "@/lib/analytics/PostHogPageview";
 import { Topnav } from "@/components/organisms/Topnav/Topnav";
 import { OurStoryBanner } from "@/components/molecules/OurStoryBanner/OurStoryBanner";
 import { Footer } from "@/components/organisms/Footer/Footer";
@@ -107,6 +109,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           lock that would break legal / blog / longform pages. */}
       <body className="min-h-screen flex flex-col bg-bg text-fg font-sans">
         <PostHogProvider>
+          {/* Suspense is required: PostHogPageview uses useSearchParams,
+              which forces its tree into dynamic rendering. The boundary
+              keeps the rest of the app statically renderable. */}
+          <Suspense fallback={null}>
+            <PostHogPageview />
+          </Suspense>
           <Topnav />
           <OurStoryBanner />
           <main className="flex-1 min-h-0 flex flex-col">{children}</main>

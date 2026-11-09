@@ -35,6 +35,25 @@ export function CarouselShell({ slides, className }: CarouselShellProps) {
 
   const active = slides[index];
 
+  // Fire slide_viewed every time the active slide changes, including
+  // the first slide on mount. Trigger split (auto vs manual) is not
+  // tracked yet — PagerStrip's timer-advance and click both flow
+  // through the same onChange, so distinguishing them would need a
+  // PagerStrip API change. Launch with slide + position only; split
+  // later if dashboards want it.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.__track?.("slide_viewed", {
+        slide: active.id,
+        index,
+        total: slides.length,
+      });
+    } catch {
+      /* no-op */
+    }
+  }, [index, active.id, slides.length]);
+
   return (
     <div
       className={clsx("flex flex-col gap-4", className)}

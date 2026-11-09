@@ -23,7 +23,6 @@ const halfWidth =
   "mx-auto flex min-h-[920px] w-[min(640px,50vw)] flex-col rounded-3xl border border-border bg-bg";
 
 export const Classic = {
-  name: "Classic",
   render: () => (
     <div className={halfWidth}>
       <HeroLeftPanelClassic />
@@ -32,7 +31,6 @@ export const Classic = {
 };
 
 export const Phone = {
-  name: "Phone",
   render: () => (
     <div className={halfWidth}>
       <HeroLeftPanelPhone />

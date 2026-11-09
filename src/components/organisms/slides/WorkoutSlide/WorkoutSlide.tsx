@@ -48,7 +48,9 @@ export function WorkoutSlide({
 
   React.useEffect(() => {
     if (!isActiveSlide) return;
-    setIdx(0); // reset to Grammar on re-activation
+    // Reset to Grammar on re-activation (per spec).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIdx(0);
     const id = window.setInterval(
       () => setIdx((i) => (i + 1) % CYCLE_ORDER.length),
       cycleMs,

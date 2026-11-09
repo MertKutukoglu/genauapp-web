@@ -38,6 +38,8 @@ export function CookieConsent({ className }: CookieConsentProps) {
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    // Hydration sync: read consent state once on mount. Intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     setState(readConsent());
     const onChange = (e: Event) => {

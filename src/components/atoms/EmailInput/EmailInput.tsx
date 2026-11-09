@@ -9,8 +9,7 @@ import { clsx } from "@/lib/utils/clsx";
  * Pairs with Button (tone="primary") inside WaitlistForm molecule.
  */
 
-export interface EmailInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type EmailInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 export const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(
   function EmailInput({ className, type = "email", ...rest }, ref) {

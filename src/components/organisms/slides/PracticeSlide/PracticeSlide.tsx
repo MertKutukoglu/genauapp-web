@@ -33,6 +33,8 @@ export function PracticeSlide({
 
   React.useEffect(() => {
     if (!isActiveSlide) return;
+    // Reset the inner cycler when this slide re-activates (per spec).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setI(0);
     const id = window.setInterval(
       () => setI((idx) => (idx + 1) % SNIPPETS.length),

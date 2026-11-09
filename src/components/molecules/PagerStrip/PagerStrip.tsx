@@ -43,6 +43,9 @@ export function PagerStrip({
 
   // Reset on activeIndex change.
   React.useEffect(() => {
+    // Reset the progress bar when a new slide becomes active.
+    // Intentional sync — the dwell timer below reads this.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(0);
     startRef.current = null;
   }, [activeIndex]);

@@ -23,6 +23,8 @@ export function ChangeConsentButton() {
   const [state, setState] = React.useState<ConsentState>("unset");
 
   React.useEffect(() => {
+    // Hydration sync: read consent state once on mount. Intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState(readConsent());
     const sync = () => setState(readConsent());
     window.addEventListener("genauapp:consent-change", sync);

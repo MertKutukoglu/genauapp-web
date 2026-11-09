@@ -38,7 +38,10 @@ function initPostHog() {
   posthog.init(POSTHOG_KEY, {
     api_host: POSTHOG_HOST,
     person_profiles: "identified_only",
-    capture_pageview: true,
+    // We own pageviews — the PostHogPageview client component fires
+    // $pageview on every App Router navigation (first included).
+    // Leaving this true would double-count the initial load.
+    capture_pageview: false,
     capture_pageleave: true,
   });
   window.posthog = posthog;

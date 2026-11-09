@@ -26,13 +26,15 @@ function readCurrent(): Theme {
   );
 }
 
-export interface ThemeToggleProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type ThemeToggleProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function ThemeToggle({ className, ...rest }: ThemeToggleProps) {
   const [theme, setTheme] = React.useState<Theme>("light");
 
   React.useEffect(() => {
+    // Hydration sync: pull the live theme once on mount. Intentional
+    // state-from-external-source pattern, not a cascading render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(readCurrent());
   }, []);
 
