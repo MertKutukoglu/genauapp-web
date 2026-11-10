@@ -35,9 +35,14 @@ export interface ParadigmGridProps {
 
 export function ParadigmGrid({ rows, className }: ParadigmGridProps) {
   return (
-    <div
-      className={clsx("bg-surface-sunk rounded-2xl px-5 py-4", className)}
-    >
+    // No sunk container around the grid any more — the card
+    // surface alone frames it, which keeps the eye on the content
+    // instead of the box. `justify-items-center` pins the 2-col
+    // grid to the center of the card width; `w-max mx-auto` keeps
+    // the grid itself only as wide as its content, so the pronouns
+    // right-align against the forms without stretching across the
+    // full card.
+    <div className={clsx("flex justify-center", className)}>
       <div
         className="grid"
         style={{

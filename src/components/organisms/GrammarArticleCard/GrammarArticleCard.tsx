@@ -107,21 +107,18 @@ export function GrammarArticleCard({
         </div>
       </div>
 
-      {/* Pattern panel — sunk container, article-tinted background
-          so the whole surface reads as the article's territory.
-          Rows: `suffix → example` center-aligned, suffix bold in
-          article color, example in --fg. */}
-      <div
-        className="rounded-2xl px-5 py-4"
-        style={{
-          background: `color-mix(in srgb, ${color} 7%, var(--surface-sunk))`,
-          border: `1px solid color-mix(in srgb, ${color} 18%, transparent)`,
-        }}
-      >
-        {/* Three-column grid: suffix (right-aligned), arrow, example +
-            italic gloss (left-aligned). Grid instead of flex so every
-            row lines up vertically regardless of word length — Honig
-            and Schmetterling share the same left edge. */}
+      {/* Pattern grid — no tinted sunk container around it any more;
+          the article hero + RuleCard beneath already carry the
+          article's color weight, and a third tinted surface in
+          between made the card read as busy. Grid is center-pinned
+          in the card; `w-max` keeps it only as wide as its longest
+          row so suffixes right-align against the examples without
+          stretching across the surface.
+          Three columns: suffix (right-aligned) · arrow · example +
+          italic gloss (left-aligned). Grid instead of flex so every
+          row lines up vertically regardless of word length — Honig
+          and Schmetterling share the same left edge. */}
+      <div className="flex justify-center">
         <div
           className="grid gap-x-3 gap-y-2.5"
           style={{ gridTemplateColumns: "auto auto 1fr" }}
