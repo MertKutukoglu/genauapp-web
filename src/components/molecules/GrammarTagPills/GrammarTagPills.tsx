@@ -163,20 +163,19 @@ export function GrammarTagPills({ tags, className }: GrammarTagPillsProps) {
         })}
       </div>
 
-      {/* Expanded card — appears inline below the pill row when a pill
-          is open. Left-border uses the active pill's color so the
-          association is immediate. */}
+      {/* Expanded card — appears inline below the pill row when a
+          pill is open. The background tint already carries the pill's
+          color association; no extra border stripe needed. */}
       {activeDef ? (
         <div
           role="region"
           aria-label={`${activeDef.label} explanation`}
           className={clsx(
-            "relative rounded-xl py-3 pl-3.5 pr-10",
+            "relative rounded-xl py-3 px-4 pr-10",
             "text-[13.5px] leading-relaxed text-fg",
           )}
           style={{
             background: `color-mix(in srgb, ${activeDef.color} 8%, transparent)`,
-            borderLeft: `3px solid ${activeDef.color}`,
           }}
         >
           <p className="m-0 font-sans">{activeDef.explanation}</p>
