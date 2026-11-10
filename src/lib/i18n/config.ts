@@ -67,6 +67,7 @@ export const EN_TO_TR_PATH: Record<string, string> = {
   "/impressum": "/tr/kunye",
   "/datenschutz": "/tr/gizlilik",
   "/cookie-policy": "/tr/cerezler",
+  "/try": "/tr/try",
 };
 
 /** Inverse lookup, derived once. */

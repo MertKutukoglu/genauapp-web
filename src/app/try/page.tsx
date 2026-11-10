@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useChipStore } from "@/stores/chipStore";
 import { useSkillStore } from "@/stores/skillStore";
 import { LevelPicker } from "@/components/templates/LevelPicker/LevelPicker";
@@ -43,6 +43,7 @@ export default function TryPage() {
 
 function TryPageInner() {
   const router = useRouter();
+  const pathname = usePathname() ?? "/try";
   const searchParams = useSearchParams();
   const selectedLevel = useChipStore((s) => s.selectedLevel);
   const setLevel = useChipStore((s) => s.setLevel);
@@ -73,8 +74,11 @@ function TryPageInner() {
     } else if (hasLevel) {
       clearLevel();
     }
-    router.replace("/try", { scroll: false });
-  }, [searchParams, resetAll, resetSkills, clearLevel, router]);
+    // Strip the ?reset / ?level query without hardcoding the path —
+    // we're shared between /try (EN) and /tr/try (TR) and must not
+    // push the user to the other locale on reset.
+    router.replace(pathname, { scroll: false });
+  }, [searchParams, resetAll, resetSkills, clearLevel, router, pathname]);
 
   // Gateway: no level picked yet.
   if (!selectedLevel) {
