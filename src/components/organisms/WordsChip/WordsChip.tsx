@@ -6,6 +6,13 @@ import { ModeToggle, type WordsMode } from "@/components/molecules/ModeToggle/Mo
 import { NormalLearnCard } from "@/components/organisms/NormalLearnCard/NormalLearnCard";
 import { AssemblyLearnCard } from "@/components/organisms/AssemblyLearnCard/AssemblyLearnCard";
 import { LearnCompletion } from "@/components/organisms/LearnCompletion/LearnCompletion";
+import {
+  ExerciseArticlePicker,
+  type ArticleOption,
+} from "@/components/organisms/ExerciseArticlePicker/ExerciseArticlePicker";
+import { ExerciseTranslationMC } from "@/components/organisms/ExerciseTranslationMC/ExerciseTranslationMC";
+import { ExerciseTyping } from "@/components/organisms/ExerciseTyping/ExerciseTyping";
+import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
 import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnCardType";
 import type { WordItem } from "@/content/words-a1";
 
@@ -160,7 +167,10 @@ export function WordsChip({
             <EmptyDeck />
           )
         ) : (
-          <ExerciseStub onBackToLearn={() => setMode("learn")} />
+          <ExerciseDeck
+            words={words}
+            onBackToLearn={() => setMode("learn")}
+          />
         )}
       </div>
     </div>
@@ -236,37 +246,187 @@ function EmptyDeck() {
   );
 }
 
-function ExerciseStub({ onBackToLearn }: { onBackToLearn: () => void }) {
+/**
+ * ExerciseDeck — owns the Exercise-mode deck state and routes each
+ * current word to the variant its `exerciseType` asks for.
+ *
+ * Deck mechanic matches Learn (per Mert):
+ *   - Correct → head card leaves the deck, counter advances
+ *   - Incorrect → head card reinserted at a random later index
+ *     (deck size unchanged, counter does NOT advance)
+ *
+ * We also tally first-try correct + incorrect separately for the
+ * ExerciseCompletion summary. "First-try correct" means the word was
+ * answered correctly on its first appearance; a word that came back
+ * after a miss and got the right answer the second time still counts
+ * toward incorrect (the original miss) only — the second attempt is
+ * not re-tallied, so the two counts always sum to `words.length`.
+ */
+interface ExerciseDeckProps {
+  words: WordItem[];
+  onBackToLearn: () => void;
+}
+
+function ExerciseDeck({ words, onBackToLearn }: ExerciseDeckProps) {
+  const [remaining, setRemaining] = React.useState<WordItem[]>(words);
+  const [correctCount, setCorrectCount] = React.useState(0);
+  const [incorrectCount, setIncorrectCount] = React.useState(0);
+  /** Set of word keys that have been missed at least once. */
+  const missedSetRef = React.useRef<Set<string>>(new Set());
+
+  // Re-seed when the words input content changes.
+  const wordsKey = React.useMemo(
+    () => words.map((w) => w.learn.word).join("|"),
+    [words],
+  );
+  React.useEffect(() => {
+    // Reset on deck content change — new words array → fresh run.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRemaining(words);
+    setCorrectCount(0);
+    setIncorrectCount(0);
+    missedSetRef.current = new Set();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wordsKey]);
+
+  const deckSize = words.length;
+  const remainingCount = remaining.length;
+  const currentIndex = deckSize - remainingCount + 1;
+  const current = remaining[0];
+  const done = remainingCount === 0 && deckSize > 0;
+
+  const handleNext = React.useCallback(
+    ({ correct }: { correct: boolean }) => {
+      if (!current) return;
+      const key = current.learn.word;
+      if (correct) {
+        // First-try scoring: only count toward `correct` if this word
+        // hasn't been missed before.
+        if (!missedSetRef.current.has(key)) {
+          setCorrectCount((c) => c + 1);
+        } else {
+          // Already in the miss tally from its first appearance; the
+          // retry success doesn't double-count.
+        }
+        setRemaining((r) => r.slice(1));
+        try {
+          window.__track?.("demo_exercise_correct", {
+            chip: "words",
+            type: current.exerciseType,
+          });
+        } catch {
+          /* no-op */
+        }
+      } else {
+        if (!missedSetRef.current.has(key)) {
+          missedSetRef.current.add(key);
+          setIncorrectCount((c) => c + 1);
+        }
+        setRemaining((r) => {
+          if (r.length <= 1) return r;
+          const [head, ...rest] = r;
+          const idx = 1 + Math.floor(Math.random() * rest.length);
+          return [...rest.slice(0, idx), head, ...rest.slice(idx)];
+        });
+        try {
+          window.__track?.("demo_exercise_wrong", {
+            chip: "words",
+            type: current.exerciseType,
+          });
+        } catch {
+          /* no-op */
+        }
+      }
+    },
+    [current],
+  );
+
+  const handleFinish = React.useCallback(() => {
+    try {
+      window.__track?.("demo_exercise_finish", {
+        chip: "words",
+        correct: correctCount,
+        incorrect: incorrectCount,
+      });
+    } catch {
+      /* no-op */
+    }
+    // Finishing just flips back to Learn for now. The chip-done +
+    // closeChip wiring layers on top of this in a later pass.
+    onBackToLearn();
+  }, [correctCount, incorrectCount, onBackToLearn]);
+
+  if (done) {
+    return (
+      <ExerciseCompletion
+        correct={correctCount}
+        incorrect={incorrectCount}
+        total={deckSize}
+        onBackToLearn={onBackToLearn}
+        onFinish={handleFinish}
+      />
+    );
+  }
+
+  if (!current) return <EmptyDeck />;
+
+  // Variant router. Key by word so each advance remounts the variant
+  // (clears local state like text input / picked option).
+  const key = current.learn.word;
+
+  if (current.exerciseType === "articlePicker") {
+    const article = current.learn.article;
+    // Guard: articlePicker only makes sense with an article-bearing noun.
+    if (!article) return <EmptyDeck />;
+    return (
+      <ExerciseArticlePicker
+        key={key}
+        noun={current.noun ?? current.learn.word}
+        english={current.hint ?? current.learn.english}
+        correctArticle={article as ArticleOption}
+        explanation={current.explanation}
+        current={currentIndex}
+        total={deckSize}
+        onNext={handleNext}
+      />
+    );
+  }
+
+  if (current.exerciseType === "translationMC") {
+    if (
+      !current.options ||
+      current.options.length === 0 ||
+      typeof current.correctIndex !== "number"
+    ) {
+      return <EmptyDeck />;
+    }
+    return (
+      <ExerciseTranslationMC
+        key={key}
+        prompt={current.prompt}
+        speakText={current.learn.word}
+        options={current.options}
+        correctIndex={current.correctIndex}
+        explanation={current.explanation}
+        current={currentIndex}
+        total={deckSize}
+        onNext={handleNext}
+      />
+    );
+  }
+
+  // typing
+  if (!current.answer) return <EmptyDeck />;
   return (
-    <div
-      className={clsx(
-        "bg-surface-card rounded-3xl px-6 py-10 text-center",
-        "shadow-[0_4px_12px_rgba(0,0,0,0.06)]",
-        "[html[data-theme=dark]_&]:shadow-[0_4px_12px_rgba(0,0,0,0.45)]",
-        "flex flex-col items-center gap-5",
-      )}
-    >
-      <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
-        Exercise is on its way.
-      </h2>
-      <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed max-w-md">
-        The testing side of the Words chip lands in the next update.
-        Flip back to Learn to try the deck.
-      </p>
-      <button
-        type="button"
-        onClick={onBackToLearn}
-        className={clsx(
-          "inline-flex items-center justify-center gap-2 h-[44px] px-5 rounded-full",
-          "border border-border-strong bg-transparent",
-          "font-sans font-semibold text-sm text-fg",
-          "transition hover:bg-[color:color-mix(in_srgb,var(--fg)_6%,transparent)]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-          "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-        )}
-      >
-        ← Back to Learn
-      </button>
-    </div>
+    <ExerciseTyping
+      key={key}
+      prompt={current.prompt}
+      answer={current.answer}
+      speakText={current.learn.word}
+      explanation={current.explanation}
+      current={currentIndex}
+      total={deckSize}
+      onNext={handleNext}
+    />
   );
 }
