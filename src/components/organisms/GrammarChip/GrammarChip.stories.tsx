@@ -25,7 +25,7 @@ export const FullLearn: Story = {
     docs: {
       description: {
         story:
-          "The full 20-item deck. Learn mode filters to the 5 anchors and dispatches each to its layout (verbParadigm × 2, pronounChart × 1, articleCards × 1, verbConjugation × 1).",
+          "The full deck. Learn mode filters to the anchor questions and dispatches each to its layout (verbParadigm × 2 for sein/haben, pronounChart × 1, articleSingle × 3 for der/die/das walked in that order, verbConjugation × 1 for regular verbs).",
       },
     },
   },

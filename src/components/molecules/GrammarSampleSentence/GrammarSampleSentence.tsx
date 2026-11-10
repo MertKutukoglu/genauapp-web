@@ -28,8 +28,15 @@ import { clsx } from "@/lib/utils/clsx";
 export interface GrammarSampleSentenceProps {
   /** The German sample sentence. */
   sentence: string;
-  /** Substring of `sentence` to render bold + grammar-purple. */
+  /** Substring of `sentence` to render bold in the highlight color. */
   highlight?: string;
+  /**
+   * CSS color for the highlight substring. Defaults to the chip's
+   * grammar purple; the articleSingle layouts pass the article's own
+   * color (blue/red/green) so the sample feels like it belongs to
+   * the card teaching that article.
+   */
+  highlightColor?: string;
   /**
    * Optional translation in the UI locale (English on /try, Turkish
    * on /tr/try). Rendered muted under the German line.
@@ -43,6 +50,7 @@ export interface GrammarSampleSentenceProps {
 export function GrammarSampleSentence({
   sentence,
   highlight,
+  highlightColor = "var(--chip-grammar-color)",
   translation,
   label = "Sample Sentence",
   className,
@@ -58,7 +66,7 @@ export function GrammarSampleSentence({
         {label}
       </div>
       <div className="font-sans font-semibold text-base text-fg leading-relaxed">
-        {renderSentence(sentence, highlight)}
+        {renderSentence(sentence, highlight, highlightColor)}
       </div>
       {translation ? (
         <div className="font-sans font-normal text-sm text-fg-muted leading-snug">
@@ -72,6 +80,7 @@ export function GrammarSampleSentence({
 function renderSentence(
   sentence: string,
   highlight: string | undefined,
+  color: string,
 ): React.ReactNode {
   if (!highlight) return sentence;
   const idx = sentence.indexOf(highlight);
@@ -79,10 +88,7 @@ function renderSentence(
   return (
     <>
       {sentence.slice(0, idx)}
-      <strong
-        className="font-sans font-bold"
-        style={{ color: "var(--chip-grammar-color)" }}
-      >
+      <strong className="font-sans font-bold" style={{ color }}>
         {highlight}
       </strong>
       {sentence.slice(idx + highlight.length)}

@@ -6,7 +6,7 @@ import { ModeToggle, type WordsMode } from "@/components/molecules/ModeToggle/Mo
 import { LearnCompletion } from "@/components/organisms/LearnCompletion/LearnCompletion";
 import { GrammarVerbParadigmCard } from "@/components/organisms/GrammarVerbParadigmCard/GrammarVerbParadigmCard";
 import { GrammarPronounChartCard } from "@/components/organisms/GrammarPronounChartCard/GrammarPronounChartCard";
-import { GrammarArticleCardsCard } from "@/components/organisms/GrammarArticleCardsCard/GrammarArticleCardsCard";
+import { GrammarArticleCard } from "@/components/organisms/GrammarArticleCard/GrammarArticleCard";
 import { GrammarVerbConjugationCard } from "@/components/organisms/GrammarVerbConjugationCard/GrammarVerbConjugationCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import {
@@ -209,12 +209,18 @@ function LearnCardSwitch({
           onIKnow={onIKnow}
         />
       );
-    case "articleCards":
+    case "articleSingle":
+      // Guard: an article anchor without a chosen article word or
+      // pattern list is content-malformed. Fall back to the empty
+      // card rather than throwing from the leaf component.
+      if (!learn.article || !learn.patterns || !learn.role) {
+        return <EmptyDeck label="Missing article data." />;
+      }
       return (
-        <GrammarArticleCardsCard
-          headline={learn.headline ?? ""}
-          english={learn.english ?? ""}
-          articles={learn.articles ?? []}
+        <GrammarArticleCard
+          article={learn.article}
+          role={learn.role}
+          patterns={learn.patterns}
           caveat={learn.caveat}
           sample={learn.sample}
           current={current}
