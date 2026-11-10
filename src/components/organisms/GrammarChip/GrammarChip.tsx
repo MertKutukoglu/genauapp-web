@@ -15,6 +15,7 @@ import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { workoutCopy } from "@/lib/workout/strings";
 import {
   grammarLearnAnchors,
   localizeGrammar,
@@ -360,6 +361,10 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
   const completeChip = useChipStore((s) => s.completeChip);
   const chipProgress = useChipStore((s) => s.progress);
   const openChip = useChipStore((s) => s.openChip);
+  const addStats = useChipStore((s) => s.addStats);
+  const openSummary = useChipStore((s) => s.openSummary);
+  const { locale } = useLocale();
+  const summaryOpenLabel = workoutCopy(locale).openSummaryCta;
 
   // Next-workout CTA on the completion screen: walk the fixed chip
   // order (words → grammar → sentence → reading), starting right
@@ -405,6 +410,7 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
     });
     setSessionDeltas(d);
     stageSkillDeltas(d);
+    addStats({ correct: correctCount, total: deckSize });
     completeChip("grammar");
 
     try {
@@ -420,7 +426,7 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip, addStats]);
 
   if (done) {
     return (
@@ -435,6 +441,11 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
                 label: nextWorkout.label,
                 onContinue: () => openChip(nextWorkout.id),
               }
+            : undefined
+        }
+        summaryCta={
+          !nextWorkout
+            ? { label: summaryOpenLabel, onContinue: openSummary }
             : undefined
         }
       />

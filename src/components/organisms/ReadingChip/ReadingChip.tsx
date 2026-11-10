@@ -10,6 +10,7 @@ import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { workoutCopy } from "@/lib/workout/strings";
 import { localizeReading, type ReadingContent } from "@/content/reading-a1";
 
 /**
@@ -134,6 +135,9 @@ export function ReadingChip({
   const completeChip = useChipStore((s) => s.completeChip);
   const chipProgress = useChipStore((s) => s.progress);
   const openChip = useChipStore((s) => s.openChip);
+  const addStats = useChipStore((s) => s.addStats);
+  const openSummary = useChipStore((s) => s.openSummary);
+  const summaryOpenLabel = workoutCopy(locale).openSummaryCta;
 
   // Fixed chip order; Reading is last so the "Continue with X" CTA
   // picks the first non-done chip earlier in the cycle, falling back
@@ -174,6 +178,7 @@ export function ReadingChip({
     });
     setSessionDeltas(d);
     stageSkillDeltas(d);
+    addStats({ correct: correctCount, total });
     completeChip("reading");
     try {
       window.__track?.("demo_exercise_finish", {
@@ -188,7 +193,7 @@ export function ReadingChip({
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, total, stageSkillDeltas, completeChip]);
+  }, [done, correctCount, incorrectCount, total, stageSkillDeltas, completeChip, addStats]);
 
   return (
     <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
@@ -214,6 +219,11 @@ export function ReadingChip({
                     label: nextWorkout.label,
                     onContinue: () => openChip(nextWorkout.id),
                   }
+                : undefined
+            }
+            summaryCta={
+              !nextWorkout
+                ? { label: summaryOpenLabel, onContinue: openSummary }
                 : undefined
             }
           />

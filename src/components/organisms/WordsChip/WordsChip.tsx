@@ -19,6 +19,7 @@ import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { localizeWord, type WordItem } from "@/content/words-a1";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { workoutCopy } from "@/lib/workout/strings";
 
 /**
  * WordsChip — the right-card experience when the user picks the Words
@@ -356,6 +357,10 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
   const completeChip = useChipStore((s) => s.completeChip);
   const chipProgress = useChipStore((s) => s.progress);
   const openChip = useChipStore((s) => s.openChip);
+  const addStats = useChipStore((s) => s.addStats);
+  const openSummary = useChipStore((s) => s.openSummary);
+  const { locale } = useLocale();
+  const summaryOpenLabel = workoutCopy(locale).openSummaryCta;
 
   // Pick the next workout to suggest on the completion CTA. We walk
   // the fixed chip order (words → grammar → sentence → reading),
@@ -404,6 +409,9 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     });
     setSessionDeltas(d);
     stageSkillDeltas(d);
+    // Running first-try stats for the demo-complete summary screen.
+    // Idempotent for a single completion thanks to deltasStagedRef.
+    addStats({ correct: correctCount, total: deckSize });
     // Mark the Words chip done so the LeftCard's WorkoutCounter
     // ticks up and the chip visual flips to its done state.
     // Idempotent in the store — re-runs are safe.
@@ -422,7 +430,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip, addStats]);
 
   if (done) {
     return (
@@ -437,6 +445,11 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
                 label: nextWorkout.label,
                 onContinue: () => openChip(nextWorkout.id),
               }
+            : undefined
+        }
+        summaryCta={
+          !nextWorkout
+            ? { label: summaryOpenLabel, onContinue: openSummary }
             : undefined
         }
       />
