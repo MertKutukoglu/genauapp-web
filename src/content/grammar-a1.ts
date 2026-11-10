@@ -51,13 +51,21 @@ export interface PronounForm {
 
 /**
  * One suffix → example row inside an article card. `suffix` is the
- * ending (e.g. "-ung"); `example` is one A1-friendly noun that shows
- * the pattern in action (e.g. "Zeitung"). German-only, locale-
- * agnostic — the TR overlay never touches these.
+ * ending (e.g. "-ung"); `example` is the German noun that shows the
+ * pattern in action (e.g. "Zeitung"); `gloss` carries both locale
+ * translations so the card can show the English or Turkish meaning
+ * in italic next to the example — vocab reinforcement folded into
+ * the grammar lesson, since the learner otherwise has to guess what
+ * "Honig" or "Freundschaft" means.
+ *
+ * Both locale strings live on the pattern itself (not in a parallel
+ * TR overlay) so the translator sees the pairing in one place and
+ * can't drift the arrays apart by index.
  */
 export interface ArticleSuffixPattern {
   suffix: string;
   example: string;
+  gloss: { en: string; tr: string };
 }
 
 /**
@@ -294,13 +302,13 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       article: "der",
       role: "masculine",
       patterns: [
-        { suffix: "-ig", example: "Honig" },
-        { suffix: "-ling", example: "Schmetterling" },
-        { suffix: "-ismus", example: "Optimismus" },
-        { suffix: "-or", example: "Motor" },
-        { suffix: "-ant", example: "Elefant" },
-        { suffix: "-ich", example: "Teppich" },
-        { suffix: "-er", example: "Lehrer" },
+        { suffix: "-ig", example: "Honig", gloss: { en: "honey", tr: "bal" } },
+        { suffix: "-ling", example: "Schmetterling", gloss: { en: "butterfly", tr: "kelebek" } },
+        { suffix: "-ismus", example: "Optimismus", gloss: { en: "optimism", tr: "iyimserlik" } },
+        { suffix: "-or", example: "Motor", gloss: { en: "engine", tr: "motor" } },
+        { suffix: "-ant", example: "Elefant", gloss: { en: "elephant", tr: "fil" } },
+        { suffix: "-ich", example: "Teppich", gloss: { en: "carpet", tr: "halı" } },
+        { suffix: "-er", example: "Lehrer", gloss: { en: "teacher", tr: "öğretmen" } },
       ],
       rule: "Days, months and seasons; weather; directions; alcoholic drinks; car brands are also masculine.",
       sample: {
@@ -333,17 +341,17 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       article: "die",
       role: "feminine",
       patterns: [
-        { suffix: "-ung", example: "Zeitung" },
-        { suffix: "-heit", example: "Freiheit" },
-        { suffix: "-keit", example: "Höflichkeit" },
-        { suffix: "-schaft", example: "Freundschaft" },
-        { suffix: "-ei", example: "Bäckerei" },
-        { suffix: "-in", example: "Studentin" },
-        { suffix: "-ion", example: "Station" },
-        { suffix: "-ität", example: "Universität" },
-        { suffix: "-ik", example: "Musik" },
-        { suffix: "-ur", example: "Natur" },
-        { suffix: "-e", example: "Lampe" },
+        { suffix: "-ung", example: "Zeitung", gloss: { en: "newspaper", tr: "gazete" } },
+        { suffix: "-heit", example: "Freiheit", gloss: { en: "freedom", tr: "özgürlük" } },
+        { suffix: "-keit", example: "Höflichkeit", gloss: { en: "politeness", tr: "nezaket" } },
+        { suffix: "-schaft", example: "Freundschaft", gloss: { en: "friendship", tr: "arkadaşlık" } },
+        { suffix: "-ei", example: "Bäckerei", gloss: { en: "bakery", tr: "fırın" } },
+        { suffix: "-in", example: "Studentin", gloss: { en: "student (f)", tr: "öğrenci (kadın)" } },
+        { suffix: "-ion", example: "Station", gloss: { en: "station", tr: "istasyon" } },
+        { suffix: "-ität", example: "Universität", gloss: { en: "university", tr: "üniversite" } },
+        { suffix: "-ik", example: "Musik", gloss: { en: "music", tr: "müzik" } },
+        { suffix: "-ur", example: "Natur", gloss: { en: "nature", tr: "doğa" } },
+        { suffix: "-e", example: "Lampe", gloss: { en: "lamp", tr: "lamba" } },
       ],
       rule: "Numbers; trees and flowers; ships and aircraft are also feminine.",
       sample: {
@@ -376,11 +384,11 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       article: "das",
       role: "neuter",
       patterns: [
-        { suffix: "-chen", example: "Mädchen" },
-        { suffix: "-lein", example: "Fräulein" },
-        { suffix: "-ment", example: "Dokument" },
-        { suffix: "-um", example: "Zentrum" },
-        { suffix: "-ma", example: "Thema" },
+        { suffix: "-chen", example: "Mädchen", gloss: { en: "girl", tr: "kız çocuk" } },
+        { suffix: "-lein", example: "Fräulein", gloss: { en: "young woman", tr: "genç kız" } },
+        { suffix: "-ment", example: "Dokument", gloss: { en: "document", tr: "belge" } },
+        { suffix: "-um", example: "Zentrum", gloss: { en: "center", tr: "merkez" } },
+        { suffix: "-ma", example: "Thema", gloss: { en: "topic", tr: "konu" } },
       ],
       rule: "Infinitives used as nouns (das Essen, das Lesen); colors (das Blau); metals (das Gold); fractions (das Drittel) are also neuter.",
       sample: {

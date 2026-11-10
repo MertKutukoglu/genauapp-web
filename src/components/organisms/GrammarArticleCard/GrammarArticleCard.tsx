@@ -76,7 +76,7 @@ export function GrammarArticleCard({
   className,
 }: GrammarArticleCardProps) {
   const color = ARTICLE_COLORS[article];
-  const { strings } = useLocale();
+  const { locale, strings } = useLocale();
 
   return (
     <div
@@ -118,25 +118,35 @@ export function GrammarArticleCard({
           border: `1px solid color-mix(in srgb, ${color} 18%, transparent)`,
         }}
       >
-        <div className="flex flex-col gap-2.5">
+        {/* Three-column grid: suffix (right-aligned), arrow, example +
+            italic gloss (left-aligned). Grid instead of flex so every
+            row lines up vertically regardless of word length — Honig
+            and Schmetterling share the same left edge. */}
+        <div
+          className="grid gap-x-3 gap-y-2.5"
+          style={{ gridTemplateColumns: "auto auto 1fr" }}
+        >
           {patterns.map((p) => (
-            <div
-              key={p.suffix}
-              className="flex items-baseline justify-center gap-2 font-sans text-[15px] leading-tight"
-            >
+            <React.Fragment key={p.suffix}>
               <span
-                className="font-semibold min-w-[56px] text-right"
+                className="font-sans font-semibold text-[15px] text-right leading-tight"
                 style={{ color }}
               >
                 {p.suffix}
               </span>
-              <span className="text-fg-faint" aria-hidden>
+              <span
+                className="font-sans text-fg-faint text-[15px] leading-tight"
+                aria-hidden
+              >
                 →
               </span>
-              <span className="font-normal text-fg min-w-[96px] text-left">
-                {p.example}
+              <span className="font-sans text-[15px] leading-tight">
+                <span className="font-normal text-fg">{p.example}</span>{" "}
+                <span className="italic text-fg-muted">
+                  {locale === "tr" ? p.gloss.tr : p.gloss.en}
+                </span>
               </span>
-            </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
