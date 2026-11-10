@@ -180,7 +180,9 @@ function LearnCardSwitch({
   }
 
   // Assembly variants: no sample / rule / Repeat per Mert's iOS reference.
-  // Auto-advance handles the deck step when the user solves the puzzle.
+  // Correct → onIKnow (card leaves the deck via the auto-advance).
+  // Incorrect → onRepeat (Continue sends the card back into the deck
+  // at a random later index, matching the Normal card's Repeat).
   return (
     <AssemblyLearnCard
       mode={variant === "scrambled" ? "scrambled" : "chunkCompose"}
@@ -192,6 +194,7 @@ function LearnCardSwitch({
       current={current}
       total={total}
       onIKnow={onIKnow}
+      onRepeat={onRepeat}
     />
   );
 }

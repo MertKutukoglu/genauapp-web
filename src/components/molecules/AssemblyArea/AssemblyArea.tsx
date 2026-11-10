@@ -46,8 +46,23 @@ export interface AssemblyAreaProps {
    * variants turn this on for desktop typists.
    */
   keyboardEnabled?: boolean;
-  /** Fires on every pick/backspace so the parent can react to completion. */
-  onChange?: (state: { assembled: string; isCorrect: boolean }) => void;
+  /**
+   * When true, picking + backspace + the keyboard listener are all
+   * disabled, and the tile pool dims slightly so the state reads as
+   * "committed". The parent uses this to freeze the puzzle while
+   * AnswerFeedback is mounted.
+   */
+  locked?: boolean;
+  /**
+   * Fires on every pick/backspace. `isFull` marks the moment the user
+   * has placed every piece; the parent uses this to decide when to
+   * surface correct/incorrect feedback.
+   */
+  onChange?: (state: {
+    assembled: string;
+    isCorrect: boolean;
+    isFull: boolean;
+  }) => void;
   className?: string;
 }
 
@@ -71,6 +86,7 @@ export function AssemblyArea({
   pieces,
   seed,
   keyboardEnabled = false,
+  locked = false,
   onChange,
   className,
 }: AssemblyAreaProps) {
@@ -100,29 +116,32 @@ export function AssemblyArea({
   const isFull = picked.length === pieces.length;
 
   React.useEffect(() => {
-    onChange?.({ assembled, isCorrect });
-  }, [assembled, isCorrect, onChange]);
+    onChange?.({ assembled, isCorrect, isFull });
+  }, [assembled, isCorrect, isFull, onChange]);
 
   const pickTile = React.useCallback(
     (idx: number) => {
+      if (locked) return;
       setPicked((p) => {
         if (p.length >= pieces.length) return p;
         if (p.includes(idx)) return p;
         return [...p, idx];
       });
     },
-    [pieces.length],
+    [pieces.length, locked],
   );
 
   const backspace = React.useCallback(() => {
+    if (locked) return;
     setPicked((p) => (p.length === 0 ? p : p.slice(0, -1)));
-  }, []);
+  }, [locked]);
 
   // Desktop keyboard support (Scrambled only). Each un-picked tile
   // whose piece matches the typed key becomes available; the first
   // one found gets picked.
   React.useEffect(() => {
     if (!keyboardEnabled) return;
+    if (locked) return;
     if (typeof window === "undefined") return;
 
     const onKey = (e: KeyboardEvent) => {
@@ -156,7 +175,7 @@ export function AssemblyArea({
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [keyboardEnabled, picked, pool, pickTile, backspace]);
+  }, [keyboardEnabled, locked, picked, pool, pickTile, backspace]);
 
   const slotColor = isCorrect ? "var(--ok)" : "var(--fg)";
 
@@ -206,8 +225,15 @@ export function AssemblyArea({
         })}
       </div>
 
-      {/* Tile pool + backspace. */}
-      <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-full">
+      {/* Tile pool + backspace. Dims when locked so the committed
+          state reads clearly while AnswerFeedback is up. */}
+      <div
+        className={clsx(
+          "flex flex-wrap items-center justify-center gap-2.5 max-w-full",
+          "transition-opacity duration-200",
+          locked && "opacity-40 pointer-events-none",
+        )}
+      >
         {pool.map(({ piece, idx }) => {
           const used = picked.includes(idx);
           return (

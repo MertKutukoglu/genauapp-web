@@ -5,6 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { SpeakerButton } from "@/components/atoms/SpeakerButton/SpeakerButton";
 import { AssemblyArea } from "@/components/molecules/AssemblyArea/AssemblyArea";
+import { AnswerFeedback } from "@/components/molecules/AnswerFeedback/AnswerFeedback";
 import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
 
 /**
@@ -20,10 +21,15 @@ import type { ArticleColor } from "@/components/molecules/WordSection/WordSectio
  *   3. Big bold English hero with inline speaker (hears the German)
  *   4. AssemblyArea — thin-dash slots + tile pool + backspace
  *
- * No sample. No rule. No Repeat / I know buttons. This variant exists
- * to test recall mechanically — the completion is the signal. When
- * the user assembles the target, the card auto-advances via onIKnow
- * after a short beat so they see the finished word first.
+ * No sample. No rule. No user-driven Repeat / I know buttons — the
+ * attempt itself is the signal:
+ *   • Correct attempt → brief green "Correct" flash → auto-advance
+ *     via onIKnow after `advanceDelay` so the deck shrinks.
+ *   • Incorrect attempt (every slot filled but doesn't match) → red
+ *     AnswerFeedback with the correct word revealed + speaker + a
+ *     Continue button that fires onRepeat, so the card goes back
+ *     into the deck for a later retry. Tiles lock while feedback
+ *     is up so backspace can't partially unwind the attempt.
  */
 
 export type AssemblyMode = "scrambled" | "chunkCompose";
@@ -46,6 +52,12 @@ export interface AssemblyLearnCardProps {
    * + deck flow without the parent caring which variant ran.
    */
   onIKnow?: () => void;
+  /**
+   * Fired when the user commits an incorrect attempt and hits
+   * Continue on the AnswerFeedback card. Maps to the Normal card's
+   * Repeat action: the word stays in the deck for a later retry.
+   */
+  onRepeat?: () => void;
   /** Delay before auto-advance, in ms. Defaults to 900ms. */
   advanceDelay?: number;
   className?: string;
@@ -66,6 +78,7 @@ export function AssemblyLearnCard({
   current,
   total,
   onIKnow,
+  onRepeat,
   advanceDelay = 900,
   className,
 }: AssemblyLearnCardProps) {
@@ -77,18 +90,33 @@ export function AssemblyLearnCard({
     [mode, chunks, word],
   );
 
-  const [isCorrect, setIsCorrect] = React.useState(false);
+  // One state flips between "none", "correct" (brief flash), and
+  // "incorrect" (persistent reveal). The transition from the
+  // AssemblyArea's isFull signal decides which branch to take.
+  const [feedback, setFeedback] = React.useState<"correct" | "incorrect" | null>(
+    null,
+  );
   const speakText = article ? `${article} ${word}` : word;
+  const displayAnswer = article ? `${article} ${word}` : word;
 
-  // Auto-advance: once the user assembles correctly, give them a beat
-  // to see the complete word, then fire onIKnow so the parent advances.
+  const onAreaChange = React.useCallback(
+    (s: { assembled: string; isCorrect: boolean; isFull: boolean }) => {
+      if (feedback !== null) return; // already committed, ignore late noise
+      if (!s.isFull) return; // still mid-assembly
+      setFeedback(s.isCorrect ? "correct" : "incorrect");
+    },
+    [feedback],
+  );
+
+  // Correct path: auto-advance after a short beat so the user sees
+  // the finished word in situ.
   React.useEffect(() => {
-    if (!isCorrect) return;
+    if (feedback !== "correct") return;
     const t = window.setTimeout(() => {
       onIKnow?.();
     }, advanceDelay);
     return () => window.clearTimeout(t);
-  }, [isCorrect, onIKnow, advanceDelay]);
+  }, [feedback, onIKnow, advanceDelay]);
 
   // Seed each mount with the word id so the scramble is stable within
   // a session but different between words.
@@ -130,8 +158,18 @@ export function AssemblyLearnCard({
         pieces={pieces}
         seed={seed}
         keyboardEnabled={mode === "scrambled"}
-        onChange={(s) => setIsCorrect(s.isCorrect)}
+        locked={feedback !== null}
+        onChange={onAreaChange}
       />
+
+      {feedback ? (
+        <AnswerFeedback
+          state={feedback}
+          correctAnswer={feedback === "incorrect" ? displayAnswer : undefined}
+          speakText={speakText}
+          onContinue={feedback === "incorrect" ? onRepeat : undefined}
+        />
+      ) : null}
     </div>
   );
 }
