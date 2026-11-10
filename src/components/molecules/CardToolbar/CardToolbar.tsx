@@ -20,8 +20,13 @@ import { CounterPill } from "@/components/atoms/CounterPill/CounterPill";
 export interface CardToolbarProps {
   /** Passed to SpeakerButton as the TTS source. */
   speakText?: string;
-  current: number;
-  total: number;
+  /**
+   * Deck-position pair. Omit both (or set either to undefined) to
+   * hide the counter pill — Reading's Read mode uses this when
+   * there's no "card N of total" concept to show.
+   */
+  current?: number;
+  total?: number;
   className?: string;
 }
 
@@ -31,10 +36,12 @@ export function CardToolbar({
   total,
   className,
 }: CardToolbarProps) {
+  const showCounter =
+    typeof current === "number" && typeof total === "number";
   return (
     <div className={clsx("flex items-center justify-between gap-3", className)}>
       <SpeakerButton text={speakText} />
-      <CounterPill current={current} total={total} />
+      {showCounter ? <CounterPill current={current} total={total} /> : null}
     </div>
   );
 }

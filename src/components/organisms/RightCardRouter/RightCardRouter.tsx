@@ -7,9 +7,12 @@ import { RightCardPlaceholder } from "@/components/molecules/RightCardPlaceholde
 import { WordsChip } from "@/components/organisms/WordsChip/WordsChip";
 import { GrammarChip } from "@/components/organisms/GrammarChip/GrammarChip";
 import { SentenceChip } from "@/components/organisms/SentenceChip/SentenceChip";
+import { ReadingChip } from "@/components/organisms/ReadingChip/ReadingChip";
+import { WorkoutCompleteFlow } from "@/components/organisms/WorkoutCompleteFlow/WorkoutCompleteFlow";
 import { WORDS_A1 } from "@/content/words-a1";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
+import { READING_A1 } from "@/content/reading-a1";
 
 /**
  * RightCardRouter — resolves `chipStore.selected` to the right-column
@@ -40,6 +43,7 @@ export interface RightCardRouterProps {
 
 export function RightCardRouter({ className }: RightCardRouterProps) {
   const selected = useChipStore((s) => s.selected);
+  const showSummary = useChipStore((s) => s.showSummary);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Smooth-scroll the right card into view on mobile when a chip opens.
@@ -84,12 +88,16 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
       )}
       style={{ scrollMarginTop: 84 }}
     >
-      {selected === "words" ? (
+      {showSummary ? (
+        <WorkoutCompleteFlow className="lg:flex-1 lg:h-full" />
+      ) : selected === "words" ? (
         <WordsChip words={WORDS_A1} className="lg:flex-1 lg:h-full" />
       ) : selected === "grammar" ? (
         <GrammarChip items={GRAMMAR_A1} className="lg:flex-1 lg:h-full" />
       ) : selected === "sentence" ? (
         <SentenceChip items={SENTENCE_A1} className="lg:flex-1 lg:h-full" />
+      ) : selected === "reading" ? (
+        <ReadingChip content={READING_A1} className="lg:flex-1 lg:h-full" />
       ) : (
         <RightCardPlaceholder
           selectedChip={selected}

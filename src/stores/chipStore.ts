@@ -53,11 +53,29 @@ export interface ChipStore {
   progress: Record<ChipId, ChipState>;
   /** Which chip the right card is showing; null when nothing is open. */
   selected: ChipId | null;
+  /**
+   * `true` once the user taps "See workout summary →" on the all-done
+   * ExerciseCompletion. Not persisted — the summary is a one-time flow
+   * per session, we don't want returning visitors to land on the
+   * summary screen without context.
+   */
+  showSummary: boolean;
+  /**
+   * Running first-try stats across the 4-chip workout. Each chip's
+   * ExerciseDeck pushes its own correct + total into `addStats` when
+   * the deck empties. The Summary screen reads these numbers in the
+   * "N / T first-try" tile. Not persisted — the stats pair starts
+   * fresh on every refresh.
+   */
+  workoutStats: { correct: number; total: number };
   setLevel: (level: CEFRLevel) => void;
   clearLevel: () => void;
   openChip: (id: ChipId) => void;
   completeChip: (id: ChipId) => void;
   closeChip: () => void;
+  openSummary: () => void;
+  closeSummary: () => void;
+  addStats: (payload: { correct: number; total: number }) => void;
   resetAll: () => void;
 }
 
@@ -109,6 +127,8 @@ export const useChipStore = create<ChipStore>()(
       selectedLevel: null,
       progress: INITIAL_PROGRESS,
       selected: null,
+      showSummary: false,
+      workoutStats: { correct: 0, total: 0 },
       setLevel: (level) => {
         set({ selectedLevel: level });
         if (typeof window !== "undefined") {
@@ -135,11 +155,31 @@ export const useChipStore = create<ChipStore>()(
           progress: { ...s.progress, [id]: "done" },
         })),
       closeChip: () => set({ selected: null }),
+      openSummary: () => {
+        set({ showSummary: true });
+        if (typeof window !== "undefined") {
+          try {
+            window.__track?.("demo_workout_summary_shown");
+          } catch {
+            /* no-op */
+          }
+        }
+      },
+      closeSummary: () => set({ showSummary: false }),
+      addStats: ({ correct, total }) =>
+        set((s) => ({
+          workoutStats: {
+            correct: s.workoutStats.correct + correct,
+            total: s.workoutStats.total + total,
+          },
+        })),
       resetAll: () =>
         set({
           selectedLevel: null,
           progress: { ...INITIAL_PROGRESS },
           selected: null,
+          showSummary: false,
+          workoutStats: { correct: 0, total: 0 },
         }),
     }),
     {

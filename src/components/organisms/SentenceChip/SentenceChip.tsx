@@ -11,6 +11,7 @@ import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { workoutCopy } from "@/lib/workout/strings";
 import {
   localizeSentence,
   sentenceLearnAnchors,
@@ -251,6 +252,10 @@ function ExerciseDeck({ items }: { items: SentenceQuestion[] }) {
   const completeChip = useChipStore((s) => s.completeChip);
   const chipProgress = useChipStore((s) => s.progress);
   const openChip = useChipStore((s) => s.openChip);
+  const addStats = useChipStore((s) => s.addStats);
+  const openSummary = useChipStore((s) => s.openSummary);
+  const { locale } = useLocale();
+  const summaryOpenLabel = workoutCopy(locale).openSummaryCta;
 
   const nextWorkout = React.useMemo(() => {
     const chipOrder: Array<{ id: ChipId; label: string }> = [
@@ -289,6 +294,7 @@ function ExerciseDeck({ items }: { items: SentenceQuestion[] }) {
     });
     setSessionDeltas(d);
     stageSkillDeltas(d);
+    addStats({ correct: correctCount, total: deckSize });
     completeChip("sentence");
 
     try {
@@ -304,7 +310,7 @@ function ExerciseDeck({ items }: { items: SentenceQuestion[] }) {
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip, addStats]);
 
   if (done) {
     return (
@@ -319,6 +325,11 @@ function ExerciseDeck({ items }: { items: SentenceQuestion[] }) {
                 label: nextWorkout.label,
                 onContinue: () => openChip(nextWorkout.id),
               }
+            : undefined
+        }
+        summaryCta={
+          !nextWorkout
+            ? { label: summaryOpenLabel, onContinue: openSummary }
             : undefined
         }
       />

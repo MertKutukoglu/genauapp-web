@@ -25,12 +25,24 @@ export type WordsMode = "learn" | "exercise";
 export interface ModeToggleProps {
   mode: WordsMode;
   onChange?: (mode: WordsMode) => void;
+  /**
+   * Per-key label override. Reading uses `{ learn: "Read" / "Oku" }`
+   * so the left tab reads "Read" instead of "Learn" without renaming
+   * the internal `WordsMode` union. When omitted the toggle uses the
+   * default `strings.try.mode` copy for the current locale.
+   */
+  labels?: Partial<Record<WordsMode, string>>;
   className?: string;
 }
 
 const MODES: WordsMode[] = ["learn", "exercise"];
 
-export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
+export function ModeToggle({
+  mode,
+  onChange,
+  labels,
+  className,
+}: ModeToggleProps) {
   const { strings } = useLocale();
   const modeLabel = strings.try.mode;
   return (
@@ -66,7 +78,7 @@ export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
               "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
             )}
           >
-            {modeLabel[m]}
+            {labels?.[m] ?? modeLabel[m]}
           </button>
         );
       })}

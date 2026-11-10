@@ -86,6 +86,16 @@ export interface ExerciseCompletionProps {
     label: string;
     onContinue: () => void;
   };
+  /**
+   * Alternate CTA shown INSTEAD OF `nextWorkout` — used when the
+   * whole workout cycle is done (all 4 chips completed) and the next
+   * step is the demo-complete summary flow rather than another chip.
+   * Takes precedence over `nextWorkout` when present.
+   */
+  summaryCta?: {
+    label: string;
+    onContinue: () => void;
+  };
   className?: string;
 }
 
@@ -95,6 +105,7 @@ export function ExerciseCompletion({
   total,
   deltas,
   nextWorkout,
+  summaryCta,
   className,
 }: ExerciseCompletionProps) {
   const { strings } = useLocale();
@@ -158,7 +169,22 @@ export function ExerciseCompletion({
         </div>
       ) : null}
 
-      {nextWorkout ? (
+      {summaryCta ? (
+        <button
+          type="button"
+          onClick={summaryCta.onContinue}
+          className={clsx(
+            "mt-2 inline-flex items-center justify-center gap-2",
+            "h-[52px] px-8 rounded-2xl",
+            "bg-accent text-white font-sans font-bold text-base",
+            "transition hover:brightness-110 active:translate-y-px",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+          )}
+        >
+          {summaryCta.label}
+        </button>
+      ) : nextWorkout ? (
         <button
           type="button"
           onClick={nextWorkout.onContinue}
