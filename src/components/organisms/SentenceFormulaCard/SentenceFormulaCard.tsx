@@ -102,6 +102,7 @@ export function SentenceFormulaCard({
           <RolePill
             key={`${p.text}-${i}`}
             text={p.text}
+            translation={p.translation}
             caption={p.caption}
             role={p.role}
           />

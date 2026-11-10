@@ -23,9 +23,9 @@ export const Hauptsatz: Story = {
     headline: "Hauptsatz",
     english: "Main clause (Subject · Verb · Object)",
     parts: [
-      { text: "Subjekt", caption: "Position 1", role: "subject" },
-      { text: "Verb", caption: "Position 2", role: "verb" },
-      { text: "Objekt", caption: "Rest", role: "object" },
+      { text: "Subjekt", translation: "Subject", caption: "Position 1", role: "subject" },
+      { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+      { text: "Objekt", translation: "Object", caption: "Rest", role: "object" },
     ],
     examples: [
       {
@@ -56,10 +56,10 @@ export const Zeitangabe: Story = {
     headline: "Zeitangabe",
     english: "Time expression (S · V · Time · Rest)",
     parts: [
-      { text: "Subjekt", caption: "Who", role: "subject" },
-      { text: "Verb", caption: "Position 2", role: "verb" },
-      { text: "Zeit", caption: "When", role: "time" },
-      { text: "Rest", caption: "What / Where", role: "object" },
+      { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+      { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+      { text: "Zeit", translation: "Time", caption: "When", role: "time" },
+      { text: "Rest", translation: "Rest", caption: "What / Where", role: "object" },
     ],
     examples: [
       {
@@ -92,9 +92,14 @@ export const Possessivartikel: Story = {
     headline: "Possessivartikel",
     english: "Possessive before the noun",
     parts: [
-      { text: "Subjekt", caption: "Who", role: "subject" },
-      { text: "Verb", caption: "Position 2", role: "verb" },
-      { text: "Possessiv +\nNomen", caption: "Who's", role: "object" },
+      { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+      { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+      {
+        text: "Possessiv +\nNomen",
+        translation: "Possessive +\nNoun",
+        caption: "Who's",
+        role: "object",
+      },
     ],
     examples: [
       {
@@ -125,9 +130,9 @@ export const WFrage: Story = {
     headline: "W-Frage",
     english: "Question with a W-word (W · Verb · Subject)",
     parts: [
-      { text: "W-Wort", caption: "wo / was / wer", role: "qword" },
-      { text: "Verb", caption: "Position 2", role: "verb" },
-      { text: "Subjekt", caption: "Who", role: "subject" },
+      { text: "W-Wort", translation: "Question word", caption: "wo / was / wer", role: "qword" },
+      { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+      { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
     ],
     examples: [
       {

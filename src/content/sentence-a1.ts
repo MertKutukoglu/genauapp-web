@@ -37,6 +37,11 @@ export interface FormulaPart {
    *  German across locales (Subjekt, Verb, Objekt, …). May embed a
    *  literal "\n" for a two-line label ("Possessiv +\nNomen"). */
   text: string;
+  /** English translation of `text`, rendered muted under the German
+   *  label so learners always see the German name of the role AND
+   *  what it means. Preserves embedded `\n` the same way `text`
+   *  does. Localized via `partTranslations` in the overlay. */
+  translation: string;
   /** Short helper line under the role. Localized via overlay. */
   caption: string;
   role: SentenceRole;
@@ -85,6 +90,10 @@ export interface SentenceLocaleOverlay {
     body?: string;
     /** Translated pill captions, same index order as parts. */
     partCaptions?: string[];
+    /** Translated role names (Subject → Özne, Verb → Fiil, …),
+     *  rendered muted between the German text and the caption. Same
+     *  index order as parts. `\n` preserved for two-line labels. */
+    partTranslations?: string[];
     /** Translated example EN glosses, same index order as examples. */
     exampleEns?: string[];
   };
@@ -112,9 +121,9 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "Hauptsatz",
       english: "Main clause (Subject · Verb · Object)",
       parts: [
-        { text: "Subjekt", caption: "Position 1", role: "subject" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Objekt", caption: "Rest", role: "object" },
+        { text: "Subjekt", translation: "Subject", caption: "Position 1", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "Objekt", translation: "Object", caption: "Rest", role: "object" },
       ],
       examples: [
         {
@@ -141,6 +150,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "Ana cümle (Özne · Fiil · Nesne)",
         partCaptions: ["Pozisyon 1", "Pozisyon 2", "Geri kalan"],
+        partTranslations: ["Özne", "Fiil", "Nesne"],
         exampleEns: ["Ekmek yiyorum.", "Almanca öğreniyoruz."],
         body: "Almancanın iskeleti: **Özne, Fiil, Nesne**. Fiil her zaman 2. pozisyondadır.",
       },
@@ -156,9 +166,9 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "Ortsangabe",
       english: "Place expression (Subject · Verb · Place)",
       parts: [
-        { text: "Subjekt", caption: "Who", role: "subject" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Ort", caption: "Where", role: "place" },
+        { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "Ort", translation: "Place", caption: "Where", role: "place" },
       ],
       examples: [
         {
@@ -185,6 +195,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "Yer bildirimi (Özne · Fiil · Yer)",
         partCaptions: ["Kim", "Pozisyon 2", "Nerede"],
+        partTranslations: ["Özne", "Fiil", "Yer"],
         exampleEns: ["Berlin'de yaşıyoruz.", "Ofiste çalışıyor."],
         body: "Bir yer ekle: **in Berlin**, **zu Hause**, **im Büro**. Fiil yine 2. pozisyonda kalır.",
       },
@@ -200,9 +211,14 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "Possessivartikel",
       english: "Possessive before the noun",
       parts: [
-        { text: "Subjekt", caption: "Who", role: "subject" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Possessiv +\nNomen", caption: "Who's", role: "object" },
+        { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        {
+          text: "Possessiv +\nNomen",
+          translation: "Possessive +\nNoun",
+          caption: "Who's",
+          role: "object",
+        },
       ],
       examples: [
         {
@@ -229,6 +245,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "İsimden önce iyelik sıfatı",
         partCaptions: ["Kim", "Pozisyon 2", "Kiminki"],
+        partTranslations: ["Özne", "Fiil", "İyelik +\nİsim"],
         exampleEns: ["O erkek kardeşim.", "Bu senin kedin."],
         body: "İyelik sıfatları isimden önce gelir: **mein** Bruder, **dein** Buch, **ihr** Hund. İsmin cinsine göre değişir.",
       },
@@ -244,10 +261,10 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "Zeitangabe",
       english: "Time expression (S · V · Time · Rest)",
       parts: [
-        { text: "Subjekt", caption: "Who", role: "subject" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Zeit", caption: "When", role: "time" },
-        { text: "Rest", caption: "What / Where", role: "object" },
+        { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "Zeit", translation: "Time", caption: "When", role: "time" },
+        { text: "Rest", translation: "Rest", caption: "What / Where", role: "object" },
       ],
       examples: [
         {
@@ -276,6 +293,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "Zaman bildirimi (Ö · F · Zaman · Geri kalan)",
         partCaptions: ["Kim", "Pozisyon 2", "Ne zaman", "Ne / Nerede"],
+        partTranslations: ["Özne", "Fiil", "Zaman", "Geri kalan"],
         exampleEns: ["Bugün ekmek alıyorum.", "Yarın Köln'e gidiyoruz."],
         body: "**heute** (bugün), **morgen** (yarın), **oft** (sık sık) gibi zaman zarfları fiilin hemen arkasına gelir. Ö, F, Zaman, Geri kalan.",
       },
@@ -291,9 +309,9 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "Richtung",
       english: "Direction uses accusative",
       parts: [
-        { text: "Subjekt", caption: "Who", role: "subject" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Ziel", caption: "To where", role: "place" },
+        { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "Ziel", translation: "Destination", caption: "To where", role: "place" },
       ],
       examples: [
         {
@@ -320,6 +338,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "Yön akkusatif ister",
         partCaptions: ["Kim", "Pozisyon 2", "Nereye"],
+        partTranslations: ["Özne", "Fiil", "Hedef"],
         exampleEns: ["Okula gidiyor.", "Şehre gidiyorum."],
         body: "Bir yere doğru hareket akkusatif alır: **in die Schule**, **auf den Tisch**. Konumla karşılaştır (`in der Schule` = okulda).",
       },
@@ -335,9 +354,9 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       headline: "W-Frage",
       english: "Question with a W-word (W · Verb · Subject)",
       parts: [
-        { text: "W-Wort", caption: "wo / was / wer", role: "qword" },
-        { text: "Verb", caption: "Position 2", role: "verb" },
-        { text: "Subjekt", caption: "Who", role: "subject" },
+        { text: "W-Wort", translation: "Question word", caption: "wo / was / wer", role: "qword" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "Subjekt", translation: "Subject", caption: "Who", role: "subject" },
       ],
       examples: [
         {
@@ -364,6 +383,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       learn: {
         english: "W-kelimesiyle soru (W · Fiil · Özne)",
         partCaptions: ["wo / was / wer", "Pozisyon 2", "Kim"],
+        partTranslations: ["Soru sözcüğü", "Fiil", "Özne"],
         exampleEns: ["Nerede yaşıyorsun?", "Ne yiyor?"],
         body: "**wo / was / wer / wann / warum / wie** ile sorularda W-kelimesi başta, fiil ikinci, sonra özne gelir. Fiil yine 2. pozisyondadır.",
       },
@@ -431,11 +451,18 @@ export function localizeSentence(
   if (item.learn) {
     const learn = item.learn;
     const trLearn = tr.learn ?? {};
+    // Captions and role translations both index-map onto parts. Apply
+    // both in one pass so we don't walk the array twice.
+    const hasCaptions =
+      !!trLearn.partCaptions && trLearn.partCaptions.length > 0;
+    const hasTranslations =
+      !!trLearn.partTranslations && trLearn.partTranslations.length > 0;
     const parts =
-      trLearn.partCaptions && trLearn.partCaptions.length > 0
+      hasCaptions || hasTranslations
         ? learn.parts.map((p, i) => ({
             ...p,
             caption: trLearn.partCaptions?.[i] ?? p.caption,
+            translation: trLearn.partTranslations?.[i] ?? p.translation,
           }))
         : learn.parts;
     const examples =

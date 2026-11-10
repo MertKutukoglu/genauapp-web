@@ -23,13 +23,28 @@ import type { SentenceRole } from "@/content/sentence-a1";
  */
 
 export interface RolePillProps {
+  /** German role label (Subjekt, Verb, …). Bold in the role color. */
   text: string;
+  /**
+   * Translation of `text` in the viewer's locale (English on /try,
+   * Turkish on /tr/try). Rendered one typographic step down from
+   * `text` so the learner can anchor the German grammar term to a
+   * word they already know. Preserves embedded `\n` the same way
+   * `text` does — the Possessiv + Nomen pill breaks both lines.
+   */
+  translation?: string;
   caption: string;
   role: SentenceRole;
   className?: string;
 }
 
-export function RolePill({ text, caption, role, className }: RolePillProps) {
+export function RolePill({
+  text,
+  translation,
+  caption,
+  role,
+  className,
+}: RolePillProps) {
   const color = ROLE_COLORS[role];
   return (
     <div
@@ -49,6 +64,11 @@ export function RolePill({ text, caption, role, className }: RolePillProps) {
       >
         {text}
       </div>
+      {translation ? (
+        <div className="font-sans font-normal text-[13px] text-fg leading-tight whitespace-pre-line">
+          {translation}
+        </div>
+      ) : null}
       <div
         className="font-sans font-normal text-[11px] text-fg-muted leading-tight"
         style={{ letterSpacing: "0.3px" }}

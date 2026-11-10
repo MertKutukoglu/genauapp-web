@@ -19,26 +19,27 @@ export default meta;
 type Story = StoryObj<typeof RolePill>;
 
 export const Subject: Story = {
-  args: { text: "Subjekt", caption: "Position 1", role: "subject" },
+  args: { text: "Subjekt", translation: "Subject", caption: "Position 1", role: "subject" },
 };
 export const Verb: Story = {
-  args: { text: "Verb", caption: "Position 2", role: "verb" },
+  args: { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
 };
 export const Object_: Story = {
-  args: { text: "Objekt", caption: "Rest", role: "object" },
+  args: { text: "Objekt", translation: "Object", caption: "Rest", role: "object" },
 };
 export const Time: Story = {
-  args: { text: "Zeit", caption: "When", role: "time" },
+  args: { text: "Zeit", translation: "Time", caption: "When", role: "time" },
 };
 export const Place: Story = {
-  args: { text: "Ort", caption: "Where", role: "place" },
+  args: { text: "Ort", translation: "Place", caption: "Where", role: "place" },
 };
 export const Qword: Story = {
-  args: { text: "W-Wort", caption: "wo / was / wer", role: "qword" },
+  args: { text: "W-Wort", translation: "Question word", caption: "wo / was / wer", role: "qword" },
 };
 export const TwoLineLabel: Story = {
   args: {
     text: "Possessiv +\nNomen",
+    translation: "Possessive +\nNoun",
     caption: "Who's",
     role: "object",
   },
@@ -46,8 +47,16 @@ export const TwoLineLabel: Story = {
     docs: {
       description: {
         story:
-          "The Possessivartikel formula wraps its object label over two lines. `whitespace-pre-line` renders the embedded newline.",
+          "The Possessivartikel formula wraps its object label over two lines. `whitespace-pre-line` renders the embedded newline — same treatment for the translation.",
       },
     },
+  },
+};
+export const Turkish: Story = {
+  args: {
+    text: "Subjekt",
+    translation: "Özne",
+    caption: "Pozisyon 1",
+    role: "subject",
   },
 };
