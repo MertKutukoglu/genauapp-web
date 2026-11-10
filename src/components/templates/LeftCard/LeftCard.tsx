@@ -7,6 +7,7 @@ import { SkillStrip } from "@/components/molecules/SkillStrip/SkillStrip";
 import { ChipList } from "@/components/organisms/ChipList/ChipList";
 import { useChipStore } from "@/stores/chipStore";
 import { useSkillStore } from "@/stores/skillStore";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * LeftCard — the /try/ page's sticky left column.
@@ -43,6 +44,8 @@ export interface LeftCardProps {
 }
 
 export function LeftCard({ skillStrip, className }: LeftCardProps) {
+  const { strings } = useLocale();
+  const t = strings.try.leftCard;
   const doneCount = useChipStore((s) =>
     Object.values(s.progress).filter((v) => v === "done").length,
   );
@@ -78,7 +81,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
 
   return (
     <aside
-      aria-label="Your workout"
+      aria-label={t.title}
       className={clsx(
         // Frame
         "bg-surface-card border border-border rounded-[22px] p-5",
@@ -96,14 +99,14 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
             "text-fg m-0",
           )}
         >
-          Your workout
+          {t.title}
         </h2>
         <WorkoutCounter count={doneCount} total={4} />
       </header>
 
       {/* Subtitle */}
       <p className="mt-2 mb-3.5 font-sans text-[13px] leading-normal text-fg-muted">
-        Four workouts, five questions each. Tap any to begin, all four are open.
+        {t.subtitle}
       </p>
 
       {/* Skill strip — spec §8 placement: between subtitle and chip list,

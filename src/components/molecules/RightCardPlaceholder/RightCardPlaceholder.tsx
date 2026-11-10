@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ChipId } from "@/stores/chipStore";
 
 /**
@@ -22,13 +23,6 @@ import type { ChipId } from "@/stores/chipStore";
  * 20 padding, soft bottom shadow) so the two cards read as a pair.
  */
 
-const CHIP_LABEL: Record<ChipId, string> = {
-  words: "Words",
-  grammar: "Grammar",
-  sentence: "Sentence",
-  reading: "Reading",
-};
-
 export interface RightCardPlaceholderProps {
   /**
    * When set, the copy flips to "`<chip>` is being wired up" instead
@@ -42,6 +36,9 @@ export function RightCardPlaceholder({
   selectedChip,
   className,
 }: RightCardPlaceholderProps) {
+  const { strings } = useLocale();
+  const t = strings.try.rightPlaceholder;
+  const chipTitles = strings.try.leftCard.chips;
   const isStub = Boolean(selectedChip);
 
   return (
@@ -88,13 +85,11 @@ export function RightCardPlaceholder({
           )}
         >
           {isStub && selectedChip
-            ? `${CHIP_LABEL[selectedChip]} is being wired up.`
-            : "Pick a workout to begin."}
+            ? t.stubHeading.replace("{chip}", chipTitles[selectedChip].title)
+            : t.idleHeading}
         </h2>
         <p className="font-sans text-[14px] leading-relaxed text-fg-muted m-0">
-          {isStub
-            ? "Pick a different workout on the left — we'll have this one running soon."
-            : "Tap any of the four on the left. You'll see a real session land here."}
+          {isStub ? t.stubBody : t.idleBody}
         </p>
       </div>
     </section>

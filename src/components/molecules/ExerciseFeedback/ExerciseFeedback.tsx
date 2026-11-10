@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * ExerciseFeedback — correct/incorrect result card for every Exercise
@@ -67,11 +68,14 @@ export function ExerciseFeedback({
   state,
   explanation,
   onNext,
-  nextLabel = "Next →",
+  nextLabel,
   className,
 }: ExerciseFeedbackProps) {
+  const { strings } = useLocale();
+  const t = strings.try.exerciseFeedback;
   const isCorrect = state === "correct";
   const toneVar = isCorrect ? "var(--ok)" : "var(--accent)";
+  const resolvedNext = nextLabel ?? t.nextLabel;
 
   return (
     <div
@@ -91,7 +95,7 @@ export function ExerciseFeedback({
         style={{ color: toneVar }}
       >
         {isCorrect ? CORRECT_ICON : INCORRECT_ICON}
-        <span>{isCorrect ? "Correct" : "Incorrect"}</span>
+        <span>{isCorrect ? t.correct : t.incorrect}</span>
       </div>
 
       {explanation ? (
@@ -118,7 +122,7 @@ export function ExerciseFeedback({
           background: "transparent",
         }}
       >
-        {nextLabel}
+        {resolvedNext}
       </button>
     </div>
   );

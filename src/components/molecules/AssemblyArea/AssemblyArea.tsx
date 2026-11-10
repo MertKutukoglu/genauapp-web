@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * AssemblyArea — shared tile-puzzle mechanic for the Scrambled +
@@ -109,6 +110,8 @@ export function AssemblyArea({
   onChange,
   className,
 }: AssemblyAreaProps) {
+  const { strings } = useLocale();
+  const assemblyAreaCopy = strings.try.assemblyArea;
   const piecesKey = pieces.join("|");
   // target = gap-free join, used for correctness + the pool.
   // display = visual target with its spaces preserved for the slot row.
@@ -312,7 +315,7 @@ export function AssemblyArea({
           type="button"
           onClick={backspace}
           disabled={picked.length === 0}
-          aria-label="Remove last letter"
+          aria-label={assemblyAreaCopy.removeLast}
           title={keyboardEnabled ? "Backspace" : undefined}
           className={clsx(
             "min-w-[52px] h-[56px] px-5 rounded-2xl",
@@ -345,7 +348,7 @@ export function AssemblyArea({
 
       {keyboardEnabled ? (
         <p className="font-sans text-[11px] text-fg-faint tracking-wide uppercase">
-          Type on your keyboard · Backspace to undo
+          {assemblyAreaCopy.keyboardHint}
         </p>
       ) : null}
     </div>

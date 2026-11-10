@@ -4,6 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/ExerciseFeedback";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * ExerciseTyping — type the German word for the English prompt.
@@ -55,7 +56,7 @@ export interface ExerciseTypingProps {
 export function ExerciseTyping({
   prompt,
   answer,
-  placeholder = "Type in German…",
+  placeholder,
   speakText,
   explanation,
   current,
@@ -63,6 +64,9 @@ export function ExerciseTyping({
   onNext,
   className,
 }: ExerciseTypingProps) {
+  const { strings } = useLocale();
+  const t = strings.try.typing;
+  const resolvedPlaceholder = placeholder ?? t.placeholder;
   const [value, setValue] = React.useState("");
   const [commit, setCommit] = React.useState<null | { correct: boolean }>(null);
 
@@ -129,7 +133,7 @@ export function ExerciseTyping({
 
       <div className="flex flex-col items-center gap-1 text-center -mt-1">
         <div className="font-sans text-[15px] text-fg-muted leading-tight">
-          Translate to German
+          {t.eyebrow}
         </div>
         <div className="font-sans font-bold text-[32px] text-fg leading-tight">
           {prompt}
@@ -143,7 +147,7 @@ export function ExerciseTyping({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={onKeyDown}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
@@ -180,7 +184,7 @@ export function ExerciseTyping({
           "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         )}
       >
-        Check
+        {t.checkCta}
       </button>
     </div>
   );

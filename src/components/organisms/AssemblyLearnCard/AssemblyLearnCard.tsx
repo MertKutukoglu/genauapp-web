@@ -5,6 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { AssemblyArea } from "@/components/molecules/AssemblyArea/AssemblyArea";
 import { AnswerFeedback } from "@/components/molecules/AnswerFeedback/AnswerFeedback";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
 
 /**
@@ -62,11 +63,6 @@ export interface AssemblyLearnCardProps {
   className?: string;
 }
 
-const EYEBROW_PROMPT: Record<AssemblyMode, string> = {
-  scrambled: "Type the correct translation",
-  chunkCompose: "Compose the correct word",
-};
-
 export function AssemblyLearnCard({
   mode,
   topic,
@@ -81,6 +77,13 @@ export function AssemblyLearnCard({
   advanceDelay = 900,
   className,
 }: AssemblyLearnCardProps) {
+  const { strings } = useLocale();
+  const assemblyCopy = strings.try.assemblyLearnCard;
+  const eyebrowPrompt =
+    mode === "scrambled"
+      ? assemblyCopy.promptScrambled
+      : assemblyCopy.promptChunkCompose;
+
   // Pieces + display target. When the word carries an article, the
   // article becomes part of the puzzle — scrambled treats each of
   // its letters as a tile; chunkCompose treats the article as its
@@ -155,7 +158,7 @@ export function AssemblyLearnCard({
           </div>
         ) : null}
         <div className="font-sans text-[15px] text-fg-muted leading-tight">
-          {EYEBROW_PROMPT[mode]}
+          {eyebrowPrompt}
         </div>
       </div>
 

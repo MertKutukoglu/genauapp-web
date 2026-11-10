@@ -4,6 +4,8 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SkillBadgeArt } from "@/components/atoms/SkillRing/SkillBadgeArt";
 import type { Skill } from "@/components/atoms/SkillRing/SkillRing";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import type { Strings } from "@/lib/i18n/strings";
 import type { ChipKey, SkillKey, SkillDeltas } from "@/lib/skills/map";
 
 /**
@@ -26,20 +28,6 @@ import type { ChipKey, SkillKey, SkillDeltas } from "@/lib/skills/map";
  * for a stable left-to-right read.
  */
 
-const CHIP_LABEL: Record<ChipKey, string> = {
-  words: "Words",
-  grammar: "Grammar",
-  sentence: "Sentence",
-  reading: "Reading",
-};
-
-const SKILL_LABEL: Record<SkillKey, string> = {
-  vocab: "Vocab",
-  grammar: "Grammar",
-  writing: "Writing",
-  reading: "Reading",
-};
-
 const SKILL_COLOR_VAR: Record<SkillKey, string> = {
   vocab: "var(--color-skill-vocab)",
   grammar: "var(--color-skill-grammar)",
@@ -48,21 +36,23 @@ const SKILL_COLOR_VAR: Record<SkillKey, string> = {
 };
 
 /**
- * Pick a short, honest subtitle based on the score band. The brand
- * voice avoids inflated praise: a 60% is "over the hump", not
- * "excellent!". 100% is special, 0% is acknowledged.
+ * Pick the subtitle band key from the score. Caller resolves the
+ * actual copy from the current locale's dict so bands read
+ * idiomatically in each language.
  */
-function subtitleFor(correct: number, total: number): string {
-  if (total === 0) return "Deck empty.";
-  if (correct === total) return "Clean sweep.";
-  if (correct === 0) return "Nothing landed yet.";
+type SubtitleBand = keyof Strings["try"]["exerciseCompletion"]["subtitles"];
+
+function subtitleBandFor(correct: number, total: number): SubtitleBand {
+  if (total === 0) return "empty";
+  if (correct === total) return "cleanSweep";
+  if (correct === 0) return "nothing";
   const ratio = correct / total;
-  if (ratio >= 0.9) return "Almost clean.";
-  if (ratio >= 0.75) return "Strong run.";
-  if (ratio > 0.5) return "Over the hump.";
-  if (ratio === 0.5) return "Half there.";
-  if (ratio >= 0.3) return "Getting there.";
-  return "Just started.";
+  if (ratio >= 0.9) return "almostClean";
+  if (ratio >= 0.75) return "strongRun";
+  if (ratio > 0.5) return "overTheHump";
+  if (ratio === 0.5) return "halfThere";
+  if (ratio >= 0.3) return "gettingThere";
+  return "justStarted";
 }
 
 /** Order skills by role so the primary (biggest delta) reads first. */
@@ -107,7 +97,10 @@ export function ExerciseCompletion({
   nextWorkout,
   className,
 }: ExerciseCompletionProps) {
-  const subtitle = subtitleFor(correct, total);
+  const { strings } = useLocale();
+  const t = strings.try.exerciseCompletion;
+  const chipLabel = strings.try.leftCard.chips[chip].title;
+  const subtitle = t.subtitles[subtitleBandFor(correct, total)];
   const skills = orderSkills(deltas);
 
   return (
@@ -121,7 +114,7 @@ export function ExerciseCompletion({
       )}
     >
       <div className="font-sans text-[12px] font-bold uppercase tracking-[0.18em] text-fg-faint">
-        {CHIP_LABEL[chip]} · Done
+        {chipLabel} · {t.doneSuffix}
       </div>
 
       {/* Score — correct in accent, slash + total in fg. Serif
@@ -137,8 +130,7 @@ export function ExerciseCompletion({
           {subtitle}
         </h2>
         <p className="font-sans text-[14px] text-fg-muted m-0 leading-relaxed max-w-[360px]">
-          Tap the arrows to collect your skill gains, then pick another
-          workout.
+          {t.instruction}
         </p>
       </div>
 
@@ -148,7 +140,7 @@ export function ExerciseCompletion({
           <div className="w-full flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
             <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-fg-faint">
-              You fed
+              {t.youFed}
             </span>
             <div className="flex-1 h-px bg-border" />
           </div>
@@ -158,7 +150,7 @@ export function ExerciseCompletion({
               <FedSkillBadge
                 key={s}
                 skill={s}
-                label={SKILL_LABEL[s]}
+                label={t.skillLabels[s]}
                 delta={deltas[s] ?? 0}
               />
             ))}
@@ -179,7 +171,7 @@ export function ExerciseCompletion({
             "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
           )}
         >
-          Continue with {nextWorkout.label} →
+          {t.continueWith.replace("{label}", nextWorkout.label)}
         </button>
       ) : null}
     </div>

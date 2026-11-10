@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * ModeToggle — the segmented Learn / Exercise pill that sits above
@@ -30,6 +31,8 @@ export interface ModeToggleProps {
 const MODES: WordsMode[] = ["learn", "exercise"];
 
 export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
+  const { strings } = useLocale();
+  const modeLabel = strings.try.mode;
   return (
     <div
       role="tablist"
@@ -54,7 +57,7 @@ export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
             onClick={() => onChange?.(m)}
             className={clsx(
               "flex-1 h-11 rounded-full",
-              "font-sans font-semibold text-base capitalize",
+              "font-sans font-semibold text-base",
               "transition-colors duration-200 ease-in-out",
               isActive
                 ? "bg-surface-card text-fg shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
@@ -63,7 +66,7 @@ export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
               "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
             )}
           >
-            {m}
+            {modeLabel[m]}
           </button>
         );
       })}

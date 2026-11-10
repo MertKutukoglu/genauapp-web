@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * LearnActions — the bottom row of the Learn card: `Repeat` + `I know`.
@@ -45,12 +46,14 @@ export function LearnActions({
   iKnowDisabled,
   className,
 }: LearnActionsProps) {
+  const { strings } = useLocale();
+  const actions = strings.try.learnCard.actions;
   return (
     <div className={clsx("flex gap-3", className)}>
       <ActionButton
         onClick={onRepeat}
         disabled={disabled || repeatDisabled}
-        label="Repeat"
+        label={actions.repeat}
       >
         {/* arrow.counterclockwise, 2.2 stroke */}
         <svg
@@ -70,7 +73,7 @@ export function LearnActions({
       <ActionButton
         onClick={onIKnow}
         disabled={disabled || iKnowDisabled}
-        label="I know"
+        label={actions.iKnow}
       >
         {/* thumbs-up outline, same 2.2 stroke as the Repeat icon so
             the pair reads as one visual family. Open contour by

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * LearnCompletion — the "that's the deck" moment, shown inside the
@@ -38,6 +39,8 @@ export function LearnCompletion({
   onSwitchToExercise,
   className,
 }: LearnCompletionProps) {
+  const { strings } = useLocale();
+  const t = strings.try.learnCompletion;
   return (
     <div
       className={clsx(
@@ -50,10 +53,10 @@ export function LearnCompletion({
     >
       <div className="flex flex-col gap-2">
         <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
-          Deck complete.
+          {t.heading}
         </h2>
         <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">
-          You walked the full Learn deck. Try the Exercise, or start over.
+          {t.sub}
         </p>
       </div>
 
@@ -65,7 +68,7 @@ export function LearnCompletion({
       >
         <div className="flex flex-col gap-1">
           <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            Words
+            {t.statsWords}
           </dt>
           <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
             {total}
@@ -73,7 +76,7 @@ export function LearnCompletion({
         </div>
         <div className="flex flex-col gap-1">
           <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            Repeats
+            {t.statsRepeats}
           </dt>
           <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
             {repeats}
@@ -111,7 +114,7 @@ export function LearnCompletion({
             <path d="M3 12a9 9 0 1 0 2.5-6.3" />
             <path d="M3 4v4h4" />
           </svg>
-          Start over
+          {t.startOver}
         </button>
 
         <button
@@ -127,7 +130,7 @@ export function LearnCompletion({
             "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
           )}
         >
-          Switch to Exercise →
+          {t.switchToExercise}
         </button>
       </div>
     </div>

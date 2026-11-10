@@ -6,6 +6,7 @@ import {
   LevelButton,
   type CEFRLevel,
 } from "@/components/atoms/LevelButton/LevelButton";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * LevelPicker — the gateway screen between landing and /try/.
@@ -23,38 +24,8 @@ import {
  * voice — don't edit it into something more generic.
  */
 
-interface LevelConfig {
-  level: CEFRLevel;
-  label: string;
-  description: string;
-}
-
-const LEVELS: LevelConfig[] = [
-  {
-    level: "A1",
-    label: "Starting out.",
-    description:
-      "Basic verbs, articles, days and meals. If you can say your name in German, this is for you.",
-  },
-  {
-    level: "A2",
-    label: "Building routines.",
-    description:
-      "Past tense, weil/dass, reflexive verbs. You can describe your week, read a short note.",
-  },
-  {
-    level: "B1",
-    label: "Holding your own.",
-    description:
-      "Opinions, hypotheticals, longer stories. You can argue, explain, read articles.",
-  },
-  {
-    level: "B2",
-    label: "Getting fluent.",
-    description:
-      "Idioms, nuance, abstract topics. You could run a meeting in German if you had to.",
-  },
-];
+type OfferedLevel = Extract<CEFRLevel, "A1" | "A2" | "B1" | "B2">;
+const LEVEL_ORDER: OfferedLevel[] = ["A1", "A2", "B1", "B2"];
 
 export interface LevelPickerProps {
   /** Currently-chosen level; drives the selected ring on that card. */
@@ -69,9 +40,11 @@ export function LevelPicker({
   onSelect,
   className,
 }: LevelPickerProps) {
+  const { strings } = useLocale();
+  const t = strings.try.levelPicker;
   return (
     <section
-      aria-label="Pick your level"
+      aria-label={t.heading}
       className={clsx(
         "mx-auto w-full max-w-[1040px]",
         "px-6 py-14 md:py-20",
@@ -85,7 +58,7 @@ export function LevelPicker({
             "text-accent mb-3",
           )}
         >
-          Try it in your browser
+          {t.eyebrow}
         </p>
         <h1
           className={clsx(
@@ -94,7 +67,7 @@ export function LevelPicker({
             "max-w-[720px] mx-auto",
           )}
         >
-          Where are you with German?
+          {t.heading}
         </h1>
         <p
           className={clsx(
@@ -102,8 +75,7 @@ export function LevelPicker({
             "max-w-[520px] mx-auto leading-relaxed",
           )}
         >
-          Pick your level. The five-minute demo tunes itself to where you
-          actually are.
+          {t.sub}
         </p>
       </header>
 
@@ -116,16 +88,19 @@ export function LevelPicker({
           "min-[820px]:grid-cols-4",
         )}
       >
-        {LEVELS.map((l) => (
-          <LevelButton
-            key={l.level}
-            level={l.level}
-            label={l.label}
-            description={l.description}
-            selected={selected === l.level}
-            onClick={() => onSelect?.(l.level)}
-          />
-        ))}
+        {LEVEL_ORDER.map((lvl) => {
+          const card = t.cards[lvl];
+          return (
+            <LevelButton
+              key={lvl}
+              level={lvl}
+              label={card.tagline}
+              description={card.description}
+              selected={selected === lvl}
+              onClick={() => onSelect?.(lvl)}
+            />
+          );
+        })}
       </div>
     </section>
   );

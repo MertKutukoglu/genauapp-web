@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SpeakerButton } from "@/components/atoms/SpeakerButton/SpeakerButton";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * AnswerFeedback — the generic correct/incorrect result banner that
@@ -86,9 +87,12 @@ export function AnswerFeedback({
   correctAnswer,
   speakText,
   onContinue,
-  continueLabel = "Continue →",
+  continueLabel,
   className,
 }: AnswerFeedbackProps) {
+  const { strings } = useLocale();
+  const t = strings.try.answerFeedback;
+  const resolvedContinueLabel = continueLabel ?? t.continueLabel;
   if (state === "correct") {
     return (
       <div
@@ -104,7 +108,7 @@ export function AnswerFeedback({
         )}
       >
         {CORRECT_ICON}
-        <span>Correct</span>
+        <span>{t.correct}</span>
       </div>
     );
   }
@@ -123,13 +127,13 @@ export function AnswerFeedback({
     >
       <div className="flex items-center justify-center gap-2.5 text-accent font-sans font-bold text-[16px]">
         {INCORRECT_ICON}
-        <span>Not quite.</span>
+        <span>{t.incorrect}</span>
       </div>
 
       {correctAnswer ? (
         <div className="flex flex-col items-center gap-2 text-center">
           <div className="font-sans text-[11px] text-fg-muted uppercase tracking-[0.1em] font-semibold">
-            Answer
+            {t.answerLabel}
           </div>
           <div className="flex items-center justify-center gap-2.5">
             <div className="font-sans font-bold text-[24px] text-fg leading-tight">
@@ -152,7 +156,7 @@ export function AnswerFeedback({
           "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         )}
       >
-        {continueLabel}
+        {resolvedContinueLabel}
       </button>
     </div>
   );

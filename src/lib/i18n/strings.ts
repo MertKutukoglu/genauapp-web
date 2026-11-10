@@ -112,6 +112,130 @@ const en = {
     error: "Something went wrong. Try again?",
     backToLanding: "Back to GenauApp →",
   },
+  try: {
+    levelPicker: {
+      eyebrow: "Try it in your browser",
+      heading: "Where are you with German?",
+      sub: "Pick your level. The five-minute demo tunes itself to where you actually are.",
+      cards: {
+        A1: {
+          tagline: "Starting out.",
+          description:
+            "Basic verbs, articles, days and meals. If you can say your name in German, this is for you.",
+        },
+        A2: {
+          tagline: "Building routines.",
+          description:
+            "Past tense, weil/dass, reflexive verbs. You can describe your week, read a short note.",
+        },
+        B1: {
+          tagline: "Holding your own.",
+          description:
+            "Opinions, hypotheticals, longer stories. You can argue, explain, read articles.",
+        },
+        B2: {
+          tagline: "Getting fluent.",
+          description:
+            "Idioms, nuance, abstract topics. You could run a meeting in German if you had to.",
+        },
+      },
+    },
+    leftCard: {
+      title: "Your workout",
+      subtitle:
+        "Four workouts, five questions each. Tap any to begin, all four are open.",
+      chips: {
+        words:    { title: "Words",    meta: "20 words · ~5 min" },
+        grammar:  { title: "Grammar",  meta: "20 questions · ~5 min" },
+        sentence: { title: "Sentence", meta: "12 sentences · ~4 min" },
+        reading:  { title: "Reading",  meta: "1 passage · 5 questions" },
+      },
+    },
+    mode: {
+      learn: "Learn",
+      exercise: "Exercise",
+    },
+    rightPlaceholder: {
+      idleHeading: "Pick a workout to begin.",
+      idleBody:
+        "Each chip opens a quick workout in this card. Four skills, five minutes.",
+      stubHeading: "{chip} is being wired up.",
+      stubBody: "This workout lands in the next update. Try Words for now.",
+      stubCta: "Back to Words",
+    },
+    learnCard: {
+      topicEyebrow: "", // reserved
+      actions: {
+        repeat: "Repeat",
+        iKnow: "I know",
+      },
+      sampleLabel: "Example",
+      ruleLabel: "Rule",
+    },
+    assemblyLearnCard: {
+      promptScrambled: "Type the correct translation",
+      promptChunkCompose: "Compose the correct word",
+    },
+    assemblyArea: {
+      keyboardHint: "Type on your keyboard · Backspace to undo",
+      removeLast: "Remove last letter",
+    },
+    answerFeedback: {
+      correct: "Correct",
+      incorrect: "Not quite.",
+      answerLabel: "Answer",
+      continueLabel: "Continue →",
+    },
+    exerciseFeedback: {
+      correct: "Correct",
+      incorrect: "Incorrect",
+      nextLabel: "Next →",
+    },
+    articlePicker: {
+      // No prompt line — the noun + English hint carry the question.
+    },
+    translationMC: {
+      // No prompt line — the German word carries the question.
+    },
+    typing: {
+      eyebrow: "Translate to German",
+      placeholder: "Type in German…",
+      checkCta: "Check",
+    },
+    learnCompletion: {
+      heading: "That's the Learn deck.",
+      sub: "You walked the full Learn deck. Try the Exercise, or start over.",
+      statsWords: "Words",
+      statsRepeats: "Repeats",
+      startOver: "Start over",
+      switchToExercise: "Switch to Exercise →",
+    },
+    exerciseCompletion: {
+      doneSuffix: "Done",
+      // Subtitle bands keyed by the ratio band — matches subtitleFor().
+      subtitles: {
+        empty: "Deck empty.",
+        nothing: "Nothing landed yet.",
+        justStarted: "Just started.",
+        gettingThere: "Getting there.",
+        halfThere: "Half there.",
+        overTheHump: "Over the hump.",
+        strongRun: "Strong run.",
+        almostClean: "Almost clean.",
+        cleanSweep: "Clean sweep.",
+      },
+      instruction:
+        "Tap the arrows to collect your skill gains, then pick another workout.",
+      youFed: "You fed",
+      skillLabels: {
+        vocab: "Vocab",
+        grammar: "Grammar",
+        writing: "Writing",
+        reading: "Reading",
+      },
+      continueWith: "Continue with {label} →",
+    },
+  },
 };
 
 /** The TR dictionary — must satisfy the EN shape. */
@@ -204,6 +328,126 @@ const tr: typeof en = {
     successNew: "İçerdesin. Çıkınca haber vereceğiz.",
     error: "Bir sorun oldu. Tekrar dener misin?",
     backToLanding: "GenauApp'e dön →",
+  },
+  try: {
+    levelPicker: {
+      eyebrow: "Tarayıcında dene",
+      heading: "Almancanla nerede duruyorsun?",
+      sub: "Seviyeni seç. Beş dakikalık demo tam olduğun yere göre akıyor.",
+      cards: {
+        A1: {
+          tagline: "Yeni başlıyorsun.",
+          description:
+            "Temel fiiller, artikeller, günler ve yemekler. Adını Almanca söyleyebiliyorsan burası sana uygun.",
+        },
+        A2: {
+          tagline: "Oturtuyorsun.",
+          description:
+            "Geçmiş zaman, weil/dass, dönüşlü fiiller. Haftanı anlatabilir, kısa bir not okuyabilirsin.",
+        },
+        B1: {
+          tagline: "Kendi başına dönüyorsun.",
+          description:
+            "Fikirler, varsayımlar, uzun hikayeler. Tartışabilir, açıklayabilir, makale okuyabilirsin.",
+        },
+        B2: {
+          tagline: "Akıcılığa yakınsın.",
+          description:
+            "Deyimler, nüanslar, soyut konular. Gerekse Almanca bir toplantıyı yürütebilirsin.",
+        },
+      },
+    },
+    leftCard: {
+      title: "Antrenmanın",
+      subtitle:
+        "Dört antrenman, her birinde beş soru. Birine basıp başla, dördü de açık.",
+      chips: {
+        words:    { title: "Kelimeler", meta: "20 kelime · ~5 dk" },
+        grammar:  { title: "Gramer",    meta: "20 soru · ~5 dk" },
+        sentence: { title: "Cümle",     meta: "12 cümle · ~4 dk" },
+        reading:  { title: "Okuma",     meta: "1 metin · 5 soru" },
+      },
+    },
+    mode: {
+      learn: "Öğren",
+      exercise: "Egzersiz",
+    },
+    rightPlaceholder: {
+      idleHeading: "Başlamak için bir antrenman seç.",
+      idleBody:
+        "Her çip bu kartta hızlı bir antrenman açar. Dört skill, beş dakika.",
+      stubHeading: "{chip} henüz hazır değil.",
+      stubBody:
+        "Bu antrenman sonraki güncellemede geliyor. Şimdilik Kelimeler'i dene.",
+      stubCta: "Kelimeler'e dön",
+    },
+    learnCard: {
+      topicEyebrow: "",
+      actions: {
+        repeat: "Tekrar",
+        iKnow: "Biliyorum",
+      },
+      sampleLabel: "Örnek",
+      ruleLabel: "Kural",
+    },
+    assemblyLearnCard: {
+      promptScrambled: "Doğru çeviriyi yaz",
+      promptChunkCompose: "Doğru kelimeyi oluştur",
+    },
+    assemblyArea: {
+      keyboardHint: "Klavyeden yaz · Geri almak için Backspace",
+      removeLast: "Son harfi sil",
+    },
+    answerFeedback: {
+      correct: "Doğru",
+      incorrect: "Yaklaştın.",
+      answerLabel: "Cevap",
+      continueLabel: "Devam et →",
+    },
+    exerciseFeedback: {
+      correct: "Doğru",
+      incorrect: "Yanlış",
+      nextLabel: "Sonraki →",
+    },
+    articlePicker: {},
+    translationMC: {},
+    typing: {
+      eyebrow: "Almancaya çevir",
+      placeholder: "Almanca yaz…",
+      checkCta: "Kontrol et",
+    },
+    learnCompletion: {
+      heading: "Öğren tarafı bitti.",
+      sub: "Tüm Öğren deste'sini bitirdin. Egzersizi dene ya da baştan başla.",
+      statsWords: "Kelime",
+      statsRepeats: "Tekrar",
+      startOver: "Baştan başla",
+      switchToExercise: "Egzersiz'e geç →",
+    },
+    exerciseCompletion: {
+      doneSuffix: "Bitti",
+      subtitles: {
+        empty: "Deste boş.",
+        nothing: "Hiçbiri tutmadı.",
+        justStarted: "Daha yeni başladın.",
+        gettingThere: "Yaklaşıyorsun.",
+        halfThere: "Yarıdasın.",
+        overTheHump: "Yarıyı geçtin.",
+        strongRun: "İyi gitti.",
+        almostClean: "Neredeyse tam.",
+        cleanSweep: "Tam gaz.",
+      },
+      instruction:
+        "Oklara dokun, skill kazanımlarını topla, sonra başka bir antrenman seç.",
+      youFed: "Beslediklerin",
+      skillLabels: {
+        vocab: "Kelime",
+        grammar: "Gramer",
+        writing: "Yazma",
+        reading: "Okuma",
+      },
+      continueWith: "{label} ile devam et →",
+    },
   },
 };
 

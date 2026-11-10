@@ -4,6 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { Chip, type ChipKind } from "@/components/molecules/Chip/Chip";
 import { useChipStore } from "@/stores/chipStore";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * ChipList — the /try/ left card's picker body: four chips stacked
@@ -21,24 +22,15 @@ import { useChipStore } from "@/stores/chipStore";
  * through them in some AT setups.
  */
 
-interface ChipConfig {
-  id: ChipKind;
-  title: string;
-  meta: string;
-}
-
-const CHIPS: ChipConfig[] = [
-  { id: "words",    title: "Words",    meta: "20 words · ~5 min" },
-  { id: "grammar",  title: "Grammar",  meta: "20 questions · ~5 min" },
-  { id: "sentence", title: "Sentence", meta: "12 sentences · ~4 min" },
-  { id: "reading",  title: "Reading",  meta: "1 passage · 5 questions" },
-];
+const CHIP_ORDER: ChipKind[] = ["words", "grammar", "sentence", "reading"];
 
 export interface ChipListProps {
   className?: string;
 }
 
 export function ChipList({ className }: ChipListProps) {
+  const { strings } = useLocale();
+  const chipCopy = strings.try.leftCard.chips;
   const progress = useChipStore((s) => s.progress);
   const selected = useChipStore((s) => s.selected);
   const openChip = useChipStore((s) => s.openChip);
@@ -56,23 +48,24 @@ export function ChipList({ className }: ChipListProps) {
         className,
       )}
     >
-      {CHIPS.map((c) => {
-        const done = progress[c.id] === "done";
-        const isSelected = selected === c.id;
+      {CHIP_ORDER.map((id) => {
+        const done = progress[id] === "done";
+        const isSelected = selected === id;
         // Done beats selected visually only when the chip isn't currently
         // open. If the user re-opens a done chip, show it as selected so
         // the active ring reads; the done badge stays visible via the
         // store (done state in store is independent of selection).
         const state = isSelected ? "selected" : done ? "done" : "default";
+        const copy = chipCopy[id];
 
         return (
-          <li key={c.id} className="m-0 flex-1 lg:flex-none min-w-0">
+          <li key={id} className="m-0 flex-1 lg:flex-none min-w-0">
             <Chip
-              kind={c.id}
+              kind={id}
               state={state}
-              title={c.title}
-              meta={c.meta}
-              onClick={() => (isSelected ? closeChip() : openChip(c.id))}
+              title={copy.title}
+              meta={copy.meta}
+              onClick={() => (isSelected ? closeChip() : openChip(id))}
             />
           </li>
         );
