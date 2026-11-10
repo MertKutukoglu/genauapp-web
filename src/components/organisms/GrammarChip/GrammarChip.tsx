@@ -8,6 +8,12 @@ import { GrammarVerbParadigmCard } from "@/components/organisms/GrammarVerbParad
 import { GrammarPronounChartCard } from "@/components/organisms/GrammarPronounChartCard/GrammarPronounChartCard";
 import { GrammarArticleCard } from "@/components/organisms/GrammarArticleCard/GrammarArticleCard";
 import { GrammarVerbConjugationCard } from "@/components/organisms/GrammarVerbConjugationCard/GrammarVerbConjugationCard";
+import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
+import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
+import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
+import { computeSkillDeltas } from "@/lib/skills/map";
+import { useSkillStore } from "@/stores/skillStore";
+import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import {
   grammarLearnAnchors,
@@ -22,25 +28,22 @@ import {
  * GrammarChip — the Grammar chip's right-card experience. Sibling of
  * WordsChip, owning:
  *   - mode (learn / exercise) via the shared ModeToggle
- *   - the Learn deck's remaining-items state + Repeat / I-know
- *   - layout dispatch by `learn.layout`
- *   - routing between Learn card / Learn completion / Exercise stub
+ *   - Learn deck: 5-7 anchors (whichever carry a `learn` block),
+ *     dispatched by `learn.layout`, Repeat/I-know mechanics mirror
+ *     Words Learn verbatim.
+ *   - Exercise deck: all 20+ items in authored order; correct
+ *     advances, wrong reinserts at a random later index; first-try
+ *     scoring; completion screen with YOU-FED skill badges and a
+ *     Continue CTA for the next workout.
+ *   - Chip-done + skill-delta staging on Exercise completion.
  *
- * In v1 we ship Learn only. Exercise flips to a short placeholder
- * stub until the Exercise cards land in a follow-up pass per Mert's
- * plan ("önce Learn, sonra Exercise").
- *
- * Deck mechanics mirror WordsChip Learn verbatim: Repeat reinserts
- * the head card at a random later index without advancing the
- * counter; I know removes it and advances. The counter formula is
- * `currentIndex = deckSize - remaining.length + 1`.
- *
- * Source items are filtered to the 5 anchors (`learn !== undefined`);
- * the remaining 15 are exercise-only drills and don't belong in Learn.
+ * Deck mechanics mirror WordsChip verbatim for consistency across
+ * chips: the learner builds the same Repeat/I-know/correct/wrong
+ * intuition in Words and carries it into Grammar unchanged.
  */
 
 export interface GrammarChipProps {
-  /** The full 20-item A1 deck. Learn mode filters to the 5 anchors. */
+  /** The full A1 deck. Learn mode filters to the anchor questions. */
   items: GrammarQuestion[];
   initialMode?: WordsMode;
   className?: string;
@@ -51,11 +54,9 @@ export function GrammarChip({
   initialMode = "learn",
   className,
 }: GrammarChipProps) {
-  const { locale, strings } = useLocale();
+  const { locale } = useLocale();
 
-  // Localize the whole deck once per locale change, then drop to the
-  // 5 anchors for the Learn deck. Exercise (when it lands) will walk
-  // the full localized list.
+  // Localize the whole deck once per locale change.
   const localizedItems = React.useMemo(
     () => items.map((q) => localizeGrammar(q, locale)),
     [items, locale],
@@ -66,13 +67,51 @@ export function GrammarChip({
   );
 
   const [mode, setMode] = React.useState<WordsMode>(initialMode);
+
+  // Localized stat label on the Learn completion — "Cards" / "Kartlar"
+  // reads right when the Learn deck is a handful of anchors rather
+  // than a long word list.
+  const itemsLabel = locale === "tr" ? "Kartlar" : "Cards";
+
+  return (
+    <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
+      <ModeToggle mode={mode} onChange={setMode} />
+
+      <div className="lg:flex-1 lg:flex lg:flex-col [&>*]:lg:flex-1">
+        {mode === "learn" ? (
+          <LearnDeck
+            anchors={anchors}
+            itemsLabel={itemsLabel}
+            onSwitchToExercise={() => setMode("exercise")}
+          />
+        ) : (
+          <ExerciseDeck items={localizedItems} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * LearnDeck — walks the anchors as cards. Carried over from the
+ * first Grammar pass so the Exercise work could land without
+ * touching the Learn shape.
+ */
+function LearnDeck({
+  anchors,
+  itemsLabel,
+  onSwitchToExercise,
+}: {
+  anchors: GrammarQuestion[];
+  itemsLabel: string;
+  onSwitchToExercise: () => void;
+}) {
   const [remaining, setRemaining] = React.useState<GrammarQuestion[]>(anchors);
   const [repeatCount, setRepeatCount] = React.useState(0);
 
-  // Re-seed the Learn deck when anchors array OR locale changes.
   const deckKey = React.useMemo(
-    () => `${locale}:${anchors.map((q) => q.topic).join("|")}`,
-    [anchors, locale],
+    () => anchors.map((q) => q.topic).join("|"),
+    [anchors],
   );
   React.useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -85,7 +124,7 @@ export function GrammarChip({
   const remainingCount = remaining.length;
   const currentIndex = deckSize - remainingCount + 1;
   const current = remaining[0];
-  const learnCompleted = remainingCount === 0 && deckSize > 0;
+  const completed = remainingCount === 0 && deckSize > 0;
 
   const handleRepeat = React.useCallback(() => {
     setRemaining((r) => {
@@ -101,7 +140,6 @@ export function GrammarChip({
       /* no-op */
     }
   }, []);
-
   const handleIKnow = React.useCallback(() => {
     setRemaining((r) => r.slice(1));
     try {
@@ -110,11 +148,9 @@ export function GrammarChip({
       /* no-op */
     }
   }, []);
-
   const handleStartOver = React.useCallback(() => {
     setRemaining(anchors);
     setRepeatCount(0);
-    setMode("learn");
     try {
       window.__track?.("demo_learn_restart", { chip: "grammar" });
     } catch {
@@ -122,41 +158,29 @@ export function GrammarChip({
     }
   }, [anchors]);
 
-  // Localized stat label on the Learn completion — "Cards" / "Kartlar"
-  // reads right when the Learn deck is 5 anchors, not 20 items. Takes
-  // the Grammar chip's own i18n copy; falls back to the generic.
-  const itemsLabel = locale === "tr" ? "Kartlar" : "Cards";
+  if (completed) {
+    return (
+      <LearnCompletion
+        total={deckSize}
+        repeats={repeatCount}
+        itemsLabel={itemsLabel}
+        onStartOver={handleStartOver}
+        onSwitchToExercise={onSwitchToExercise}
+      />
+    );
+  }
+  if (!current) {
+    return <EmptyDeck label="No cards in this deck." />;
+  }
 
   return (
-    <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
-      <ModeToggle mode={mode} onChange={setMode} />
-
-      <div className="lg:flex-1 lg:flex lg:flex-col [&>*]:lg:flex-1">
-        {mode === "learn" ? (
-          learnCompleted ? (
-            <LearnCompletion
-              total={deckSize}
-              repeats={repeatCount}
-              itemsLabel={itemsLabel}
-              onStartOver={handleStartOver}
-              onSwitchToExercise={() => setMode("exercise")}
-            />
-          ) : current ? (
-            <LearnCardSwitch
-              item={current}
-              current={currentIndex}
-              total={deckSize}
-              onRepeat={handleRepeat}
-              onIKnow={handleIKnow}
-            />
-          ) : (
-            <EmptyDeck label={strings.try.rightPlaceholder.idleBody} />
-          )
-        ) : (
-          <ExerciseStub />
-        )}
-      </div>
-    </div>
+    <LearnCardSwitch
+      item={current}
+      current={currentIndex}
+      total={deckSize}
+      onRepeat={handleRepeat}
+      onIKnow={handleIKnow}
+    />
   );
 }
 
@@ -210,9 +234,6 @@ function LearnCardSwitch({
         />
       );
     case "articleSingle":
-      // Guard: an article anchor without a chosen article word or
-      // pattern list is content-malformed. Fall back to the empty
-      // card rather than throwing from the leaf component.
       if (!learn.article || !learn.patterns || !learn.role) {
         return <EmptyDeck label="Missing article data." />;
       }
@@ -248,35 +269,230 @@ function LearnCardSwitch({
   }
 }
 
+/**
+ * ExerciseDeck — walks every GrammarQuestion in authored order and
+ * dispatches by `exerciseType` to the MC or fillBlank organism.
+ *
+ * Deck mechanic matches Words Exercise:
+ *   - Correct → head leaves, counter advances
+ *   - Incorrect → head reinserts at a random later index, counter
+ *     does NOT advance. First-try scoring: a card missed once is
+ *     counted toward incorrect even if the retry eventually succeeds;
+ *     the retry success is not re-tallied, so first-try correct +
+ *     incorrect = deckSize at the end.
+ *
+ * On completion: compute skill deltas (grammar primary + writing +
+ * vocab fed, per CHIP_SKILL_MAP), stage them to the skillStore (shown
+ * as YOU FED badges on the completion card), mark the grammar chip
+ * done so the LeftCard's workout counter ticks, and emit the finish
+ * PostHog event with flat delta_* props (never the nested object —
+ * the analytics SDK rejects those).
+ */
+function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
+  const [remaining, setRemaining] = React.useState<GrammarQuestion[]>(items);
+  const [correctCount, setCorrectCount] = React.useState(0);
+  const [incorrectCount, setIncorrectCount] = React.useState(0);
+  const missedSetRef = React.useRef<Set<string>>(new Set());
+
+  const itemsKey = React.useMemo(
+    () => items.map((q) => `${q.topic}|${q.prompt}`).join("~"),
+    [items],
+  );
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRemaining(items);
+    setCorrectCount(0);
+    setIncorrectCount(0);
+    missedSetRef.current = new Set();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsKey]);
+
+  const deckSize = items.length;
+  const remainingCount = remaining.length;
+  const currentIndex = deckSize - remainingCount + 1;
+  const current = remaining[0];
+  const done = remainingCount === 0 && deckSize > 0;
+
+  const handleNext = React.useCallback(
+    ({ correct }: { correct: boolean }) => {
+      if (!current) return;
+      const key = `${current.topic}|${current.prompt}`;
+      if (correct) {
+        if (!missedSetRef.current.has(key)) {
+          setCorrectCount((c) => c + 1);
+        }
+        setRemaining((r) => r.slice(1));
+        try {
+          window.__track?.("demo_exercise_correct", {
+            chip: "grammar",
+            type: current.exerciseType,
+            topic: current.topic,
+          });
+        } catch {
+          /* no-op */
+        }
+      } else {
+        if (!missedSetRef.current.has(key)) {
+          missedSetRef.current.add(key);
+          setIncorrectCount((c) => c + 1);
+        }
+        setRemaining((r) => {
+          if (r.length <= 1) return r;
+          const [head, ...rest] = r;
+          const idx = 1 + Math.floor(Math.random() * rest.length);
+          return [...rest.slice(0, idx), head, ...rest.slice(idx)];
+        });
+        try {
+          window.__track?.("demo_exercise_wrong", {
+            chip: "grammar",
+            type: current.exerciseType,
+            topic: current.topic,
+          });
+        } catch {
+          /* no-op */
+        }
+      }
+    },
+    [current],
+  );
+
+  const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
+  const completeChip = useChipStore((s) => s.completeChip);
+  const chipProgress = useChipStore((s) => s.progress);
+  const openChip = useChipStore((s) => s.openChip);
+
+  // Next-workout CTA on the completion screen: walk the fixed chip
+  // order (words → grammar → sentence → reading), starting right
+  // after grammar, and pick the first chip that isn't done. When all
+  // other chips are done, return null and let the LeftCard picker
+  // take over.
+  const nextWorkout = React.useMemo(() => {
+    const chipOrder: Array<{ id: ChipId; label: string }> = [
+      { id: "words", label: "Words" },
+      { id: "grammar", label: "Grammar" },
+      { id: "sentence", label: "Sentence" },
+      { id: "reading", label: "Reading" },
+    ];
+    const currentIdx = chipOrder.findIndex((c) => c.id === "grammar");
+    for (let i = 1; i <= chipOrder.length - 1; i++) {
+      const candidate = chipOrder[(currentIdx + i) % chipOrder.length];
+      if (chipProgress[candidate.id] !== "done") return candidate;
+    }
+    return null;
+  }, [chipProgress]);
+
+  // Stage deltas once on completion; stash in local state so the
+  // completion screen shows the same numbers across re-renders.
+  const [sessionDeltas, setSessionDeltas] = React.useState<ReturnType<
+    typeof computeSkillDeltas
+  > | null>(null);
+  const deltasStagedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!done) {
+      deltasStagedRef.current = false;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSessionDeltas(null);
+      return;
+    }
+    if (deltasStagedRef.current) return;
+    deltasStagedRef.current = true;
+
+    const d = computeSkillDeltas({
+      chip: "grammar",
+      correct: correctCount,
+      total: deckSize,
+    });
+    setSessionDeltas(d);
+    stageSkillDeltas(d);
+    completeChip("grammar");
+
+    try {
+      window.__track?.("demo_exercise_finish", {
+        chip: "grammar",
+        correct: correctCount,
+        incorrect: incorrectCount,
+        delta_vocab: d.vocab ?? 0,
+        delta_grammar: d.grammar ?? 0,
+        delta_writing: d.writing ?? 0,
+        delta_reading: d.reading ?? 0,
+      });
+    } catch {
+      /* no-op */
+    }
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip]);
+
+  if (done) {
+    return (
+      <ExerciseCompletion
+        chip="grammar"
+        correct={correctCount}
+        total={deckSize}
+        deltas={sessionDeltas ?? {}}
+        nextWorkout={
+          nextWorkout
+            ? {
+                label: nextWorkout.label,
+                onContinue: () => openChip(nextWorkout.id),
+              }
+            : undefined
+        }
+      />
+    );
+  }
+
+  if (!current) return <EmptyDeck label="No exercises in this deck." />;
+
+  // Variant router. Key by topic+prompt so each advance remounts the
+  // underlying organism (clears local state like typed input or
+  // picked option).
+  const key = `${current.topic}|${current.prompt}`;
+
+  if (current.exerciseType === "multipleChoice") {
+    if (
+      !current.options ||
+      current.options.length === 0 ||
+      typeof current.correctIndex !== "number"
+    ) {
+      return <EmptyDeck label="Missing MC options." />;
+    }
+    return (
+      <GrammarExerciseMC
+        key={key}
+        topic={current.topic}
+        prompt={current.prompt}
+        hint={current.hint}
+        options={current.options}
+        correctIndex={current.correctIndex}
+        explanation={current.explanation}
+        current={currentIndex}
+        total={deckSize}
+        onNext={handleNext}
+      />
+    );
+  }
+
+  // fillBlank
+  if (!current.answer) return <EmptyDeck label="Missing fillBlank answer." />;
+  return (
+    <GrammarExerciseFillBlank
+      key={key}
+      topic={current.topic}
+      prompt={current.prompt}
+      hint={current.hint}
+      answer={current.answer}
+      explanation={current.explanation}
+      current={currentIndex}
+      total={deckSize}
+      onNext={handleNext}
+    />
+  );
+}
+
 function EmptyDeck({ label }: { label: string }) {
   return (
     <div className="bg-surface-card rounded-3xl p-8 text-center shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
       <p className="font-sans text-fg-muted m-0">{label}</p>
-    </div>
-  );
-}
-
-/**
- * ExerciseStub — v1 placeholder for Exercise mode. The real Exercise
- * deck (12 MC + 8 fillBlank) lands in the follow-up pass; for now
- * switching to Exercise shows a short hint inviting the user back to
- * Learn, so the toggle doesn't look broken.
- */
-function ExerciseStub() {
-  const { locale } = useLocale();
-  const title = locale === "tr" ? "Egzersiz yakında" : "Exercise coming next";
-  const body =
-    locale === "tr"
-      ? "Gramer egzersizleri sıradaki adımda geliyor. Şimdilik Öğren tarafında paradigmaları gezebilirsin."
-      : "Grammar drills land in the next pass. For now, walk the paradigms in Learn.";
-  return (
-    <div className="bg-surface-card rounded-3xl p-8 text-center shadow-[0_4px_12px_rgba(0,0,0,0.06)] flex flex-col gap-3">
-      <h3 className="font-display italic font-semibold text-xl text-fg m-0">
-        {title}
-      </h3>
-      <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">
-        {body}
-      </p>
     </div>
   );
 }
