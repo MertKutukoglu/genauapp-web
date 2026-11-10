@@ -102,6 +102,14 @@
   --chip-reading-color:       var(--color-skill-reading);   /* blue */
   --chip-story-color:         #F97316;                      /* orange — chat/story */
   --chip-pronunciation-color: var(--color-skill-listening); /* amber */
+
+  /* Role colors for the Sentence chip's formula strip + example
+     segments. Subject/object/verb reuse the article colors on
+     purpose — reinforces the grammatical mnemonic from Words.
+     Time + place need their own tokens: amber for time, violet for
+     place. Qword reuses --accent (cherry). */
+  --role-time:        #B45309;                              /* amber-700 */
+  --role-place:       #7C3AED;                              /* violet-600 */
 }
 
 /* Dark theme — swap semantics only, primitives stay. */
@@ -121,6 +129,11 @@
   --article-der:      var(--color-article-der-dark);
   --article-die:      var(--color-article-die-dark);
   --article-das:      var(--color-article-das-dark);
+
+  /* Sentence role colors — lift amber + violet into brighter dark
+     shades so they read against the warmdk-800 card surface. */
+  --role-time:        #F59E0B;                              /* amber-500 */
+  --role-place:       #A78BFA;                              /* violet-400 */
 }
 
 /* prefers-color-scheme fallback when no explicit data-theme is set. */
@@ -140,6 +153,8 @@
     --article-der:      var(--color-article-der-dark);
     --article-die:      var(--color-article-die-dark);
     --article-das:      var(--color-article-das-dark);
+    --role-time:        #F59E0B;
+    --role-place:       #A78BFA;
   }
 }
 
