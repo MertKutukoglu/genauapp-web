@@ -79,11 +79,14 @@ export function ExerciseTranslationMC({
       {committed ? (
         <ExerciseFeedback
           state={isCorrect ? "correct" : "incorrect"}
+          // Correct → no body text; the picked option is already
+          // outlined green so the user sees the mapping. Incorrect
+          // keeps the explanation (reveals the right option).
           explanation={
-            explanation ??
-            (isCorrect
-              ? `"${prompt}" → "${options[correctIndex]}".`
-              : `The correct translation is "${options[correctIndex]}".`)
+            isCorrect
+              ? undefined
+              : (explanation ??
+                `The correct translation is "${options[correctIndex]}".`)
           }
           onNext={() => onNext?.({ correct: isCorrect })}
         />

@@ -42,6 +42,13 @@ const ARTICLE_COLOR: Record<ArticleOption, string> = {
 
 const ARTICLES: ArticleOption[] = ["der", "die", "das"];
 
+/** Desktop keyboard shortcut for each article button. */
+const ARTICLE_KEY: Record<ArticleOption, string> = {
+  der: "A",
+  die: "S",
+  das: "D",
+};
+
 export interface ExerciseArticlePickerProps {
   /** The noun being asked about, without article. */
   noun: string;
@@ -84,10 +91,45 @@ export function ExerciseArticlePicker({
 
   const speakText = `${correctArticle} ${noun}`;
 
-  const handlePick = (opt: ArticleOption) => {
+  const handlePick = React.useCallback(
+    (opt: ArticleOption) => {
+      if (committed) return;
+      setPicked(opt);
+    },
+    [committed],
+  );
+
+  // Desktop keyboard shortcuts: A/S/D → der/die/das. Only active
+  // while the user hasn't committed — once a button is picked, the
+  // Next button takes over and fires on Enter via autoFocus.
+  React.useEffect(() => {
     if (committed) return;
-    setPicked(opt);
-  };
+    if (typeof window === "undefined") return;
+
+    const onKey = (e: KeyboardEvent) => {
+      // Don't steal keystrokes from text fields.
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) {
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const k = e.key.toLowerCase();
+      if (k === "a") {
+        e.preventDefault();
+        handlePick("der");
+      } else if (k === "s") {
+        e.preventDefault();
+        handlePick("die");
+      } else if (k === "d") {
+        e.preventDefault();
+        handlePick("das");
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [committed, handlePick]);
 
   return (
     <div
@@ -104,48 +146,57 @@ export function ExerciseArticlePicker({
       {committed ? (
         <ExerciseFeedback
           state={isCorrect ? "correct" : "incorrect"}
+          // Correct → just the verdict label; the hero already shows
+          // "der Noun" in full form, extra prose is noise per Mert's
+          // review. Incorrect → explanation stays so the user sees
+          // the rule.
           explanation={
             isCorrect
-              ? `"${speakText}". Nice.`
+              ? undefined
               : (explanation ?? `The correct article is "${correctArticle}".`)
           }
           onNext={() => onNext?.({ correct: isCorrect })}
         />
       ) : null}
 
-      {/* Hero — dash placeholder + noun. On commit (correct or not)
-          the dash fills with the correct article so the user walks
-          away seeing the full form. Dash sits left of the noun. */}
-      <div className="flex-1 flex items-center justify-center gap-3 py-6">
-        <span
-          aria-hidden
-          className={clsx(
-            "inline-block h-[3px] w-10 rounded-full transition-colors duration-200",
-          )}
-          style={{
-            background: committed
-              ? ARTICLE_COLOR[correctArticle]
-              : "color-mix(in srgb, var(--fg) 22%, transparent)",
-          }}
-        />
-        {committed ? (
+      {/* Hero stack — dash + noun (with article inline once revealed)
+          sits center, with the English translation tucked right
+          underneath. `flex-1` lets the group grow so the buttons sit
+          at the bottom of the card while the hero vertically centers. */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-3 py-4">
+        <div className="flex items-center justify-center gap-3">
           <span
-            className="font-sans font-bold text-[32px] leading-none"
-            style={{ color: ARTICLE_COLOR[correctArticle] }}
-          >
-            {correctArticle}
+            aria-hidden
+            className={clsx(
+              "inline-block h-[3px] w-10 rounded-full transition-colors duration-200",
+            )}
+            style={{
+              background: committed
+                ? ARTICLE_COLOR[correctArticle]
+                : "color-mix(in srgb, var(--fg) 22%, transparent)",
+            }}
+          />
+          {committed ? (
+            <span
+              className="font-sans font-bold text-[32px] leading-none"
+              style={{ color: ARTICLE_COLOR[correctArticle] }}
+            >
+              {correctArticle}
+            </span>
+          ) : null}
+          <span className="font-sans font-bold text-[32px] text-fg leading-none">
+            {noun}
           </span>
-        ) : null}
-        <span className="font-sans font-bold text-[32px] text-fg leading-none">
-          {noun}
-        </span>
-      </div>
-      <div className="-mt-4 text-center font-sans text-[15px] text-fg-muted">
-        {english}
+        </div>
+        <div className="font-sans text-[15px] text-fg-muted leading-none">
+          {english}
+        </div>
       </div>
 
-      {/* Article buttons. Soft tint idle; on commit wrong pick fills
-          solid red, correct option fills solid green. */}
+      {/* Article buttons — bottom-aligned by the flex-1 group above.
+          Soft tint idle; on commit wrong pick fills solid red,
+          correct option fills solid green. Small kbd hint underneath
+          each on sm+ screens for desktop keyboard flow. */}
       <div className="grid grid-cols-3 gap-2.5">
         {ARTICLES.map((a) => {
           const color = ARTICLE_COLOR[a];
@@ -168,28 +219,46 @@ export function ExerciseArticlePicker({
           }
 
           return (
-            <button
-              key={a}
-              type="button"
-              onClick={() => handlePick(a)}
-              disabled={committed}
-              aria-pressed={isPicked}
-              className={clsx(
-                "h-[64px] rounded-2xl",
-                "font-sans font-bold text-[22px] leading-none",
-                "transition-[background,color,transform] duration-150",
-                !committed && "hover:-translate-y-0.5",
-                committed && "cursor-default",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-                "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-              )}
-              style={{
-                background: bg,
-                color: fg,
-              }}
-            >
-              {ARTICLE_LABEL[a]}
-            </button>
+            <div key={a} className="flex flex-col items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => handlePick(a)}
+                disabled={committed}
+                aria-pressed={isPicked}
+                aria-keyshortcuts={ARTICLE_KEY[a]}
+                className={clsx(
+                  "w-full h-[64px] rounded-2xl",
+                  "font-sans font-bold text-[22px] leading-none",
+                  "transition-[background,color,transform] duration-150",
+                  !committed && "hover:-translate-y-0.5",
+                  committed && "cursor-default",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+                )}
+                style={{
+                  background: bg,
+                  color: fg,
+                }}
+              >
+                {ARTICLE_LABEL[a]}
+              </button>
+              {/* Keyboard hint — hidden on touch-only widths. Monospace
+                  single-letter kbd pill so it reads as a shortcut, not
+                  decoration. Uses the fg-faint token so it stays
+                  quiet. */}
+              <kbd
+                aria-hidden
+                className={clsx(
+                  "hidden sm:inline-flex items-center justify-center",
+                  "min-w-[22px] h-[18px] px-1.5 rounded-md",
+                  "font-mono text-[11px] font-semibold leading-none",
+                  "text-fg-faint",
+                  "border border-border-strong bg-[color:color-mix(in_srgb,var(--fg)_4%,transparent)]",
+                )}
+              >
+                {ARTICLE_KEY[a]}
+              </kbd>
+            </div>
           );
         })}
       </div>

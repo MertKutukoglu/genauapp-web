@@ -116,11 +116,12 @@ export function ExerciseTyping({
       {committed ? (
         <ExerciseFeedback
           state={isCorrect ? "correct" : "incorrect"}
+          // Correct → no body text; the input border is already lit
+          // --ok green and the typed word is visible.
           explanation={
-            explanation ??
-            (isCorrect
-              ? `"${answer}" — right.`
-              : `The correct answer is "${answer}".`)
+            isCorrect
+              ? undefined
+              : (explanation ?? `The correct answer is "${answer}".`)
           }
           onNext={() => onNext?.({ correct: isCorrect })}
         />
