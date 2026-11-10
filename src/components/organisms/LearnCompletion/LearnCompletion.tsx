@@ -19,7 +19,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  */
 
 export interface LearnCompletionProps {
-  /** Total unique words in the deck. */
+  /** Total unique cards in the deck (Words: items, Grammar: anchors). */
   total: number;
   /**
    * How many Repeat actions were taken over the session. Includes
@@ -27,6 +27,13 @@ export interface LearnCompletionProps {
    * calls from incorrect Scrambled / ChunkCompose attempts.
    */
   repeats?: number;
+  /**
+   * Label for the `total` stat tile. Defaults to the i18n "Words"
+   * copy, which is right for the Words chip. The Grammar chip passes
+   * "Cards" / "Kartlar" so the Learn completion reads "5 Cards" there
+   * instead of "5 Words".
+   */
+  itemsLabel?: string;
   onStartOver?: () => void;
   onSwitchToExercise?: () => void;
   className?: string;
@@ -35,12 +42,14 @@ export interface LearnCompletionProps {
 export function LearnCompletion({
   total,
   repeats = 0,
+  itemsLabel,
   onStartOver,
   onSwitchToExercise,
   className,
 }: LearnCompletionProps) {
   const { strings } = useLocale();
   const t = strings.try.learnCompletion;
+  const itemsStat = itemsLabel ?? t.statsWords;
   return (
     <div
       className={clsx(
@@ -68,7 +77,7 @@ export function LearnCompletion({
       >
         <div className="flex flex-col gap-1">
           <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            {t.statsWords}
+            {itemsStat}
           </dt>
           <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
             {total}
