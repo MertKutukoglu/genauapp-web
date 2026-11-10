@@ -63,11 +63,11 @@ export function getLocaleFromPath(pathname: string): Locale {
  */
 export const EN_TO_TR_PATH: Record<string, string> = {
   "/": "/tr",
-  // Phase 1 adds the mappings below as each page lands:
-  // "/blog/origins-of-genau": "/tr/blog/kokenler",
-  // "/impressum":             "/tr/kunye",
-  // "/datenschutz":           "/tr/gizlilik",
-  // "/cookie-policy":         "/tr/cerezler",
+  "/blog/origins-of-genau": "/tr/blog/kokenler",
+  // Legal pages land in Step 4:
+  // "/impressum":     "/tr/kunye",
+  // "/datenschutz":   "/tr/gizlilik",
+  // "/cookie-policy": "/tr/cerezler",
 };
 
 /** Inverse lookup, derived once. */

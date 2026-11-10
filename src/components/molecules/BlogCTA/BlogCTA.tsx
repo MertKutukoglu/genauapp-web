@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import { useWaitlistSubmit } from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
@@ -27,6 +28,8 @@ export interface BlogCTAProps {
 }
 
 export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
+  const { locale, strings } = useLocale();
+  const c = strings.blogCta;
   const [email, setEmail] = React.useState("");
   const { state, submit } = useWaitlistSubmit();
   const firstFocusFired = React.useRef(false);
@@ -59,18 +62,14 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
       )}
     >
       <p className="font-sans text-xl font-bold leading-tight tracking-[-0.01em] text-fg">
-        Dein Deutsch, dein Workout.
+        {c.heading}
       </p>
-      <p className="mt-1.5 font-sans text-sm text-fg-muted">
-        Join the waitlist. We will let you know when GenauApp launches.
-      </p>
+      <p className="mt-1.5 font-sans text-sm text-fg-muted">{c.body}</p>
 
       {isDone ? (
         <p className="mt-5 inline-flex items-center gap-2 font-sans text-[15px] font-semibold text-[color:var(--ok)]">
           <Icon name="check" className="h-5 w-5 text-[color:var(--ok)]" />
-          {state === "duplicate"
-            ? "You're already on the list. We'll let you know."
-            : "You are in. We will let you know."}
+          {state === "duplicate" ? c.successAlready : c.successNew}
         </p>
       ) : (
         <form
@@ -83,7 +82,7 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
             type="email"
             name="email"
             required
-            placeholder="you@example.com"
+            placeholder={c.emailPlaceholder}
             aria-label="Email"
             autoComplete="email"
             spellCheck={false}
@@ -109,20 +108,20 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
               "max-[480px]:w-full",
             )}
           >
-            {state === "loading" ? "…" : "Join"}
+            {state === "loading" ? c.loading : c.submit}
           </button>
         </form>
       )}
 
       {state === "error" ? (
         <p role="alert" className="mt-3 text-xs text-accent">
-          Something went wrong. Try again?
+          {c.error}
         </p>
       ) : null}
 
       <p className="mt-4 font-sans text-xs text-fg-faint">
         <Link
-          href="/"
+          href={locale === "tr" ? "/tr" : "/"}
           className="text-fg-muted transition hover:text-fg"
           onClick={() => {
             if (typeof window !== "undefined") {
@@ -134,7 +133,7 @@ export function BlogCTA({ source = "origins_blog", className }: BlogCTAProps) {
             }
           }}
         >
-          Back to GenauApp →
+          {c.backToLanding}
         </Link>
       </p>
     </div>

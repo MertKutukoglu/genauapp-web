@@ -100,6 +100,17 @@ const en = {
     datenschutz: "Datenschutz",
     cookies: "Cookie Policy",
   },
+  blogCta: {
+    heading: "Dein Deutsch, dein Workout.",
+    body: "Join the waitlist. We will let you know when GenauApp launches.",
+    emailPlaceholder: "you@example.com",
+    submit: "Join",
+    loading: "…",
+    successAlready: "You're already on the list. We'll let you know.",
+    successNew: "You are in. We will let you know.",
+    error: "Something went wrong. Try again?",
+    backToLanding: "Back to GenauApp →",
+  },
 };
 
 /** The TR dictionary — must satisfy the EN shape. */
@@ -178,6 +189,19 @@ const tr: typeof en = {
     impressum: "Künye",
     datenschutz: "Gizlilik",
     cookies: "Çerezler",
+  },
+  blogCta: {
+    // Tagline stays in German — it's brand (same note as in the
+    // Brand Voice doc). Everything around it is TR.
+    heading: "Dein Deutsch, dein Workout.",
+    body: "Listeye katıl. GenauApp çıkınca sana haber vereceğiz.",
+    emailPlaceholder: "sen@ornek.com",
+    submit: "Katıl",
+    loading: "…",
+    successAlready: "Zaten listedesin. Çıkınca haber vereceğiz.",
+    successNew: "İçerdesin. Çıkınca haber vereceğiz.",
+    error: "Bir sorun oldu. Tekrar dener misin?",
+    backToLanding: "GenauApp'e dön →",
   },
 };
 

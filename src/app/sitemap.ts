@@ -46,14 +46,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.2,
     },
-    // Turkish surface — infrastructure placeholder in Step 1; content
-    // lands in Step 2 and the rest of the TR routes get entries as
-    // they ship (blog, legal).
+    // Turkish surface.
     {
       url: `${base}/tr`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
+    },
+    {
+      url: `${base}/tr/blog/kokenler`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
   ];
 }
