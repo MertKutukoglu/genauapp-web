@@ -72,6 +72,15 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    // Tell Google the EN root and the TR tree are the same product in
+    // different languages. x-default points at EN (the global default).
+    // Each sub-route can override `alternates` with its own matched
+    // pair (see /blog/origins-of-genau / /tr/blog/kokenler, etc.).
+    languages: {
+      en: "/",
+      tr: "/tr",
+      "x-default": "/",
+    },
   },
 };
 

@@ -4,6 +4,7 @@ import { Wordmark } from "@/components/atoms/Wordmark/Wordmark";
 import { IOSBetaPill } from "@/components/atoms/IOSBetaPill/IOSBetaPill";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle/ThemeToggle";
 import { NavOriginsLink } from "@/components/atoms/NavOriginsLink/NavOriginsLink";
+import { LanguagePicker } from "@/components/atoms/LanguagePicker/LanguagePicker";
 
 /**
  * Topnav — site header shared by landing and /try.
@@ -43,10 +44,13 @@ export function Topnav({ className }: TopnavProps) {
     >
       <Wordmark variant="topnav" />
 
-      {/* Right cluster — one flex group, right-aligned, tight gap. */}
+      {/* Right cluster — one flex group, right-aligned, tight gap.
+          LanguagePicker sits just before ThemeToggle so the two
+          user-preference controls read as a pair. */}
       <div className="flex items-center gap-2.5 max-md:ml-auto">
         <NavOriginsLink />
         <IOSBetaPill />
+        <LanguagePicker />
         <ThemeToggle />
       </div>
     </nav>
