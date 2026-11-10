@@ -3,7 +3,6 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
-import { SpeakerButton } from "@/components/atoms/SpeakerButton/SpeakerButton";
 import { AssemblyArea } from "@/components/molecules/AssemblyArea/AssemblyArea";
 import { AnswerFeedback } from "@/components/molecules/AnswerFeedback/AnswerFeedback";
 import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
@@ -82,13 +81,28 @@ export function AssemblyLearnCard({
   advanceDelay = 900,
   className,
 }: AssemblyLearnCardProps) {
-  const pieces = React.useMemo(
-    () =>
-      mode === "chunkCompose" && chunks && chunks.length > 0
-        ? chunks
-        : word.replace(/\s/g, "").split(""),
-    [mode, chunks, word],
-  );
+  // Pieces + display target. When the word carries an article, the
+  // article becomes part of the puzzle — scrambled treats each of
+  // its letters as a tile; chunkCompose treats the article as its
+  // own leading chunk. The space between article and word is
+  // non-pickable — it comes from `displayTarget` and reads as a gap
+  // in the slot row.
+  const { pieces, displayTarget } = React.useMemo(() => {
+    const bareWord = word.replace(/\s/g, "");
+
+    if (mode === "chunkCompose" && chunks && chunks.length > 0) {
+      const ps = article ? [article, ...chunks] : chunks;
+      const dt = article ? `${article} ${bareWord}` : bareWord;
+      return { pieces: ps, displayTarget: dt };
+    }
+
+    // scrambled
+    const ps = article
+      ? [...article.split(""), ...bareWord.split("")]
+      : bareWord.split("");
+    const dt = article ? `${article} ${bareWord}` : bareWord;
+    return { pieces: ps, displayTarget: dt };
+  }, [mode, chunks, word, article]);
 
   // One state flips between "none", "correct" (brief flash), and
   // "incorrect" (persistent reveal). The transition from the
@@ -145,17 +159,19 @@ export function AssemblyLearnCard({
         </div>
       </div>
 
-      {/* English hero. Inline speaker speaks the German so the user
-          can hear the answer while assembling. */}
-      <div className="flex items-center justify-center gap-2.5 text-center">
+      {/* English hero. No inline speaker here — the CardToolbar's
+          speaker at the top-left of the card already covers audio for
+          this view, and doubling up read as clutter per Mert's
+          feedback. */}
+      <div className="flex items-center justify-center text-center">
         <div className="font-sans font-bold text-[32px] text-fg leading-tight">
           {english}
         </div>
-        <SpeakerButton text={speakText} />
       </div>
 
       <AssemblyArea
         pieces={pieces}
+        displayTarget={displayTarget}
         seed={seed}
         keyboardEnabled={mode === "scrambled"}
         locked={feedback !== null}

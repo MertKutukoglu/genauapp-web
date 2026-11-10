@@ -121,7 +121,7 @@ export function AnswerFeedback({
         className,
       )}
     >
-      <div className="flex items-center gap-2.5 text-accent font-sans font-bold text-[16px]">
+      <div className="flex items-center justify-center gap-2.5 text-accent font-sans font-bold text-[16px]">
         {INCORRECT_ICON}
         <span>Not quite.</span>
       </div>

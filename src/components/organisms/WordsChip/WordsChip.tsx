@@ -87,6 +87,12 @@ export function WordsChip({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWord, currentChunks]);
 
+  // Track total repeats across the session so the completion card
+  // can show the stat. Repeats come from two sources: the Normal
+  // card's Repeat button and incorrect Assembly attempts that route
+  // through onRepeat via AnswerFeedback's Continue.
+  const [repeatCount, setRepeatCount] = React.useState(0);
+
   const handleRepeat = React.useCallback(() => {
     setRemaining((r) => {
       if (r.length === 0) return r;
@@ -95,6 +101,7 @@ export function WordsChip({
       const idx = 1 + Math.floor(Math.random() * rest.length);
       return [...rest.slice(0, idx), head, ...rest.slice(idx)];
     });
+    setRepeatCount((c) => c + 1);
     try {
       window.__track?.("demo_learn_repeat", { chip: "words" });
     } catch {
@@ -111,6 +118,17 @@ export function WordsChip({
     }
   }, []);
 
+  const handleStartOver = React.useCallback(() => {
+    setRemaining(words);
+    setRepeatCount(0);
+    setMode("learn");
+    try {
+      window.__track?.("demo_learn_restart", { chip: "words" });
+    } catch {
+      /* no-op */
+    }
+  }, [words]);
+
   return (
     <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
       <ModeToggle mode={mode} onChange={setMode} />
@@ -122,7 +140,12 @@ export function WordsChip({
       <div className="lg:flex-1 lg:flex lg:flex-col [&>*]:lg:flex-1">
         {mode === "learn" ? (
           learnCompleted ? (
-            <LearnCompletion onSwitchToExercise={() => setMode("exercise")} />
+            <LearnCompletion
+              total={deckSize}
+              repeats={repeatCount}
+              onStartOver={handleStartOver}
+              onSwitchToExercise={() => setMode("exercise")}
+            />
           ) : current ? (
             <LearnCardSwitch
               key={current.learn.word}
@@ -162,6 +185,12 @@ function LearnCardSwitch({
   onIKnow,
 }: LearnCardSwitchProps) {
   if (variant === "normal") {
+    // Verbs carry case info in grammarTags (akkusativ / dativ) so the
+    // extra RuleCard underneath repeats information the pills already
+    // show. Hide the rule for verbs; keep it for nouns + other
+    // kinds where the rule carries article / plural info the pills
+    // can't.
+    const isVerb = word.learn.wordKind === "verb";
     return (
       <NormalLearnCard
         topic={word.topic}
@@ -170,7 +199,7 @@ function LearnCardSwitch({
         article={word.learn.article}
         grammarTags={word.grammarTags}
         example={word.learn.sample.de}
-        rule={word.learn.rule}
+        rule={isVerb ? undefined : word.learn.rule}
         current={current}
         total={total}
         onRepeat={onRepeat}

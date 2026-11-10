@@ -32,8 +32,26 @@ import { clsx } from "@/lib/utils/clsx";
  */
 
 export interface AssemblyAreaProps {
-  /** Target sequence — Scrambled: letters; ChunkCompose: syllable chunks. */
+  /**
+   * The user-pickable sequence in target order — Scrambled: single
+   * letters; ChunkCompose: syllable chunks. For article-aware prompts
+   * the article's letters/chunk come first in this array, e.g.:
+   *   • scrambled "das Fenster" → ["d","a","s","F","e","n","s","t","e","r"]
+   *   • chunkCompose "die Familie" → ["die","Fa","mi","lie"]
+   * No whitespace tokens in here — the space between article and word
+   * is a non-pickable gap driven by `displayTarget` below.
+   */
   pieces: string[];
+  /**
+   * Visual target including any spaces, used ONLY for slot-row
+   * rendering. Defaults to `pieces.join("")`. Supply this when the
+   * display should have a visible gap (e.g. `"das Fenster"`) while
+   * the correctness check still runs against the gap-free join of
+   * `pieces` (`"dasFenster"`). The slot row renders each space in
+   * `displayTarget` as a wider gap with no dash; letters fill
+   * sequentially from `assembled`.
+   */
+  displayTarget?: string;
   /**
    * Stable seed for the initial shuffle. When the parent remounts the
    * card (via `key`), a different seed gives a different scramble;
@@ -84,6 +102,7 @@ function shuffleWithSeed<T>(arr: T[], seed: string): T[] {
 
 export function AssemblyArea({
   pieces,
+  displayTarget,
   seed,
   keyboardEnabled = false,
   locked = false,
@@ -91,8 +110,10 @@ export function AssemblyArea({
   className,
 }: AssemblyAreaProps) {
   const piecesKey = pieces.join("|");
+  // target = gap-free join, used for correctness + the pool.
+  // display = visual target with its spaces preserved for the slot row.
   const target = pieces.join("");
-  const targetChars = target.split("");
+  const display = displayTarget ?? target;
 
   // Pool of tiles with stable indices into `pieces`. Shuffle fixed per mount.
   const pool = React.useMemo(() => {
@@ -181,48 +202,75 @@ export function AssemblyArea({
 
   return (
     <div className={clsx("flex flex-col gap-6 items-center", className)}>
-      {/* Slot row — one entry per CHARACTER in the target. Filled chars
-          sit directly beside each other with no gap so chunks assemble
-          into a single continuous word (fixing the "Fa mi lie" look). */}
+      {/* Slot row — iterates `display` so spaces land as visible gaps
+          (no dash, wider column), while letter slots fill sequentially
+          from `assembled`. Running `letterIdx` counter tracks which
+          letter-position we're on, independent of the index into
+          `display`. */}
       <div
         className="flex items-end justify-center"
         style={{ columnGap: 2 }}
       >
-        {targetChars.map((char, i) => {
-          const filled = i < assembled.length;
-          const display = filled ? assembled[i] : "";
+        {(() => {
+          let letterIdx = 0;
+          return display.split("").map((char, i) => {
+            // Non-letter display chars (currently just space) render
+            // as a wider column with no dash — reads as a word gap.
+            if (char === " ") {
+              return (
+                <div
+                  key={`gap-${i}`}
+                  className="flex flex-col items-center"
+                  style={{ minWidth: 10, width: 10 }}
+                  aria-hidden
+                >
+                  <span className="font-sans font-bold text-[28px] leading-none">
+                    {" "}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="block h-[3px] rounded-full mt-1.5 bg-transparent"
+                    style={{ width: 10 }}
+                  />
+                </div>
+              );
+            }
 
-          return (
-            <div
-              key={i}
-              className="flex flex-col items-center"
-              style={{ minWidth: 14 }}
-            >
-              <span
-                className="font-sans font-bold text-[28px] leading-none whitespace-pre"
-                style={{
-                  color: slotColor,
-                  // Reserve the character's own natural width even when
-                  // empty, so the dashes below line up under the real
-                  // glyphs they'll become.
-                  visibility: filled ? "visible" : "hidden",
-                }}
+            const filled = letterIdx < assembled.length;
+            const slotChar = filled ? assembled[letterIdx] : char;
+            letterIdx++;
+
+            return (
+              <div
+                key={i}
+                className="flex flex-col items-center"
+                style={{ minWidth: 14 }}
               >
-                {filled ? display : char}
-              </span>
-              <span
-                aria-hidden
-                className={clsx(
-                  "block h-[3px] rounded-full mt-1.5",
-                  filled
-                    ? "bg-transparent"
-                    : "bg-[color:color-mix(in_srgb,var(--fg)_22%,transparent)]",
-                )}
-                style={{ width: Math.max(14, char.length * 10) }}
-              />
-            </div>
-          );
-        })}
+                <span
+                  className="font-sans font-bold text-[28px] leading-none whitespace-pre"
+                  style={{
+                    color: slotColor,
+                    // Reserve the character's own natural width even
+                    // when empty so dashes align under their letters.
+                    visibility: filled ? "visible" : "hidden",
+                  }}
+                >
+                  {slotChar}
+                </span>
+                <span
+                  aria-hidden
+                  className={clsx(
+                    "block h-[3px] rounded-full mt-1.5",
+                    filled
+                      ? "bg-transparent"
+                      : "bg-[color:color-mix(in_srgb,var(--fg)_22%,transparent)]",
+                  )}
+                  style={{ width: Math.max(14, char.length * 10) }}
+                />
+              </div>
+            );
+          });
+        })()}
       </div>
 
       {/* Tile pool + backspace. Dims when locked so the committed

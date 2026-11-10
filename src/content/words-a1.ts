@@ -15,12 +15,17 @@
  *
  * Grammar-tag reasoning (verbs only, keeping pills minimal and
  * pedagogically useful):
- *   - gehen        → ["aux-sein"]     motion verb, takes sein in Perfekt
- *   - essen        → ["irregular"]    strong verb, stem change e→i (du isst)
- *   - trinken      → []               regular in present tense (A1 scope)
- *   - sprechen     → ["irregular"]    strong, e→i (du sprichst)
- *   - lesen        → ["irregular"]    strong, e→ie (du liest)
- *   - schreiben    → []               regular in present; ablaut only in Perfekt
+ *   - gehen     → ["intransitive", "aux-sein"]  motion verb, takes sein in Perfekt, no object
+ *   - essen     → ["irregular", "akkusativ"]    strong (du isst), transitive (direct object)
+ *   - trinken   → ["akkusativ"]                 regular, transitive
+ *   - sprechen  → ["irregular", "akkusativ"]    strong (du sprichst), Deutsch sprechen
+ *   - lesen     → ["irregular", "akkusativ"]    strong (du liest), ein Buch lesen
+ *   - schreiben → ["akkusativ"]                 regular, eine E-Mail schreiben
+ *
+ * Case tags carry the verb's standard object case so the NormalLearnCard
+ * can skip the RuleCard for verbs — the pill row already says what the
+ * rule body would say (which case the verb takes), without the extra
+ * paragraph underneath.
  */
 
 import type { GrammarTag } from "@/components/molecules/GrammarTagPills/GrammarTagPills";
@@ -110,7 +115,7 @@ export const WORDS_A1: WordItem[] = [
     answer: "gehen",
     explanation: '"gehen" is the base infinitive for going on foot.',
     chunks: ["ge", "hen"],
-    grammarTags: ["aux-sein"],
+    grammarTags: ["intransitive", "aux-sein"],
   },
   {
     topic: "Food verbs",
@@ -129,7 +134,8 @@ export const WORDS_A1: WordItem[] = [
     correctIndex: 0,
     explanation: '"essen" means to eat, stem vowel changes in du/er forms.',
     chunks: ["es", "sen"],
-    grammarTags: ["irregular"],
+    // Transitive: essen takes Akkusativ (direct object = what's eaten).
+    grammarTags: ["irregular", "akkusativ"],
   },
   {
     topic: "Daily items",
@@ -239,6 +245,8 @@ export const WORDS_A1: WordItem[] = [
     answer: "trinken",
     explanation: '"trinken" is the infinitive for drinking.',
     chunks: ["trin", "ken"],
+    // Transitive, regular — Akkusativ for the drink itself.
+    grammarTags: ["akkusativ"],
   },
   {
     topic: "Furniture",
@@ -312,7 +320,10 @@ export const WORDS_A1: WordItem[] = [
     answer: "sprechen",
     explanation: '"sprechen", stem vowel e → i in du/er forms.',
     chunks: ["spre", "chen"],
-    grammarTags: ["irregular"],
+    // Transitive with Akkusativ (e.g. Deutsch sprechen, eine Sprache
+    // sprechen). "sprechen mit" takes dative, but at A1 the default
+    // framing is the direct-object use.
+    grammarTags: ["irregular", "akkusativ"],
   },
   {
     topic: "Time",
@@ -369,7 +380,8 @@ export const WORDS_A1: WordItem[] = [
     answer: "lesen",
     explanation: '"lesen", stem vowel e → ie in du/er forms.',
     chunks: ["le", "sen"],
-    grammarTags: ["irregular"],
+    // Transitive: ein Buch lesen → Akkusativ.
+    grammarTags: ["irregular", "akkusativ"],
   },
   {
     topic: "Drinks",
@@ -407,6 +419,10 @@ export const WORDS_A1: WordItem[] = [
     answer: "schreiben",
     explanation: '"schreiben", regular pattern in present tense.',
     chunks: ["schrei", "ben"],
+    // Transitive with Akkusativ (eine E-Mail schreiben, ein Buch
+    // schreiben). "schreiben an jemanden" also exists but at A1 the
+    // direct-object use is the first lesson.
+    grammarTags: ["akkusativ"],
   },
   {
     topic: "Relationships",

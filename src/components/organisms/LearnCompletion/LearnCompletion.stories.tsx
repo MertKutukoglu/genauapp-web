@@ -18,11 +18,24 @@ const meta: Meta<typeof LearnCompletion> = {
 export default meta;
 type Story = StoryObj<typeof LearnCompletion>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: { total: 20, repeats: 3 },
+};
 
-export const WithHandler: Story = {
-  render: () => (
+export const CleanRun: Story = {
+  args: { total: 20, repeats: 0 },
+};
+
+export const RoughRun: Story = {
+  args: { total: 20, repeats: 12 },
+};
+
+export const WithHandlers: Story = {
+  args: { total: 20, repeats: 3 },
+  render: (args) => (
     <LearnCompletion
+      {...args}
+      onStartOver={() => console.log("Start over tapped")}
       onSwitchToExercise={() => console.log("Switch to Exercise tapped")}
     />
   ),
