@@ -14,7 +14,7 @@ import type { Metadata } from "next";
  */
 
 export const metadata: Metadata = {
-  title: "GenauApp — Almancan var, solmasına izin vermiyoruz",
+  title: "GenauApp — Sen Almanca öğreniyorsun, paslanmasına izin vermiyoruz",
   description:
     "Aktif Almanca öğrenenler için keskin ve dürüst bir workout partneri. Hazır olduğunda Berlin'den.",
   alternates: {
@@ -34,9 +34,9 @@ export default function TrLandingPage() {
         Türkçe sürüm
       </p>
       <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-fg md:text-4xl">
-        Almancan var.{" "}
+        Sen Almanca öğreniyorsun.{" "}
         <span className="italic text-accent">
-          Solmasına izin vermiyoruz.
+          Biz paslanmasına izin vermiyoruz.
         </span>
       </h1>
       <p className="mt-4 font-sans text-base text-fg-muted">

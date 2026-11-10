@@ -106,11 +106,12 @@ const tr: typeof en = {
     ariaLabel: "Dili değiştir",
   },
   hero: {
-    // TR_Localization_Draft.md §2 — picked Option A ("solmasına izin
-    // vermiyoruz"): the closest metaphor to EN "fading" and the same
-    // two-beat rhythm as the English headline.
-    h1Before: "Almancan var.",
-    h1Emphasis: "Solmasına izin vermiyoruz.",
+    // Final pick (approved by Mert) — blends options B + C: the "sen
+    // Almancayı öğreniyorsun" active-subject rhythm from C paired with
+    // the "paslanmasına" metaphor from B (Turkish's standard figure for
+    // a skill going stale, stronger than "solmasına").
+    h1Before: "Sen Almanca öğreniyorsun.",
+    h1Emphasis: "Biz paslanmasına izin vermiyoruz.",
     sub: "Aktif öğrenenler için keskin ve dürüst bir workout partneri.",
   },
   tryDemoCard: {
