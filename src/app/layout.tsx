@@ -20,6 +20,10 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
+  // Italic 600 is used by the /try/ left card's "Your workout" title
+  // and may appear in blog pull-quotes; load both styles up front so
+  // they're ready without a second request.
+  style: ["normal", "italic"],
 });
 
 const openSans = Open_Sans({

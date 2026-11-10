@@ -22,7 +22,7 @@ import { SkillBadgeArt } from "./SkillBadgeArt";
  */
 
 export type Skill = "vocab" | "grammar" | "reading" | "writing" | "listening";
-export type SkillRingSize = "sm" | "md" | "lg";
+export type SkillRingSize = "xs" | "sm" | "md" | "lg";
 
 const skillMeta: Record<Skill, { colorVar: string; label: string }> = {
   vocab:     { colorVar: "var(--color-skill-vocab)",     label: "Vocab" },
@@ -34,6 +34,8 @@ const skillMeta: Record<Skill, { colorVar: string; label: string }> = {
 
 const sizePx: Record<SkillRingSize, { outer: number; labelCls: string }> = {
   // outer is the rendered CSS width; the SVG keeps its 86 viewBox and scales.
+  // xs = the /try/ left card's skill strip badge (4 in a 320px column).
+  xs: { outer: 54,  labelCls: "text-[10px]" },
   sm: { outer: 64,  labelCls: "text-[10px]" },
   md: { outer: 86,  labelCls: "text-[11px]" },
   lg: { outer: 120, labelCls: "text-xs"     },
