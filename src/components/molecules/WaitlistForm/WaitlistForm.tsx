@@ -4,6 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { EmailInput } from "@/components/atoms/EmailInput/EmailInput";
 import { Button } from "@/components/atoms/Button/Button";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import {
   useWaitlistSubmit,
   type WaitlistLevel,
@@ -39,6 +40,8 @@ export function WaitlistForm({
   source = "landing-hero",
   className,
 }: WaitlistFormProps) {
+  const { strings } = useLocale();
+  const w = strings.waitlist;
   const [email, setEmail] = React.useState("");
   const { state, submit } = useWaitlistSubmit();
 
@@ -69,13 +72,9 @@ export function WaitlistForm({
         )}
       >
         <p className="font-display text-lg font-semibold text-fg">
-          {state === "duplicate"
-            ? "You're already on the list."
-            : "You're on the list."}
+          {state === "duplicate" ? w.duplicateHeading : w.successHeading}
         </p>
-        <p className="text-sm text-fg-muted">
-          We&apos;ll mail you the moment the iOS beta drops.
-        </p>
+        <p className="text-sm text-fg-muted">{w.successBody}</p>
       </div>
     );
   }
@@ -98,7 +97,7 @@ export function WaitlistForm({
         <EmailInput
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={w.emailPlaceholder}
           className="!h-11 flex-1 !bg-transparent !px-0"
           required
           aria-invalid={state === "error" || undefined}
@@ -109,18 +108,16 @@ export function WaitlistForm({
           size="sm"
           disabled={state === "loading"}
         >
-          {state === "loading" ? "Joining…" : "Join waitlist"}
+          {state === "loading" ? w.loading : w.button}
         </Button>
       </div>
 
       {state === "error" ? (
         <p role="alert" className="text-sm text-accent">
-          Something went wrong. Try again?
+          {w.error}
         </p>
       ) : (
-        <p className="text-xs text-fg-faint">
-          One email when the iOS beta drops. No spam, ever.
-        </p>
+        <p className="text-xs text-fg-faint">{w.reassurance}</p>
       )}
     </form>
   );

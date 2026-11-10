@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { TrLandingClient } from "./TrLandingClient";
 
 /**
  * /tr — Turkish landing root.
  *
- * Placeholder scaffold: the i18n infrastructure (locale detection,
- * LanguagePicker, string dictionaries) ships in Step 1 so we can verify
- * routing + the picker end-to-end before porting content. Step 2
- * replaces this with the full TR landing (hero + carousel + packs +
- * waitlist), reading its copy from `lib/i18n/strings.ts`.
+ * Server component owns the metadata (title, description, canonical +
+ * hreflang pointing at the EN counterpart). The actual UI is the
+ * shared landing composition — HeroLeftPanelPhone + CarouselShell with
+ * the four slides — rendered in the `TrLandingClient` client child.
  *
- * Until then: a small centered placeholder so clicking the picker
- * doesn't 404, plus a visible marker that this page is intentional.
+ * Shared chrome (Topnav + Footer) lives in `app/layout.tsx` and reads
+ * locale via `useLocale`, which derives it from the pathname — so the
+ * header picker lights up TR and the footer legal labels flip without
+ * any prop threading needed here.
  */
 
 export const metadata: Metadata = {
@@ -25,29 +27,18 @@ export const metadata: Metadata = {
       "x-default": "/",
     },
   },
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    siteName: "GenauApp",
+    url: "https://www.genauapp.io/tr",
+    title:
+      "GenauApp — Sen Almanca öğreniyorsun, paslanmasına izin vermiyoruz",
+    description:
+      "Aktif Almanca öğrenenler için keskin ve dürüst bir workout partneri.",
+  },
 };
 
 export default function TrLandingPage() {
-  return (
-    <main className="mx-auto max-w-[720px] px-6 py-24 text-center">
-      <p className="font-sans text-xs uppercase tracking-[0.14em] text-accent">
-        Türkçe sürüm
-      </p>
-      <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-fg md:text-4xl">
-        Sen Almanca öğreniyorsun.{" "}
-        <span className="italic text-accent">
-          Biz paslanmasına izin vermiyoruz.
-        </span>
-      </h1>
-      <p className="mt-4 font-sans text-base text-fg-muted">
-        Türkçe sayfa yolda. Şu anda İngilizce versiyonda tüm içerik
-        mevcut.
-      </p>
-      <p className="mt-6 font-sans text-sm text-fg-faint">
-        Üstteki{" "}
-        <span className="font-semibold text-fg">EN</span> düğmesinden
-        İngilizce sürüme geçebilirsin.
-      </p>
-    </main>
-  );
+  return <TrLandingClient />;
 }

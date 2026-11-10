@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SlideHead } from "@/components/molecules/SlideHead/SlideHead";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import { SNIPPETS, SnipCaption } from "./snippets";
 
 /**
@@ -29,6 +30,8 @@ export function PracticeSlide({
   cycleMs = 2800,
   className,
 }: PracticeSlideProps) {
+  const { strings } = useLocale();
+  const slide = strings.slides.practice;
   const [i, setI] = React.useState(0);
 
   React.useEffect(() => {
@@ -46,13 +49,15 @@ export function PracticeSlide({
   return (
     <div className={clsx("flex flex-col gap-6 md:gap-8", className)}>
       <SlideHead
-        eyebrow="Practice"
+        eyebrow={slide.eyebrow}
         headline={
           <>
-            The same word, <em>in every room you enter</em>.
+            {slide.h2Before}
+            <em>{slide.h2Emphasis}</em>
+            {slide.h2After}
           </>
         }
-        sub="Pick it up in Words, meet it again in a Reading passage, hear it in a Story, build a sentence with it. Each time it sticks a little deeper."
+        sub={slide.sub}
       />
 
       {/* Module stage: grid-stack so all snippets share one cell. */}

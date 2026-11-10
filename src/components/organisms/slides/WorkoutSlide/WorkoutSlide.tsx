@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SlideHead } from "@/components/molecules/SlideHead/SlideHead";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import {
   CHIP_LAYOUT,
   CYCLE_ORDER,
@@ -43,6 +44,8 @@ export function WorkoutSlide({
   cycleMs = 2600,
   className,
 }: WorkoutSlideProps) {
+  const { strings } = useLocale();
+  const slide = strings.slides.workout;
   const [idx, setIdx] = React.useState(0);
   const active: WorkoutChipKey = CYCLE_ORDER[idx];
 
@@ -68,13 +71,15 @@ export function WorkoutSlide({
       )}
     >
       <SlideHead
-        eyebrow="Workout"
+        eyebrow={slide.eyebrow}
         headline={
           <>
-            Built from your <em>last performance</em>.
+            {slide.h2Before}
+            <em>{slide.h2Emphasis}</em>
+            {slide.h2After}
           </>
         }
-        sub="Yesterday's misses come back today. Today's wins get a rest. The workout is yours, not a template."
+        sub={slide.sub}
       />
 
       {/* Workout peek — app-faithful card */}

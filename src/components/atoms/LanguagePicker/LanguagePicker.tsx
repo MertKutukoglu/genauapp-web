@@ -10,10 +10,9 @@ import {
   LOCALE_COOKIE_MAX_AGE,
   LOCALE_LABELS,
   getEquivalentPath,
-  getLocaleFromPath,
   type Locale,
 } from "@/lib/i18n/config";
-import { getStrings } from "@/lib/i18n/strings";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * LanguagePicker — compact "EN · TR" toggle that lives in the topnav's
@@ -40,8 +39,7 @@ export interface LanguagePickerProps {
 export function LanguagePicker({ className }: LanguagePickerProps) {
   const pathname = usePathname() ?? "/";
   const router = useRouter();
-  const active = getLocaleFromPath(pathname);
-  const strings = getStrings(active);
+  const { locale: active, strings } = useLocale();
 
   const setLocale = React.useCallback(
     (target: Locale) => {
