@@ -12,6 +12,13 @@
  *   - `grammarTags` on verbs — derived from standard A1 German
  *     grammar (not in the source JSON, added here so verb Learn cards
  *     show the pill row)
+ *   - `tr` is an optional per-item overlay mirroring the English-side
+ *     fields in Turkish. The German word, article, chunks, sample.de
+ *     and grammar tags stay language-agnostic; only the
+ *     learner-facing English copy gets a TR variant. Consumers pass
+ *     each item through `localizeWord(item, locale)` before rendering
+ *     — the helper swaps the overlay fields in and leaves the
+ *     German-side data untouched.
  *
  * Grammar-tag reasoning (verbs only, keeping pills minimal and
  * pedagogically useful):
@@ -29,6 +36,7 @@
  */
 
 import type { GrammarTag } from "@/components/molecules/GrammarTagPills/GrammarTagPills";
+import type { Locale } from "@/lib/i18n/config";
 
 export type ExerciseType = "articlePicker" | "translationMC" | "typing";
 
@@ -40,6 +48,30 @@ export interface WordsLearnBlock {
   english: string;
   rule: string;
   sample: { de: string; en: string };
+}
+
+/**
+ * Per-locale overlay for the English-facing fields of a WordItem.
+ * Each key is optional so a partial overlay is valid; `localizeWord`
+ * falls back to the English source for anything missing.
+ */
+export interface WordItemLocaleOverlay {
+  /** Eyebrow category shown above the card. */
+  topic?: string;
+  /** Learn-block overrides: gloss, rule paragraph, sample translation. */
+  learn?: {
+    english?: string;
+    rule?: string;
+    sample?: { en?: string };
+  };
+  /** Exercise hint under the prompt (articlePicker) / typing instruction. */
+  hint?: string;
+  /** Exercise prompt — only needs localizing for typing (EN gloss → TR gloss). */
+  prompt?: string;
+  /** translationMC option labels in picker order. */
+  options?: string[];
+  /** Explanation paragraph shown on reveal. */
+  explanation?: string;
 }
 
 export interface WordItem {
@@ -57,6 +89,8 @@ export interface WordItem {
   chunks: string[];
   /** Verb-only grammar tags, rendered as pills on the Learn card. */
   grammarTags?: GrammarTag[];
+  /** Turkish overlay — same shape as the EN-side learner copy. */
+  tr?: WordItemLocaleOverlay;
 }
 
 export const WORDS_A1: WordItem[] = [
@@ -78,6 +112,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: "Most nouns ending in -brot are neuter → das.",
     noun: "Brot",
     chunks: ["Brot"],
+    tr: {
+      topic: "Yiyecek",
+      learn: {
+        english: "ekmek",
+        rule: "-brot ile biten isimler nötrdür → das.",
+        sample: { en: "Peynirli bir dilim ekmek yiyorum." },
+      },
+      hint: "ekmek",
+      explanation: "-brot ile biten isimler genelde nötrdür → das.",
+    },
   },
   {
     topic: "Family",
@@ -97,6 +141,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: "Nouns ending in -ie are typically feminine → die.",
     noun: "Familie",
     chunks: ["Fa", "mi", "lie"],
+    tr: {
+      topic: "Aile",
+      learn: {
+        english: "aile",
+        rule: "-ie ile biten isimler genelde dişildir → die.",
+        sample: { en: "Ailem Berlin'de yaşıyor." },
+      },
+      hint: "aile",
+      explanation: "-ie ile biten isimler genelde dişildir → die.",
+    },
   },
   {
     topic: "Motion verbs",
@@ -116,6 +170,17 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"gehen" is the base infinitive for going on foot.',
     chunks: ["ge", "hen"],
     grammarTags: ["intransitive", "aux-sein"],
+    tr: {
+      topic: "Hareket fiilleri",
+      learn: {
+        english: "gitmek (yürüyerek)",
+        rule: "Düzenli fiil: ich gehe, du gehst, er geht.",
+        sample: { en: "Eve gidiyorum." },
+      },
+      prompt: "gitmek (yürüyerek)",
+      hint: "Almancasını yaz.",
+      explanation: '"gehen" yürüyerek gitmenin mastar hâlidir.',
+    },
   },
   {
     topic: "Food verbs",
@@ -136,6 +201,16 @@ export const WORDS_A1: WordItem[] = [
     chunks: ["es", "sen"],
     // Transitive: essen takes Akkusativ (direct object = what's eaten).
     grammarTags: ["irregular", "akkusativ"],
+    tr: {
+      topic: "Yemek fiilleri",
+      learn: {
+        english: "yemek",
+        rule: "Düzensiz fiil, du/er formlarında kök sesli değişir: du isst, er isst.",
+        sample: { en: "Birlikte akşam yemeği yiyoruz." },
+      },
+      options: ["yemek", "içmek", "uyumak", "yürümek"],
+      explanation: '"essen" yemek demektir; du/er formlarında kök sesli değişir.',
+    },
   },
   {
     topic: "Daily items",
@@ -153,6 +228,16 @@ export const WORDS_A1: WordItem[] = [
     correctIndex: 0,
     explanation: '"der Schlüssel", masculine; -el nouns for tools often take der.',
     chunks: ["Schlüs", "sel"],
+    tr: {
+      topic: "Günlük eşyalar",
+      learn: {
+        english: "anahtar",
+        rule: "Alet/nesne için -el ile biten isimler genelde erildir → der.",
+        sample: { en: "Anahtar masanın üstünde." },
+      },
+      options: ["anahtar", "sandalye", "kapı", "pencere"],
+      explanation: '"der Schlüssel" eril; alet için -el ekli isimler genelde der alır.',
+    },
   },
   {
     topic: "Home",
@@ -172,6 +257,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Haus" is neuter → das. Plural: die Häuser.',
     noun: "Haus",
     chunks: ["Haus"],
+    tr: {
+      topic: "Ev",
+      learn: {
+        english: "ev",
+        rule: "-aus ile biten tek heceli isimler (Haus, Maus) nötrdür → das.",
+        sample: { en: "Ev çok büyük." },
+      },
+      hint: "ev",
+      explanation: '"Haus" nötr → das. Çoğulu: die Häuser.',
+    },
   },
   {
     topic: "School",
@@ -191,6 +286,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: "Nouns ending in -e are usually feminine → die.",
     noun: "Schule",
     chunks: ["Schu", "le"],
+    tr: {
+      topic: "Okul",
+      learn: {
+        english: "okul",
+        rule: "Yer/eşya için -e ile biten isimler genelde dişildir → die.",
+        sample: { en: "Okulum şehir merkezinde." },
+      },
+      hint: "okul",
+      explanation: "-e ile biten isimler genelde dişildir → die.",
+    },
   },
   {
     topic: "Animals",
@@ -210,6 +315,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Hund" is masculine → der.',
     noun: "Hund",
     chunks: ["Hund"],
+    tr: {
+      topic: "Hayvanlar",
+      learn: {
+        english: "köpek",
+        rule: "Erkek hayvanların kısa isimleri genelde erildir → der.",
+        sample: { en: "Köpek parkta koşuyor." },
+      },
+      hint: "köpek",
+      explanation: '"Hund" eril → der.',
+    },
   },
   {
     topic: "Animals",
@@ -227,6 +342,16 @@ export const WORDS_A1: WordItem[] = [
     correctIndex: 0,
     explanation: '"die Katze", feminine; -e endings usually take die.',
     chunks: ["Kat", "ze"],
+    tr: {
+      topic: "Hayvanlar",
+      learn: {
+        english: "kedi",
+        rule: "-e ile biten isimler genelde dişildir → die.",
+        sample: { en: "Kedi kanepede uyuyor." },
+      },
+      options: ["kedi", "fare", "kuş", "at"],
+      explanation: '"die Katze" dişil; -e eki genelde die alır.',
+    },
   },
   {
     topic: "Drink verbs",
@@ -247,6 +372,17 @@ export const WORDS_A1: WordItem[] = [
     chunks: ["trin", "ken"],
     // Transitive, regular — Akkusativ for the drink itself.
     grammarTags: ["akkusativ"],
+    tr: {
+      topic: "İçecek fiilleri",
+      learn: {
+        english: "içmek",
+        rule: "Düzenli fiil: ich trinke, du trinkst, er trinkt.",
+        sample: { en: "Her sabah kahve içerim." },
+      },
+      prompt: "içmek",
+      hint: "Almancasını yaz.",
+      explanation: '"trinken" içmenin mastar hâlidir.',
+    },
   },
   {
     topic: "Furniture",
@@ -266,6 +402,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Tisch" is masculine → der.',
     noun: "Tisch",
     chunks: ["Tisch"],
+    tr: {
+      topic: "Mobilya",
+      learn: {
+        english: "masa",
+        rule: "Mobilya/nesne için kısa isimler genelde erildir → der.",
+        sample: { en: "Masanın üstünde bir bardak var." },
+      },
+      hint: "masa",
+      explanation: '"Tisch" eril → der.',
+    },
   },
   {
     topic: "Home",
@@ -285,6 +431,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Tür" is feminine → die.',
     noun: "Tür",
     chunks: ["Tür"],
+    tr: {
+      topic: "Ev",
+      learn: {
+        english: "kapı",
+        rule: "Evdeki açıklıkları anlatan isimler genelde dişildir → die.",
+        sample: { en: "Kapı açık." },
+      },
+      hint: "kapı",
+      explanation: '"Tür" dişil → die.',
+    },
   },
   {
     topic: "Transport",
@@ -302,6 +458,16 @@ export const WORDS_A1: WordItem[] = [
     correctIndex: 0,
     explanation: '"das Auto", neuter; many -o nouns are neuter.',
     chunks: ["Au", "to"],
+    tr: {
+      topic: "Ulaşım",
+      learn: {
+        english: "araba",
+        rule: "-o ile biten yabancı kökenli isimler genelde nötrdür → das.",
+        sample: { en: "Araba çok hızlı gidiyor." },
+      },
+      options: ["araba", "bisiklet", "tren", "tekne"],
+      explanation: '"das Auto" nötr; -o ile biten isimler genelde nötrdür.',
+    },
   },
   {
     topic: "Communication",
@@ -324,6 +490,17 @@ export const WORDS_A1: WordItem[] = [
     // sprechen). "sprechen mit" takes dative, but at A1 the default
     // framing is the direct-object use.
     grammarTags: ["irregular", "akkusativ"],
+    tr: {
+      topic: "İletişim",
+      learn: {
+        english: "konuşmak",
+        rule: "Düzensiz fiil, du/er'de kök sesli değişir: du sprichst, er spricht.",
+        sample: { en: "Almanca ve İngilizce konuşurum." },
+      },
+      prompt: "konuşmak",
+      hint: "Almancasını yaz.",
+      explanation: '"sprechen", du/er formlarında kök sesli e → i olur.',
+    },
   },
   {
     topic: "Time",
@@ -343,6 +520,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Zeit" is feminine → die.',
     noun: "Zeit",
     chunks: ["Zeit"],
+    tr: {
+      topic: "Zaman",
+      learn: {
+        english: "zaman",
+        rule: "-t ile biten soyut isimler (Zeit, Stadt, Nacht) genelde dişildir → die.",
+        sample: { en: "Bugün hiç zamanım yok." },
+      },
+      hint: "zaman",
+      explanation: '"Zeit" dişil → die.',
+    },
   },
   {
     topic: "People",
@@ -362,6 +549,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Mann" is masculine → der.',
     noun: "Mann",
     chunks: ["Mann"],
+    tr: {
+      topic: "İnsanlar",
+      learn: {
+        english: "adam",
+        rule: "Erkek kişileri anlatan isimler erildir → der.",
+        sample: { en: "Adam otobüs durağında bekliyor." },
+      },
+      hint: "adam",
+      explanation: '"Mann" eril → der.',
+    },
   },
   {
     topic: "Reading verbs",
@@ -382,6 +579,17 @@ export const WORDS_A1: WordItem[] = [
     chunks: ["le", "sen"],
     // Transitive: ein Buch lesen → Akkusativ.
     grammarTags: ["irregular", "akkusativ"],
+    tr: {
+      topic: "Okuma fiilleri",
+      learn: {
+        english: "okumak",
+        rule: "Düzensiz fiil, du/er'de kök sesli değişir: du liest, er liest.",
+        sample: { en: "Her akşam kitap okurum." },
+      },
+      prompt: "okumak",
+      hint: "Almancasını yaz.",
+      explanation: '"lesen", du/er formlarında kök sesli e → ie olur.',
+    },
   },
   {
     topic: "Drinks",
@@ -401,6 +609,16 @@ export const WORDS_A1: WordItem[] = [
     explanation: '"Wasser" is neuter → das.',
     noun: "Wasser",
     chunks: ["Was", "ser"],
+    tr: {
+      topic: "İçecekler",
+      learn: {
+        english: "su",
+        rule: "Madde/sıvı için -er ile biten isimler genelde nötrdür → das.",
+        sample: { en: "Su soğuk." },
+      },
+      hint: "su",
+      explanation: '"Wasser" nötr → das.',
+    },
   },
   {
     topic: "Writing verbs",
@@ -423,6 +641,17 @@ export const WORDS_A1: WordItem[] = [
     // schreiben). "schreiben an jemanden" also exists but at A1 the
     // direct-object use is the first lesson.
     grammarTags: ["akkusativ"],
+    tr: {
+      topic: "Yazma fiilleri",
+      learn: {
+        english: "yazmak",
+        rule: "Düzenli fiil: ich schreibe, du schreibst, er schreibt.",
+        sample: { en: "Anneme bir e-posta yazıyorum." },
+      },
+      prompt: "yazmak",
+      hint: "Almancasını yaz.",
+      explanation: '"schreiben", şimdiki zamanda düzenli çekim.',
+    },
   },
   {
     topic: "Relationships",
@@ -440,5 +669,51 @@ export const WORDS_A1: WordItem[] = [
     correctIndex: 0,
     explanation: '"die Freundin", the feminine form; -in endings are always feminine.',
     chunks: ["Freun", "din"],
+    tr: {
+      topic: "İlişkiler",
+      learn: {
+        english: "kız arkadaş / kadın arkadaş",
+        rule: "Meslek ve rol isimlerinin -in ekli dişil formları her zaman dişildir → die.",
+        sample: { en: "Kız arkadaşım Münih'te yaşıyor." },
+      },
+      options: ["kız arkadaş / kadın arkadaş", "erkek arkadaş", "kız kardeş", "komşu"],
+      explanation: '"die Freundin" dişil form; -in eki her zaman dişildir.',
+    },
   },
 ];
+
+/**
+ * Return a locale-appropriate view of a WordItem.
+ *
+ * For `en`, the item passes through unchanged. For `tr`, the `tr`
+ * overlay's fields replace their EN counterparts one-by-one; anything
+ * missing from the overlay falls back to the EN source. German-side
+ * data (word, article, sample.de, chunks, grammarTags, exerciseType)
+ * is locale-agnostic and always passes through.
+ *
+ * Note: `learn.english` keeps its property name across locales — in
+ * TR it carries the Turkish gloss. Renaming would force every consumer
+ * to branch on locale, which is exactly what this helper exists to
+ * avoid.
+ */
+export function localizeWord(item: WordItem, locale: Locale): WordItem {
+  if (locale === "en" || !item.tr) return item;
+  const tr = item.tr;
+  return {
+    ...item,
+    topic: tr.topic ?? item.topic,
+    prompt: tr.prompt ?? item.prompt,
+    hint: tr.hint ?? item.hint,
+    options: tr.options ?? item.options,
+    explanation: tr.explanation ?? item.explanation,
+    learn: {
+      ...item.learn,
+      english: tr.learn?.english ?? item.learn.english,
+      rule: tr.learn?.rule ?? item.learn.rule,
+      sample: {
+        ...item.learn.sample,
+        en: tr.learn?.sample?.en ?? item.learn.sample.en,
+      },
+    },
+  };
+}

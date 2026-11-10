@@ -17,7 +17,8 @@ import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnC
 import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
-import type { WordItem } from "@/content/words-a1";
+import { localizeWord, type WordItem } from "@/content/words-a1";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * WordsChip — the right-card experience when the user picks the Words
@@ -58,28 +59,38 @@ export function WordsChip({
   initialMode = "learn",
   className,
 }: WordsChipProps) {
-  const [mode, setMode] = React.useState<WordsMode>(initialMode);
-  const [remaining, setRemaining] = React.useState<WordItem[]>(words);
+  // Locale shapes the English-side copy: gloss, rule, sample
+  // translation, hint, MC options, explanation. The German data
+  // (word, article, sample.de, chunks, grammar tags) stays
+  // locale-agnostic. Memoized on words + locale so Repeat/I-know
+  // re-renders don't re-walk the deck.
+  const { locale } = useLocale();
+  const localizedWords = React.useMemo(
+    () => words.map((w) => localizeWord(w, locale)),
+    [words, locale],
+  );
 
-  // Re-seed the deck whenever the input words array changes. Lets the
-  // parent swap decks (different chip, different level) without
-  // remounting WordsChip.
+  const [mode, setMode] = React.useState<WordsMode>(initialMode);
+  const [remaining, setRemaining] = React.useState<WordItem[]>(localizedWords);
+
+  // Re-seed the deck whenever the input words array changes OR the
+  // locale flips (TR ↔ EN re-materializes every string on the cards,
+  // so the deck state must point at the freshly localized items).
   const wordsKey = React.useMemo(
-    () => words.map((w) => w.learn.word).join("|"),
-    [words],
+    () => `${locale}:${localizedWords.map((w) => w.learn.word).join("|")}`,
+    [localizedWords, locale],
   );
   React.useEffect(() => {
-    // Intentional state-from-external-input sync: new deck → reseed.
-    // Dep is wordsKey (not words) so we don't fire on array-identity
-    // changes that carry the same content.
+    // Intentional state-from-external-input sync: new deck or locale
+    // flip → reseed with the freshly localized deck. Dep is wordsKey
+    // (not words) so identity-only changes don't fire.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRemaining(words);
-    // wordsKey is the content hash of words; using it keeps us off
-    // identity-only changes.
+    setRemaining(localizedWords);
+    // wordsKey = `${locale}:${content hash}`, which covers both axes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wordsKey]);
 
-  const deckSize = words.length;
+  const deckSize = localizedWords.length;
   const remainingCount = remaining.length;
   const currentIndex = deckSize - remainingCount + 1;
   const current = remaining[0];
@@ -129,7 +140,7 @@ export function WordsChip({
   }, []);
 
   const handleStartOver = React.useCallback(() => {
-    setRemaining(words);
+    setRemaining(localizedWords);
     setRepeatCount(0);
     setMode("learn");
     try {
@@ -137,7 +148,7 @@ export function WordsChip({
     } catch {
       /* no-op */
     }
-  }, [words]);
+  }, [localizedWords]);
 
   return (
     <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
@@ -170,7 +181,7 @@ export function WordsChip({
             <EmptyDeck />
           )
         ) : (
-          <ExerciseDeck words={words} />
+          <ExerciseDeck words={localizedWords} />
         )}
       </div>
     </div>
