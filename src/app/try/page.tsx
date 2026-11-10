@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useChipStore } from "@/stores/chipStore";
+import { useSkillStore } from "@/stores/skillStore";
 import { LevelPicker } from "@/components/templates/LevelPicker/LevelPicker";
 import { TryLayout } from "@/components/templates/TryLayout/TryLayout";
 import { LeftCard } from "@/components/templates/LeftCard/LeftCard";
@@ -47,6 +48,7 @@ function TryPageInner() {
   const setLevel = useChipStore((s) => s.setLevel);
   const clearLevel = useChipStore((s) => s.clearLevel);
   const resetAll = useChipStore((s) => s.resetAll);
+  const resetSkills = useSkillStore((s) => s.resetAll);
 
   // Honor query params — handled once on mount, then stripped from the
   // URL so a refresh doesn't re-fire them.
@@ -67,11 +69,12 @@ function TryPageInner() {
     queryHandled.current = true;
     if (hasReset) {
       resetAll();
+      resetSkills();
     } else if (hasLevel) {
       clearLevel();
     }
     router.replace("/try", { scroll: false });
-  }, [searchParams, resetAll, clearLevel, router]);
+  }, [searchParams, resetAll, resetSkills, clearLevel, router]);
 
   // Gateway: no level picked yet.
   if (!selectedLevel) {

@@ -6,6 +6,7 @@ import { WorkoutCounter } from "@/components/atoms/WorkoutCounter/WorkoutCounter
 import { SkillStrip } from "@/components/molecules/SkillStrip/SkillStrip";
 import { ChipList } from "@/components/organisms/ChipList/ChipList";
 import { useChipStore } from "@/stores/chipStore";
+import { useSkillStore } from "@/stores/skillStore";
 
 /**
  * LeftCard — the /try/ page's sticky left column.
@@ -46,10 +47,34 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
     Object.values(s.progress).filter((v) => v === "done").length,
   );
 
-  // Default strip: all four skills empty. Caller can override via the
-  // skillStrip prop once the collect mechanic + skill store land.
+  const progress = useSkillStore((s) => s.progress);
+  const pending = useSkillStore((s) => s.pending);
+  const collect = useSkillStore((s) => s.collect);
+
+  // Default strip: live-bound to the skillStore. The pending prop is a
+  // boolean map (presence = badge visible); the number lives in the
+  // store. Clicking a badge fires `collect`, which applies that
+  // skill's staged delta and clears the badge.
+  const pendingFlags = React.useMemo(
+    () => ({
+      vocab: Boolean(pending.vocab),
+      grammar: Boolean(pending.grammar),
+      writing: Boolean(pending.writing),
+      reading: Boolean(pending.reading),
+    }),
+    [pending],
+  );
+
   const stripNode =
-    skillStrip === undefined ? <SkillStrip /> : skillStrip;
+    skillStrip === undefined ? (
+      <SkillStrip
+        progress={progress}
+        pending={pendingFlags}
+        onCollect={collect}
+      />
+    ) : (
+      skillStrip
+    );
 
   return (
     <aside

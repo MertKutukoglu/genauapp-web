@@ -14,6 +14,8 @@ import { ExerciseTranslationMC } from "@/components/organisms/ExerciseTranslatio
 import { ExerciseTyping } from "@/components/organisms/ExerciseTyping/ExerciseTyping";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
 import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnCardType";
+import { computeSkillDeltas } from "@/lib/skills/map";
+import { useSkillStore } from "@/stores/skillStore";
 import type { WordItem } from "@/content/words-a1";
 
 /**
@@ -341,20 +343,34 @@ function ExerciseDeck({ words, onBackToLearn }: ExerciseDeckProps) {
     [current],
   );
 
+  const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
+
   const handleFinish = React.useCallback(() => {
+    // Stage per-skill deltas on the Words chip map. Session-end
+    // scoring — one shot, positive-only per spec §2:
+    //   primary = vocab,  fed = [grammar, writing],  reading untouched
+    const deltas = computeSkillDeltas({
+      chip: "words",
+      correct: correctCount,
+      total: deckSize,
+    });
+    stageSkillDeltas(deltas);
+
     try {
       window.__track?.("demo_exercise_finish", {
         chip: "words",
         correct: correctCount,
         incorrect: incorrectCount,
+        deltas,
       });
     } catch {
       /* no-op */
     }
-    // Finishing just flips back to Learn for now. The chip-done +
-    // closeChip wiring layers on top of this in a later pass.
+    // Flip back to Learn so the user sees the LeftCard and the
+    // staged ring badges at the same time (collect is a conscious
+    // next moment, not an auto-apply).
     onBackToLearn();
-  }, [correctCount, incorrectCount, onBackToLearn]);
+  }, [correctCount, incorrectCount, deckSize, stageSkillDeltas, onBackToLearn]);
 
   if (done) {
     return (
