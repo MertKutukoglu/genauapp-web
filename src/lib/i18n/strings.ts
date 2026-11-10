@@ -24,6 +24,7 @@ import type { Locale } from "./config";
 const en = {
   nav: {
     origins: "Read our story",
+    storyBanner: "Our story: how Genau started",
   },
   // (`as const` is deliberately NOT used on `en`: it would narrow each
   // value to its literal string type and make the TR dict uninhabitable
@@ -117,6 +118,7 @@ const en = {
 const tr: typeof en = {
   nav: {
     origins: "Kökenler",
+    storyBanner: "Hikayemiz: Genau nasıl başladı",
   },
   languagePicker: {
     ariaLabel: "Dili değiştir",

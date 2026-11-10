@@ -59,5 +59,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${base}/tr/kunye`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/tr/gizlilik`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/tr/cerezler`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
   ];
 }

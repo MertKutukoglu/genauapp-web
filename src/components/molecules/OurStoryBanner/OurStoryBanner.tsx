@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * Mobile promo banner pointing to the origins blog post. Rendered as
@@ -28,9 +29,15 @@ export interface OurStoryBannerProps {
 }
 
 export function OurStoryBanner({
-  href = "/blog/origins-of-genau",
+  href,
   className,
 }: OurStoryBannerProps) {
+  const { locale, strings } = useLocale();
+  // Default href follows the current locale; explicit prop still wins
+  // (used in storybook / test setups).
+  const resolvedHref =
+    href ??
+    (locale === "tr" ? "/tr/blog/kokenler" : "/blog/origins-of-genau");
   const [dismissed, setDismissed] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
 
@@ -85,7 +92,7 @@ export function OurStoryBanner({
       aria-label="Blog promo"
     >
       <Link
-        href={href}
+        href={resolvedHref}
         onClick={onOpen}
         className={clsx(
           "flex-1 flex items-center justify-center gap-2",
@@ -94,7 +101,7 @@ export function OurStoryBanner({
         )}
       >
         <Icon name="book" className="w-4 h-4 text-accent" />
-        <span>Our story: how Genau started</span>
+        <span>{strings.nav.storyBanner}</span>
         <Icon name="arrow-right" className="w-4 h-4 text-accent" />
       </Link>
       <button

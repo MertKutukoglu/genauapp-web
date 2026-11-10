@@ -3,6 +3,14 @@ import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 export const metadata = {
   title: "Impressum",
   description: "Impressum / Legal notice for GenauApp",
+  alternates: {
+    canonical: "/impressum",
+    languages: {
+      en: "/impressum",
+      tr: "/tr/kunye",
+      "x-default": "/impressum",
+    },
+  },
 };
 
 export default function ImpressumPage() {

@@ -4,6 +4,14 @@ import { ChangeConsentButton } from "@/components/molecules/CookieConsent/Change
 export const metadata = {
   title: "Cookie Policy",
   description: "Cookie policy for GenauApp",
+  alternates: {
+    canonical: "/cookie-policy",
+    languages: {
+      en: "/cookie-policy",
+      tr: "/tr/cerezler",
+      "x-default": "/cookie-policy",
+    },
+  },
 };
 
 export default function CookiePolicyPage() {
