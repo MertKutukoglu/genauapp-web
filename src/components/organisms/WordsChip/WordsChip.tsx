@@ -16,6 +16,7 @@ import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/Ex
 import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnCardType";
 import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
+import { useChipStore } from "@/stores/chipStore";
 import type { WordItem } from "@/content/words-a1";
 
 /**
@@ -340,6 +341,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
   );
 
   const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
+  const completeChip = useChipStore((s) => s.completeChip);
 
   // Compute deltas once, the moment the deck empties. We stash them
   // in local state so the ExerciseCompletion screen always shows the
@@ -368,6 +370,10 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     });
     setSessionDeltas(d);
     stageSkillDeltas(d);
+    // Mark the Words chip done so the LeftCard's WorkoutCounter
+    // ticks up and the chip visual flips to its done state.
+    // Idempotent in the store — re-runs are safe.
+    completeChip("words");
 
     try {
       window.__track?.("demo_exercise_finish", {
@@ -382,7 +388,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip]);
 
   if (done) {
     return (
