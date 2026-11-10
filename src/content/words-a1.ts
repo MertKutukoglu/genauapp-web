@@ -46,7 +46,23 @@ export interface WordsLearnBlock {
   wordKind?: "verb";
   word: string;
   english: string;
-  rule: string;
+  /**
+   * The grammar rule shown on the Learn card's RuleCard.
+   *
+   * Only included when there IS a real, teachable suffix/pattern rule
+   * that predicts the article — e.g. -ie feminine, -e feminine, -o
+   * loan-neuter, -in feminine, natural gender for people. Words that
+   * take their article by convention alone (Brot, Haus, Tisch, Zeit,
+   * Wasser, …) deliberately have no `rule`; inventing a rule like
+   * "-brot ending is neuter" is tautological and misleading. The
+   * RuleCard is only rendered when this field is present.
+   *
+   * On verbs, this field carries conjugation notes instead; the Learn
+   * card hides the RuleCard for verbs because the grammar pills row
+   * (case, aux, irregular) already carries the information that
+   * paragraph would.
+   */
+  rule?: string;
   sample: { de: string; en: string };
 }
 
@@ -102,25 +118,24 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Brot",
       english: "bread",
-      rule: "Nouns ending in -brot are neuter → das.",
+      // No reliable suffix rule — Brot takes das by convention.
       sample: { de: "Ich esse ein Brot mit Käse.", en: "I eat a slice of bread with cheese." },
     },
     prompt: "Brot",
     hint: "bread",
     options: ["der", "die", "das"],
     correctIndex: 2,
-    explanation: "Most nouns ending in -brot are neuter → das.",
+    explanation: '"Brot" is neuter → das. One to learn with its article.',
     noun: "Brot",
     chunks: ["Brot"],
     tr: {
       topic: "Yiyecek",
       learn: {
         english: "ekmek",
-        rule: "-brot ile biten isimler nötrdür → das.",
         sample: { en: "Peynirli bir dilim ekmek yiyorum." },
       },
       hint: "ekmek",
-      explanation: "-brot ile biten isimler genelde nötrdür → das.",
+      explanation: '"Brot" nötr → das. Artikeliyle birlikte ezberlemek gerek.',
     },
   },
   {
@@ -220,23 +235,22 @@ export const WORDS_A1: WordItem[] = [
       article: "der",
       word: "Schlüssel",
       english: "key",
-      rule: "Nouns ending in -el for tools/objects are often masculine → der.",
+      // -el isn't a reliable gender signal. Schlüssel is simply masculine.
       sample: { de: "Der Schlüssel liegt auf dem Tisch.", en: "The key is on the table." },
     },
     prompt: "der Schlüssel",
     options: ["key", "chair", "door", "window"],
     correctIndex: 0,
-    explanation: '"der Schlüssel", masculine; -el nouns for tools often take der.',
+    explanation: '"der Schlüssel" is masculine. One to learn with its article.',
     chunks: ["Schlüs", "sel"],
     tr: {
       topic: "Günlük eşyalar",
       learn: {
         english: "anahtar",
-        rule: "Alet/nesne için -el ile biten isimler genelde erildir → der.",
         sample: { en: "Anahtar masanın üstünde." },
       },
       options: ["anahtar", "sandalye", "kapı", "pencere"],
-      explanation: '"der Schlüssel" eril; alet için -el ekli isimler genelde der alır.',
+      explanation: '"der Schlüssel" eril. Artikeliyle birlikte ezberlenecek bir kelime.',
     },
   },
   {
@@ -247,7 +261,7 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Haus",
       english: "house",
-      rule: "Most one-syllable nouns ending in -aus (Haus, Maus) are neuter → das.",
+      // No reliable suffix rule — Haus takes das by convention.
       sample: { de: "Das Haus ist sehr groß.", en: "The house is very big." },
     },
     prompt: "Haus",
@@ -261,7 +275,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "Ev",
       learn: {
         english: "ev",
-        rule: "-aus ile biten tek heceli isimler (Haus, Maus) nötrdür → das.",
         sample: { en: "Ev çok büyük." },
       },
       hint: "ev",
@@ -305,7 +318,7 @@ export const WORDS_A1: WordItem[] = [
       article: "der",
       word: "Hund",
       english: "dog",
-      rule: "Many short animal names for males are masculine → der.",
+      // No reliable suffix rule — Hund takes der by convention.
       sample: { de: "Der Hund läuft im Park.", en: "The dog is running in the park." },
     },
     prompt: "Hund",
@@ -319,7 +332,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "Hayvanlar",
       learn: {
         english: "köpek",
-        rule: "Erkek hayvanların kısa isimleri genelde erildir → der.",
         sample: { en: "Köpek parkta koşuyor." },
       },
       hint: "köpek",
@@ -392,7 +404,7 @@ export const WORDS_A1: WordItem[] = [
       article: "der",
       word: "Tisch",
       english: "table",
-      rule: "Many short nouns for furniture/objects are masculine → der.",
+      // No reliable suffix rule — Tisch takes der by convention.
       sample: { de: "Auf dem Tisch steht ein Glas.", en: "There's a glass on the table." },
     },
     prompt: "Tisch",
@@ -406,7 +418,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "Mobilya",
       learn: {
         english: "masa",
-        rule: "Mobilya/nesne için kısa isimler genelde erildir → der.",
         sample: { en: "Masanın üstünde bir bardak var." },
       },
       hint: "masa",
@@ -421,7 +432,7 @@ export const WORDS_A1: WordItem[] = [
       article: "die",
       word: "Tür",
       english: "door",
-      rule: "Nouns for openings in a house are often feminine → die.",
+      // No reliable suffix rule — Tür takes die by convention.
       sample: { de: "Die Tür ist offen.", en: "The door is open." },
     },
     prompt: "Tür",
@@ -435,7 +446,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "Ev",
       learn: {
         english: "kapı",
-        rule: "Evdeki açıklıkları anlatan isimler genelde dişildir → die.",
         sample: { en: "Kapı açık." },
       },
       hint: "kapı",
@@ -510,7 +520,7 @@ export const WORDS_A1: WordItem[] = [
       article: "die",
       word: "Zeit",
       english: "time",
-      rule: "Many abstract nouns ending in -t (Zeit, Stadt, Nacht) are feminine → die.",
+      // No reliable suffix rule — Zeit takes die by convention.
       sample: { de: "Ich habe heute keine Zeit.", en: "I have no time today." },
     },
     prompt: "Zeit",
@@ -524,7 +534,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "Zaman",
       learn: {
         english: "zaman",
-        rule: "-t ile biten soyut isimler (Zeit, Stadt, Nacht) genelde dişildir → die.",
         sample: { en: "Bugün hiç zamanım yok." },
       },
       hint: "zaman",
@@ -599,7 +608,7 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Wasser",
       english: "water",
-      rule: "Most nouns ending in -er for materials/liquids are neuter → das.",
+      // No reliable suffix rule — Wasser takes das by convention.
       sample: { de: "Das Wasser ist kalt.", en: "The water is cold." },
     },
     prompt: "Wasser",
@@ -613,7 +622,6 @@ export const WORDS_A1: WordItem[] = [
       topic: "İçecekler",
       learn: {
         english: "su",
-        rule: "Madde/sıvı için -er ile biten isimler genelde nötrdür → das.",
         sample: { en: "Su soğuk." },
       },
       hint: "su",
