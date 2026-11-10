@@ -8,6 +8,9 @@ import { clsx } from "@/lib/utils/clsx";
  *   - Container: var(--surface-sunk) bg, 16 padding, 16 radius
  *   - Eyebrow: "Sample Sentence", Open Sans regular 14, fg-faint
  *   - Body: Open Sans semi-bold 16, var(--fg)
+ *   - Translation (optional): Open Sans regular 14, fg-muted,
+ *     sits right under the German line — gives the learner the gist
+ *     without pulling focus away from the German it's teaching.
  *
  * No article coloring on the sample — the sentence reads as prose
  * context, not a drill. Shared across Words / Sentence / Reading.
@@ -15,6 +18,11 @@ import { clsx } from "@/lib/utils/clsx";
 
 export interface SampleSentenceProps {
   sentence: string;
+  /**
+   * Optional translation of `sentence` in the UI locale (English on
+   * /try, Turkish on /tr/try). Rendered muted under the German line.
+   */
+  translation?: string;
   /** Optional override for the eyebrow label (default "Sample Sentence"). */
   label?: string;
   className?: string;
@@ -22,6 +30,7 @@ export interface SampleSentenceProps {
 
 export function SampleSentence({
   sentence,
+  translation,
   label = "Sample Sentence",
   className,
 }: SampleSentenceProps) {
@@ -38,6 +47,11 @@ export function SampleSentence({
       <div className="font-sans font-semibold text-base text-fg leading-relaxed">
         {sentence}
       </div>
+      {translation ? (
+        <div className="font-sans font-normal text-sm text-fg-muted leading-snug">
+          {translation}
+        </div>
+      ) : null}
     </div>
   );
 }

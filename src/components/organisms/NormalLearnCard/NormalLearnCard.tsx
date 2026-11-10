@@ -35,6 +35,12 @@ export interface NormalLearnCardProps {
   article?: ArticleColor;
   grammarTags?: GrammarTag[];
   example?: string;
+  /**
+   * Translation of `example` in the UI locale (English on /try,
+   * Turkish on /tr/try). Rendered muted under the German line so
+   * learners get the gist without losing focus on the German.
+   */
+  exampleTranslation?: string;
   rule?: string;
   /** Small uppercase eyebrow above the toolbar (e.g. "Food"). */
   topic?: string;
@@ -52,6 +58,7 @@ export function NormalLearnCard({
   article,
   grammarTags,
   example,
+  exampleTranslation,
   rule,
   topic,
   current,
@@ -84,7 +91,9 @@ export function NormalLearnCard({
       {grammarTags && grammarTags.length > 0 ? (
         <GrammarTagPills tags={grammarTags} />
       ) : null}
-      {example ? <SampleSentence sentence={example} /> : null}
+      {example ? (
+        <SampleSentence sentence={example} translation={exampleTranslation} />
+      ) : null}
       {rule ? <RuleCard article={article} body={rule} /> : null}
       <LearnActions onRepeat={onRepeat} onIKnow={onIKnow} />
     </div>

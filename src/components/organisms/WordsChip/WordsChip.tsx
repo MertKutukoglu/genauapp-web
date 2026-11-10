@@ -220,6 +220,7 @@ function LearnCardSwitch({
         article={word.learn.article}
         grammarTags={word.grammarTags}
         example={word.learn.sample.de}
+        exampleTranslation={word.learn.sample.en}
         rule={isVerb ? undefined : word.learn.rule}
         current={current}
         total={total}
