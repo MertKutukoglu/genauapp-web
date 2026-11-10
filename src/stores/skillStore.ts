@@ -31,6 +31,24 @@ import { create } from "zustand";
 import { persist, type PersistStorage, type StorageValue } from "zustand/middleware";
 import type { SkillKey, SkillDeltas } from "@/lib/skills/map";
 
+/**
+ * Flatten a per-skill delta map into analytics-safe props. Vercel's
+ * track() rejects nested objects — only strings / numbers / booleans
+ * / null are allowed — so a shape like `{ deltas: { vocab: 0.23 } }`
+ * throws. Spreading into keyed primitives (`delta_vocab: 0.23`) also
+ * makes PostHog filters much easier to slice later.
+ */
+function deltasToProps(deltas: SkillDeltas): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const k of ["vocab", "grammar", "writing", "reading"] as const) {
+    const v = deltas[k];
+    if (typeof v === "number" && v > 0) {
+      out[`delta_${k}`] = v;
+    }
+  }
+  return out;
+}
+
 type ProgressMap = Record<SkillKey, number>;
 type PendingMap = Partial<Record<SkillKey, number>>;
 
@@ -107,7 +125,7 @@ export const useSkillStore = create<SkillStore>()(
           }
           if (typeof window !== "undefined") {
             try {
-              window.__track?.("demo_skills_staged", { deltas });
+              window.__track?.("demo_skills_staged", deltasToProps(deltas));
             } catch {
               /* no-op */
             }
@@ -151,9 +169,10 @@ export const useSkillStore = create<SkillStore>()(
           }
           if (typeof window !== "undefined") {
             try {
-              window.__track?.("demo_skills_collected_all", {
-                deltas: s.pending,
-              });
+              window.__track?.(
+                "demo_skills_collected_all",
+                deltasToProps(s.pending),
+              );
             } catch {
               /* no-op */
             }

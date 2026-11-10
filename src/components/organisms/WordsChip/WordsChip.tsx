@@ -357,11 +357,16 @@ function ExerciseDeck({ words, onBackToLearn }: ExerciseDeckProps) {
     stageSkillDeltas(deltas);
 
     try {
+      // Vercel track() rejects nested objects — spread per-skill
+      // deltas as flat `delta_<skill>` number props instead.
       window.__track?.("demo_exercise_finish", {
         chip: "words",
         correct: correctCount,
         incorrect: incorrectCount,
-        deltas,
+        delta_vocab: deltas.vocab ?? 0,
+        delta_grammar: deltas.grammar ?? 0,
+        delta_writing: deltas.writing ?? 0,
+        delta_reading: deltas.reading ?? 0,
       });
     } catch {
       /* no-op */
