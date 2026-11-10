@@ -7,9 +7,11 @@ import { RightCardPlaceholder } from "@/components/molecules/RightCardPlaceholde
 import { WordsChip } from "@/components/organisms/WordsChip/WordsChip";
 import { GrammarChip } from "@/components/organisms/GrammarChip/GrammarChip";
 import { SentenceChip } from "@/components/organisms/SentenceChip/SentenceChip";
+import { ReadingChip } from "@/components/organisms/ReadingChip/ReadingChip";
 import { WORDS_A1 } from "@/content/words-a1";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
+import { READING_A1 } from "@/content/reading-a1";
 
 /**
  * RightCardRouter — resolves `chipStore.selected` to the right-column
@@ -90,6 +92,8 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
         <GrammarChip items={GRAMMAR_A1} className="lg:flex-1 lg:h-full" />
       ) : selected === "sentence" ? (
         <SentenceChip items={SENTENCE_A1} className="lg:flex-1 lg:h-full" />
+      ) : selected === "reading" ? (
+        <ReadingChip content={READING_A1} className="lg:flex-1 lg:h-full" />
       ) : (
         <RightCardPlaceholder
           selectedChip={selected}
