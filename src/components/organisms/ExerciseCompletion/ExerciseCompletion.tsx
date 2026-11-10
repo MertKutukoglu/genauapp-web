@@ -2,46 +2,101 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { SkillBadgeArt } from "@/components/atoms/SkillRing/SkillBadgeArt";
+import type { Skill } from "@/components/atoms/SkillRing/SkillRing";
+import type { ChipKey, SkillKey, SkillDeltas } from "@/lib/skills/map";
 
 /**
- * ExerciseCompletion — "you walked the Exercise deck" moment.
+ * ExerciseCompletion — end-of-round summary for the Exercise deck.
  *
- * Mirrors LearnCompletion's rhythm but with the deck-run stats you
- * only have after exercise (correct / incorrect totals). Score +
- * skill rollups will layer on top of this later; for now the stats
- * row carries the two raw counts, and the Finish CTA closes the
- * chip (marks it done in the chip store).
+ * Shape follows Mert's iOS reference:
+ *   - Chip + DONE eyebrow
+ *   - Big score "N / total" (correct in accent, total in fg)
+ *   - Italic contextual subtitle ("Half there.", "Clean sweep.", …)
+ *   - Short instruction pointing the user at the collect badges
+ *   - "YOU FED" divider + per-skill badges (icon + name + delta%)
  *
- * Two actions:
- *   - [Review mistakes] — ghost; only enabled when there were any,
- *     passes mistakes back to the parent so it can set up a replay
- *     deck. Hidden when onReviewMistakes isn't wired.
- *   - [Back to Learn] — primary, flips mode back to Learn.
+ * The screen has no action buttons by design — the user's next move
+ * is already on the LeftCard: tap the ↗ badges to collect, or click
+ * a different chip to start a new workout. The ModeToggle above the
+ * card still lets them flip back to Learn if they want to re-run.
+ *
+ * Fed-skill badges are derived from `deltas` directly: any skill
+ * with a positive delta renders, ordered primary → fed[0] → fed[1]
+ * for a stable left-to-right read.
  */
 
+const CHIP_LABEL: Record<ChipKey, string> = {
+  words: "Words",
+  grammar: "Grammar",
+  sentence: "Sentence",
+  reading: "Reading",
+};
+
+const SKILL_LABEL: Record<SkillKey, string> = {
+  vocab: "Vocab",
+  grammar: "Grammar",
+  writing: "Writing",
+  reading: "Reading",
+};
+
+const SKILL_COLOR_VAR: Record<SkillKey, string> = {
+  vocab: "var(--color-skill-vocab)",
+  grammar: "var(--color-skill-grammar)",
+  writing: "var(--color-skill-writing)",
+  reading: "var(--color-skill-reading)",
+};
+
+/**
+ * Pick a short, honest subtitle based on the score band. The brand
+ * voice avoids inflated praise: a 60% is "over the hump", not
+ * "excellent!". 100% is special, 0% is acknowledged.
+ */
+function subtitleFor(correct: number, total: number): string {
+  if (total === 0) return "Deck empty.";
+  if (correct === total) return "Clean sweep.";
+  if (correct === 0) return "Nothing landed yet.";
+  const ratio = correct / total;
+  if (ratio >= 0.9) return "Almost clean.";
+  if (ratio >= 0.75) return "Strong run.";
+  if (ratio > 0.5) return "Over the hump.";
+  if (ratio === 0.5) return "Half there.";
+  if (ratio >= 0.3) return "Getting there.";
+  return "Just started.";
+}
+
+/** Order skills by role so the primary (biggest delta) reads first. */
+function orderSkills(deltas: SkillDeltas): SkillKey[] {
+  const entries = (Object.entries(deltas) as [SkillKey, number][])
+    .filter(([, v]) => typeof v === "number" && v > 0)
+    .sort(([, a], [, b]) => b - a);
+  return entries.map(([k]) => k);
+}
+
+/** Format a delta as "+N%" with integer rounding — matches iOS reference. */
+function formatDelta(n: number): string {
+  return `+${Math.round(n * 100)}%`;
+}
+
 export interface ExerciseCompletionProps {
-  /** How many items were answered correctly on the first try. */
+  /** Which chip the round belongs to — drives the eyebrow label. */
+  chip: ChipKey;
   correct: number;
-  /** How many items were sent back to the deck via incorrect. */
-  incorrect: number;
-  /** Total unique items in the deck. */
   total: number;
-  onReviewMistakes?: () => void;
-  onBackToLearn?: () => void;
-  onFinish?: () => void;
+  /** Per-skill deltas staged by the parent via computeSkillDeltas. */
+  deltas: SkillDeltas;
   className?: string;
 }
 
 export function ExerciseCompletion({
+  chip,
   correct,
-  incorrect,
   total,
-  onReviewMistakes,
-  onBackToLearn,
-  onFinish,
+  deltas,
   className,
 }: ExerciseCompletionProps) {
-  const hasMistakes = incorrect > 0;
+  const subtitle = subtitleFor(correct, total);
+  const skills = orderSkills(deltas);
 
   return (
     <div
@@ -53,104 +108,94 @@ export function ExerciseCompletion({
         className,
       )}
     >
-      <div className="flex flex-col gap-2">
+      <div className="font-sans text-[12px] font-bold uppercase tracking-[0.18em] text-fg-faint">
+        {CHIP_LABEL[chip]} · Done
+      </div>
+
+      {/* Score — correct in accent, slash + total in fg. Serif
+          display so it reads as a tally, not a counter. */}
+      <div className="flex items-baseline justify-center gap-1 font-display font-semibold leading-none">
+        <span className="text-[56px] text-accent italic">{correct}</span>
+        <span className="text-[44px] text-fg-muted">/</span>
+        <span className="text-[56px] text-fg">{total}</span>
+      </div>
+
+      <div className="flex flex-col gap-3 items-center">
         <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
-          Exercise complete.
+          {subtitle}
         </h2>
-        <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">
-          That&apos;s the round. Score + skill summary lands in a later pass.
+        <p className="font-sans text-[14px] text-fg-muted m-0 leading-relaxed max-w-[360px]">
+          Tap the arrows to collect your skill gains, then pick another
+          workout.
         </p>
       </div>
 
-      <dl
-        className="grid grid-cols-3 gap-6 text-center"
-        aria-label="Session summary"
+      {skills.length > 0 ? (
+        <div className="w-full flex flex-col items-center gap-5 mt-2">
+          {/* YOU FED divider — hairline with centered label */}
+          <div className="w-full flex items-center gap-3">
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-fg-faint">
+              You fed
+            </span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+
+          <div className="flex items-start justify-center gap-6">
+            {skills.map((s) => (
+              <FedSkillBadge
+                key={s}
+                skill={s}
+                label={SKILL_LABEL[s]}
+                delta={deltas[s] ?? 0}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+interface FedSkillBadgeProps {
+  skill: SkillKey;
+  label: string;
+  delta: number;
+}
+
+function FedSkillBadge({ skill, label, delta }: FedSkillBadgeProps) {
+  const color = SKILL_COLOR_VAR[skill];
+  // SkillBadgeArt lives in the SkillRing module; its `Skill` type
+  // includes "listening" which isn't a SkillKey here. Our 4 keys are
+  // all valid Skills, so this coerce is safe.
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className="relative inline-flex items-center justify-center rounded-full"
+        style={{
+          width: 56,
+          height: 56,
+          background: `color-mix(in srgb, ${color} 16%, transparent)`,
+        }}
       >
-        <div className="flex flex-col gap-1">
-          <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            Correct
-          </dt>
-          <dd
-            className="font-display font-semibold text-[32px] leading-none m-0"
-            style={{ color: "var(--ok)" }}
-          >
-            {correct}
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1">
-          <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            Missed
-          </dt>
-          <dd
-            className="font-display font-semibold text-[32px] leading-none m-0 text-accent"
-          >
-            {incorrect}
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1">
-          <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            Items
-          </dt>
-          <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
-            {total}
-          </dd>
-        </div>
-      </dl>
-
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-        {hasMistakes && onReviewMistakes ? (
-          <button
-            type="button"
-            onClick={onReviewMistakes}
-            className={clsx(
-              "order-2 sm:order-1 w-full sm:w-auto",
-              "inline-flex items-center justify-center gap-2",
-              "h-[48px] px-5 rounded-2xl",
-              "font-sans font-semibold text-[15px] text-fg",
-              "bg-[color:color-mix(in_srgb,var(--fg)_6%,transparent)]",
-              "transition hover:bg-[color:color-mix(in_srgb,var(--fg)_10%,transparent)]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-              "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-            )}
-          >
-            Review mistakes ({incorrect})
-          </button>
-        ) : null}
-
-        {onBackToLearn ? (
-          <button
-            type="button"
-            onClick={onBackToLearn}
-            className={clsx(
-              "order-3 sm:order-2 w-full sm:w-auto",
-              "inline-flex items-center justify-center gap-2",
-              "h-[48px] px-5 rounded-2xl",
-              "font-sans font-semibold text-[15px] text-fg",
-              "bg-[color:color-mix(in_srgb,var(--fg)_6%,transparent)]",
-              "transition hover:bg-[color:color-mix(in_srgb,var(--fg)_10%,transparent)]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-              "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-            )}
-          >
-            ← Back to Learn
-          </button>
-        ) : null}
-
-        <button
-          type="button"
-          onClick={onFinish}
-          className={clsx(
-            "order-1 sm:order-3 w-full sm:w-auto",
-            "inline-flex items-center justify-center gap-2",
-            "h-[52px] px-8 rounded-2xl",
-            "bg-accent text-white font-sans font-bold text-base",
-            "transition hover:brightness-110",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-            "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-          )}
+        <svg
+          viewBox="0 0 86 86"
+          width={56}
+          height={56}
+          aria-hidden
+          className="block"
         >
-          Finish →
-        </button>
+          <SkillBadgeArt skill={skill as Skill} />
+        </svg>
+      </div>
+      <div className="font-sans text-[13px] font-semibold text-fg leading-none">
+        {label}
+      </div>
+      <div
+        className="font-sans text-[14px] font-bold leading-none"
+        style={{ color }}
+      >
+        {formatDelta(delta)}
       </div>
     </div>
   );

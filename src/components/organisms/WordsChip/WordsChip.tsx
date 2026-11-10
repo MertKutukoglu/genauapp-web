@@ -169,10 +169,7 @@ export function WordsChip({
             <EmptyDeck />
           )
         ) : (
-          <ExerciseDeck
-            words={words}
-            onBackToLearn={() => setMode("learn")}
-          />
+          <ExerciseDeck words={words} />
         )}
       </div>
     </div>
@@ -266,10 +263,9 @@ function EmptyDeck() {
  */
 interface ExerciseDeckProps {
   words: WordItem[];
-  onBackToLearn: () => void;
 }
 
-function ExerciseDeck({ words, onBackToLearn }: ExerciseDeckProps) {
+function ExerciseDeck({ words }: ExerciseDeckProps) {
   const [remaining, setRemaining] = React.useState<WordItem[]>(words);
   const [correctCount, setCorrectCount] = React.useState(0);
   const [incorrectCount, setIncorrectCount] = React.useState(0);
@@ -345,46 +341,56 @@ function ExerciseDeck({ words, onBackToLearn }: ExerciseDeckProps) {
 
   const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
 
-  const handleFinish = React.useCallback(() => {
-    // Stage per-skill deltas on the Words chip map. Session-end
-    // scoring — one shot, positive-only per spec §2:
-    //   primary = vocab,  fed = [grammar, writing],  reading untouched
-    const deltas = computeSkillDeltas({
+  // Compute deltas once, the moment the deck empties. We stash them
+  // in local state so the ExerciseCompletion screen always shows the
+  // same numbers that got staged — recomputing on each render could
+  // drift if the deck is reset mid-session.
+  const [sessionDeltas, setSessionDeltas] = React.useState<ReturnType<
+    typeof computeSkillDeltas
+  > | null>(null);
+  const deltasStagedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!done) {
+      // Reset the staging gate on any re-entry to the deck.
+      deltasStagedRef.current = false;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSessionDeltas(null);
+      return;
+    }
+    if (deltasStagedRef.current) return;
+    deltasStagedRef.current = true;
+
+    const d = computeSkillDeltas({
       chip: "words",
       correct: correctCount,
       total: deckSize,
     });
-    stageSkillDeltas(deltas);
+    setSessionDeltas(d);
+    stageSkillDeltas(d);
 
     try {
-      // Vercel track() rejects nested objects — spread per-skill
-      // deltas as flat `delta_<skill>` number props instead.
       window.__track?.("demo_exercise_finish", {
         chip: "words",
         correct: correctCount,
         incorrect: incorrectCount,
-        delta_vocab: deltas.vocab ?? 0,
-        delta_grammar: deltas.grammar ?? 0,
-        delta_writing: deltas.writing ?? 0,
-        delta_reading: deltas.reading ?? 0,
+        delta_vocab: d.vocab ?? 0,
+        delta_grammar: d.grammar ?? 0,
+        delta_writing: d.writing ?? 0,
+        delta_reading: d.reading ?? 0,
       });
     } catch {
       /* no-op */
     }
-    // Flip back to Learn so the user sees the LeftCard and the
-    // staged ring badges at the same time (collect is a conscious
-    // next moment, not an auto-apply).
-    onBackToLearn();
-  }, [correctCount, incorrectCount, deckSize, stageSkillDeltas, onBackToLearn]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas]);
 
   if (done) {
     return (
       <ExerciseCompletion
+        chip="words"
         correct={correctCount}
-        incorrect={incorrectCount}
         total={deckSize}
-        onBackToLearn={onBackToLearn}
-        onFinish={handleFinish}
+        deltas={sessionDeltas ?? {}}
       />
     );
   }
