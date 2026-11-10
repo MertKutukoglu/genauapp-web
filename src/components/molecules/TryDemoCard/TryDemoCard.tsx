@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * TryDemoCard — the hero-level invitation to the /try taste demo.
@@ -34,13 +37,18 @@ export interface TryDemoCardProps {
 export function TryDemoCard({
   href = "/try",
   variant = "soft",
-  heading = "Not sure yet? Try it first.",
-  body = "Five minutes in your browser. Four workouts, zero signup.",
-  ctaLabel = "Try it in your browser",
+  heading,
+  body,
+  ctaLabel,
   footnote = null,
   className,
 }: TryDemoCardProps) {
+  const { strings } = useLocale();
   const isSolid = variant === "solid";
+  // Fall back to locale strings when the caller didn't override.
+  const resolvedHeading = heading ?? strings.tryDemoCard.heading;
+  const resolvedBody = body ?? strings.tryDemoCard.body;
+  const resolvedCta = ctaLabel ?? strings.tryDemoCard.cta;
 
   return (
     <aside
@@ -71,7 +79,7 @@ export function TryDemoCard({
               isSolid ? "text-white" : "text-fg",
             )}
           >
-            {heading}
+            {resolvedHeading}
           </h3>
           <p
             className={clsx(
@@ -79,7 +87,7 @@ export function TryDemoCard({
               isSolid ? "text-white/85" : "text-fg-muted",
             )}
           >
-            {body}
+            {resolvedBody}
           </p>
         </div>
 
@@ -94,7 +102,7 @@ export function TryDemoCard({
               : "bg-accent text-white hover:brightness-110 focus-visible:ring-accent",
           )}
         >
-          <span>{ctaLabel}</span>
+          <span>{resolvedCta}</span>
           <Icon name="arrow-right" className="h-4 w-4" />
         </Link>
       </div>

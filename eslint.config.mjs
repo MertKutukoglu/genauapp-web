@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Built Storybook artifacts — minified JS with no useful lint signal.
+    "storybook-static/**",
   ]),
   ...storybook.configs["flat/recommended"]
 ]);

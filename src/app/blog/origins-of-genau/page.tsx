@@ -14,7 +14,14 @@ export const metadata: Metadata = {
   title: "Origins of Genau",
   description:
     "I rewrote my German flashcards in color, then built an app around it. For adults who need German to live in Germany, not to pass an exam in ten years.",
-  alternates: { canonical: "/blog/origins-of-genau" },
+  alternates: {
+    canonical: "/blog/origins-of-genau",
+    languages: {
+      en: "/blog/origins-of-genau",
+      tr: "/tr/blog/kokenler",
+      "x-default": "/blog/origins-of-genau",
+    },
+  },
   openGraph: {
     title: "Origins of Genau",
     description:

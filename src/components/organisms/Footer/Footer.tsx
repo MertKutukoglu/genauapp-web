@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
 import { Wordmark } from "@/components/atoms/Wordmark/Wordmark";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * Site footer — a pure-black band with a hairline top border so it
@@ -11,19 +14,41 @@ import { Wordmark } from "@/components/atoms/Wordmark/Wordmark";
  * Desktop: three-column grid — wordmark left, "Made in Berlin · 2026"
  * centered, legal links right.
  * Mobile: single-column stack.
+ *
+ * Locale-aware: link labels come from the i18n dict; the href for
+ * each legal page points to its TR counterpart when the viewer is on
+ * the TR tree. Those TR routes don't exist in Step 2 — Step 4 ships
+ * them — so TR visitors currently fall through to the EN page via
+ * Next's not-found. Acceptable for a short window; the Künye/Gizlilik/
+ * Çerezler files land before the public TR announcement.
  */
 
 export interface FooterProps {
   className?: string;
 }
 
-const LINKS = [
-  { href: "/impressum", label: "Impressum" },
-  { href: "/datenschutz", label: "Datenschutz" },
-  { href: "/cookie-policy", label: "Cookie Policy" },
-];
+const LEGAL_HREFS = {
+  en: {
+    impressum: "/impressum",
+    datenschutz: "/datenschutz",
+    cookies: "/cookie-policy",
+  },
+  tr: {
+    impressum: "/tr/kunye",
+    datenschutz: "/tr/gizlilik",
+    cookies: "/tr/cerezler",
+  },
+} as const;
 
 export function Footer({ className }: FooterProps) {
+  const { locale, strings } = useLocale();
+  const hrefs = LEGAL_HREFS[locale];
+  const links = [
+    { href: hrefs.impressum, label: strings.footer.impressum },
+    { href: hrefs.datenschutz, label: strings.footer.datenschutz },
+    { href: hrefs.cookies, label: strings.footer.cookies },
+  ];
+
   return (
     <footer
       className={clsx(
@@ -47,13 +72,13 @@ export function Footer({ className }: FooterProps) {
           <Wordmark variant="footer" />
         </div>
         <p className="md:justify-self-center text-xs text-white/60">
-          Made in Berlin · 2026
+          {strings.footer.tagline} · 2026
         </p>
         <nav
-          aria-label="Legal"
+          aria-label={locale === "tr" ? "Yasal" : "Legal"}
           className="md:justify-self-end flex flex-wrap gap-x-5 gap-y-1 text-xs text-white/70"
         >
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}

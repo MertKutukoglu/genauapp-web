@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SlideHead } from "@/components/molecules/SlideHead/SlideHead";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PackMarqueeCard, type CEFRLevel } from "./PackMarqueeCard";
 
 /**
@@ -28,20 +29,29 @@ import { PackMarqueeCard, type CEFRLevel } from "./PackMarqueeCard";
  */
 
 interface Pack {
-  title: string;
+  /** Key into `strings.packs` for the localized title. */
+  packKey:
+    | "dailyLife"
+    | "burgeramt"
+    | "hairdresser"
+    | "pharmacyDoctor"
+    | "foodDrink"
+    | "shopping";
   level: CEFRLevel;
   image: string;
 }
 
 const PACKS: Pack[] = [
   // Pack illustrations live in public/ (see
-  // claude/GenauApp_Web_Pack_Illustrations.md for filename map).
-  { title: "Daily Life",        level: "A1", image: "/pack-dailylife.webp" },
-  { title: "Bürgeramt",         level: "B2", image: "/pack-officialappointments.webp" },
-  { title: "Hairdresser",       level: "A2", image: "/pack-hairdresser.webp" },
-  { title: "Pharmacy & Doctor", level: "C1", image: "/pack-gesundheit.webp" },
-  { title: "Food & Drink",      level: "B1", image: "/pack-fooddrink.webp" },
-  { title: "Shopping",          level: "C2", image: "/pack-shopping.webp" },
+  // claude/GenauApp_Web_Pack_Illustrations.md for filename map). The
+  // display title is resolved from the i18n dict at render time so
+  // TR picks up "Günlük Hayat" / "Berber" / etc. automatically.
+  { packKey: "dailyLife",      level: "A1", image: "/pack-dailylife.webp" },
+  { packKey: "burgeramt",      level: "B2", image: "/pack-officialappointments.webp" },
+  { packKey: "hairdresser",    level: "A2", image: "/pack-hairdresser.webp" },
+  { packKey: "pharmacyDoctor", level: "C1", image: "/pack-gesundheit.webp" },
+  { packKey: "foodDrink",      level: "B1", image: "/pack-fooddrink.webp" },
+  { packKey: "shopping",       level: "C2", image: "/pack-shopping.webp" },
 ];
 
 export interface PacksSlideProps {
@@ -51,6 +61,8 @@ export interface PacksSlideProps {
 }
 
 export function PacksSlide({ className }: PacksSlideProps) {
+  const { strings } = useLocale();
+  const slide = strings.slides.packs;
   const marqueeRef = React.useRef<HTMLDivElement>(null);
   const firstGridRef = React.useRef<HTMLDivElement>(null);
 
@@ -88,13 +100,15 @@ export function PacksSlide({ className }: PacksSlideProps) {
   return (
     <div className={clsx("flex flex-col gap-6 md:gap-8", className)}>
       <SlideHead
-        eyebrow="Real life events"
+        eyebrow={slide.eyebrow}
         headline={
           <>
-            Packs for the moments <em>you&apos;ll actually live</em>.
+            {slide.h2Before}
+            <em>{slide.h2Emphasis}</em>
+            {slide.h2After}
           </>
         }
-        sub="Haircut, Bürgeramt, pharmacy, groceries. Each pack holds the words that moment needs, grouped the way German life groups them."
+        sub={slide.sub}
       />
 
       {/* Stage: overflow hidden + top-edge mask so cards dissolve into the subline. */}
@@ -114,8 +128,8 @@ export function PacksSlide({ className }: PacksSlideProps) {
           ref={marqueeRef}
           className="flex flex-col gap-2.5 animate-pack-scroll group-hover:[animation-play-state:paused]"
         >
-          <PackGrid ref={firstGridRef} packs={PACKS} />
-          <PackGrid packs={PACKS} ariaHidden />
+          <PackGrid ref={firstGridRef} packs={PACKS} titles={strings.packs} />
+          <PackGrid packs={PACKS} titles={strings.packs} ariaHidden />
         </div>
       </div>
     </div>
@@ -124,11 +138,13 @@ export function PacksSlide({ className }: PacksSlideProps) {
 
 interface PackGridProps {
   packs: Pack[];
+  /** Localized title per pack key. Resolved once by the parent. */
+  titles: Record<Pack["packKey"], string>;
   ariaHidden?: boolean;
 }
 
 const PackGrid = React.forwardRef<HTMLDivElement, PackGridProps>(function PackGrid(
-  { packs, ariaHidden },
+  { packs, titles, ariaHidden },
   ref,
 ) {
   return (
@@ -137,15 +153,18 @@ const PackGrid = React.forwardRef<HTMLDivElement, PackGridProps>(function PackGr
       aria-hidden={ariaHidden || undefined}
       className="grid shrink-0 grid-cols-2 gap-2.5 md:grid-cols-3"
     >
-      {packs.map((p, i) => (
-        <PackMarqueeCard
-          key={`${p.title}-${i}`}
-          title={p.title}
-          level={p.level}
-          imageSrc={p.image}
-          imageAlt={p.title}
-        />
-      ))}
+      {packs.map((p, i) => {
+        const title = titles[p.packKey];
+        return (
+          <PackMarqueeCard
+            key={`${p.packKey}-${i}`}
+            title={title}
+            level={p.level}
+            imageSrc={p.image}
+            imageAlt={title}
+          />
+        );
+      })}
     </div>
   );
 });

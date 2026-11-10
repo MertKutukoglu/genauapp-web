@@ -1,8 +1,11 @@
+"use client";
+
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SkillRingArc } from "@/components/molecules/SkillRingArc/SkillRingArc";
 import { NodeGraph } from "@/components/molecules/NodeGraph/NodeGraph";
 import { WaitlistForm } from "@/components/molecules/WaitlistForm/WaitlistForm";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * HeroLeftPanelClassic — the original left-column treatment:
@@ -19,6 +22,7 @@ export interface HeroLeftPanelClassicProps {
 }
 
 export function HeroLeftPanelClassic({ className }: HeroLeftPanelClassicProps) {
+  const { strings } = useLocale();
   return (
     <div
       className={clsx(
@@ -34,12 +38,12 @@ export function HeroLeftPanelClassic({ className }: HeroLeftPanelClassicProps) {
       </div>
 
       <h1 className="relative z-10 mt-6 font-display text-[40px] font-semibold leading-[1.05] text-fg sm:text-[52px]">
-        You keep learning German.
+        {strings.hero.h1Before}
         <br />
-        <span className="text-accent italic">We keep it from fading.</span>
+        <span className="text-accent italic">{strings.hero.h1Emphasis}</span>
       </h1>
       <p className="relative z-10 max-w-[440px] text-base text-fg-muted md:text-lg">
-        A sharp, honest companion for active learners.
+        {strings.hero.sub}
       </p>
 
       <div className="relative z-10 mt-auto w-full max-w-[460px]">

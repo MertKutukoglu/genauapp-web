@@ -3,6 +3,14 @@ import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 export const metadata = {
   title: "Datenschutz",
   description: "Privacy policy for GenauApp",
+  alternates: {
+    canonical: "/datenschutz",
+    languages: {
+      en: "/datenschutz",
+      tr: "/tr/gizlilik",
+      "x-default": "/datenschutz",
+    },
+  },
 };
 
 export default function DatenschutzPage() {

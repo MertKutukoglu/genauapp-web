@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { SlideHead } from "@/components/molecules/SlideHead/SlideHead";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PROGRESS_CARDS } from "./cards";
 
 /**
@@ -31,6 +32,8 @@ export function ProgressSlide({
   cycleMs = 2500,
   className,
 }: ProgressSlideProps) {
+  const { strings } = useLocale();
+  const slide = strings.slides.progress;
   const [i, setI] = React.useState(0);
 
   React.useEffect(() => {
@@ -48,13 +51,15 @@ export function ProgressSlide({
   return (
     <div className={clsx("flex flex-col gap-6 md:gap-8", className)}>
       <SlideHead
-        eyebrow="Your progress"
+        eyebrow={slide.eyebrow}
         headline={
           <>
-            You see where you stand. <em>Honestly</em>.
+            {slide.h2Before}
+            <em>{slide.h2Emphasis}</em>
+            {slide.h2After}
           </>
         }
-        sub="A real score per skill. Up when you earn it. Down when you miss it. Every time, we tell you what moved."
+        sub={slide.sub}
       />
 
       <div

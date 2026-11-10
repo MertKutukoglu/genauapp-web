@@ -46,5 +46,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.2,
     },
+    // Turkish surface.
+    {
+      url: `${base}/tr`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${base}/tr/blog/kokenler`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${base}/tr/kunye`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/tr/gizlilik`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${base}/tr/cerezler`,
+      lastModified: new Date("2026-11-10"),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
   ];
 }

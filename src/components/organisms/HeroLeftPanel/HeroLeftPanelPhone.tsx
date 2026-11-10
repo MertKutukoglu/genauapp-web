@@ -1,7 +1,10 @@
+"use client";
+
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { TryDemoCard } from "@/components/molecules/TryDemoCard/TryDemoCard";
 import { PhoneStack } from "@/components/molecules/PhoneStack/PhoneStack";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
  * HeroLeftPanelPhone — phone-forward composition. Headline + subhead at
@@ -17,6 +20,7 @@ export interface HeroLeftPanelPhoneProps {
 }
 
 export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
+  const { strings } = useLocale();
   return (
     <div
       className={clsx(
@@ -25,12 +29,12 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
       )}
     >
       <h1 className="font-display text-[26px] font-semibold leading-[1.1] text-fg sm:text-[30px] lg:text-[34px] xl:text-[38px]">
-        You keep learning German.
+        {strings.hero.h1Before}
         <br />
-        <span className="text-accent italic">We keep it from fading.</span>
+        <span className="text-accent italic">{strings.hero.h1Emphasis}</span>
       </h1>
       <p className="max-w-[440px] text-sm text-fg-muted md:text-base">
-        A sharp, honest companion for active learners.
+        {strings.hero.sub}
       </p>
 
       {/* Phone stack — full card width, soaks remaining vertical space.
