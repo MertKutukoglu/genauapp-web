@@ -4,6 +4,7 @@ import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 import { ParadigmGrid } from "@/components/molecules/ParadigmGrid/ParadigmGrid";
 import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSentence/GrammarSampleSentence";
+import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ConjugationForm } from "@/content/grammar-a1";
 
@@ -96,7 +97,11 @@ export function GrammarVerbConjugationCard({
       />
 
       {note ? (
-        <PurpleNoteCard body={note} label={strings.try.learnCard.ruleLabel} />
+        <RuleCard
+          body={note}
+          tint="var(--chip-grammar-color)"
+          label={strings.try.learnCard.ruleLabel}
+        />
       ) : null}
 
       <GrammarSampleSentence
@@ -114,55 +119,3 @@ export function GrammarVerbConjugationCard({
   );
 }
 
-/**
- * PurpleNoteCard — the Grammar-tinted equivalent of the shared
- * RuleCard. Inlined here because the Grammar chip is the only caller
- * for this variant in v1; if a second chip wants a purple RuleCard
- * we can promote it.
- */
-function PurpleNoteCard({ body, label }: { body: string; label: string }) {
-  return (
-    <div
-      className="rounded-2xl p-4 flex gap-3"
-      style={{
-        background:
-          "color-mix(in srgb, var(--chip-grammar-color) 6%, transparent)",
-      }}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="shrink-0 mt-0.5"
-        style={{ color: "var(--chip-grammar-color)" }}
-        aria-hidden
-      >
-        <path d="M9 18h6" />
-        <path d="M10 22h4" />
-        <path d="M12 2a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2Z" />
-      </svg>
-      <div className="flex flex-col gap-1">
-        <div
-          className="font-sans font-normal text-sm leading-tight"
-          style={{
-            color:
-              "color-mix(in srgb, var(--chip-grammar-color) 70%, transparent)",
-          }}
-        >
-          {label}
-        </div>
-        <div
-          className="font-sans font-normal text-[15px] leading-snug"
-          style={{ color: "var(--chip-grammar-color)" }}
-        >
-          {body}
-        </div>
-      </div>
-    </div>
-  );
-}

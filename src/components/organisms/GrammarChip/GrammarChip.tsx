@@ -221,7 +221,7 @@ function LearnCardSwitch({
           article={learn.article}
           role={learn.role}
           patterns={learn.patterns}
-          caveat={learn.caveat}
+          rule={learn.rule}
           sample={learn.sample}
           current={current}
           total={total}

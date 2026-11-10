@@ -3,6 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSentence/GrammarSampleSentence";
+import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ArticleSuffixPattern } from "@/content/grammar-a1";
 
@@ -45,7 +46,13 @@ type ArticleSingleCardProps = {
   article: "der" | "die" | "das";
   role: string;
   patterns: ArticleSuffixPattern[];
-  caveat?: string;
+  /**
+   * Shared RuleCard body — the "by meaning" categories that also
+   * take this article, so the learner leaves the card knowing both
+   * suffix signals AND semantic categories (Days/months → der,
+   * Trees/flowers → die, Diminutives → das, etc.).
+   */
+  rule?: string;
   sample: { de: string; en: string; highlight: string };
   current: number;
   total: number;
@@ -60,7 +67,7 @@ export function GrammarArticleCard({
   article,
   role,
   patterns,
-  caveat,
+  rule,
   sample,
   current,
   total,
@@ -69,6 +76,7 @@ export function GrammarArticleCard({
   className,
 }: GrammarArticleCardProps) {
   const color = ARTICLE_COLORS[article];
+  const { strings } = useLocale();
 
   return (
     <div
@@ -133,7 +141,13 @@ export function GrammarArticleCard({
         </div>
       </div>
 
-      {caveat ? <CaveatNote body={caveat} /> : null}
+      {rule ? (
+        <RuleCard
+          article={article}
+          body={rule}
+          label={strings.try.learnCard.ruleLabel}
+        />
+      ) : null}
 
       <GrammarSampleSentence
         sentence={sample.de}
@@ -151,46 +165,3 @@ export function GrammarArticleCard({
   );
 }
 
-/**
- * CaveatNote — muted "watch-out" row under the pattern panel.
- * Kept muted on purpose; the hero + patterns above already carry
- * the article-color weight of the card, and a second colored block
- * would make the surface read as busy.
- */
-function CaveatNote({ body }: { body: string }) {
-  const { strings } = useLocale();
-  const label = strings.try.learnCard.ruleLabel;
-  return (
-    <div
-      className="rounded-2xl p-3 flex gap-2.5 items-start"
-      style={{
-        background: "color-mix(in srgb, var(--fg) 4%, transparent)",
-      }}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="16"
-        height="16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="shrink-0 mt-0.5 text-fg-muted"
-        aria-hidden
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 16v-4" />
-        <path d="M12 8h.01" />
-      </svg>
-      <div className="flex flex-col gap-0.5">
-        <div className="font-sans font-normal text-xs text-fg-faint leading-tight">
-          {label}
-        </div>
-        <div className="font-sans font-normal text-[13px] text-fg-muted leading-snug">
-          {body}
-        </div>
-      </div>
-    </div>
-  );
-}

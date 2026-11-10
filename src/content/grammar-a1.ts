@@ -106,8 +106,13 @@ export interface GrammarLearnBlock {
   patterns?: ArticleSuffixPattern[];
   /** verbConjugation standalone rule paragraph. */
   note?: string;
-  /** articleSingle caveat paragraph (patterns aren't absolute). */
-  caveat?: string;
+  /**
+   * articleSingle "by meaning" rule paragraph — the semantic
+   * categories that take this article (Days/months → der,
+   * Trees/flowers → die, Diminutives → das, etc.). Rendered in the
+   * shared RuleCard with the article's own tint.
+   */
+  rule?: string;
   sample: GrammarSample;
 }
 
@@ -123,8 +128,8 @@ export interface GrammarLocaleOverlay {
     headline?: string;
     /** Note paragraph for verbConjugation. */
     note?: string;
-    /** Caveat paragraph for articleSingle. */
-    caveat?: string;
+    /** "By meaning" rule paragraph for articleSingle. */
+    rule?: string;
     /** articleSingle localized role label (masculine → eril). */
     role?: string;
     /** Pronoun-chart English column translations (same order as forms). */
@@ -275,17 +280,12 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
   },
   // 4 — Anchor: Articles — der
   //
-  // Three per-article anchors replace the old single three-column
-  // card. Learn deck walks them in authored order (der → die → das),
-  // each one presenting the article as the hero of its own card
-  // with its own color: der blue, die red, das green. Repeat still
-  // reorders within the deck; the first walk shows them in sequence.
-  //
-  // Caveat is attached to the FIRST card only so the admonition
-  // doesn't repeat three times across the sequence; the second and
-  // third cards omit it. If the user Repeats the first card and
-  // lands on the second next, the lesson still reads coherently —
-  // the caveat is a one-time setup.
+  // Three per-article anchors in authored order (der → die → das).
+  // Each one teaches that article's reliable suffix set in the sunk
+  // pattern panel and adds a shared RuleCard body carrying the
+  // "by meaning" semantic categories (what else takes that article
+  // beyond the ending signals). Suffix set is faithful to the
+  // standard A1 cheat sheet: der 7 endings, die 11 endings, das 5.
   {
     topic: "Articles (der)",
     exerciseType: "multipleChoice",
@@ -294,12 +294,15 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       article: "der",
       role: "masculine",
       patterns: [
-        { suffix: "-er", example: "Lehrer" },
+        { suffix: "-ig", example: "Honig" },
+        { suffix: "-ling", example: "Schmetterling" },
+        { suffix: "-ismus", example: "Optimismus" },
         { suffix: "-or", example: "Motor" },
-        { suffix: "-ling", example: "Liebling" },
+        { suffix: "-ant", example: "Elefant" },
+        { suffix: "-ich", example: "Teppich" },
+        { suffix: "-er", example: "Lehrer" },
       ],
-      caveat:
-        "Endings are reliable, not absolute. Kinship (die Mutter) and a few high-frequency nouns are exceptions.",
+      rule: "Days, months and seasons; weather; directions; alcoholic drinks; car brands are also masculine.",
       sample: {
         de: "Der Lehrer ist neu.",
         en: "The teacher is new.",
@@ -316,8 +319,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       explanation: '"Lehrer" -er ile biter → der.',
       learn: {
         role: "eril",
-        caveat:
-          "Ekler güvenilirdir ama mutlak değildir. Akrabalık (die Mutter) ve birkaç yüksek frekanslı kelime istisnadır.",
+        rule: "Gün, ay ve mevsimler; hava olayları; yönler; alkollü içecekler; araba markaları da erildir.",
         sample: { en: "Öğretmen yeni." },
       },
     },
@@ -331,10 +333,19 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       article: "die",
       role: "feminine",
       patterns: [
-        { suffix: "-e", example: "Lampe" },
         { suffix: "-ung", example: "Zeitung" },
-        { suffix: "-in", example: "Lehrerin" },
+        { suffix: "-heit", example: "Freiheit" },
+        { suffix: "-keit", example: "Höflichkeit" },
+        { suffix: "-schaft", example: "Freundschaft" },
+        { suffix: "-ei", example: "Bäckerei" },
+        { suffix: "-in", example: "Studentin" },
+        { suffix: "-ion", example: "Station" },
+        { suffix: "-ität", example: "Universität" },
+        { suffix: "-ik", example: "Musik" },
+        { suffix: "-ur", example: "Natur" },
+        { suffix: "-e", example: "Lampe" },
       ],
+      rule: "Numbers; trees and flowers; ships and aircraft are also feminine.",
       sample: {
         de: "Die Zeitung ist neu.",
         en: "The newspaper is new.",
@@ -351,6 +362,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       explanation: '"Zeitung" -ung ile biter → die.',
       learn: {
         role: "dişil",
+        rule: "Sayılar; ağaç ve çiçek isimleri; gemi ve uçak isimleri de dişildir.",
         sample: { en: "Gazete yeni." },
       },
     },
@@ -365,9 +377,12 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       role: "neuter",
       patterns: [
         { suffix: "-chen", example: "Mädchen" },
+        { suffix: "-lein", example: "Fräulein" },
         { suffix: "-ment", example: "Dokument" },
-        { suffix: "-um", example: "Datum" },
+        { suffix: "-um", example: "Zentrum" },
+        { suffix: "-ma", example: "Thema" },
       ],
+      rule: "Infinitives used as nouns (das Essen, das Lesen); colors (das Blau); metals (das Gold); fractions (das Drittel) are also neuter.",
       sample: {
         de: "Das Mädchen ist nett.",
         en: "The girl is kind.",
@@ -384,6 +399,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       explanation: '"Mädchen" -chen ile biter → das.',
       learn: {
         role: "nötr",
+        rule: "İsimleştirilmiş mastarlar (das Essen, das Lesen); renkler (das Blau); metaller (das Gold); kesirler (das Drittel) de nötrdür.",
         sample: { en: "Kız çocuk kibar." },
       },
     },
@@ -621,7 +637,7 @@ export function localizeGrammar(
       english: trLearn.english ?? learn.english,
       headline: trLearn.headline ?? learn.headline,
       note: trLearn.note ?? learn.note,
-      caveat: trLearn.caveat ?? learn.caveat,
+      rule: trLearn.rule ?? learn.rule,
       role: trLearn.role ?? learn.role,
       sample: {
         ...learn.sample,

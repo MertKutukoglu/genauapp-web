@@ -9,7 +9,7 @@ const meta: Meta<typeof GrammarArticleCard> = {
     docs: {
       description: {
         component:
-          "The Grammar chip's `articleSingle` Learn layout — one article per card, so der / die / das get three dedicated cards in the Learn deck walked in authored order. The article is the hero in its own color (blue/red/green), followed by a sunk pattern panel listing suffix → example rows, an optional caveat, and a sample sentence with the article highlighted in its own color.",
+          "The Grammar chip's `articleSingle` Learn layout — one article per card, so der / die / das get three dedicated cards in the Learn deck walked in authored order. The article is the hero in its own color (blue/red/green), the suffix list sits in a tinted sunk panel, and the shared `RuleCard` beneath carries the \"by meaning\" categories that also take this article (days/months → der, numbers/flowers → die, infinitives/colors → das). RuleCard is article-tinted via its own `article` prop.",
       },
     },
   },
@@ -23,12 +23,15 @@ export const Der: Story = {
     article: "der",
     role: "masculine",
     patterns: [
-      { suffix: "-er", example: "Lehrer" },
+      { suffix: "-ig", example: "Honig" },
+      { suffix: "-ling", example: "Schmetterling" },
+      { suffix: "-ismus", example: "Optimismus" },
       { suffix: "-or", example: "Motor" },
-      { suffix: "-ling", example: "Liebling" },
+      { suffix: "-ant", example: "Elefant" },
+      { suffix: "-ich", example: "Teppich" },
+      { suffix: "-er", example: "Lehrer" },
     ],
-    caveat:
-      "Endings are reliable, not absolute. Kinship (die Mutter) and a few high-frequency nouns are exceptions.",
+    rule: "Days, months and seasons; weather; directions; alcoholic drinks; car brands are also masculine.",
     sample: {
       de: "Der Lehrer ist neu.",
       en: "The teacher is new.",
@@ -37,14 +40,6 @@ export const Der: Story = {
     current: 4,
     total: 7,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "First of the three article anchors. Hero in `--color-article-der` (blue), pattern panel tinted with the same color, sample highlight in blue. The caveat ships on the der card only — the second and third cards skip it so the admonition doesn't repeat.",
-      },
-    },
-  },
 };
 
 export const Die: Story = {
@@ -52,10 +47,19 @@ export const Die: Story = {
     article: "die",
     role: "feminine",
     patterns: [
-      { suffix: "-e", example: "Lampe" },
       { suffix: "-ung", example: "Zeitung" },
-      { suffix: "-in", example: "Lehrerin" },
+      { suffix: "-heit", example: "Freiheit" },
+      { suffix: "-keit", example: "Höflichkeit" },
+      { suffix: "-schaft", example: "Freundschaft" },
+      { suffix: "-ei", example: "Bäckerei" },
+      { suffix: "-in", example: "Studentin" },
+      { suffix: "-ion", example: "Station" },
+      { suffix: "-ität", example: "Universität" },
+      { suffix: "-ik", example: "Musik" },
+      { suffix: "-ur", example: "Natur" },
+      { suffix: "-e", example: "Lampe" },
     ],
+    rule: "Numbers; trees and flowers; ships and aircraft are also feminine.",
     sample: {
       de: "Die Zeitung ist neu.",
       en: "The newspaper is new.",
@@ -72,9 +76,12 @@ export const Das: Story = {
     role: "neuter",
     patterns: [
       { suffix: "-chen", example: "Mädchen" },
+      { suffix: "-lein", example: "Fräulein" },
       { suffix: "-ment", example: "Dokument" },
-      { suffix: "-um", example: "Datum" },
+      { suffix: "-um", example: "Zentrum" },
+      { suffix: "-ma", example: "Thema" },
     ],
+    rule: "Infinitives used as nouns (das Essen, das Lesen); colors (das Blau); metals (das Gold); fractions (das Drittel) are also neuter.",
     sample: {
       de: "Das Mädchen ist nett.",
       en: "The girl is kind.",
@@ -89,13 +96,8 @@ export const DerTurkish: Story = {
   args: {
     article: "der",
     role: "eril",
-    patterns: [
-      { suffix: "-er", example: "Lehrer" },
-      { suffix: "-or", example: "Motor" },
-      { suffix: "-ling", example: "Liebling" },
-    ],
-    caveat:
-      "Ekler güvenilirdir ama mutlak değildir. Akrabalık (die Mutter) ve birkaç yüksek frekanslı kelime istisnadır.",
+    patterns: Der.args!.patterns,
+    rule: "Gün, ay ve mevsimler; hava olayları; yönler; alkollü içecekler; araba markaları da erildir.",
     sample: {
       de: "Der Lehrer ist neu.",
       en: "Öğretmen yeni.",

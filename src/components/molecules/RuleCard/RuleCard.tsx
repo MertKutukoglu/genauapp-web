@@ -28,13 +28,31 @@ const ARTICLE_TOKEN: Record<Exclude<ArticleColor, null>, string> = {
 export interface RuleCardProps {
   /** Article drives tint. Null falls back to accent (cherry) for non-nouns. */
   article?: ArticleColor;
+  /**
+   * Explicit tint override as a CSS color (e.g. `var(--chip-grammar-color)`).
+   * Takes precedence over `article`. Used by the Grammar chip per brief §3.4
+   * where the rule card is tinted purple instead of an article color.
+   */
+  tint?: string;
+  /**
+   * Eyebrow label shown above the body. Defaults to "Rules" so existing
+   * callers keep the English copy; the Grammar/Words chips pass their
+   * localized "Rule" / "Kural" through here.
+   */
+  label?: string;
   /** The rule body. One sentence, no em-dashes (brand rule). */
   body: string;
   className?: string;
 }
 
-export function RuleCard({ article, body, className }: RuleCardProps) {
-  const tint = article ? ARTICLE_TOKEN[article] : "var(--accent)";
+export function RuleCard({
+  article,
+  tint,
+  label = "Rules",
+  body,
+  className,
+}: RuleCardProps) {
+  const color = tint ?? (article ? ARTICLE_TOKEN[article] : "var(--accent)");
 
   return (
     <div
@@ -43,8 +61,8 @@ export function RuleCard({ article, body, className }: RuleCardProps) {
         className,
       )}
       style={{
-        background: `color-mix(in srgb, ${tint} 6%, transparent)`,
-        color: tint,
+        background: `color-mix(in srgb, ${color} 6%, transparent)`,
+        color,
       }}
     >
       <div className="flex flex-col gap-1.5 flex-1 min-w-0">
@@ -52,7 +70,7 @@ export function RuleCard({ article, body, className }: RuleCardProps) {
           className="font-sans font-normal text-sm leading-tight"
           style={{ opacity: 0.5 }}
         >
-          Rules
+          {label}
         </div>
         <div className="font-sans font-normal text-[15px] leading-relaxed">
           {body}
