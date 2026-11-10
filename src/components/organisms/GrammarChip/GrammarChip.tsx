@@ -215,6 +215,7 @@ function LearnCardSwitch({
           headline={learn.headline ?? ""}
           english={learn.english ?? ""}
           articles={learn.articles ?? []}
+          caveat={learn.caveat}
           sample={learn.sample}
           current={current}
           total={total}

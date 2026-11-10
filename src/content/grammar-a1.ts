@@ -48,11 +48,31 @@ export interface PronounForm {
   english: string;
 }
 
-/** An article card: article token + role label + canonical example. */
+/**
+ * One suffix → example row inside an article card. `suffix` is the
+ * ending (e.g. "-ung"); `example` is one A1-friendly noun that shows
+ * the pattern in action (e.g. "Zeitung"). German-only, locale-
+ * agnostic — the TR overlay never touches these.
+ */
+export interface ArticleSuffixPattern {
+  suffix: string;
+  example: string;
+}
+
+/**
+ * An article card: article token + role label + the suffix patterns
+ * that reliably predict that gender at A1.
+ *
+ * Earlier shape carried a single canonical example (`{ de, en }`)
+ * which read as a reference card rather than a lesson. The current
+ * shape drives a 2-4 row list where each row teaches one
+ * suffix → gender fact, so the learner leaves with a decision rule
+ * instead of a memorized triple.
+ */
 export interface ArticleCardSpec {
   article: "der" | "die" | "das";
   role: string;
-  example: { de: string; en: string };
+  patterns: ArticleSuffixPattern[];
 }
 
 /** A regular-verb conjugation row: pronoun → stem + ending (split). */
@@ -84,6 +104,8 @@ export interface GrammarLearnBlock {
   articles?: ArticleCardSpec[];
   /** verbConjugation standalone rule paragraph. */
   note?: string;
+  /** articleCards caveat paragraph (patterns aren't absolute). */
+  caveat?: string;
   sample: GrammarSample;
 }
 
@@ -99,6 +121,8 @@ export interface GrammarLocaleOverlay {
     headline?: string;
     /** Note paragraph for verbConjugation. */
     note?: string;
+    /** Caveat paragraph for articleCards. */
+    caveat?: string;
     /** Translated role labels for articleCards (3 entries, same order). */
     articleRoles?: string[];
     /** Pronoun-chart English column translations (same order as forms). */
@@ -248,33 +272,79 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
     },
   },
   // 4 — Anchor: Articles
+  //
+  // High-reliability A1 suffix → gender patterns, 3 per column for
+  // visual balance. Feminine naturally carries more ending signals
+  // than the other two at A1 level (-e, -ung, -heit, -ion, -in, -ie,
+  // -ei, -keit…); we cap at 3 and pick the highest-frequency ones so
+  // the columns line up.
+  //
+  //   der   -er / -or / -ling
+  //   die   -e  / -ung / -in
+  //   das   -chen / -ment / -um
+  //
+  // Sample sentence: "Die Zeitung ist neu." — the German noun carries
+  // the -ung pattern so the sample sentence closes the loop: card
+  // teaches the pattern, sample shows it in a real sentence.
   {
     topic: "Articles (der / die / das)",
     exerciseType: "multipleChoice",
     learn: {
       layout: "articleCards",
-      headline: "Three definite articles",
-      english: "every German noun carries one",
+      headline: "Articles by noun ending",
+      english: "endings that predict the gender",
       articles: [
-        { article: "der", role: "masculine", example: { de: "der Tisch", en: "the table" } },
-        { article: "die", role: "feminine", example: { de: "die Lampe", en: "the lamp" } },
-        { article: "das", role: "neuter", example: { de: "das Buch", en: "the book" } },
+        {
+          article: "der",
+          role: "masculine",
+          patterns: [
+            { suffix: "-er", example: "Lehrer" },
+            { suffix: "-or", example: "Motor" },
+            { suffix: "-ling", example: "Liebling" },
+          ],
+        },
+        {
+          article: "die",
+          role: "feminine",
+          patterns: [
+            { suffix: "-e", example: "Lampe" },
+            { suffix: "-ung", example: "Zeitung" },
+            { suffix: "-in", example: "Lehrerin" },
+          ],
+        },
+        {
+          article: "das",
+          role: "neuter",
+          patterns: [
+            { suffix: "-chen", example: "Mädchen" },
+            { suffix: "-ment", example: "Dokument" },
+            { suffix: "-um", example: "Datum" },
+          ],
+        },
       ],
-      sample: { de: "Das Buch ist neu.", en: "The book is new.", highlight: "Das" },
+      caveat:
+        "Endings are reliable, not absolute. Kinship terms (die Mutter, der Vater) and a handful of high-frequency nouns are exceptions.",
+      sample: {
+        de: "Die Zeitung ist neu.",
+        en: "The newspaper is new.",
+        highlight: "Die",
+      },
     },
-    prompt: "___ Buch ist neu.",
-    hint: "The book is new.",
+    prompt: "___ Zeitung ist neu.",
+    hint: "The newspaper is new.",
     options: ["Der", "Die", "Das"],
-    correctIndex: 2,
-    explanation: "Definite article, neuter noun.",
+    correctIndex: 1,
+    explanation: '"Zeitung" ends in -ung → die.',
     tr: {
-      hint: "Kitap yeni.",
-      explanation: "Belirli artikel, nötr isim.",
+      hint: "Gazete yeni.",
+      explanation: '"Zeitung" -ung ile biter → die.',
       learn: {
-        headline: "Üç belirli artikel",
-        english: "her Almanca ismin biri vardır",
+        headline: "Artikeller ve isim ekleri",
+        english: "cinsiyeti öngören ekler",
         articleRoles: ["eril", "dişil", "nötr"],
-        sample: { en: "Kitap yeni." },
+        caveat:
+          "Ekler güvenilirdir ama mutlak değildir. Akrabalık isimleri (die Mutter, der Vater) ve bazı yüksek frekanslı kelimeler istisnadır.",
+        sample: { en: "Gazete yeni." },
       },
     },
   },
@@ -511,6 +581,7 @@ export function localizeGrammar(
       english: trLearn.english ?? learn.english,
       headline: trLearn.headline ?? learn.headline,
       note: trLearn.note ?? learn.note,
+      caveat: trLearn.caveat ?? learn.caveat,
       sample: {
         ...learn.sample,
         en: trLearn.sample?.en ?? learn.sample.en,
@@ -530,16 +601,14 @@ export function localizeGrammar(
       localizedLearn.forms = forms;
     }
 
-    // articleCards: map articleRoles[i] into articles[i].role.
+    // articleCards: map articleRoles[i] into articles[i].role. The
+    // suffix list (patterns) is German-only — the suffix tokens and
+    // example nouns don't carry across locales.
     if (learn.layout === "articleCards" && trLearn.articleRoles && learn.articles) {
       localizedLearn.articles = learn.articles.map((card, i) => ({
         article: card.article,
         role: trLearn.articleRoles?.[i] ?? card.role,
-        // example DE stays German; example EN is kept untouched because
-        // the article-card example is a short phrase that mirrors the
-        // German token directly (der Tisch / the table) — translating
-        // it to Turkish here would drop the pedagogical mirroring.
-        example: card.example,
+        patterns: card.patterns,
       }));
     }
 
