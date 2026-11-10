@@ -58,6 +58,25 @@ export function LanguagePicker({ className }: LanguagePickerProps) {
       }
 
       const next = getEquivalentPath(pathname, target);
+
+      // Analytics: capture the switch before navigation so the event
+      // carries the `from` page as its context, not the destination.
+      // Paired fields let us slice "TR picked from blog" vs "TR picked
+      // from landing" etc. in PostHog. No PII; `from_path` is the
+      // route, not the full URL with query.
+      if (typeof window !== "undefined") {
+        try {
+          window.__track?.("language_picker_click", {
+            from: active,
+            to: target,
+            from_path: pathname,
+            to_path: next,
+          });
+        } catch {
+          /* no-op */
+        }
+      }
+
       router.push(next);
     },
     [active, pathname, router],
