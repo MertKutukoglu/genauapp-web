@@ -16,7 +16,7 @@ import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/Ex
 import { pickLearnCardType, type LearnCardVariant } from "@/lib/words/pickLearnCardType";
 import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
-import { useChipStore } from "@/stores/chipStore";
+import { useChipStore, type ChipId } from "@/stores/chipStore";
 import type { WordItem } from "@/content/words-a1";
 
 /**
@@ -342,6 +342,28 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
 
   const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
   const completeChip = useChipStore((s) => s.completeChip);
+  const chipProgress = useChipStore((s) => s.progress);
+  const openChip = useChipStore((s) => s.openChip);
+
+  // Pick the next workout to suggest on the completion CTA. We walk
+  // the fixed chip order (words → grammar → sentence → reading),
+  // starting right after the current chip and skipping any that are
+  // already done. When every other chip is done the CTA is omitted
+  // and the user falls back to the LeftCard picker.
+  const nextWorkout = React.useMemo(() => {
+    const chipOrder: Array<{ id: ChipId; label: string }> = [
+      { id: "words", label: "Words" },
+      { id: "grammar", label: "Grammar" },
+      { id: "sentence", label: "Sentence" },
+      { id: "reading", label: "Reading" },
+    ];
+    const currentIdx = chipOrder.findIndex((c) => c.id === "words");
+    for (let i = 1; i <= chipOrder.length - 1; i++) {
+      const candidate = chipOrder[(currentIdx + i) % chipOrder.length];
+      if (chipProgress[candidate.id] !== "done") return candidate;
+    }
+    return null;
+  }, [chipProgress]);
 
   // Compute deltas once, the moment the deck empties. We stash them
   // in local state so the ExerciseCompletion screen always shows the
@@ -397,6 +419,14 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
         correct={correctCount}
         total={deckSize}
         deltas={sessionDeltas ?? {}}
+        nextWorkout={
+          nextWorkout
+            ? {
+                label: nextWorkout.label,
+                onContinue: () => openChip(nextWorkout.id),
+              }
+            : undefined
+        }
       />
     );
   }

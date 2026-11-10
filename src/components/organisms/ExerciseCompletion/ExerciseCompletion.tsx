@@ -85,6 +85,17 @@ export interface ExerciseCompletionProps {
   total: number;
   /** Per-skill deltas staged by the parent via computeSkillDeltas. */
   deltas: SkillDeltas;
+  /**
+   * Optional "Continue with {workout} →" CTA at the bottom. The
+   * parent computes the next workout from the chipStore (first
+   * non-done chip after the current one) and wires onContinue to
+   * closeChip + openChip. Omit to hide the CTA entirely — the user
+   * then returns via the LeftCard chip picker.
+   */
+  nextWorkout?: {
+    label: string;
+    onContinue: () => void;
+  };
   className?: string;
 }
 
@@ -93,6 +104,7 @@ export function ExerciseCompletion({
   correct,
   total,
   deltas,
+  nextWorkout,
   className,
 }: ExerciseCompletionProps) {
   const subtitle = subtitleFor(correct, total);
@@ -152,6 +164,23 @@ export function ExerciseCompletion({
             ))}
           </div>
         </div>
+      ) : null}
+
+      {nextWorkout ? (
+        <button
+          type="button"
+          onClick={nextWorkout.onContinue}
+          className={clsx(
+            "mt-2 inline-flex items-center justify-center gap-2",
+            "h-[52px] px-8 rounded-2xl",
+            "bg-accent text-white font-sans font-bold text-base",
+            "transition hover:brightness-110 active:translate-y-px",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+          )}
+        >
+          Continue with {nextWorkout.label} →
+        </button>
       ) : null}
     </div>
   );

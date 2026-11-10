@@ -30,6 +30,19 @@ export const HalfThere: Story = {
   },
 };
 
+export const WithContinueCTA: Story = {
+  args: {
+    chip: "words",
+    correct: 15,
+    total: 20,
+    deltas: computeSkillDeltas({ chip: "words", correct: 15, total: 20 }),
+    nextWorkout: {
+      label: "Grammar",
+      onContinue: () => console.log("Next workout tapped: grammar"),
+    },
+  },
+};
+
 export const RoughRun: Story = {
   args: {
     chip: "grammar",

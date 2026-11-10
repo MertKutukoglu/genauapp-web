@@ -35,6 +35,9 @@ export interface ExerciseTranslationMCProps {
   className?: string;
 }
 
+/** A-S-D-F home row for options 0-3. */
+const OPTION_KEYS = ["A", "S", "D", "F"] as const;
+
 export function ExerciseTranslationMC({
   prompt,
   speakText,
@@ -55,10 +58,39 @@ export function ExerciseTranslationMC({
   const committed = pickedIdx !== null;
   const isCorrect = pickedIdx === correctIndex;
 
-  const handlePick = (i: number) => {
+  const handlePick = React.useCallback(
+    (i: number) => {
+      if (committed) return;
+      setPickedIdx(i);
+    },
+    [committed],
+  );
+
+  // Desktop keyboard shortcuts: A/S/D/F → options 0..3. Mirrors the
+  // ArticlePicker's home-row pattern — fast flow for keyboard users.
+  // Only live until commit; Next button takes over on Enter via its
+  // autoFocus thereafter.
+  React.useEffect(() => {
     if (committed) return;
-    setPickedIdx(i);
-  };
+    if (typeof window === "undefined") return;
+
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) {
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      const idx = OPTION_KEYS.findIndex((k) => k.toLowerCase() === e.key.toLowerCase());
+      if (idx >= 0 && idx < options.length) {
+        e.preventDefault();
+        handlePick(idx);
+      }
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [committed, options.length, handlePick]);
 
   return (
     <div
@@ -122,6 +154,8 @@ export function ExerciseTranslationMC({
             borderCls = "border-2";
           }
 
+          const shortcut = i < OPTION_KEYS.length ? OPTION_KEYS[i] : null;
+
           return (
             <button
               key={i}
@@ -129,8 +163,10 @@ export function ExerciseTranslationMC({
               onClick={() => handlePick(i)}
               disabled={committed}
               aria-pressed={isPicked}
+              aria-keyshortcuts={shortcut ?? undefined}
               className={clsx(
                 "w-full h-[56px] rounded-2xl",
+                "flex items-center justify-center gap-3",
                 "font-sans font-semibold text-[16px] leading-none",
                 "border transition-[background,color,transform,border-color] duration-150",
                 !committed && "hover:-translate-y-0.5",
@@ -141,7 +177,24 @@ export function ExerciseTranslationMC({
               )}
               style={{ ...bgStyle, color }}
             >
-              {opt}
+              {/* Inline kbd hint on the left — hidden on touch-only
+                  widths, kept quiet with fg-faint so it never fights
+                  the option label for attention. */}
+              {shortcut ? (
+                <kbd
+                  aria-hidden
+                  className={clsx(
+                    "hidden sm:inline-flex items-center justify-center",
+                    "min-w-[22px] h-[20px] px-1.5 rounded-md",
+                    "font-mono text-[11px] font-semibold leading-none",
+                    "text-fg-faint",
+                    "border border-border-strong bg-[color:color-mix(in_srgb,var(--fg)_4%,transparent)]",
+                  )}
+                >
+                  {shortcut}
+                </kbd>
+              ) : null}
+              <span>{opt}</span>
             </button>
           );
         })}
