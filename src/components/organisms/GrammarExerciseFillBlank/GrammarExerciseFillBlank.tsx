@@ -78,8 +78,20 @@ export function GrammarExerciseFillBlank({
 
   const handleCheck = React.useCallback(() => {
     if (commit !== null || value.trim().length === 0) return;
-    const correct = normalizeDE(value) === normalizeDE(answer);
-    setCommit({ correct });
+    // Canonical shape match: case-insensitive + umlaut-folded.
+    const shapeMatch = normalizeDE(value) === normalizeDE(answer);
+    // Sentence-initial capitalization check: when the canonical
+    // answer starts with an uppercase letter (sentence-initial
+    // articles like "Der", "Die", "Das", and the capitalized pronoun
+    // "Wir" that begins its sentence), require the user's input to
+    // also start with uppercase. Mid-sentence answers (bist, habt,
+    // hörst, gehen) start with lowercase in the canonical form and
+    // don't trigger the check — those stay fully case-insensitive.
+    const expectUpper = /^[A-ZÄÖÜ]/.test(answer);
+    const trimmed = value.trim();
+    const startsUpper = /^[A-ZÄÖÜ]/.test(trimmed);
+    const casingOK = !expectUpper || startsUpper;
+    setCommit({ correct: shapeMatch && casingOK });
   }, [commit, value, answer]);
 
   const handleNext = React.useCallback(() => {
@@ -144,7 +156,10 @@ export function GrammarExerciseFillBlank({
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
+      {/* Input + Check/Next. Stacks on mobile, side by side on lg+ so
+          the wide desktop card doesn't leave a long empty input on
+          its own line above an equally-long CTA. */}
+      <div className="flex flex-col lg:flex-row gap-3">
         <input
           ref={inputRef}
           type="text"
@@ -163,7 +178,7 @@ export function GrammarExerciseFillBlank({
           spellCheck={false}
           placeholder={t.placeholder}
           className={clsx(
-            "h-[52px] rounded-2xl px-4 w-full",
+            "h-[52px] rounded-2xl px-4 w-full lg:flex-1",
             "font-sans font-semibold text-[18px] text-fg text-center",
             "placeholder:font-normal placeholder:text-fg-faint",
             "outline-none focus:ring-2 focus:ring-accent/40",
@@ -177,7 +192,7 @@ export function GrammarExerciseFillBlank({
           onClick={commit === null ? handleCheck : handleNext}
           disabled={checkDisabled && commit === null}
           className={clsx(
-            "h-[52px] rounded-2xl w-full",
+            "h-[52px] rounded-2xl w-full lg:w-[160px] lg:shrink-0",
             "font-sans font-bold text-base text-white",
             "transition-colors",
             checkDisabled && commit === null

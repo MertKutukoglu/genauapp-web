@@ -170,8 +170,11 @@ export function GrammarExerciseMC({
         </div>
       </div>
 
-      {/* Options — vertical stack, state-driven colors. */}
-      <div className="flex flex-col gap-2.5">
+      {/* Options — vertical stack on mobile, horizontal row on lg+.
+          A full-width column on a wide desktop card made each button
+          look like a CTA; the horizontal row reads as a tight picker
+          and cuts the option area's dead weight. */}
+      <div className="flex flex-col lg:flex-row gap-2.5">
         {options.map((opt, i) => {
           const picked = pickedIdx === i;
           const isThisCorrect = i === correctIndex;
@@ -214,6 +217,7 @@ export function GrammarExerciseMC({
               disabled={committed}
               className={clsx(
                 "relative h-[52px] rounded-2xl font-sans font-semibold text-base",
+                "lg:flex-1",
                 "transition-colors",
                 committed ? "cursor-default" : "cursor-pointer hover:brightness-105",
               )}
