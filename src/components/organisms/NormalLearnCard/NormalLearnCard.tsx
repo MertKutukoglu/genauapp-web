@@ -95,7 +95,16 @@ export function NormalLearnCard({
         <SampleSentence sentence={example} translation={exampleTranslation} />
       ) : null}
       {rule ? <RuleCard article={article} body={rule} /> : null}
-      <LearnActions onRepeat={onRepeat} onIKnow={onIKnow} />
+      {/* mt-auto pins the action row to the card's bottom edge when the
+          card stretches (desktop `lg:flex-1` passes a fixed row height
+          down). This stops the Repeat / I-know buttons from jumping
+          vertically between cards that have or don't have a rule
+          block / grammar pills above them. */}
+      <LearnActions
+        onRepeat={onRepeat}
+        onIKnow={onIKnow}
+        className="mt-auto"
+      />
     </div>
   );
 }
