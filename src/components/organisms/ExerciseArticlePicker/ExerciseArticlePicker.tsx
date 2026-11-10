@@ -165,17 +165,11 @@ export function ExerciseArticlePicker({
           at the bottom of the card while the hero vertically centers. */}
       <div className="flex-1 flex flex-col items-center justify-center gap-3 py-4">
         <div className="flex items-center justify-center gap-3">
-          <span
-            aria-hidden
-            className={clsx(
-              "inline-block h-[3px] w-10 rounded-full transition-colors duration-200",
-            )}
-            style={{
-              background: committed
-                ? ARTICLE_COLOR[correctArticle]
-                : "color-mix(in srgb, var(--fg) 22%, transparent)",
-            }}
-          />
+          {/* Article slot — dash placeholder while idle; the correct
+              article drops in on commit (regardless of right/wrong
+              pick) so the user always walks away seeing the full
+              "der Noun" form. The dash disappears once filled so the
+              two don't sit side by side. */}
           {committed ? (
             <span
               className="font-sans font-bold text-[32px] leading-none"
@@ -183,7 +177,12 @@ export function ExerciseArticlePicker({
             >
               {correctArticle}
             </span>
-          ) : null}
+          ) : (
+            <span
+              aria-hidden
+              className="inline-block h-[3px] w-10 rounded-full bg-[color:color-mix(in_srgb,var(--fg)_22%,transparent)]"
+            />
+          )}
           <span className="font-sans font-bold text-[32px] text-fg leading-none">
             {noun}
           </span>
