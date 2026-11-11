@@ -288,13 +288,14 @@ function LearnCardSwitch({
         />
       );
     case "verbCards":
-      if (!learn.verbs) return <EmptyDeck label="Missing verbs data." />;
+      if (!learn.prefixes || learn.prefixes.length === 0) {
+        return <EmptyDeck label="Missing prefixes data." />;
+      }
       return (
         <GrammarVerbCardsCard
           headline={learn.headline ?? ""}
           english={learn.english ?? ""}
-          note={learn.note}
-          verbs={learn.verbs}
+          prefixes={learn.prefixes}
           sample={learn.sample}
           current={current}
           total={total}

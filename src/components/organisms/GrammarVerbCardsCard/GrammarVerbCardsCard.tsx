@@ -5,24 +5,32 @@ import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSentence/GrammarSampleSentence";
 import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import type { SeparableVerb } from "@/content/grammar-a1";
+import type { SeparablePrefix } from "@/content/grammar-a1";
 
 /**
- * GrammarVerbCardsCard — the A2 `verbCards` layout. Shows 3–4
- * separable verbs side by side, each in a tinted purple sub-card
- * with: infinitive (bold purple), English gloss (muted), example
- * sentence with the prefix substring colored purple.
+ * GrammarVerbCardsCard — the A2 `verbCards` layout, rendered as a
+ * prefix carousel: one separable prefix per step, chevrons flanking
+ * the hero, cycles through all twelve (ab-, an-, auf-, aus-, bei-,
+ * ein-, los-, mit-, nach-, vor-, weg-, zu-) with ← → support.
  *
- * Drives the Trennbare Verben anchor.
+ * Shape (per prefix):
+ *   toolbar (reads the hero prefix)
+ *   → big prefix hero (bold 56, fg) flanked by ‹ › chevrons
+ *   → "Sample Words" sunk tile listing 3-5 verbs (bullet-separated)
+ *   → shared "Rules" purple RuleCard with the prefix's rule
+ *   → tiny 12-dot progress strip
+ *   → Repeat / I know (bottom-pinned)
  *
- * Mobile (≤ 640px): stacks vertically.
+ * Interaction mirrors GrammarVerbParadigmCard's modal carousel:
+ * chevron buttons + global ArrowLeft / ArrowRight (skipped when an
+ * input/textarea/contentEditable has focus). The toolbar speaker
+ * reads the active prefix, so TTS lands on what you see.
  */
 
 export interface GrammarVerbCardsCardProps {
   headline: string;
   english: string;
-  note?: string;
-  verbs: SeparableVerb[];
+  prefixes: SeparablePrefix[];
   sample: { de: string; en: string; highlight: string };
   current: number;
   total: number;
@@ -31,23 +39,10 @@ export interface GrammarVerbCardsCardProps {
   className?: string;
 }
 
-/**
- * Extract the separable prefix from an example like "Ich stehe auf."
- * by matching the last word (stripping the trailing period). The
- * content doc keeps the prefix as the final token in every example.
- * If no match, returns null and the example renders without a color
- * highlight.
- */
-function extractPrefix(example: string): string | null {
-  const m = example.match(/\s(\w+)\.\s*$/);
-  return m ? m[1] : null;
-}
-
 export function GrammarVerbCardsCard({
   headline,
   english,
-  note,
-  verbs,
+  prefixes,
   sample,
   current,
   total,
@@ -55,7 +50,51 @@ export function GrammarVerbCardsCard({
   onIKnow,
   className,
 }: GrammarVerbCardsCardProps) {
-  const { strings } = useLocale();
+  const { strings, locale } = useLocale();
+  const [idx, setIdx] = React.useState(0);
+
+  // Reset to index 0 when the deck swaps the anchor underneath.
+  React.useEffect(() => {
+    setIdx(0);
+  }, [prefixes.length, prefixes[0]?.prefix]);
+
+  const active = prefixes[idx];
+
+  const prev = React.useCallback(() => {
+    setIdx((i) => (i - 1 + prefixes.length) % prefixes.length);
+  }, [prefixes.length]);
+  const next = React.useCallback(() => {
+    setIdx((i) => (i + 1) % prefixes.length);
+  }, [prefixes.length]);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = document.activeElement;
+      if (
+        el &&
+        (el.tagName === "INPUT" ||
+          el.tagName === "TEXTAREA" ||
+          (el as HTMLElement).isContentEditable)
+      ) {
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        next();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [prev, next]);
+
+  const prevLabel = locale === "tr" ? "Önceki" : "Previous";
+  const nextLabel = locale === "tr" ? "Sonraki" : "Next";
+  const sampleWordsLabel = locale === "tr" ? "Örnek kelimeler" : "Sample Words";
+
+  if (!active) return null;
 
   return (
     <div
@@ -67,67 +106,124 @@ export function GrammarVerbCardsCard({
         className,
       )}
     >
-      <CardToolbar speakText={sample.de} current={current} total={total} />
+      <CardToolbar
+        speakText={active.prefix.replace(/-$/, "")}
+        current={current}
+        total={total}
+      />
 
+      {/* Headline block: small title + big prefix hero flanked by
+          chevrons, matching the Modalverben carousel shape. */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
-        <div className="font-sans font-bold text-[32px] text-fg leading-tight">
+        <div className="font-sans font-normal text-[15px] text-fg-muted leading-snug">
           {headline}
         </div>
-        <div className="font-sans font-normal text-base text-fg-muted leading-snug">
+        <div className="flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={prev}
+            aria-label={prevLabel}
+            className={clsx(
+              "flex items-center justify-center",
+              "w-9 h-9 rounded-full",
+              "text-fg-muted hover:text-fg",
+              "transition-colors",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
+            )}
+            style={{
+              background:
+                "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
+            }}
+          >
+            <ChevronLeftIcon />
+          </button>
+          <div
+            key={active.prefix}
+            className="font-sans font-bold text-[56px] text-fg leading-none"
+          >
+            {active.prefix}
+          </div>
+          <button
+            type="button"
+            onClick={next}
+            aria-label={nextLabel}
+            className={clsx(
+              "flex items-center justify-center",
+              "w-9 h-9 rounded-full",
+              "text-fg-muted hover:text-fg",
+              "transition-colors",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
+            )}
+            style={{
+              background:
+                "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
+            }}
+          >
+            <ChevronRightIcon />
+          </button>
+        </div>
+        <div className="font-sans font-normal text-[14px] text-fg-muted mt-1">
           {english}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-        {verbs.map((v) => {
-          const prefix = extractPrefix(v.example);
-          return (
-            <div
-              key={v.infinitive}
-              className="flex flex-col items-center gap-1.5 rounded-2xl p-3"
-              style={{
-                background: "var(--surface-sunk)",
-                border:
-                  "1px solid color-mix(in srgb, var(--chip-grammar-color) 20%, transparent)",
-              }}
-            >
-              <div
-                className="font-sans font-bold text-[18px] leading-tight text-center"
-                style={{ color: "var(--chip-grammar-color)" }}
-              >
-                {v.infinitive}
-              </div>
-              <div
-                className="font-sans font-normal text-[12px] text-fg-muted text-center"
-                style={{ letterSpacing: "0.3px" }}
-              >
-                {v.english}
-              </div>
-              <div className="font-sans font-semibold text-[14px] text-fg text-center leading-snug mt-1">
-                {prefix ? (
-                  <>
-                    {v.example.slice(0, -1 - prefix.length)}
-                    <span style={{ color: "var(--chip-grammar-color)" }}>
-                      {prefix}
-                    </span>
-                    .
-                  </>
-                ) : (
-                  v.example
-                )}
-              </div>
-            </div>
-          );
-        })}
+      {/* Sample Words sunk tile — bullet-separated verbs. Wraps on
+          narrow widths via flex-wrap. */}
+      <div
+        className="rounded-2xl p-4 flex flex-col gap-1.5"
+        style={{ background: "var(--surface-sunk)" }}
+      >
+        <div
+          className="font-sans font-normal text-sm leading-tight"
+          style={{ color: "var(--fg-muted)" }}
+        >
+          {sampleWordsLabel}
+        </div>
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          {active.samples.map((w, i) => (
+            <React.Fragment key={w}>
+              <span className="font-sans font-bold text-[18px] text-fg leading-tight">
+                {w}
+              </span>
+              {i < active.samples.length - 1 ? (
+                <span
+                  className="font-sans text-fg-muted leading-none"
+                  aria-hidden
+                >
+                  •
+                </span>
+              ) : null}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
 
-      {note ? (
-        <RuleCard
-          tint="var(--chip-grammar-color)"
-          body={note}
-          label={strings.try.learnCard.ruleLabel}
-        />
-      ) : null}
+      <RuleCard
+        tint="var(--chip-grammar-color)"
+        body={active.rule}
+        label={strings.try.learnCard.ruleLabel}
+      />
+
+      {/* Progress dots: 12 ticks, active one widens + darkens. */}
+      <div
+        className="flex items-center justify-center gap-1.5 -mt-1"
+        aria-hidden
+      >
+        {prefixes.map((_, i) => (
+          <span
+            key={i}
+            className="rounded-full transition-all"
+            style={{
+              width: i === idx ? 18 : 6,
+              height: 6,
+              background:
+                i === idx
+                  ? "var(--chip-grammar-color)"
+                  : "color-mix(in srgb, var(--chip-grammar-color) 25%, transparent)",
+            }}
+          />
+        ))}
+      </div>
 
       <GrammarSampleSentence
         sentence={sample.de}
@@ -141,5 +237,39 @@ export function GrammarVerbCardsCard({
         className="mt-auto"
       />
     </div>
+  );
+}
+
+function ChevronLeftIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-5 h-5"
+      aria-hidden
+    >
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-5 h-5"
+      aria-hidden
+    >
+      <path d="M9 18l6-6-6-6" />
+    </svg>
   );
 }

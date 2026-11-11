@@ -268,7 +268,14 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
     },
   },
 
-  // ── 3 ─ Anchor: Trennbare Verben ─────────────────────────────────
+  // ── 3 ─ Anchor: Trennbare Verben (12-prefix carousel) ────────────
+  //
+  // One anchor, twelve prefixes — chevrons + ← → walk through
+  // ab- → an- → auf- → aus- → bei- → ein- → los- → mit- → nach-
+  // → vor- → weg- → zu-. Each step shows the prefix as the hero,
+  // a "Sample Words" tile with 3 verbs built on it, and a purple
+  // RuleCard with the prefix's rough meaning + a main-clause
+  // example of it separated at the end.
   {
     topic: "Trennbare Verben",
     exerciseType: "fillBlank",
@@ -276,24 +283,78 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
       layout: "verbCards",
       headline: "Trennbare Verben",
       english: "Separable verbs: prefix moves to the end in main clauses",
-      note:
-        "Common separable prefixes: **auf-**, **ein-**, **an-**, **aus-**, **mit-**, **ab-**, **zu-**.",
-      verbs: [
+      prefixes: [
         {
-          infinitive: "aufstehen",
-          example: "Ich stehe auf.",
-          english: "to get up",
+          prefix: "ab-",
+          samples: ["abfahren", "ablegen", "abholen"],
+          rule:
+            "ab often means **away** or **off**. Separable in a main clause: Ich fahre um 8 ab.",
         },
         {
-          infinitive: "einkaufen",
-          example: "Ich kaufe ein.",
-          english: "to shop",
+          prefix: "an-",
+          samples: ["anfangen", "anrufen", "ankommen"],
+          rule:
+            "an often means **at** or **toward**. Separable in a main clause: Tom ruft mich an.",
         },
-        { infinitive: "anrufen", example: "Ich rufe an.", english: "to call" },
         {
-          infinitive: "einladen",
-          example: "Ich lade ein.",
-          english: "to invite",
+          prefix: "auf-",
+          samples: ["aufstehen", "aufmachen", "aufwachen"],
+          rule:
+            "auf often means **up** or **open**. Separable in a main clause: Ich stehe um sieben auf.",
+        },
+        {
+          prefix: "aus-",
+          samples: ["ausgehen", "ausmachen", "aussteigen"],
+          rule:
+            "aus often means **out** or **off**. Separable in a main clause: Wir gehen heute aus.",
+        },
+        {
+          prefix: "bei-",
+          samples: ["beibringen", "beitragen", "beistehen"],
+          rule:
+            "bei often means **alongside** or **in addition**. Separable in a main clause: Er bringt mir Deutsch bei.",
+        },
+        {
+          prefix: "ein-",
+          samples: ["einkaufen", "einladen", "einsteigen"],
+          rule:
+            "ein often means **in** or **into**. Separable in a main clause: Ich kaufe am Samstag ein.",
+        },
+        {
+          prefix: "los-",
+          samples: ["losfahren", "losgehen", "loslassen"],
+          rule:
+            "los often marks the **start** of an action. Separable in a main clause: Wir fahren jetzt los.",
+        },
+        {
+          prefix: "mit-",
+          samples: ["mitkommen", "mitnehmen", "mitmachen"],
+          rule:
+            "mit often means **with** or **along**. Separable in a main clause: Kommst du mit?",
+        },
+        {
+          prefix: "nach-",
+          samples: ["nachdenken", "nachmachen", "nachsehen"],
+          rule:
+            "nach often means **after** or **following up**. Separable in a main clause: Ich denke darüber nach.",
+        },
+        {
+          prefix: "vor-",
+          samples: ["vorstellen", "vorbereiten", "vorschlagen"],
+          rule:
+            "vor often means **before** or **in front of**. Separable in a main clause: Ich stelle dir meinen Bruder vor.",
+        },
+        {
+          prefix: "weg-",
+          samples: ["weggehen", "weglaufen", "wegnehmen"],
+          rule:
+            "weg often means **away** or **gone**. Separable in a main clause: Sie geht weg.",
+        },
+        {
+          prefix: "zu-",
+          samples: ["zumachen", "zuhören", "zusehen"],
+          rule:
+            "zu often means **closed** or **toward**. Separable in a main clause: Mach bitte die Tür zu.",
         },
       ],
       sample: {
@@ -314,9 +375,57 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
       learn: {
         headline: "Trennbare Verben",
         english: "Ayrılabilir fiiller: ana cümlede ön ek sona gider",
-        note:
-          "Sık görülen ayrılabilir ön ekler: **auf-**, **ein-**, **an-**, **aus-**, **mit-**, **ab-**, **zu-**.",
         sample: { en: "Yedide kalkarım." },
+        prefixes: [
+          {
+            rule:
+              "ab genellikle **uzaklaşma** veya **ayrılma** anlamı taşır. Ana cümlede ayrılır: Ich fahre um 8 ab.",
+          },
+          {
+            rule:
+              "an genellikle **-a doğru** veya **temas** anlamı taşır. Ana cümlede ayrılır: Tom ruft mich an.",
+          },
+          {
+            rule:
+              "auf genellikle **yukarı** veya **açmak** anlamı taşır. Ana cümlede ayrılır: Ich stehe um sieben auf.",
+          },
+          {
+            rule:
+              "aus genellikle **dışarı** veya **kapatmak** anlamı taşır. Ana cümlede ayrılır: Wir gehen heute aus.",
+          },
+          {
+            rule:
+              "bei genellikle **yanında** veya **-e katkıda** anlamı taşır. Ana cümlede ayrılır: Er bringt mir Deutsch bei.",
+          },
+          {
+            rule:
+              "ein genellikle **içeri** anlamı taşır. Ana cümlede ayrılır: Ich kaufe am Samstag ein.",
+          },
+          {
+            rule:
+              "los genellikle **başlama** anlamı taşır. Ana cümlede ayrılır: Wir fahren jetzt los.",
+          },
+          {
+            rule:
+              "mit genellikle **birlikte** veya **eşlik etme** anlamı taşır. Ana cümlede ayrılır: Kommst du mit?",
+          },
+          {
+            rule:
+              "nach genellikle **sonra** veya **takip etme** anlamı taşır. Ana cümlede ayrılır: Ich denke darüber nach.",
+          },
+          {
+            rule:
+              "vor genellikle **önce** veya **önünde** anlamı taşır. Ana cümlede ayrılır: Ich stelle dir meinen Bruder vor.",
+          },
+          {
+            rule:
+              "weg genellikle **uzaklaşma** veya **yok olma** anlamı taşır. Ana cümlede ayrılır: Sie geht weg.",
+          },
+          {
+            rule:
+              "zu genellikle **kapalı** veya **-e doğru** anlamı taşır. Ana cümlede ayrılır: Mach bitte die Tür zu.",
+          },
+        ],
       },
     },
   },

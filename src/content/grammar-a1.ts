@@ -104,13 +104,33 @@ export interface ParticipleForm {
 
 /**
  * A2 `verbCards` row: one separable verb (infinitive + sample + a
- * short English gloss). Rendered as a card in a 4-across row that
- * stacks on mobile.
+ * short English gloss). Kept exported for anyone pulling the type
+ * for a different surface; the live Trennbare Verben anchor uses
+ * the prefix-carousel shape (`SeparablePrefix`) below instead.
  */
 export interface SeparableVerb {
   infinitive: string;
   example: string;
   english: string;
+}
+
+/**
+ * A2 `verbCards` prefix-carousel entry: one separable prefix with
+ * a handful of sample verbs that use it and a one-line rule. The
+ * renderer walks the twelve prefixes (ab-, an-, auf-, aus-, bei-,
+ * ein-, los-, mit-, nach-, vor-, weg-, zu-) with chevron taps or
+ * ← → — same pattern as the Modalverben carousel, so the learner
+ * learns the interaction once per chip.
+ */
+export interface SeparablePrefix {
+  /** The prefix with trailing hyphen (`"ab-"`, `"ein-"`). */
+  prefix: string;
+  /** 3-5 verbs built on this prefix (`"abfahren"`, `"ablegen"`). */
+  samples: string[];
+  /** One-line rule: what the prefix roughly means + one example of
+   *  it separated in a main clause. Shown in the purple RuleCard
+   *  below the sample-words tile. Supports `**bold**` markdown. */
+  rule: string;
 }
 
 /**
@@ -195,8 +215,15 @@ export interface GrammarLearnBlock {
    *  field for a one-line note on every anchor, rendered in a
    *  purple-tinted RuleCard below the paradigm/cards/chart. */
   note?: string;
-  /** A2 `verbCards`: 3–4 separable verbs rendered side by side. */
+  /** A2 `verbCards`: 3–4 separable verbs rendered side by side.
+   *  Kept for anyone pulling the old shape; the live A2 anchor uses
+   *  the prefix-carousel field below. */
   verbs?: SeparableVerb[];
+  /** A2 `verbCards` prefix carousel: 12 separable prefixes walked
+   *  with chevrons + arrow keys. Replaces `verbs` on the Trennbare
+   *  Verben anchor so the anchor teaches the whole family at once
+   *  (one prefix per step) instead of four verbs side by side. */
+  prefixes?: SeparablePrefix[];
   /** A2 `articleCards`: 3 article cards with Nominativ + Akkusativ
    *  forms side by side. Distinct from the legacy `patterns` field
    *  on `articleSingle`. */
@@ -250,6 +277,12 @@ export interface GrammarLocaleOverlay {
       english?: string;
       sample?: { en?: string };
     }>;
+    /**
+     * A2 prefix-carousel `verbCards`: per-prefix rule translation.
+     * Same length and order as `learn.prefixes`. Only `rule` needs
+     * swapping; `prefix` + `samples` stay German across locales.
+     */
+    prefixes?: Array<{ rule?: string }>;
   };
 }
 
@@ -775,6 +808,15 @@ export function localizeGrammar(
 
     // articleSingle: role swap happens in the generic branch above
     // (trLearn.role ?? learn.role). The suffix list stays German.
+
+    // Prefix-carousel verbCards: swap each prefix's `rule` for its
+    // TR mirror, same-index; `prefix` + `samples` stay German.
+    if (learn.prefixes && learn.prefixes.length > 0) {
+      localizedLearn.prefixes = learn.prefixes.map((p, i) => ({
+        ...p,
+        rule: trLearn.prefixes?.[i]?.rule ?? p.rule,
+      }));
+    }
 
     // Carousel verbParadigm: merge each variant's EN fields with
     // its TR mirror, same-index; paradigm cells (verb + forms)
