@@ -25,7 +25,18 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  * only applies to the user's input.
  */
 
-/** Lowercases, trims, and folds German umlauts + ß to their ASCII pairs. */
+/**
+ * Lowercases, trims, umlaut-folds, ß→ss, AND strips a leading
+ * reflexive pronoun (sich / mich / dich / uns / euch).
+ *
+ * The reflexive strip matters at A2 and up: the canonical lexical
+ * form of a reflexive verb carries "sich" in front (`sich beeilen`),
+ * but learners who type just the infinitive ("beeilen") are
+ * grammatically right too — the pronoun conjugates with the subject
+ * at usage time, it's not part of the stem. Accepting both sides
+ * ships the right grammar without wrong-flagging the shorter form
+ * the way the iOS app once did (see softlaunch backlog 2026-11-10).
+ */
 function normalizeAnswer(s: string): string {
   return s
     .trim()
@@ -33,7 +44,8 @@ function normalizeAnswer(s: string): string {
     .replace(/ä/g, "ae")
     .replace(/ö/g, "oe")
     .replace(/ü/g, "ue")
-    .replace(/ß/g, "ss");
+    .replace(/ß/g, "ss")
+    .replace(/^(sich|mich|dich|uns|euch)\s+/, "");
 }
 
 export interface ExerciseTypingProps {

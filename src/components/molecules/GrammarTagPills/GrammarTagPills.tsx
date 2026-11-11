@@ -26,9 +26,11 @@ export type GrammarTag =
   | "aux-sein"
   | "transitive"
   | "intransitive"
+  | "regular"
   | "irregular"
   | "akkusativ"
-  | "dativ";
+  | "dativ"
+  | "prep-an-akk";
 
 interface TagDef {
   label: string;
@@ -69,6 +71,12 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     explanation:
       "No direct object — the action stands on its own: Ich gehe. Ich schlafe.",
   },
+  regular: {
+    label: "Regular",
+    color: "#64748B",
+    explanation:
+      "Weak verb — predictable endings on a stable stem, no stem-vowel change: lernen → ich lerne, du lernst, er lernt.",
+  },
   irregular: {
     label: "Irregular",
     color: "#DB2777",
@@ -86,6 +94,12 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     color: "var(--article-das)",
     explanation:
       "Indirect-object case (also triggered by verbs like helfen, danken). Articles: dem, einem, der, einer, dem. Example: Ich helfe dem Mann.",
+  },
+  "prep-an-akk": {
+    label: "an + Akk",
+    color: "var(--accent)",
+    explanation:
+      "Fixed preposition + case combo: the verb always wants \"an\" with an Akkusativ object. sich erinnern an + Akk → Ich erinnere mich an dich.",
   },
 };
 

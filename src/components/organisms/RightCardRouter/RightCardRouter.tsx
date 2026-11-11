@@ -10,6 +10,7 @@ import { SentenceChip } from "@/components/organisms/SentenceChip/SentenceChip";
 import { ReadingChip } from "@/components/organisms/ReadingChip/ReadingChip";
 import { WorkoutCompleteFlow } from "@/components/organisms/WorkoutCompleteFlow/WorkoutCompleteFlow";
 import { WORDS_A1 } from "@/content/words-a1";
+import { WORDS_A2 } from "@/content/words-a2";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
 import { READING_A1 } from "@/content/reading-a1";
@@ -43,8 +44,15 @@ export interface RightCardRouterProps {
 
 export function RightCardRouter({ className }: RightCardRouterProps) {
   const selected = useChipStore((s) => s.selected);
+  const selectedLevel = useChipStore((s) => s.selectedLevel);
   const showSummary = useChipStore((s) => s.showSummary);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  // Pick the Words deck by level. Only A1 + A2 have their own decks;
+  // B1 / B2 users land on A2 for now so the chip still runs — the
+  // LevelPicker tracks their actual pick in PostHog so we see the
+  // interest shape before we build those decks.
+  const wordsDeck = selectedLevel === "A2" ? WORDS_A2 : WORDS_A1;
 
   // Smooth-scroll the right card into view on mobile when a chip opens.
   // Only fires on the null → chip transition; chip → other-chip skips.
@@ -91,7 +99,11 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
       {showSummary ? (
         <WorkoutCompleteFlow className="lg:flex-1 lg:h-full" />
       ) : selected === "words" ? (
-        <WordsChip words={WORDS_A1} className="lg:flex-1 lg:h-full" />
+        <WordsChip
+          key={selectedLevel ?? "default"}
+          words={wordsDeck}
+          className="lg:flex-1 lg:h-full"
+        />
       ) : selected === "grammar" ? (
         <GrammarChip items={GRAMMAR_A1} className="lg:flex-1 lg:h-full" />
       ) : selected === "sentence" ? (
