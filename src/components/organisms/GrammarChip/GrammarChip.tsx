@@ -293,7 +293,6 @@ function LearnCardSwitch({
       }
       return (
         <GrammarVerbCardsCard
-          headline={learn.headline ?? ""}
           english={learn.english ?? ""}
           prefixes={learn.prefixes}
           current={current}

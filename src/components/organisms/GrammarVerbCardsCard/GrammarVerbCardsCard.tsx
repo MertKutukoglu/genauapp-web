@@ -28,7 +28,8 @@ import type { SeparablePrefix } from "@/content/grammar-a1";
  */
 
 export interface GrammarVerbCardsCardProps {
-  headline: string;
+  /** English gloss shown under the active prefix (regular 16 muted,
+   *  matching every other Grammar Learn card). */
   english: string;
   prefixes: SeparablePrefix[];
   current: number;
@@ -39,7 +40,6 @@ export interface GrammarVerbCardsCardProps {
 }
 
 export function GrammarVerbCardsCard({
-  headline,
   english,
   prefixes,
   current,
@@ -110,12 +110,14 @@ export function GrammarVerbCardsCard({
         total={total}
       />
 
-      {/* Headline block: small title + big prefix hero flanked by
-          chevrons, matching the Modalverben carousel shape. */}
+      {/*
+        Headline block — prefix hero at 32px to match every other
+        Grammar Learn card (VerbParadigm, ParticipleParadigm,
+        ArticleCases all share text-[32px] headlines) and the
+        English gloss at text-base muted beneath, same shape as
+        the Modalverben carousel. Chevrons are w-9 h-9 to match.
+       */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
-        <div className="font-sans font-normal text-[15px] text-fg-muted leading-snug">
-          {headline}
-        </div>
         <div className="flex items-center justify-center gap-3">
           <button
             type="button"
@@ -137,7 +139,7 @@ export function GrammarVerbCardsCard({
           </button>
           <div
             key={active.prefix}
-            className="font-sans font-bold text-[56px] text-fg leading-none"
+            className="font-sans font-bold text-[32px] text-fg leading-tight"
           >
             {active.prefix}
           </div>
@@ -160,7 +162,7 @@ export function GrammarVerbCardsCard({
             <ChevronRightIcon />
           </button>
         </div>
-        <div className="font-sans font-normal text-[14px] text-fg-muted mt-1">
+        <div className="font-sans font-normal text-base text-fg-muted leading-snug">
           {english}
         </div>
       </div>
