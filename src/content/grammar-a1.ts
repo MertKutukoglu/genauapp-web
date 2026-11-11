@@ -39,7 +39,11 @@ export type GrammarLearnLayout =
   // A2 layouts — see GenauApp_Web_Try_Grammar_Content_A2.md §2:
   | "participleParadigm"
   | "verbCards"
-  | "articleCards";
+  | "articleCards"
+  // B1 layouts — see GenauApp_Web_Try_Grammar_Content_B1.md §2:
+  | "activePassiveComparison"
+  | "relativePronounGrid"
+  | "connectorCards";
 
 /** A verb paradigm row: pronoun → fully-conjugated form. */
 export interface ParadigmForm {
@@ -160,16 +164,77 @@ export interface VerbParadigmVariant {
 
 /**
  * A2 `articleCards` row: one article with Nominativ + Akkusativ
- * forms side by side. `change: true` on the masculine card flags
- * the only case where the article visibly changes (der → den) so
- * the renderer can underline it.
+ * forms side by side. B1 extends with an optional `dat` line
+ * (Dativ form) and a `plural` card so Dativ can be taught across
+ * all three genders + plural. `change: true` marks the cards where
+ * the form visibly changes versus Nominativ, so the renderer can
+ * highlight them. `pluralNoteN` flags the plural-noun-adds-`-n`
+ * footnote the renderer paints under the plural card at B1.
  */
 export interface ArticleCaseForm {
   article: "der" | "die" | "das";
   role: string;
   nom: { de: string; en: string };
   akk: { de: string; en: string };
+  /** B1 only: Dativ form of the same noun. */
+  dat?: { de: string; en: string };
   change?: boolean;
+  /** B1 only: show the "plural noun adds -n in Dativ" footnote
+   *  under this card (only true on the plural card). */
+  pluralNoteN?: boolean;
+}
+
+/**
+ * B1 `activePassiveComparison` row: one Aktiv ↔ Passiv sentence
+ * pair. Rendered side-by-side with the Passiv column tinted
+ * purple to carry the "the werden form here" signal.
+ */
+export interface PassiveComparisonPair {
+  aktiv: string;
+  passiv: string;
+}
+
+/**
+ * B1 `relativePronounGrid` row: one gender row across the three
+ * cases (Nom / Akk / Dat) in the relative-pronoun table. The
+ * plural row is treated as a fourth gender for grid purposes;
+ * `denen` (plural Dativ) gets a subtle purple tint to flag it as
+ * the anomalous form learners trip on.
+ */
+export interface RelativePronounRow {
+  gender: "masc" | "fem" | "neut" | "plural";
+  label: string;
+  forms: { nom: string; akk: string; dat: string };
+}
+
+/**
+ * B1 `relativePronounGrid` example: one annotated sentence
+ * illustrating one case in the relative clause. `highlight` is the
+ * relative pronoun to tint; `role` is the case name + a short
+ * parenthetical the renderer can show as a muted gloss.
+ */
+export interface RelativePronounExample {
+  de: string;
+  en: string;
+  highlight: string;
+  role: string;
+}
+
+/**
+ * B1 `connectorCards` row — also used for anchor 5 (prep-verbs).
+ * The layout is a flat 3–4 cards side by side; each card shows a
+ * word (connector or verb-with-prep infinitive) in bold purple,
+ * an English gloss in muted 12, and one example sentence with the
+ * connector / preposition substring highlighted purple.
+ */
+export interface ConnectorCard {
+  word: string;
+  example: string;
+  english: string;
+  /** Optional explicit substring to colour in the example. Falls
+   *  back to the first `word` token if absent — most A2-style
+   *  separable-prefix content leans on this default. */
+  highlight?: string;
 }
 
 /**
@@ -244,6 +309,17 @@ export interface GrammarLearnBlock {
    *  modals in one card). When set, the top-level `verb/english/
    *  forms/sample` fields are ignored by the renderer. */
   variants?: VerbParadigmVariant[];
+  /** B1 `activePassiveComparison`: 3 Aktiv ↔ Passiv sentence
+   *  pairs for the Vorgangspassiv anchor. */
+  pairs?: PassiveComparisonPair[];
+  /** B1 `relativePronounGrid`: 4 gender rows × 3 case columns. */
+  rows?: RelativePronounRow[];
+  /** B1 `relativePronounGrid`: 2 inline-coloured example sentences
+   *  rendered under the grid, each highlighting one case in action. */
+  examples?: RelativePronounExample[];
+  /** B1 `connectorCards` (and anchor-5 reuse for prep-verbs):
+   *  3-4 cards shown side by side. */
+  connectors?: ConnectorCard[];
   /**
    * articleSingle "by meaning" rule paragraph — the semantic
    * categories that take this article (Days/months → der,

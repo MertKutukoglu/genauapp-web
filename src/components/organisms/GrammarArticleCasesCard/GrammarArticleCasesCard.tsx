@@ -25,6 +25,14 @@ const ARTICLE_COLORS: Record<ArticleCaseForm["article"], string> = {
   das: "var(--color-article-das)",
 };
 
+/**
+ * Colour the plural card uses for its hero. `die` on a plural
+ * card reads as feminine without this — plural pronouns are
+ * taught as a distinct bucket, so the card gets the neutral
+ * chip-grammar purple instead of one of the three gender tints.
+ */
+const PLURAL_COLOR = "var(--chip-grammar-color)";
+
 export interface GrammarArticleCasesCardProps {
   headline: string;
   english: string;
@@ -74,12 +82,24 @@ export function GrammarArticleCasesCard({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {articles.map((a) => {
-          const color = ARTICLE_COLORS[a.article];
+      <div
+        className={clsx(
+          "grid grid-cols-1 gap-3",
+          articles.length === 4
+            ? "sm:grid-cols-2 lg:grid-cols-4"
+            : "sm:grid-cols-3",
+        )}
+      >
+        {articles.map((a, cardIdx) => {
+          // Plural card borrows chip-grammar purple so it reads as
+          // its own bucket, not another feminine die card.
+          const isPluralCard = a.role === "plural" || a.pluralNoteN === true;
+          const color = isPluralCard
+            ? PLURAL_COLOR
+            : ARTICLE_COLORS[a.article];
           return (
             <div
-              key={a.article}
+              key={`${a.article}-${cardIdx}`}
               className="flex flex-col items-center gap-1.5 rounded-2xl p-3.5"
               style={{
                 background: "var(--surface-sunk)",
@@ -110,22 +130,52 @@ export function GrammarArticleCasesCard({
                 <div className="flex items-baseline gap-2">
                   <span
                     className="font-sans font-normal text-[11px] uppercase"
-                    style={{ color: a.change ? color : "var(--fg-faint)" }}
+                    style={{
+                      color:
+                        a.akk.de !== a.nom.de
+                          ? color
+                          : "var(--fg-faint)",
+                    }}
                   >
                     Akk:
                   </span>
                   <span
                     className={clsx(
                       "font-sans text-[14px]",
-                      a.change ? "font-bold" : "font-semibold text-fg",
+                      a.akk.de !== a.nom.de
+                        ? "font-bold"
+                        : "font-semibold text-fg",
                     )}
-                    style={a.change ? { color } : undefined}
+                    style={a.akk.de !== a.nom.de ? { color } : undefined}
                   >
                     {a.akk.de}
                   </span>
                 </div>
+                {a.dat ? (
+                  <div className="flex items-baseline gap-2">
+                    <span
+                      className="font-sans font-normal text-[11px] uppercase"
+                      style={{ color }}
+                    >
+                      Dat:
+                    </span>
+                    <span
+                      className="font-sans font-bold text-[14px]"
+                      style={{ color }}
+                    >
+                      {a.dat.de}
+                    </span>
+                  </div>
+                ) : null}
               </div>
-              {a.change ? (
+              {a.pluralNoteN ? (
+                <div
+                  className="font-sans font-normal text-[11px] mt-1 text-center leading-snug"
+                  style={{ color: "var(--fg-muted)" }}
+                >
+                  * plural noun adds -n
+                </div>
+              ) : a.change && !a.dat ? (
                 <div
                   className="font-sans font-semibold text-[11px] mt-1 uppercase"
                   style={{ color, letterSpacing: "0.3px" }}

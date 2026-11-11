@@ -11,6 +11,9 @@ import { GrammarVerbConjugationCard } from "@/components/organisms/GrammarVerbCo
 import { GrammarParticipleParadigmCard } from "@/components/organisms/GrammarParticipleParadigmCard/GrammarParticipleParadigmCard";
 import { GrammarVerbCardsCard } from "@/components/organisms/GrammarVerbCardsCard/GrammarVerbCardsCard";
 import { GrammarArticleCasesCard } from "@/components/organisms/GrammarArticleCasesCard/GrammarArticleCasesCard";
+import { GrammarActivePassiveCard } from "@/components/organisms/GrammarActivePassiveCard/GrammarActivePassiveCard";
+import { GrammarRelativePronounCard } from "@/components/organisms/GrammarRelativePronounCard/GrammarRelativePronounCard";
+import { GrammarConnectorCardsCard } from "@/components/organisms/GrammarConnectorCardsCard/GrammarConnectorCardsCard";
 import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
 import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
@@ -311,6 +314,59 @@ function LearnCardSwitch({
           english={learn.english ?? ""}
           note={learn.note}
           articles={learn.articles}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "activePassiveComparison":
+      if (!learn.pairs || learn.pairs.length === 0) {
+        return <EmptyDeck label="Missing pairs data." />;
+      }
+      return (
+        <GrammarActivePassiveCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          pairs={learn.pairs}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "relativePronounGrid":
+      if (!learn.rows || !learn.columns) {
+        return <EmptyDeck label="Missing relative-pronoun data." />;
+      }
+      return (
+        <GrammarRelativePronounCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          columns={learn.columns}
+          rows={learn.rows}
+          examples={learn.examples}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "connectorCards":
+      if (!learn.connectors || learn.connectors.length === 0) {
+        return <EmptyDeck label="Missing connectors data." />;
+      }
+      return (
+        <GrammarConnectorCardsCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          connectors={learn.connectors}
           sample={learn.sample}
           current={current}
           total={total}
