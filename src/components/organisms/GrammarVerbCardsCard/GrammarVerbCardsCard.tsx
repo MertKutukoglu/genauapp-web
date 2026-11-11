@@ -31,7 +31,6 @@ export interface GrammarVerbCardsCardProps {
   headline: string;
   english: string;
   prefixes: SeparablePrefix[];
-  sample: { de: string; en: string; highlight: string };
   current: number;
   total: number;
   onRepeat?: () => void;
@@ -43,7 +42,6 @@ export function GrammarVerbCardsCard({
   headline,
   english,
   prefixes,
-  sample,
   current,
   total,
   onRepeat,
@@ -226,9 +224,9 @@ export function GrammarVerbCardsCard({
       </div>
 
       <GrammarSampleSentence
-        sentence={sample.de}
-        highlight={sample.highlight}
-        translation={sample.en}
+        sentence={active.sample.de}
+        highlight={active.sample.highlight}
+        translation={active.sample.en}
       />
 
       <LearnActions

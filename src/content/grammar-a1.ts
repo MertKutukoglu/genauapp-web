@@ -127,10 +127,16 @@ export interface SeparablePrefix {
   prefix: string;
   /** 3-5 verbs built on this prefix (`"abfahren"`, `"ablegen"`). */
   samples: string[];
-  /** One-line rule: what the prefix roughly means + one example of
-   *  it separated in a main clause. Shown in the purple RuleCard
-   *  below the sample-words tile. Supports `**bold**` markdown. */
+  /** One-line rule: what the prefix roughly means. Shown in the
+   *  purple RuleCard below the sample-words tile. Supports
+   *  `**bold**` markdown. Keep it to the meaning — the separated
+   *  main-clause example belongs in `sample`, not here. */
   rule: string;
+  /** The "it in a real sentence" line, rendered under the RuleCard
+   *  via the shared GrammarSampleSentence block with `highlight`
+   *  wrapped purple. Each prefix carries its own sample so the
+   *  example changes as the chevrons cycle. */
+  sample: GrammarSample;
 }
 
 /**
@@ -278,11 +284,15 @@ export interface GrammarLocaleOverlay {
       sample?: { en?: string };
     }>;
     /**
-     * A2 prefix-carousel `verbCards`: per-prefix rule translation.
-     * Same length and order as `learn.prefixes`. Only `rule` needs
-     * swapping; `prefix` + `samples` stay German across locales.
+     * A2 prefix-carousel `verbCards`: per-prefix rule + sample
+     * translation. Same length and order as `learn.prefixes`.
+     * `prefix` + `samples` + `sample.de` stay German; `rule` and
+     * `sample.en` swap.
      */
-    prefixes?: Array<{ rule?: string }>;
+    prefixes?: Array<{
+      rule?: string;
+      sample?: { en?: string };
+    }>;
   };
 }
 
@@ -809,13 +819,21 @@ export function localizeGrammar(
     // articleSingle: role swap happens in the generic branch above
     // (trLearn.role ?? learn.role). The suffix list stays German.
 
-    // Prefix-carousel verbCards: swap each prefix's `rule` for its
-    // TR mirror, same-index; `prefix` + `samples` stay German.
+    // Prefix-carousel verbCards: swap each prefix's `rule` and
+    // `sample.en` for their TR mirrors, same-index; `prefix` +
+    // `samples` + `sample.de` + `sample.highlight` stay German.
     if (learn.prefixes && learn.prefixes.length > 0) {
-      localizedLearn.prefixes = learn.prefixes.map((p, i) => ({
-        ...p,
-        rule: trLearn.prefixes?.[i]?.rule ?? p.rule,
-      }));
+      localizedLearn.prefixes = learn.prefixes.map((p, i) => {
+        const trP = trLearn.prefixes?.[i];
+        return {
+          ...p,
+          rule: trP?.rule ?? p.rule,
+          sample: {
+            ...p.sample,
+            en: trP?.sample?.en ?? p.sample.en,
+          },
+        };
+      });
     }
 
     // Carousel verbParadigm: merge each variant's EN fields with

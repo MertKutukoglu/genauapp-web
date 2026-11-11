@@ -296,7 +296,6 @@ function LearnCardSwitch({
           headline={learn.headline ?? ""}
           english={learn.english ?? ""}
           prefixes={learn.prefixes}
-          sample={learn.sample}
           current={current}
           total={total}
           onRepeat={onRepeat}

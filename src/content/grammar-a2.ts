@@ -287,76 +287,126 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
         {
           prefix: "ab-",
           samples: ["abfahren", "ablegen", "abholen"],
-          rule:
-            "ab often means **away** or **off**. Separable in a main clause: Ich fahre um 8 ab.",
+          rule: "ab often means **away** or **off**.",
+          sample: {
+            de: "Ich fahre um 8 ab.",
+            en: "I leave at 8.",
+            highlight: "ab",
+          },
         },
         {
           prefix: "an-",
           samples: ["anfangen", "anrufen", "ankommen"],
-          rule:
-            "an often means **at** or **toward**. Separable in a main clause: Tom ruft mich an.",
+          rule: "an often means **at** or **toward**.",
+          sample: {
+            de: "Tom ruft mich an.",
+            en: "Tom calls me.",
+            highlight: "an",
+          },
         },
         {
           prefix: "auf-",
           samples: ["aufstehen", "aufmachen", "aufwachen"],
-          rule:
-            "auf often means **up** or **open**. Separable in a main clause: Ich stehe um sieben auf.",
+          rule: "auf often means **up** or **open**.",
+          sample: {
+            de: "Ich stehe um sieben auf.",
+            en: "I get up at seven.",
+            highlight: "auf",
+          },
         },
         {
           prefix: "aus-",
           samples: ["ausgehen", "ausmachen", "aussteigen"],
-          rule:
-            "aus often means **out** or **off**. Separable in a main clause: Wir gehen heute aus.",
+          rule: "aus often means **out** or **off**.",
+          sample: {
+            de: "Wir gehen heute aus.",
+            en: "We're going out today.",
+            highlight: "aus",
+          },
         },
         {
           prefix: "bei-",
           samples: ["beibringen", "beitragen", "beistehen"],
-          rule:
-            "bei often means **alongside** or **in addition**. Separable in a main clause: Er bringt mir Deutsch bei.",
+          rule: "bei often means **alongside** or **in addition**.",
+          sample: {
+            de: "Er bringt mir Deutsch bei.",
+            en: "He teaches me German.",
+            highlight: "bei",
+          },
         },
         {
           prefix: "ein-",
           samples: ["einkaufen", "einladen", "einsteigen"],
-          rule:
-            "ein often means **in** or **into**. Separable in a main clause: Ich kaufe am Samstag ein.",
+          rule: "ein often means **in** or **into**.",
+          sample: {
+            de: "Ich kaufe am Samstag ein.",
+            en: "I shop on Saturday.",
+            highlight: "ein",
+          },
         },
         {
           prefix: "los-",
           samples: ["losfahren", "losgehen", "loslassen"],
-          rule:
-            "los often marks the **start** of an action. Separable in a main clause: Wir fahren jetzt los.",
+          rule: "los often marks the **start** of an action.",
+          sample: {
+            de: "Wir fahren jetzt los.",
+            en: "We're setting off now.",
+            highlight: "los",
+          },
         },
         {
           prefix: "mit-",
           samples: ["mitkommen", "mitnehmen", "mitmachen"],
-          rule:
-            "mit often means **with** or **along**. Separable in a main clause: Kommst du mit?",
+          rule: "mit often means **with** or **along**.",
+          sample: {
+            de: "Kommst du mit?",
+            en: "Are you coming along?",
+            highlight: "mit",
+          },
         },
         {
           prefix: "nach-",
           samples: ["nachdenken", "nachmachen", "nachsehen"],
-          rule:
-            "nach often means **after** or **following up**. Separable in a main clause: Ich denke darüber nach.",
+          rule: "nach often means **after** or **following up**.",
+          sample: {
+            de: "Ich denke darüber nach.",
+            en: "I'm thinking it over.",
+            highlight: "nach",
+          },
         },
         {
           prefix: "vor-",
           samples: ["vorstellen", "vorbereiten", "vorschlagen"],
-          rule:
-            "vor often means **before** or **in front of**. Separable in a main clause: Ich stelle dir meinen Bruder vor.",
+          rule: "vor often means **before** or **in front of**.",
+          sample: {
+            de: "Ich stelle dir meinen Bruder vor.",
+            en: "I introduce you to my brother.",
+            highlight: "vor",
+          },
         },
         {
           prefix: "weg-",
           samples: ["weggehen", "weglaufen", "wegnehmen"],
-          rule:
-            "weg often means **away** or **gone**. Separable in a main clause: Sie geht weg.",
+          rule: "weg often means **away** or **gone**.",
+          sample: {
+            de: "Sie geht weg.",
+            en: "She's leaving.",
+            highlight: "weg",
+          },
         },
         {
           prefix: "zu-",
           samples: ["zumachen", "zuhören", "zusehen"],
-          rule:
-            "zu often means **closed** or **toward**. Separable in a main clause: Mach bitte die Tür zu.",
+          rule: "zu often means **closed** or **toward**.",
+          sample: {
+            de: "Mach bitte die Tür zu.",
+            en: "Please close the door.",
+            highlight: "zu",
+          },
         },
       ],
+      // Fallback sample kept for callers that ignore `prefixes`;
+      // the carousel renderer uses active.sample instead.
       sample: {
         de: "Ich stehe um sieben auf.",
         en: "I get up at seven.",
@@ -378,52 +428,52 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
         sample: { en: "Yedide kalkarım." },
         prefixes: [
           {
-            rule:
-              "ab genellikle **uzaklaşma** veya **ayrılma** anlamı taşır. Ana cümlede ayrılır: Ich fahre um 8 ab.",
+            rule: "ab genellikle **uzaklaşma** veya **ayrılma** anlamı taşır.",
+            sample: { en: "Saat 8'de yola çıkıyorum." },
           },
           {
-            rule:
-              "an genellikle **-a doğru** veya **temas** anlamı taşır. Ana cümlede ayrılır: Tom ruft mich an.",
+            rule: "an genellikle **-a doğru** veya **temas** anlamı taşır.",
+            sample: { en: "Tom beni arıyor." },
           },
           {
-            rule:
-              "auf genellikle **yukarı** veya **açmak** anlamı taşır. Ana cümlede ayrılır: Ich stehe um sieben auf.",
+            rule: "auf genellikle **yukarı** veya **açmak** anlamı taşır.",
+            sample: { en: "Yedide kalkarım." },
           },
           {
-            rule:
-              "aus genellikle **dışarı** veya **kapatmak** anlamı taşır. Ana cümlede ayrılır: Wir gehen heute aus.",
+            rule: "aus genellikle **dışarı** veya **kapatmak** anlamı taşır.",
+            sample: { en: "Bugün dışarı çıkıyoruz." },
           },
           {
-            rule:
-              "bei genellikle **yanında** veya **-e katkıda** anlamı taşır. Ana cümlede ayrılır: Er bringt mir Deutsch bei.",
+            rule: "bei genellikle **yanında** veya **-e katkıda** anlamı taşır.",
+            sample: { en: "Bana Almanca öğretiyor." },
           },
           {
-            rule:
-              "ein genellikle **içeri** anlamı taşır. Ana cümlede ayrılır: Ich kaufe am Samstag ein.",
+            rule: "ein genellikle **içeri** anlamı taşır.",
+            sample: { en: "Cumartesi alışveriş yapıyorum." },
           },
           {
-            rule:
-              "los genellikle **başlama** anlamı taşır. Ana cümlede ayrılır: Wir fahren jetzt los.",
+            rule: "los genellikle **başlama** anlamı taşır.",
+            sample: { en: "Şimdi yola çıkıyoruz." },
           },
           {
-            rule:
-              "mit genellikle **birlikte** veya **eşlik etme** anlamı taşır. Ana cümlede ayrılır: Kommst du mit?",
+            rule: "mit genellikle **birlikte** veya **eşlik etme** anlamı taşır.",
+            sample: { en: "Sen de geliyor musun?" },
           },
           {
-            rule:
-              "nach genellikle **sonra** veya **takip etme** anlamı taşır. Ana cümlede ayrılır: Ich denke darüber nach.",
+            rule: "nach genellikle **sonra** veya **takip etme** anlamı taşır.",
+            sample: { en: "Onu düşünüyorum." },
           },
           {
-            rule:
-              "vor genellikle **önce** veya **önünde** anlamı taşır. Ana cümlede ayrılır: Ich stelle dir meinen Bruder vor.",
+            rule: "vor genellikle **önce** veya **önünde** anlamı taşır.",
+            sample: { en: "Sana kardeşimi tanıştırıyorum." },
           },
           {
-            rule:
-              "weg genellikle **uzaklaşma** veya **yok olma** anlamı taşır. Ana cümlede ayrılır: Sie geht weg.",
+            rule: "weg genellikle **uzaklaşma** veya **yok olma** anlamı taşır.",
+            sample: { en: "Gidiyor." },
           },
           {
-            rule:
-              "zu genellikle **kapalı** veya **-e doğru** anlamı taşır. Ana cümlede ayrılır: Mach bitte die Tür zu.",
+            rule: "zu genellikle **kapalı** veya **-e doğru** anlamı taşır.",
+            sample: { en: "Lütfen kapıyı kapat." },
           },
         ],
       },

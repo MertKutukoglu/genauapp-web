@@ -73,7 +73,7 @@ export function RuleCard({
           {label}
         </div>
         <div className="font-sans font-normal text-[15px] leading-relaxed">
-          {body}
+          {renderBold(body)}
         </div>
       </div>
       {/* Lightbulb — stroke uses currentColor so the icon tints with the
@@ -93,5 +93,29 @@ export function RuleCard({
         <path d="M15.711 15.731H12.711" />
       </svg>
     </div>
+  );
+}
+
+/**
+ * Tiny `**bold**` parser used by every Grammar RuleCard call site —
+ * the content convention in the Try/Grammar briefs is that `note`
+ * and `rule` strings carry the familiar markdown-style asterisks
+ * around the terms the learner should memorise. Splits on `**` and
+ * alternates plain / <strong>, so `"Position **2** always"` renders
+ * the "2" at font-weight 600 and leaves the rest as body. Unmatched
+ * trailing `**` falls back to plain text rather than throwing.
+ */
+function renderBold(text: string): React.ReactNode {
+  if (!text.includes("**")) return text;
+  const parts = text.split("**");
+  // Odd segments are the bold content (between the paired markers).
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold">
+        {part}
+      </strong>
+    ) : (
+      <React.Fragment key={i}>{part}</React.Fragment>
+    ),
   );
 }
