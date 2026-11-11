@@ -60,11 +60,17 @@ export interface ReadingContent {
   passage: string;
   questions: ReadingQuestion[];
   tr?: {
+    /**
+     * Translated passage title. Shown as the big centered heading
+     * on the Read tab. Optional; A1 leaves it in German, A2 ships
+     * one per the Reading content doc.
+     */
+    title?: string;
     /** Translated subtitle (keeps the "A1 · ~X" shape). */
     subtitle?: string;
     /**
-     * title + passage are German-only — the passage IS the content
-     * we're teaching to read. The overlay has no slot for them.
+     * Passage itself is German-only — it IS the material we're
+     * teaching to read. The overlay has no slot for it.
      */
   };
 }
@@ -209,6 +215,7 @@ export function localizeReading(
   }
   return {
     ...content,
+    title: content.tr.title ?? content.title,
     subtitle: content.tr.subtitle ?? content.subtitle,
     questions: content.questions.map((q) => localizeReadingQuestion(q, locale)),
   };

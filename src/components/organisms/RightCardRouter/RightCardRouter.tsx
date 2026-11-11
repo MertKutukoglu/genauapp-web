@@ -14,6 +14,7 @@ import { WORDS_A2 } from "@/content/words-a2";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
 import { READING_A1 } from "@/content/reading-a1";
+import { READING_A2 } from "@/content/reading-a2";
 
 /**
  * RightCardRouter — resolves `chipStore.selected` to the right-column
@@ -53,6 +54,7 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   // LevelPicker tracks their actual pick in PostHog so we see the
   // interest shape before we build those decks.
   const wordsDeck = selectedLevel === "A2" ? WORDS_A2 : WORDS_A1;
+  const readingContent = selectedLevel === "A2" ? READING_A2 : READING_A1;
 
   // Smooth-scroll the right card into view on mobile when a chip opens.
   // Only fires on the null → chip transition; chip → other-chip skips.
@@ -109,7 +111,11 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
       ) : selected === "sentence" ? (
         <SentenceChip items={SENTENCE_A1} className="lg:flex-1 lg:h-full" />
       ) : selected === "reading" ? (
-        <ReadingChip content={READING_A1} className="lg:flex-1 lg:h-full" />
+        <ReadingChip
+          key={selectedLevel ?? "default"}
+          content={readingContent}
+          className="lg:flex-1 lg:h-full"
+        />
       ) : (
         <RightCardPlaceholder
           selectedChip={selected}
