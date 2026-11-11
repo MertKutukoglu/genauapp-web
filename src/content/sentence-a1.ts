@@ -27,6 +27,7 @@ export type SentenceRole =
   | "place"
   | "qword"
   | "modal"
+  | "reflexive"
   | "neutral";
 
 export type SentenceLearnLayout = "sentenceFormula";

@@ -19,5 +19,11 @@ export const ROLE_COLORS: Record<SentenceRole, string> = {
   place: "var(--role-place)",
   qword: "var(--accent)",
   modal: "var(--accent)",
+  // Reflexive pronouns (mich/dich/sich/uns/euch) refer BACK to the
+  // subject, so they reuse the subject's blue. Pedagogically-chosen,
+  // not an accident — matching colors teach "this zamir özneyle
+  // bağlantılı" without an extra legend. A2 Sentence introduces
+  // this role on the Reflexivpronomen anchor + 4 scene drills.
+  reflexive: "var(--color-article-der)",
   neutral: "var(--fg)",
 };
