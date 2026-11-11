@@ -9,7 +9,7 @@ const meta: Meta<typeof LearnCompletion> = {
     docs: {
       description: {
         component:
-          "The moment shown after the user has I-known every card in the Learn deck. Explicit CTA — no auto-flip to Exercise.",
+          "Transition shown after the user has I-known every card in the Learn deck. Explicit Exercise CTA — no auto-flip. Deliberately not a scoreboard: Learn awards no points and moves no skill rings, and the previous Words/Repeats stat tile was being misread as the end-of-session summary.",
       },
     },
   },
@@ -19,19 +19,11 @@ export default meta;
 type Story = StoryObj<typeof LearnCompletion>;
 
 export const Default: Story = {
-  args: { total: 20, repeats: 3 },
-};
-
-export const CleanRun: Story = {
-  args: { total: 20, repeats: 0 },
-};
-
-export const RoughRun: Story = {
-  args: { total: 20, repeats: 12 },
+  args: {},
 };
 
 export const WithHandlers: Story = {
-  args: { total: 20, repeats: 3 },
+  args: {},
   render: (args) => (
     <LearnCompletion
       {...args}

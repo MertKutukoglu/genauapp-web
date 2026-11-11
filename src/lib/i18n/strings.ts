@@ -203,12 +203,10 @@ const en = {
       checkCta: "Check",
     },
     learnCompletion: {
-      heading: "That's the Learn deck.",
-      sub: "You walked the full Learn deck. Try the Exercise, or start over.",
-      statsWords: "Words",
-      statsRepeats: "Repeats",
+      heading: "You walked the deck.",
+      sub: "Learn shows you the pattern. Exercise is where it sticks — and where your skill rings fill up.",
       startOver: "Start over",
-      switchToExercise: "Switch to Exercise →",
+      switchToExercise: "Lock it in with Exercise →",
     },
     exerciseCompletion: {
       doneSuffix: "Done",
@@ -417,12 +415,10 @@ const tr: typeof en = {
       checkCta: "Kontrol et",
     },
     learnCompletion: {
-      heading: "Öğren tarafı bitti.",
-      sub: "Tüm Öğren deste'sini bitirdin. Egzersizi dene ya da baştan başla.",
-      statsWords: "Kelime",
-      statsRepeats: "Tekrar",
+      heading: "Desteyi gezdin.",
+      sub: "Öğren kalıbı gösterir. Egzersiz onları pekiştirir — skill halkaların burada dolar.",
       startOver: "Baştan başla",
-      switchToExercise: "Egzersiz'e geç →",
+      switchToExercise: "Egzersizle pekiştir →",
     },
     exerciseCompletion: {
       doneSuffix: "Bitti",

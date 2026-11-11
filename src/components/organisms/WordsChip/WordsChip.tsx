@@ -163,8 +163,6 @@ export function WordsChip({
         {mode === "learn" ? (
           learnCompleted ? (
             <LearnCompletion
-              total={deckSize}
-              repeats={repeatCount}
               onStartOver={handleStartOver}
               onSwitchToExercise={() => setMode("exercise")}
             />

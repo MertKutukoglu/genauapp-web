@@ -142,9 +142,6 @@ function LearnDeck({
   if (completed) {
     return (
       <LearnCompletion
-        total={deckSize}
-        repeats={repeatCount}
-        itemsLabel={itemsLabel}
         onStartOver={handleStartOver}
         onSwitchToExercise={onSwitchToExercise}
       />

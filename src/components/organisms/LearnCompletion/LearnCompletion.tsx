@@ -5,51 +5,41 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * LearnCompletion — the "that's the deck" moment, shown inside the
- * WordsChip when every card has left the Learn deck.
+ * LearnCompletion — the "that's the deck" transition, shown after
+ * every card has left a chip's Learn deck.
  *
- * Shape per Mert's spec:
- *   - Title + short subtitle
- *   - Compact stats row: words practiced + repeats taken (so a Repeat
- *     doesn't vanish from the summary; the deck mechanic keeps that
- *     word in play, and the count here reflects total attempts)
- *   - Two actions: ghost [Start over] + primary [Switch to Exercise →]
- *     The Exercise button stays visually dominant — the honest next
- *     step after Learn — while Start Over sits as a secondary option.
+ * The earlier version carried a two-stat grid (Words · Repeats) that
+ * read as a scoreboard. Problem: Learn doesn't score — no deltas, no
+ * skill ring movement — and the "20 / 0" tile was convincing enough
+ * that users were taking it as the end-of-session summary, closing
+ * the tab, and never seeing Exercise (where the real retention
+ * happens). A user feedback round made the cost of that framing
+ * explicit.
+ *
+ * The new shape is a bridge, not a scorecard:
+ *   - Heading tells the user they walked the pattern
+ *   - Sub says plainly that Exercise is where it sticks and where
+ *     the skill rings on the left card actually move
+ *   - Primary CTA is Exercise, visually dominant (52 tall, accent
+ *     bg). Start Over sits as a ghost beside it.
+ *
+ * Both chips (Words, Grammar, Sentence) use this same shell — the
+ * copy is generic enough to hold across all three.
  */
 
 export interface LearnCompletionProps {
-  /** Total unique cards in the deck (Words: items, Grammar: anchors). */
-  total: number;
-  /**
-   * How many Repeat actions were taken over the session. Includes
-   * both Normal-card Repeat clicks and AnswerFeedback → Continue
-   * calls from incorrect Scrambled / ChunkCompose attempts.
-   */
-  repeats?: number;
-  /**
-   * Label for the `total` stat tile. Defaults to the i18n "Words"
-   * copy, which is right for the Words chip. The Grammar chip passes
-   * "Cards" / "Kartlar" so the Learn completion reads "5 Cards" there
-   * instead of "5 Words".
-   */
-  itemsLabel?: string;
   onStartOver?: () => void;
   onSwitchToExercise?: () => void;
   className?: string;
 }
 
 export function LearnCompletion({
-  total,
-  repeats = 0,
-  itemsLabel,
   onStartOver,
   onSwitchToExercise,
   className,
 }: LearnCompletionProps) {
   const { strings } = useLocale();
   const t = strings.try.learnCompletion;
-  const itemsStat = itemsLabel ?? t.statsWords;
   return (
     <div
       className={clsx(
@@ -60,7 +50,7 @@ export function LearnCompletion({
         className,
       )}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 max-w-md">
         <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
           {t.heading}
         </h2>
@@ -68,30 +58,6 @@ export function LearnCompletion({
           {t.sub}
         </p>
       </div>
-
-      {/* Stats row — total words + repeats. Minimal, no bars / charts;
-          the summary is for pacing, not a dashboard. */}
-      <dl
-        className="grid grid-cols-2 gap-8 text-center"
-        aria-label="Session summary"
-      >
-        <div className="flex flex-col gap-1">
-          <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            {itemsStat}
-          </dt>
-          <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
-            {total}
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1">
-          <dt className="font-sans text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-faint">
-            {t.statsRepeats}
-          </dt>
-          <dd className="font-display font-semibold text-[32px] text-fg leading-none m-0">
-            {repeats}
-          </dd>
-        </div>
-      </dl>
 
       {/* Actions — Start Over sits as a ghost tag so Exercise stays
           the visually dominant next step. Stack on narrow widths. */}
