@@ -11,6 +11,7 @@ import { ReadingChip } from "@/components/organisms/ReadingChip/ReadingChip";
 import { WorkoutCompleteFlow } from "@/components/organisms/WorkoutCompleteFlow/WorkoutCompleteFlow";
 import { WORDS_A1 } from "@/content/words-a1";
 import { WORDS_A2 } from "@/content/words-a2";
+import { WORDS_B1 } from "@/content/words-b1";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { GRAMMAR_A2 } from "@/content/grammar-a2";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
@@ -51,14 +52,33 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   const showSummary = useChipStore((s) => s.showSummary);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  // Pick the Words deck by level. Only A1 + A2 have their own decks;
-  // B1 / B2 users land on A2 for now so the chip still runs — the
-  // LevelPicker tracks their actual pick in PostHog so we see the
-  // interest shape before we build those decks.
-  const wordsDeck = selectedLevel === "A2" ? WORDS_A2 : WORDS_A1;
-  const grammarDeck = selectedLevel === "A2" ? GRAMMAR_A2 : GRAMMAR_A1;
-  const sentenceDeck = selectedLevel === "A2" ? SENTENCE_A2 : SENTENCE_A1;
-  const readingContent = selectedLevel === "A2" ? READING_A2 : READING_A1;
+  // Pick the Words deck by level. Words ships A1, A2, and B1 decks;
+  // Grammar / Sentence / Reading only ship A1 + A2 so far — a B1 user
+  // sees B1 Words next to A2 Grammar/Sentence/Reading until those
+  // content docs land. B2 users land on A2 for everything for now;
+  // the LevelPicker tracks their actual pick in PostHog so we see the
+  // interest shape before we build the missing decks.
+  const wordsDeck =
+    selectedLevel === "B1"
+      ? WORDS_B1
+      : selectedLevel === "A2"
+        ? WORDS_A2
+        : WORDS_A1;
+  // Grammar / Sentence / Reading ship A1 + A2. B1 and B2 users fall
+  // back to A2 (closer to their baseline than A1) until B1/B2 decks
+  // for these chips land.
+  const grammarDeck =
+    selectedLevel === "A2" || selectedLevel === "B1" || selectedLevel === "B2"
+      ? GRAMMAR_A2
+      : GRAMMAR_A1;
+  const sentenceDeck =
+    selectedLevel === "A2" || selectedLevel === "B1" || selectedLevel === "B2"
+      ? SENTENCE_A2
+      : SENTENCE_A1;
+  const readingContent =
+    selectedLevel === "A2" || selectedLevel === "B1" || selectedLevel === "B2"
+      ? READING_A2
+      : READING_A1;
 
   // Smooth-scroll the right card into view on mobile when a chip opens.
   // Only fires on the null → chip transition; chip → other-chip skips.

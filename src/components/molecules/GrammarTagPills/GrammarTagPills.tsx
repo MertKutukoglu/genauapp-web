@@ -30,7 +30,12 @@ export type GrammarTag =
   | "irregular"
   | "akkusativ"
   | "dativ"
-  | "prep-an-akk";
+  | "prep-an-akk"
+  // B1 additions: fixed verb+prep+case combos + inseparable prefix.
+  | "prep-an-dat"
+  | "prep-auf-akk"
+  | "prep-um-akk"
+  | "inseparable";
 
 interface TagDef {
   label: string;
@@ -100,6 +105,30 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     color: "var(--accent)",
     explanation:
       "Fixed preposition + case combo: the verb always wants \"an\" with an Akkusativ object. sich erinnern an + Akk → Ich erinnere mich an dich.",
+  },
+  "prep-an-dat": {
+    label: "an + Dat",
+    color: "var(--article-das)",
+    explanation:
+      "Fixed preposition + case combo with the Dativ. teilnehmen an + Dat → Viele Studenten nehmen an dem Kurs teil.",
+  },
+  "prep-auf-akk": {
+    label: "auf + Akk",
+    color: "var(--accent)",
+    explanation:
+      "Fixed preposition + case combo with the Akkusativ. For future anticipation use sich freuen auf; for present/past joy use sich freuen über.",
+  },
+  "prep-um-akk": {
+    label: "um + Akk",
+    color: "var(--accent)",
+    explanation:
+      "Fixed preposition + case combo with the Akkusativ. sich bewerben um die Stelle, sich kümmern um die Katze, bitten um Hilfe.",
+  },
+  inseparable: {
+    label: "Inseparable",
+    color: "#DB2777",
+    explanation:
+      "The prefix stays attached in every conjugation — it never moves to the end like a separable verb does: überlegen → Ich überlege, nicht \"Ich lege über\".",
   },
 };
 
