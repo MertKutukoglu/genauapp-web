@@ -18,6 +18,7 @@ import { SENTENCE_A1 } from "@/content/sentence-a1";
 import { SENTENCE_A2 } from "@/content/sentence-a2";
 import { READING_A1 } from "@/content/reading-a1";
 import { READING_A2 } from "@/content/reading-a2";
+import { READING_B1 } from "@/content/reading-b1";
 
 /**
  * RightCardRouter — resolves `chipStore.selected` to the right-column
@@ -75,10 +76,14 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
     selectedLevel === "A2" || selectedLevel === "B1" || selectedLevel === "B2"
       ? SENTENCE_A2
       : SENTENCE_A1;
+  // Reading ships A1, A2, and now B1. B2 still falls back to B1 (the
+  // next-closest). When B2 lands we'll route it directly.
   const readingContent =
-    selectedLevel === "A2" || selectedLevel === "B1" || selectedLevel === "B2"
-      ? READING_A2
-      : READING_A1;
+    selectedLevel === "B1" || selectedLevel === "B2"
+      ? READING_B1
+      : selectedLevel === "A2"
+        ? READING_A2
+        : READING_A1;
 
   // Smooth-scroll the right card into view on mobile when a chip opens.
   // Only fires on the null → chip transition; chip → other-chip skips.
