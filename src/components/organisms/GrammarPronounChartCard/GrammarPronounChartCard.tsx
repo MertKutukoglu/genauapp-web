@@ -4,28 +4,35 @@ import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 import { ParadigmGrid } from "@/components/molecules/ParadigmGrid/ParadigmGrid";
 import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSentence/GrammarSampleSentence";
-import type { PronounForm } from "@/content/grammar-a1";
+import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
+import { useLocale } from "@/lib/i18n/LocaleContext";
+import type { PronounForm, PronounCaseForm } from "@/content/grammar-a1";
 
 /**
  * GrammarPronounChartCard — the Grammar chip's `pronounChart` Learn
- * layout. Drives the single Pronouns anchor.
+ * layout. Dispatches on the shape of `forms`:
  *
- * Shape: toolbar → centered headline (bold 26 — smaller than
- * verbParadigm because "Personal pronouns" is a longer string) +
- * subtitle (regular 15 muted) → 8-row ParadigmGrid with the German
- * pronoun on the left and the English/Turkish gloss on the right →
- * sample sentence with the pronoun highlighted → Repeat / I know
- * bottom-pinned.
+ * - A1 (PronounForm[]): 2-column pronoun → English gloss via
+ *   ParadigmGrid. Drives the A1 Pronouns anchor.
+ * - A2 (PronounCaseForm[] + `columns`): 3-column case table
+ *   Nominativ · Akkusativ · Dativ. Nom column stays muted (the
+ *   "given" from A1); Akk + Dat are full-weight fg (the pedagogical
+ *   focus). An optional `note` renders a purple RuleCard below.
  *
- * Speaker on the toolbar reads the sample sentence rather than a
- * single pronoun — reading one pronoun out of context isn't useful,
- * and the sample carries the pedagogical payoff for this card.
+ * Shape is detected by presence of `columns`. The A1 call site
+ * passes PronounForm[] and no columns and keeps working.
  */
+
+type ChartForms = PronounForm[] | PronounCaseForm[];
 
 export interface GrammarPronounChartCardProps {
   headline: string;
   english: string;
-  forms: PronounForm[];
+  forms: ChartForms;
+  /** A2-only: when set, triggers the 3-col case table. */
+  columns?: string[];
+  /** A2-only: optional note rendered in a purple RuleCard. */
+  note?: string;
   sample: { de: string; en: string; highlight: string };
   current: number;
   total: number;
@@ -34,10 +41,20 @@ export interface GrammarPronounChartCardProps {
   className?: string;
 }
 
+function isCaseForms(
+  forms: ChartForms,
+  hasColumns: boolean,
+): forms is PronounCaseForm[] {
+  if (!hasColumns || forms.length === 0) return false;
+  return "akk" in forms[0] && "dat" in forms[0];
+}
+
 export function GrammarPronounChartCard({
   headline,
   english,
   forms,
+  columns,
+  note,
   sample,
   current,
   total,
@@ -45,6 +62,9 @@ export function GrammarPronounChartCard({
   onIKnow,
   className,
 }: GrammarPronounChartCardProps) {
+  const { strings } = useLocale();
+  const hasColumns = !!columns && columns.length >= 3;
+
   return (
     <div
       className={clsx(
@@ -66,9 +86,57 @@ export function GrammarPronounChartCard({
         </div>
       </div>
 
-      <ParadigmGrid
-        rows={forms.map((row) => ({ pronoun: row.german, form: row.english }))}
-      />
+      {isCaseForms(forms, hasColumns) ? (
+        <div className="flex justify-center">
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns: "auto auto auto",
+              columnGap: "24px",
+              rowGap: "10px",
+            }}
+          >
+            {/* Column headers */}
+            {columns!.slice(0, 3).map((c) => (
+              <div
+                key={c}
+                className="font-sans font-normal text-[12px] text-fg-faint leading-tight"
+                style={{ letterSpacing: "0.3px" }}
+              >
+                {c}
+              </div>
+            ))}
+            {forms.map((row, i) => (
+              <React.Fragment key={`${row.german}-${i}`}>
+                <div className="font-sans font-semibold text-[15px] text-fg-muted leading-tight">
+                  {row.german}
+                </div>
+                <div className="font-sans font-semibold text-[15px] text-fg leading-tight">
+                  {row.akk}
+                </div>
+                <div className="font-sans font-semibold text-[15px] text-fg leading-tight">
+                  {row.dat}
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <ParadigmGrid
+          rows={(forms as PronounForm[]).map((row) => ({
+            pronoun: row.german,
+            form: row.english,
+          }))}
+        />
+      )}
+
+      {note ? (
+        <RuleCard
+          tint="var(--chip-grammar-color)"
+          body={note}
+          label={strings.try.learnCard.ruleLabel}
+        />
+      ) : null}
 
       <GrammarSampleSentence
         sentence={sample.de}

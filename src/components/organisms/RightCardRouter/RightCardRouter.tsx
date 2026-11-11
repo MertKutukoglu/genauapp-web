@@ -12,6 +12,7 @@ import { WorkoutCompleteFlow } from "@/components/organisms/WorkoutCompleteFlow/
 import { WORDS_A1 } from "@/content/words-a1";
 import { WORDS_A2 } from "@/content/words-a2";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
+import { GRAMMAR_A2 } from "@/content/grammar-a2";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
 import { SENTENCE_A2 } from "@/content/sentence-a2";
 import { READING_A1 } from "@/content/reading-a1";
@@ -55,6 +56,7 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   // LevelPicker tracks their actual pick in PostHog so we see the
   // interest shape before we build those decks.
   const wordsDeck = selectedLevel === "A2" ? WORDS_A2 : WORDS_A1;
+  const grammarDeck = selectedLevel === "A2" ? GRAMMAR_A2 : GRAMMAR_A1;
   const sentenceDeck = selectedLevel === "A2" ? SENTENCE_A2 : SENTENCE_A1;
   const readingContent = selectedLevel === "A2" ? READING_A2 : READING_A1;
 
@@ -109,7 +111,11 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
           className="lg:flex-1 lg:h-full"
         />
       ) : selected === "grammar" ? (
-        <GrammarChip items={GRAMMAR_A1} className="lg:flex-1 lg:h-full" />
+        <GrammarChip
+          key={selectedLevel ?? "default"}
+          items={grammarDeck}
+          className="lg:flex-1 lg:h-full"
+        />
       ) : selected === "sentence" ? (
         <SentenceChip
           key={selectedLevel ?? "default"}

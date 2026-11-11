@@ -35,7 +35,11 @@ export type GrammarLearnLayout =
   | "verbParadigm"
   | "pronounChart"
   | "articleSingle"
-  | "verbConjugation";
+  | "verbConjugation"
+  // A2 layouts — see GenauApp_Web_Try_Grammar_Content_A2.md §2:
+  | "participleParadigm"
+  | "verbCards"
+  | "articleCards";
 
 /** A verb paradigm row: pronoun → fully-conjugated form. */
 export interface ParadigmForm {
@@ -87,6 +91,55 @@ export interface ConjugationForm {
   ending: string;
 }
 
+/**
+ * A2 `participleParadigm` row: infinitive → aux + Partizip II.
+ * Three locale-neutral German cells; the card renders a 3-column
+ * table (infinitive muted, aux purple, participle bold).
+ */
+export interface ParticipleForm {
+  infinitive: string;
+  aux: "hat" | "ist";
+  partizip: string;
+}
+
+/**
+ * A2 `verbCards` row: one separable verb (infinitive + sample + a
+ * short English gloss). Rendered as a card in a 4-across row that
+ * stacks on mobile.
+ */
+export interface SeparableVerb {
+  infinitive: string;
+  example: string;
+  english: string;
+}
+
+/**
+ * A2 `articleCards` row: one article with Nominativ + Akkusativ
+ * forms side by side. `change: true` on the masculine card flags
+ * the only case where the article visibly changes (der → den) so
+ * the renderer can underline it.
+ */
+export interface ArticleCaseForm {
+  article: "der" | "die" | "das";
+  role: string;
+  nom: { de: string; en: string };
+  akk: { de: string; en: string };
+  change?: boolean;
+}
+
+/**
+ * A2 `pronounChart` (extended) row: a pronoun with its Akkusativ
+ * and Dativ forms, plus an English gloss. The chart's `columns`
+ * field signals this case-table variant; without it, the chart
+ * falls back to A1's 2-column pronoun → English rendering.
+ */
+export interface PronounCaseForm {
+  german: string;
+  akk: string;
+  dat: string;
+  english: string;
+}
+
 export interface GrammarSample {
   de: string;
   en: string;
@@ -103,8 +156,15 @@ export interface GrammarLearnBlock {
   english?: string;
   /** pronounChart headline (big title). */
   headline?: string;
-  /** verbParadigm forms (6 rows). */
-  forms?: ParadigmForm[] | ConjugationForm[] | PronounForm[];
+  /** verbParadigm forms (6 rows). A2 adds ParticipleForm (for
+   *  `participleParadigm`) and PronounCaseForm (for the extended
+   *  `pronounChart` with `columns`). */
+  forms?:
+    | ParadigmForm[]
+    | ConjugationForm[]
+    | PronounForm[]
+    | ParticipleForm[]
+    | PronounCaseForm[];
   /** articleSingle: which article this card teaches. */
   article?: "der" | "die" | "das";
   /** articleSingle: localized role label (masculine/feminine/neuter). */
@@ -112,8 +172,20 @@ export interface GrammarLearnBlock {
   /** articleSingle: suffix → example rows that reliably predict this
    *  article at A1. */
   patterns?: ArticleSuffixPattern[];
-  /** verbConjugation standalone rule paragraph. */
+  /** verbConjugation standalone rule paragraph. A2 reuses the same
+   *  field for a one-line note on every anchor, rendered in a
+   *  purple-tinted RuleCard below the paradigm/cards/chart. */
   note?: string;
+  /** A2 `verbCards`: 3–4 separable verbs rendered side by side. */
+  verbs?: SeparableVerb[];
+  /** A2 `articleCards`: 3 article cards with Nominativ + Akkusativ
+   *  forms side by side. Distinct from the legacy `patterns` field
+   *  on `articleSingle`. */
+  articles?: ArticleCaseForm[];
+  /** A2 extended `pronounChart`: column headers for the 3-col case
+   *  table (`["Nominativ", "Akkusativ", "Dativ"]`). When absent,
+   *  the chart renders A1's 2-column pronoun → English layout. */
+  columns?: string[];
   /**
    * articleSingle "by meaning" rule paragraph — the semantic
    * categories that take this article (Days/months → der,

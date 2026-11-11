@@ -8,6 +8,9 @@ import { GrammarVerbParadigmCard } from "@/components/organisms/GrammarVerbParad
 import { GrammarPronounChartCard } from "@/components/organisms/GrammarPronounChartCard/GrammarPronounChartCard";
 import { GrammarArticleCard } from "@/components/organisms/GrammarArticleCard/GrammarArticleCard";
 import { GrammarVerbConjugationCard } from "@/components/organisms/GrammarVerbConjugationCard/GrammarVerbConjugationCard";
+import { GrammarParticipleParadigmCard } from "@/components/organisms/GrammarParticipleParadigmCard/GrammarParticipleParadigmCard";
+import { GrammarVerbCardsCard } from "@/components/organisms/GrammarVerbCardsCard/GrammarVerbCardsCard";
+import { GrammarArticleCasesCard } from "@/components/organisms/GrammarArticleCasesCard/GrammarArticleCasesCard";
 import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
 import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
@@ -22,7 +25,9 @@ import {
   type GrammarQuestion,
   type ParadigmForm,
   type PronounForm,
+  type PronounCaseForm,
   type ConjugationForm,
+  type ParticipleForm,
 } from "@/content/grammar-a1";
 
 /**
@@ -223,7 +228,11 @@ function LearnCardSwitch({
         <GrammarPronounChartCard
           headline={learn.headline ?? ""}
           english={learn.english ?? ""}
-          forms={(learn.forms as PronounForm[]) ?? []}
+          forms={
+            (learn.forms as PronounForm[] | PronounCaseForm[]) ?? []
+          }
+          columns={learn.columns}
+          note={learn.note}
           sample={learn.sample}
           current={current}
           total={total}
@@ -255,6 +264,52 @@ function LearnCardSwitch({
           english={learn.english ?? ""}
           note={learn.note}
           forms={(learn.forms as ConjugationForm[]) ?? []}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "participleParadigm":
+      return (
+        <GrammarParticipleParadigmCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          forms={(learn.forms as ParticipleForm[]) ?? []}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "verbCards":
+      if (!learn.verbs) return <EmptyDeck label="Missing verbs data." />;
+      return (
+        <GrammarVerbCardsCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          verbs={learn.verbs}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "articleCards":
+      if (!learn.articles) {
+        return <EmptyDeck label="Missing articles data." />;
+      }
+      return (
+        <GrammarArticleCasesCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          articles={learn.articles}
           sample={learn.sample}
           current={current}
           total={total}
