@@ -114,6 +114,25 @@ export interface SeparableVerb {
 }
 
 /**
+ * One paradigm inside a carousel-style `verbParadigm` anchor. Used
+ * by the A2 Modalverben anchor so a single card walks the learner
+ * through müssen → können → möchten → wollen → dürfen → sollen via
+ * chevron taps (or arrow keys) instead of five extra anchor cards.
+ *
+ * The outer `GrammarLearnBlock.variants[]` holds all of these; the
+ * card renders the active index and the shared `note` beneath. The
+ * top-level `verb` / `english` / `forms` / `sample` fields stay as
+ * single-paradigm anchors' source of truth — when `variants` is
+ * present the card ignores them.
+ */
+export interface VerbParadigmVariant {
+  verb: string;
+  english: string;
+  forms: ParadigmForm[];
+  sample: GrammarSample;
+}
+
+/**
  * A2 `articleCards` row: one article with Nominativ + Akkusativ
  * forms side by side. `change: true` on the masculine card flags
  * the only case where the article visibly changes (der → den) so
@@ -186,6 +205,12 @@ export interface GrammarLearnBlock {
    *  table (`["Nominativ", "Akkusativ", "Dativ"]`). When absent,
    *  the chart renders A1's 2-column pronoun → English layout. */
   columns?: string[];
+  /** A2 carousel-style `verbParadigm`: when present, the card
+   *  renders a chevron pair next to the verb and cycles through the
+   *  variants. Lets one anchor teach a family of paradigms (all six
+   *  modals in one card). When set, the top-level `verb/english/
+   *  forms/sample` fields are ignored by the renderer. */
+  variants?: VerbParadigmVariant[];
   /**
    * articleSingle "by meaning" rule paragraph — the semantic
    * categories that take this article (Days/months → der,
@@ -215,6 +240,16 @@ export interface GrammarLocaleOverlay {
     /** Pronoun-chart English column translations (same order as forms). */
     pronounGlosses?: string[];
     sample?: { en?: string };
+    /**
+     * A2 carousel-style `verbParadigm`: per-variant translations.
+     * Same length and order as `learn.variants`. Only the
+     * learner-facing English fields need overlaying; the paradigm
+     * cells stay German across locales.
+     */
+    variants?: Array<{
+      english?: string;
+      sample?: { en?: string };
+    }>;
   };
 }
 
@@ -740,6 +775,23 @@ export function localizeGrammar(
 
     // articleSingle: role swap happens in the generic branch above
     // (trLearn.role ?? learn.role). The suffix list stays German.
+
+    // Carousel verbParadigm: merge each variant's EN fields with
+    // its TR mirror, same-index; paradigm cells (verb + forms)
+    // stay German across locales.
+    if (learn.variants && learn.variants.length > 0) {
+      localizedLearn.variants = learn.variants.map((v, i) => {
+        const trV = trLearn.variants?.[i];
+        return {
+          ...v,
+          english: trV?.english ?? v.english,
+          sample: {
+            ...v.sample,
+            en: trV?.sample?.en ?? v.sample.en,
+          },
+        };
+      });
+    }
 
     next.learn = localizedLearn;
   }

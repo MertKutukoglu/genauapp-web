@@ -89,16 +89,24 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
     },
   },
 
-  // ── 2 ─ Anchor: Modalverben ──────────────────────────────────────
+  // ── 2 ─ Anchor: Modalverben (carousel: all 6 modals in one card) ─
+  //
+  // One anchor, six paradigms — the chevrons + ArrowLeft/Right cycle
+  // through müssen → können → möchten → wollen → dürfen → sollen.
+  // The purple RuleCard below carries the shared "position 2 /
+  // infinitive at end" rule so it doesn't repeat per variant.
   {
     topic: "Modalverben",
     exerciseType: "multipleChoice",
     learn: {
       layout: "verbParadigm",
+      note:
+        "Modal in position 2; main verb stays as **infinitive** at the end. Tap the chevrons (or use ← →) to walk through all six.",
+      // Top-level verb/english/forms/sample are unused in carousel
+      // mode but kept populated as a graceful fallback in case the
+      // card ever renders in non-carousel mode by mistake.
       verb: "müssen",
       english: "to have to / must",
-      note:
-        "Other A2 modals: **können** (can), **möchten** (would like), **wollen** (want to), **dürfen** (may), **sollen** (should). Modal in position 2; main verb stays as infinitive at the end.",
       forms: [
         { pronoun: "ich", form: "muss" },
         { pronoun: "du", form: "musst" },
@@ -112,6 +120,110 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
         en: "I have to work today.",
         highlight: "muss",
       },
+      variants: [
+        {
+          verb: "müssen",
+          english: "to have to / must",
+          forms: [
+            { pronoun: "ich", form: "muss" },
+            { pronoun: "du", form: "musst" },
+            { pronoun: "er / sie / es", form: "muss" },
+            { pronoun: "wir", form: "müssen" },
+            { pronoun: "ihr", form: "müsst" },
+            { pronoun: "sie / Sie", form: "müssen" },
+          ],
+          sample: {
+            de: "Ich muss heute arbeiten.",
+            en: "I have to work today.",
+            highlight: "muss",
+          },
+        },
+        {
+          verb: "können",
+          english: "can / to be able to",
+          forms: [
+            { pronoun: "ich", form: "kann" },
+            { pronoun: "du", form: "kannst" },
+            { pronoun: "er / sie / es", form: "kann" },
+            { pronoun: "wir", form: "können" },
+            { pronoun: "ihr", form: "könnt" },
+            { pronoun: "sie / Sie", form: "können" },
+          ],
+          sample: {
+            de: "Er kann gut Deutsch sprechen.",
+            en: "He can speak German well.",
+            highlight: "kann",
+          },
+        },
+        {
+          verb: "möchten",
+          english: "would like",
+          forms: [
+            { pronoun: "ich", form: "möchte" },
+            { pronoun: "du", form: "möchtest" },
+            { pronoun: "er / sie / es", form: "möchte" },
+            { pronoun: "wir", form: "möchten" },
+            { pronoun: "ihr", form: "möchtet" },
+            { pronoun: "sie / Sie", form: "möchten" },
+          ],
+          sample: {
+            de: "Ich möchte heute kochen.",
+            en: "I'd like to cook today.",
+            highlight: "möchte",
+          },
+        },
+        {
+          verb: "wollen",
+          english: "to want to",
+          forms: [
+            { pronoun: "ich", form: "will" },
+            { pronoun: "du", form: "willst" },
+            { pronoun: "er / sie / es", form: "will" },
+            { pronoun: "wir", form: "wollen" },
+            { pronoun: "ihr", form: "wollt" },
+            { pronoun: "sie / Sie", form: "wollen" },
+          ],
+          sample: {
+            de: "Wir wollen nach Berlin fahren.",
+            en: "We want to drive to Berlin.",
+            highlight: "wollen",
+          },
+        },
+        {
+          verb: "dürfen",
+          english: "to be allowed to / may",
+          forms: [
+            { pronoun: "ich", form: "darf" },
+            { pronoun: "du", form: "darfst" },
+            { pronoun: "er / sie / es", form: "darf" },
+            { pronoun: "wir", form: "dürfen" },
+            { pronoun: "ihr", form: "dürft" },
+            { pronoun: "sie / Sie", form: "dürfen" },
+          ],
+          sample: {
+            de: "Hier darf man nicht rauchen.",
+            en: "Smoking is not allowed here.",
+            highlight: "darf",
+          },
+        },
+        {
+          verb: "sollen",
+          english: "should / to be supposed to",
+          forms: [
+            { pronoun: "ich", form: "soll" },
+            { pronoun: "du", form: "sollst" },
+            { pronoun: "er / sie / es", form: "soll" },
+            { pronoun: "wir", form: "sollen" },
+            { pronoun: "ihr", form: "sollt" },
+            { pronoun: "sie / Sie", form: "sollen" },
+          ],
+          sample: {
+            de: "Du sollst mehr Wasser trinken.",
+            en: "You should drink more water.",
+            highlight: "sollst",
+          },
+        },
+      ],
     },
     prompt: "Du ___ zum Arzt gehen.",
     hint: "You have to go to the doctor.",
@@ -124,8 +236,34 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
       learn: {
         english: "zorunda olmak / gerekmek",
         note:
-          "A2'nin diğer modal fiilleri: **können** (-ebilmek), **möchten** (istemek), **wollen** (istemek), **dürfen** (izin), **sollen** (-meli). Modal 2. pozisyonda; asıl fiil mastar hâlde sonda.",
+          "Modal fiil 2. pozisyonda; asıl fiil **mastar** hâlde sonda. Chevron'lara dokunarak (ya da ← → tuşlarıyla) altı modal fiilin hepsini gez.",
         sample: { en: "Bugün çalışmam lazım." },
+        variants: [
+          {
+            english: "zorunda olmak / gerekmek",
+            sample: { en: "Bugün çalışmam lazım." },
+          },
+          {
+            english: "-ebilmek",
+            sample: { en: "İyi Almanca konuşabiliyor." },
+          },
+          {
+            english: "istemek (kibar)",
+            sample: { en: "Bugün yemek yapmak istiyorum." },
+          },
+          {
+            english: "istemek",
+            sample: { en: "Berlin'e gitmek istiyoruz." },
+          },
+          {
+            english: "izin var / -ebilir",
+            sample: { en: "Burada sigara içilmez." },
+          },
+          {
+            english: "-meli / gerekir",
+            sample: { en: "Daha çok su içmelisin." },
+          },
+        ],
       },
     },
   },

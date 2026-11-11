@@ -217,6 +217,8 @@ function LearnCardSwitch({
           english={learn.english ?? ""}
           forms={(learn.forms as ParadigmForm[]) ?? []}
           sample={learn.sample}
+          variants={learn.variants}
+          note={learn.note}
           current={current}
           total={total}
           onRepeat={onRepeat}
