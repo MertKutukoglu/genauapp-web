@@ -181,18 +181,19 @@ body {
 }
 
 /*
- * /try/ page — light mode darkens the body bg one step (warm-50 →
- * warm-100) so the opaque-white cards read as clearly white. Dark
- * mode is unaffected; it keeps the warmdk-900 page bg and the
- * translucent-white gradient cards.
+ * /try/ page — light mode runs on a neutral gray body bg
+ * (#FAFAFA) so the opaque-white cards read as clearly white
+ * without the rest of the page carrying the brand's warm cream.
+ * Dark mode is unaffected; it keeps the warmdk-900 page bg and
+ * the translucent-white gradient cards.
  *
  * `:has()` lets the body change based on a descendant marker
  * (TryLayout's `data-page="try"`). Supported everywhere we ship.
  * The home / landing pages don't carry the marker and stay on
- * warm-50.
+ * the warm-50 brand bg.
  */
 html:not([data-theme=dark]) body:has([data-page="try"]) {
-  background: var(--color-warm-100);
+  background: #FAFAFA;
 }
 
 /* ---------- Component keyframes ---------- */
