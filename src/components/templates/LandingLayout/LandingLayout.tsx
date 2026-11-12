@@ -26,21 +26,30 @@ export interface LandingLayoutProps {
 /**
  * Shared card chrome.
  *
- * Gradient uses pure neutral white/black (via dark/light theme) instead
- * of --fg, because --fg is a warm cream in dark mode and leaves a
- * faint pink tint when overlaid on the warm-dark page bg. Pure white
- * reads as clean neutral in both themes.
+ * Dark mode: translucent-white vertical gradient (4% → 10%) as the
+ * whole lift, plus a 1-pixel top-edge inset sheen that reads as
+ * glass on the warm-dark page bg. Pure neutral white (not --fg,
+ * which is a warm cream in dark mode and would leave a faint pink
+ * tint).
  *
- * Top-edge inset shadow gives the glass sheen; same neutral white.
+ * Light mode: opaque white card on the neutral #FAFAFA page bg,
+ * with a soft gray hairline stroke so the card edge is visible
+ * without competing with the content inside. The old translucent-
+ * black gradient bled into the page and left cards looking like
+ * ghost tiles; a plain white + gray stroke reads as clearly
+ * card-like, matches the /try/ page's chrome, and is easier on
+ * the eye at low contrast.
  */
 const cardChrome = clsx(
   "relative min-h-0 flex flex-col overflow-hidden rounded-[32px]",
+  // Dark mode: translucent glass gradient + sheen.
   "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.04),rgba(255,255,255,0.10))]",
   "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.14)]",
-  // Light theme inverts — the white overlay would wash out on a cream bg,
-  // so swap to subtle dark gradient + dark top hairline.
-  "[html:not([data-theme=dark])_&]:bg-[linear-gradient(to_bottom,rgba(14,10,10,0.03),rgba(14,10,10,0.07))]",
-  "[html:not([data-theme=dark])_&]:shadow-[inset_0_1px_0_0_rgba(14,10,10,0.08)]",
+  // Light mode: opaque white + 1px gray hairline stroke.
+  "[html:not([data-theme=dark])_&]:bg-surface-card",
+  "[html:not([data-theme=dark])_&]:border",
+  "[html:not([data-theme=dark])_&]:border-[color:rgba(14,10,10,0.08)]",
+  "[html:not([data-theme=dark])_&]:shadow-none",
 );
 
 export function LandingLayout({ left, right, className }: LandingLayoutProps) {

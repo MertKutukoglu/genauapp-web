@@ -173,10 +173,19 @@ export function WorkoutSlide({
           })}
         </div>
 
-        {/* CTA */}
+        {/*
+          CTA — white fill + cherry stroke + cherry text so this
+          widget-level primary button sits one level quieter than
+          the landing-page hero's solid-cherry Try button. Hover
+          softly fills in with 6% cherry; focus-visible keeps the
+          existing accessible ring.
+         */}
         <button
           type="button"
-          className="mt-[18px] flex w-full items-center gap-3 rounded-[24px] bg-accent px-5 py-3.5 text-[15px] font-bold text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          className="mt-[18px] flex w-full items-center gap-3 rounded-[24px] bg-surface-card px-5 py-3.5 text-[15px] font-bold text-accent transition hover:bg-[color-mix(in_srgb,var(--accent)_6%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          style={{
+            boxShadow: "inset 0 0 0 1.5px var(--accent)",
+          }}
         >
           <span className="flex-1 text-left">{slot.cta}</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
