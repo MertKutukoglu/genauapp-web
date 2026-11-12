@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Open_Sans, Source_Serif_4 } from "next/font/google";
+import { Spectral, Open_Sans, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
@@ -12,17 +12,24 @@ import { CookieConsent } from "@/components/molecules/CookieConsent/CookieConsen
 import "./globals.css";
 
 /**
- * Fraunces for display, Open Sans for body — self-hosted via next/font
+ * Spectral for display, Open Sans for body — self-hosted via next/font
  * (GDPR-safe: no runtime Google Fonts request).
+ *
+ * Swapped off Fraunces in Nov 2026 — Fraunces had become the default
+ * tell of AI-generated / v0-template landing pages, which undercut
+ * the "designed by a real designer" register the rest of GenauApp
+ * aims for. Spectral is a humane editorial serif by Production Type
+ * (via Google Fonts), warmer than Playfair, less common than
+ * Fraunces, pairs naturally with Open Sans.
+ *
+ * Italic styles are loaded eagerly because the /try/ cards and blog
+ * pull-quotes use the italic cut.
  */
-const fraunces = Fraunces({
+const spectral = Spectral({
   variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
-  // Italic 600 is used by the /try/ left card's "Your workout" title
-  // and may appear in blog pull-quotes; load both styles up front so
-  // they're ready without a second request.
   style: ["normal", "italic"],
 });
 
@@ -120,7 +127,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${openSans.variable} ${sourceSerif.variable} h-full antialiased`}
+      className={`${spectral.variable} ${openSans.variable} ${sourceSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
