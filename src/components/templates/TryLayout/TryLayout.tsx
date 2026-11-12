@@ -23,11 +23,6 @@ export interface TryLayoutProps {
 export function TryLayout({ left, right, className }: TryLayoutProps) {
   return (
     <div
-      // `data-page="try"` lets globals.css darken the body bg to
-      // warm-100 in light mode so opaque-white /try/ cards pop as
-      // clearly white instead of bleeding into the near-white
-      // warm-50 global bg. Dark mode inherits untouched.
-      data-page="try"
       className={clsx(
         "w-full mx-auto max-w-[1180px]",
         "px-3 pt-3 pb-16 md:px-4 md:pt-4 md:pb-20",

@@ -80,7 +80,11 @@
    Light theme (default).
    ============================================================================= */
 :root {
-  --bg:               var(--color-warm-50);
+  /* Light-mode page bg: neutral #FAFAFA. Picked over the old
+     warm-50 cream so cards (opaque white) read as clearly white
+     across every surface. Brand warmth still lives in --fg,
+     --surface-sunk and the chip accents, just not on the page. */
+  --bg:               #FAFAFA;
   --fg:               var(--color-warm-900);
   --fg-muted:         var(--color-warm-600);
   --fg-faint:         var(--color-warm-500);
@@ -180,21 +184,6 @@ body {
   font-family: var(--font-body);
 }
 
-/*
- * /try/ page — light mode runs on a neutral gray body bg
- * (#FAFAFA) so the opaque-white cards read as clearly white
- * without the rest of the page carrying the brand's warm cream.
- * Dark mode is unaffected; it keeps the warmdk-900 page bg and
- * the translucent-white gradient cards.
- *
- * `:has()` lets the body change based on a descendant marker
- * (TryLayout's `data-page="try"`). Supported everywhere we ship.
- * The home / landing pages don't carry the marker and stay on
- * the warm-50 brand bg.
- */
-html:not([data-theme=dark]) body:has([data-page="try"]) {
-  background: #FAFAFA;
-}
 
 /* ---------- Component keyframes ---------- */
 
