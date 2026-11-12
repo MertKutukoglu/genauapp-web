@@ -160,6 +160,14 @@ export interface VerbParadigmVariant {
   english: string;
   forms: ParadigmForm[];
   sample: GrammarSample;
+  /**
+   * Optional per-variant rule. When present, the card renders this
+   * in the purple RuleCard in place of the anchor's shared `note`,
+   * so each variant can carry the one-liner specific to it (würde
+   * for any main verb, hätte for polite requests, wäre for "if I
+   * were…", etc.). `**bold**` markdown supported, same as `note`.
+   */
+  rule?: string;
 }
 
 /**
@@ -365,6 +373,10 @@ export interface GrammarLocaleOverlay {
     variants?: Array<{
       english?: string;
       sample?: { en?: string };
+      /** Per-variant rule translation. Same fallback shape as
+       *  `note` — when present it takes the place of the shared
+       *  `note` translation for that variant. */
+      rule?: string;
     }>;
     /**
      * A2 prefix-carousel `verbCards`: per-prefix rule + sample
@@ -932,6 +944,7 @@ export function localizeGrammar(
             ...v.sample,
             en: trV?.sample?.en ?? v.sample.en,
           },
+          rule: trV?.rule ?? v.rule,
         };
       });
     }

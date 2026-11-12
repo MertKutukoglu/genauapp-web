@@ -154,7 +154,7 @@ export function GrammarVerbParadigmCard({
               aria-label={prevLabel}
               className={clsx(
                 "flex items-center justify-center",
-                "w-9 h-9 rounded-full",
+                "w-7 h-7 rounded-full",
                 "text-fg-muted hover:text-fg",
                 "transition-colors",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
@@ -180,7 +180,7 @@ export function GrammarVerbParadigmCard({
               aria-label={nextLabel}
               className={clsx(
                 "flex items-center justify-center",
-                "w-9 h-9 rounded-full",
+                "w-7 h-7 rounded-full",
                 "text-fg-muted hover:text-fg",
                 "transition-colors",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
@@ -228,7 +228,18 @@ export function GrammarVerbParadigmCard({
         </div>
       ) : null}
 
-      {note ? (
+      {/* Per-variant rule beats the anchor-level note: when a
+          carousel entry carries its own one-liner (würde / hätte /
+          wäre each has a different flavor), render that; otherwise
+          fall back to the shared note for anchors that don't set
+          variant-level rules (A2 Modalverben). */}
+      {active?.rule ? (
+        <RuleCard
+          tint="var(--chip-grammar-color)"
+          body={active.rule}
+          label={strings.try.learnCard.ruleLabel}
+        />
+      ) : note ? (
         <RuleCard
           tint="var(--chip-grammar-color)"
           body={note}
@@ -260,7 +271,7 @@ function ChevronLeftIcon() {
       strokeWidth="2.25"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-5 h-5"
+      className="w-4 h-4"
       aria-hidden
     >
       <path d="M15 18l-6-6 6-6" />
@@ -277,7 +288,7 @@ function ChevronRightIcon() {
       strokeWidth="2.25"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-5 h-5"
+      className="w-4 h-4"
       aria-hidden
     >
       <path d="M9 18l6-6-6-6" />

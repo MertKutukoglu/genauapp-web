@@ -62,8 +62,12 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       layout: "verbParadigm",
       headline: "Konjunktiv II",
       english: "Hypothetical mood: würde + Infinitiv, or hätte / wäre",
+      // Shared note stays as a safety net for callers that drop
+      // the variants, but each variant below overrides it with
+      // its own one-liner so the rule tile speaks to the verb the
+      // learner is looking at.
       note:
-        "**würde + Infinitiv** works with any verb (ich würde reisen). For **haben** and **sein** use the direct forms **hätte** and **wäre**. Tap the chevrons (or use ← →) to walk through all three.",
+        "**würde + Infinitiv** works with any verb (ich würde reisen). For **haben** and **sein** use the direct forms **hätte** and **wäre**.",
       // Top-level fields stay populated as graceful fallback for a
       // caller that ignores variants.
       verb: "würden",
@@ -97,6 +101,8 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "I would like to have more time.",
             highlight: "würde",
           },
+          rule:
+            "**würde + Infinitiv** is the all-purpose Konjunktiv II: pair it with any main verb and you've got the hypothetical. Ich würde reisen, du würdest kochen, wir würden bleiben.",
         },
         {
           verb: "haben → hätte",
@@ -114,6 +120,8 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "I'd like a coffee.",
             highlight: "hätte",
           },
+          rule:
+            "**hätte** is the direct Konjunktiv II of **haben** — no würde needed. Backbone of polite requests at the counter: Ich hätte gerne…, hätten Sie…?",
         },
         {
           verb: "sein → wäre",
@@ -131,6 +139,8 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "If I were you, I would do that.",
             highlight: "wäre",
           },
+          rule:
+            "**wäre** is the direct Konjunktiv II of **sein** — again no würde. Classic 'if I were…' construction: Wenn ich du wäre, wäre das anders.",
         },
       ],
     },
@@ -146,20 +156,26 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         headline: "Konjunktiv II",
         english: "Dilek/kibar kip: würde + mastar veya hätte / wäre",
         note:
-          "**würde + mastar** her fiille çalışır (ich würde reisen). **haben** ve **sein** için doğrudan **hätte** ve **wäre** formlarını kullan. Chevron'lara dokun (ya da ← → tuşlarıyla) üçünü de gez.",
+          "**würde + mastar** her fiille çalışır (ich würde reisen). **haben** ve **sein** için doğrudan **hätte** ve **wäre** formlarını kullan.",
         sample: { en: "Daha fazla zamanım olsun isterim." },
         variants: [
           {
             english: "-rdim (herhangi bir fiille)",
             sample: { en: "Daha fazla zamanım olsun isterim." },
+            rule:
+              "**würde + mastar** her amaca uyan Konjunktiv II: herhangi bir ana fiille birleştir, hipotetik hazır. Ich würde reisen, du würdest kochen, wir würden bleiben.",
           },
           {
             english: "sahip olurdum / ... isterim",
             sample: { en: "Bir kahve alabilir miyim." },
+            rule:
+              "**hätte**, **haben** fiilinin doğrudan Konjunktiv II hâlidir — würde'ye gerek yok. Kibar isteğin bel kemiği: Ich hätte gerne…, hätten Sie…?",
           },
           {
             english: "... olsam / ... olurdu",
             sample: { en: "Yerinde olsam onu yapardım." },
+            rule:
+              "**wäre**, **sein** fiilinin doğrudan Konjunktiv II hâlidir — yine würde yok. Klasik 'olsam' kalıbı: Wenn ich du wäre, wäre das anders.",
           },
         ],
       },
