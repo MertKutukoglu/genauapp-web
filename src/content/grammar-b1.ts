@@ -358,16 +358,18 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 5 ─ Anchor: Dativ-Präpositionen (red carousel, 9 preps) ──────
+  // ── 5 ─ Anchor: Dativ-Präpositionen (green carousel, 9 preps) ────
   //
-  // Prep-verb carousel split into two case-colored anchors so the
+  // Prep-verb carousel split into two case-coloured anchors so the
   // learner internalises "which prep → which case" visually: Dativ
-  // preps ride the red (--article-die) hero, Akkusativ preps ride
-  // the green (--article-das). Chevron + ← → walks through all 9
-  // Dativ preps in textbook order (an → aus → bei → mit → nach →
-  // von → vor → unter → zu). Each step shows: the prep as hero,
-  // 3-6 sample verbs that take it, a short meaning + case rule,
-  // and one example sentence with the prep bold-tinted.
+  // preps ride the green (--article-das) hero, Akkusativ preps ride
+  // the red (--article-die). Matches the app's established case
+  // colour convention (Akkusativ = red, Dativ = green). Chevron +
+  // ← → walks through all 9 Dativ preps in textbook order (an →
+  // aus → bei → mit → nach → von → vor → unter → zu). Each step
+  // shows: the prep as hero, 3-6 sample verbs that take it, a
+  // short meaning + case rule, and one example sentence with the
+  // prep bold-tinted.
   {
     topic: "Dativ-Präpositionen",
     exerciseType: "multipleChoice",
@@ -375,7 +377,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       layout: "verbCards",
       headline: "Dativ-Präpositionen",
       english: "Verbs that always take this preposition + Dativ",
-      tint: "var(--article-die)",
+      tint: "var(--article-das)",
       prefixes: [
         {
           prefix: "an",
@@ -563,7 +565,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 6 ─ Anchor: Akkusativ-Präpositionen (green carousel, 6) ──────
+  // ── 6 ─ Anchor: Akkusativ-Präpositionen (red carousel, 6) ────────
   {
     topic: "Akkusativ-Präpositionen",
     exerciseType: "multipleChoice",
@@ -571,7 +573,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       layout: "verbCards",
       headline: "Akkusativ-Präpositionen",
       english: "Verbs that always take this preposition + Akkusativ",
-      tint: "var(--article-das)",
+      tint: "var(--article-die)",
       prefixes: [
         {
           prefix: "auf",
