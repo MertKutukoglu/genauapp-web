@@ -15,6 +15,7 @@ import { GrammarActivePassiveCard } from "@/components/organisms/GrammarActivePa
 import { GrammarRelativePronounCard } from "@/components/organisms/GrammarRelativePronounCard/GrammarRelativePronounCard";
 import { GrammarConnectorCardsCard } from "@/components/organisms/GrammarConnectorCardsCard/GrammarConnectorCardsCard";
 import { GrammarComparisonTableCard } from "@/components/organisms/GrammarComparisonTableCard/GrammarComparisonTableCard";
+import { GrammarConnectorCarouselCard } from "@/components/organisms/GrammarConnectorCarouselCard/GrammarConnectorCarouselCard";
 import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
 import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
@@ -386,6 +387,23 @@ function LearnCardSwitch({
           english={learn.english ?? ""}
           note={learn.note}
           comparisons={learn.comparisons}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "connectorCarousel":
+      if (!learn.connectors || learn.connectors.length === 0) {
+        return <EmptyDeck label="Missing connectors data." />;
+      }
+      return (
+        <GrammarConnectorCarouselCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          connectors={learn.connectors}
           sample={learn.sample}
           current={current}
           total={total}

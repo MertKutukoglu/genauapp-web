@@ -717,36 +717,59 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 6 ─ Anchor: Konnektoren extended ─────────────────────────────
+  // ── 6 ─ Anchor: Konnektoren (chevron carousel) ───────────────────
+  //
+  // Split out as a chevron carousel instead of four cards side by
+  // side — four connectors at once overwhelms the learner, and
+  // the real lesson ("they all do the same thing: verb to the
+  // end") lands harder when you SEE the same formula strip
+  // repeat on each step. Design borrows the Sentence chip's
+  // role-coloured formula pills so Grammar and Sentence chips
+  // speak one dialect.
   {
     topic: "Konnektoren",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "connectorCards",
+      layout: "connectorCarousel",
       headline: "Konnektoren",
-      english: "Subordinate connectors: comma + connector + ... + verb at the end",
+      english: "Subordinate connectors: comma + connector + … + verb at the end",
+      // Shared note kept as safety net; each connector below sets
+      // its own rule so the active card always speaks to its own
+      // meaning (concessive / purpose / temporal / duration).
       note:
-        "All these push the verb to the **end** of the subordinate clause. **als** = past one-time event (Als ich klein war, ...). **wenn** = present / general / hypothetical (Wenn es regnet, ...).",
+        "All these push the finite verb to the **end** of the subordinate clause. **als** = past one-time event. **wenn** = present / general / hypothetical.",
       connectors: [
         {
           word: "obwohl",
           example: "Er geht spazieren, obwohl es regnet.",
           english: "although (concessive)",
+          verbFinal: "regnet",
+          rule:
+            "**obwohl** marks a **concession** — the main clause happens despite the subclause. Pairs well with 'trotzdem' or just stands alone.",
         },
         {
           word: "damit",
           example: "Ich lerne Deutsch, damit ich arbeiten kann.",
           english: "so that (purpose)",
+          verbFinal: "kann",
+          rule:
+            "**damit** marks a **purpose** — the main clause happens in order to make the subclause happen. Different subjects between clauses; same subject uses **um … zu**.",
         },
         {
           word: "nachdem",
           example: "Nachdem ich gegessen habe, gehe ich ins Bett.",
           english: "after (temporal)",
+          verbFinal: "habe",
+          rule:
+            "**nachdem** marks **temporal order**: first the subclause event, then the main clause. Often pairs with Perfekt in the subclause and Präsens in the main clause.",
         },
         {
           word: "seit",
           example: "Seit ich hier wohne, bin ich glücklich.",
           english: "since (duration)",
+          verbFinal: "wohne",
+          rule:
+            "**seit** marks a **duration starting in the past that continues**. German uses Präsens here where English would use the present perfect ('since I have been living').",
         },
       ],
       sample: {
@@ -765,10 +788,32 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       explanation: "Anlam '-sin diye' → damit (amaç bağlacı).",
       learn: {
         headline: "Konnektoren",
-        english: "Alt bağlaçlar: virgül + bağlaç + ... + fiil sonda",
+        english: "Alt bağlaçlar: virgül + bağlaç + … + fiil sonda",
         note:
-          "Hepsi çekimli fiili yan cümlenin **sonuna** gönderir. **als** = geçmişte tek seferlik (Als ich klein war, ...). **wenn** = şimdiki/genel/hipotetik (Wenn es regnet, ...).",
+          "Hepsi çekimli fiili yan cümlenin **sonuna** gönderir. **als** = geçmişte tek seferlik. **wenn** = şimdiki / genel / hipotetik.",
         sample: { en: "Hava güzel olmasına rağmen evde kalıyorum." },
+        connectors: [
+          {
+            english: "rağmen (karşıtlık)",
+            rule:
+              "**obwohl** **karşıtlık** kurar — ana cümle, yan cümleye RAĞMEN gerçekleşir. 'trotzdem' ile eşleşir ya da tek başına kullanılır.",
+          },
+          {
+            english: "... olsun diye (amaç)",
+            rule:
+              "**damit** **amaç** kurar — ana cümle, yan cümle olsun diye gerçekleşir. İki farklı özne varsa damit; aynı özneyse **um … zu**.",
+          },
+          {
+            english: "... -dıktan sonra (zaman)",
+            rule:
+              "**nachdem** **zaman sırası** kurar: önce yan cümle, sonra ana cümle. Genelde yan cümlede Perfekt, ana cümlede Präsens.",
+          },
+          {
+            english: "... den beri (süre)",
+            rule:
+              "**seit** geçmişte başlayıp **devam eden süreyi** kurar. Almanca burada Präsens kullanır (İngilizce 'have been living' derken).",
+          },
+        ],
       },
     },
   },

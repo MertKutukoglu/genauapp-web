@@ -48,7 +48,13 @@ export type GrammarLearnLayout =
   // anchor; same visual family as participleParadigm (3-col
   // lookup table) but with its own field names + an "irregular"
   // flag.
-  | "comparisonTable";
+  | "comparisonTable"
+  // Konnektoren chevron variant: one connector per card, chevron
+  // through the family. Same ConnectorCard data but rendered with
+  // the Sentence-chip formula-strip lesson included on every card
+  // so the pattern ("Hauptsatz, Konnektor Subjekt ... Verb am
+  // Ende") lands with each step.
+  | "connectorCarousel";
 
 /** A verb paradigm row: pronoun → fully-conjugated form. */
 export interface ParadigmForm {
@@ -263,6 +269,16 @@ export interface ConnectorCard {
    *  back to the first `word` token if absent — most A2-style
    *  separable-prefix content leans on this default. */
   highlight?: string;
+  /** Carousel-only: the verb at the end of the subclause in the
+   *  example (e.g. "regnet" in "...obwohl es regnet."). The
+   *  connectorCarousel renderer highlights it alongside the
+   *  connector so the "verb goes to the end" lesson lands
+   *  visually on every card, not only in prose. */
+  verbFinal?: string;
+  /** Carousel-only: per-connector rule shown in the purple
+   *  RuleCard below the formula strip. Replaces the anchor's
+   *  shared `note` for the active card. Supports `**bold**`. */
+  rule?: string;
 }
 
 /**
@@ -409,6 +425,15 @@ export interface GrammarLocaleOverlay {
     prefixes?: Array<{
       rule?: string;
       sample?: { en?: string };
+    }>;
+    /**
+     * B1 `connectorCarousel`: per-connector english + rule swap.
+     * Same length and order as `learn.connectors`. `word`,
+     * `example`, `highlight`, `verbFinal` stay German.
+     */
+    connectors?: Array<{
+      english?: string;
+      rule?: string;
     }>;
   };
 }
@@ -949,6 +974,19 @@ export function localizeGrammar(
             ...p.sample,
             en: trP?.sample?.en ?? p.sample.en,
           },
+        };
+      });
+    }
+
+    // Connector carousel: swap each connector's english + rule
+    // same-index; `word` + `example` + `verbFinal` stay German.
+    if (learn.connectors && learn.connectors.length > 0) {
+      localizedLearn.connectors = learn.connectors.map((c, i) => {
+        const trC = trLearn.connectors?.[i];
+        return {
+          ...c,
+          english: trC?.english ?? c.english,
+          rule: trC?.rule ?? c.rule,
         };
       });
     }
