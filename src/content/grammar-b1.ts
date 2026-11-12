@@ -43,7 +43,18 @@ export {
 } from "@/content/grammar-a1";
 
 export const GRAMMAR_B1: GrammarQuestion[] = [
-  // ── 1 ─ Anchor: Konjunktiv II ────────────────────────────────────
+  // ── 1 ─ Anchor: Konjunktiv II (carousel: würden → haben → sein) ──
+  //
+  // Modal-verb style: one card walks the learner through the three
+  // high-frequency Konjunktiv II paradigms:
+  //
+  //   würden (works with any main verb as "würde + Infinitiv")
+  //   haben → hätte  (polite "Ich hätte gerne ...")
+  //   sein  → wäre   ("Wenn ich du wäre, ...")
+  //
+  // Chevron + ← → cycles between them; the shared "position 2 /
+  // würde-or-direct" rule moves into the anchor's purple RuleCard
+  // so it doesn't repeat per variant.
   {
     topic: "Konjunktiv II",
     exerciseType: "multipleChoice",
@@ -52,7 +63,9 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       headline: "Konjunktiv II",
       english: "Hypothetical mood: würde + Infinitiv, or hätte / wäre",
       note:
-        "For polite requests and hypotheticals. Also irregular: ich **hätte** (haben), ich **wäre** (sein). Pattern: **würde + Infinitiv** works with any verb; use **hätte / wäre** directly for haben/sein.",
+        "**würde + Infinitiv** works with any verb (ich würde reisen). For **haben** and **sein** use the direct forms **hätte** and **wäre**. Tap the chevrons (or use ← →) to walk through all three.",
+      // Top-level fields stay populated as graceful fallback for a
+      // caller that ignores variants.
       verb: "würden",
       forms: [
         { pronoun: "ich", form: "würde" },
@@ -67,6 +80,59 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         en: "I would like to have more time.",
         highlight: "würde",
       },
+      variants: [
+        {
+          verb: "würden",
+          english: "would (+ any main verb)",
+          forms: [
+            { pronoun: "ich", form: "würde" },
+            { pronoun: "du", form: "würdest" },
+            { pronoun: "er / sie / es", form: "würde" },
+            { pronoun: "wir", form: "würden" },
+            { pronoun: "ihr", form: "würdet" },
+            { pronoun: "sie / Sie", form: "würden" },
+          ],
+          sample: {
+            de: "Ich würde gerne mehr Zeit haben.",
+            en: "I would like to have more time.",
+            highlight: "würde",
+          },
+        },
+        {
+          verb: "haben → hätte",
+          english: "would have",
+          forms: [
+            { pronoun: "ich", form: "hätte" },
+            { pronoun: "du", form: "hättest" },
+            { pronoun: "er / sie / es", form: "hätte" },
+            { pronoun: "wir", form: "hätten" },
+            { pronoun: "ihr", form: "hättet" },
+            { pronoun: "sie / Sie", form: "hätten" },
+          ],
+          sample: {
+            de: "Ich hätte gerne einen Kaffee.",
+            en: "I'd like a coffee.",
+            highlight: "hätte",
+          },
+        },
+        {
+          verb: "sein → wäre",
+          english: "would be",
+          forms: [
+            { pronoun: "ich", form: "wäre" },
+            { pronoun: "du", form: "wärst" },
+            { pronoun: "er / sie / es", form: "wäre" },
+            { pronoun: "wir", form: "wären" },
+            { pronoun: "ihr", form: "wärt" },
+            { pronoun: "sie / Sie", form: "wären" },
+          ],
+          sample: {
+            de: "Wenn ich du wäre, würde ich das machen.",
+            en: "If I were you, I would do that.",
+            highlight: "wäre",
+          },
+        },
+      ],
     },
     prompt: "Ich ___ gerne nach Berlin reisen.",
     hint: "I would like to travel to Berlin.",
@@ -80,8 +146,22 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         headline: "Konjunktiv II",
         english: "Dilek/kibar kip: würde + mastar veya hätte / wäre",
         note:
-          "Kibar istek ve hipotetik için. Ayrıca düzensiz: ich **hätte** (haben), ich **wäre** (sein). Kalıp: **würde + mastar** her fiile uyar; haben/sein için doğrudan **hätte / wäre**.",
+          "**würde + mastar** her fiille çalışır (ich würde reisen). **haben** ve **sein** için doğrudan **hätte** ve **wäre** formlarını kullan. Chevron'lara dokun (ya da ← → tuşlarıyla) üçünü de gez.",
         sample: { en: "Daha fazla zamanım olsun isterim." },
+        variants: [
+          {
+            english: "-rdim (herhangi bir fiille)",
+            sample: { en: "Daha fazla zamanım olsun isterim." },
+          },
+          {
+            english: "sahip olurdum / ... isterim",
+            sample: { en: "Bir kahve alabilir miyim." },
+          },
+          {
+            english: "... olsam / ... olurdu",
+            sample: { en: "Yerinde olsam onu yapardım." },
+          },
+        ],
       },
     },
   },
