@@ -43,7 +43,12 @@ export type GrammarLearnLayout =
   // B1 layouts — see GenauApp_Web_Try_Grammar_Content_B1.md §2:
   | "activePassiveComparison"
   | "relativePronounGrid"
-  | "connectorCards";
+  | "connectorCards"
+  // Komparativ/Superlativ replaces the original Dativ-Artikel
+  // anchor; same visual family as participleParadigm (3-col
+  // lookup table) but with its own field names + an "irregular"
+  // flag.
+  | "comparisonTable";
 
 /** A verb paradigm row: pronoun → fully-conjugated form. */
 export interface ParadigmForm {
@@ -203,6 +208,21 @@ export interface PassiveComparisonPair {
 }
 
 /**
+ * B1 `comparisonTable` row: one adjective across its three
+ * degrees. Same visual family as `ParticipleForm` (3-col lookup
+ * table where the middle column carries the pedagogical signal):
+ * Positiv muted · Komparativ bold-purple · Superlativ bold-fg.
+ * `irregular: true` flags gut → besser / viel → mehr / gern →
+ * lieber so the renderer can mark the row with a small star.
+ */
+export interface ComparisonForm {
+  positive: string;
+  komparativ: string;
+  superlativ: string;
+  irregular?: boolean;
+}
+
+/**
  * B1 `relativePronounGrid` row: one gender row across the three
  * cases (Nom / Akk / Dat) in the relative-pronoun table. The
  * plural row is treated as a fourth gender for grid purposes;
@@ -335,6 +355,8 @@ export interface GrammarLearnBlock {
   /** B1 `connectorCards` (and anchor-5 reuse for prep-verbs):
    *  3-4 cards shown side by side. */
   connectors?: ConnectorCard[];
+  /** B1 `comparisonTable`: adjective × 3-degree rows. */
+  comparisons?: ComparisonForm[];
   /**
    * articleSingle "by meaning" rule paragraph — the semantic
    * categories that take this article (Days/months → der,

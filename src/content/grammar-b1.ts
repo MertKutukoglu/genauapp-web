@@ -233,71 +233,63 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 3 ─ Anchor: Dativ-Artikel (4-card extended articleCards) ─────
+  // ── 3 ─ Anchor: Komparativ / Superlativ ──────────────────────────
+  //
+  // Replaces the Dativ-Artikel anchor the content agent originally
+  // placed here. Reason: Dativ-Artikel completion is really late
+  // A2 content (A2 already taught Akkusativ changes; Dativ is the
+  // natural follow-up, not a B1 lift). Komparativ/Superlativ is
+  // the daily-speech B1 anchor: besser als, am besten, mehr,
+  // lieber — the comparison grammar that unlocks every ordinary
+  // opinion statement.
+  //
+  // Design: same 3-col lookup-table template as participleParadigm
+  // (Positiv muted · Komparativ bold-purple · Superlativ bold-fg)
+  // because the lesson has the same shape — the middle column is
+  // the first transformation, the right column is the destination.
   {
-    topic: "Dativ-Artikel",
+    topic: "Komparativ / Superlativ",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "articleCards",
-      headline: "Dativ",
-      english: "Indirect object case: all genders change",
+      layout: "comparisonTable",
+      headline: "Komparativ / Superlativ",
+      english: "Comparing adjectives: schnell → schneller → am schnellsten",
       note:
-        "Dativ changes ALL genders: der → **dem**, die → **der**, das → **dem**, die (Pl.) → **den** (and the plural noun adds **-n**: den Kinder**n**).",
-      articles: [
-        {
-          article: "der",
-          role: "masculine",
-          nom: { de: "der Mann", en: "the man" },
-          akk: { de: "den Mann", en: "the man (direct object)" },
-          dat: { de: "dem Mann", en: "to the man (indirect)" },
-          change: true,
-        },
-        {
-          article: "die",
-          role: "feminine",
-          nom: { de: "die Frau", en: "the woman" },
-          akk: { de: "die Frau", en: "the woman" },
-          dat: { de: "der Frau", en: "to the woman" },
-          change: true,
-        },
-        {
-          article: "das",
-          role: "neuter",
-          nom: { de: "das Kind", en: "the child" },
-          akk: { de: "das Kind", en: "the child" },
-          dat: { de: "dem Kind", en: "to the child" },
-          change: true,
-        },
-        {
-          article: "die",
-          role: "plural",
-          nom: { de: "die Kinder", en: "the children" },
-          akk: { de: "die Kinder", en: "the children" },
-          dat: { de: "den Kindern", en: "to the children" },
-          change: true,
-          pluralNoteN: true,
-        },
+        "Regular: adjective + **-er** for comparative, **am** + adjective + **-sten** for superlative. One-syllable adjectives with a / o / u often take umlaut: jung → j**ü**nger, alt → **ä**lter, groß → gr**ö**ßer. The three must-know irregulars (★): **gut → besser → am besten**, **viel → mehr → am meisten**, **gern → lieber → am liebsten**.",
+      comparisons: [
+        { positive: "schnell", komparativ: "schneller", superlativ: "am schnellsten" },
+        { positive: "klein", komparativ: "kleiner", superlativ: "am kleinsten" },
+        { positive: "teuer", komparativ: "teurer", superlativ: "am teuersten" },
+        { positive: "jung", komparativ: "jünger", superlativ: "am jüngsten" },
+        { positive: "alt", komparativ: "älter", superlativ: "am ältesten" },
+        { positive: "gut", komparativ: "besser", superlativ: "am besten", irregular: true },
+        { positive: "viel", komparativ: "mehr", superlativ: "am meisten", irregular: true },
+        { positive: "gern", komparativ: "lieber", superlativ: "am liebsten", irregular: true },
       ],
       sample: {
-        de: "Ich helfe dem Mann.",
-        en: "I help the man.",
-        highlight: "dem",
+        de: "Berlin ist größer als Köln, aber München ist am teuersten.",
+        en: "Berlin is bigger than Köln, but München is the most expensive.",
+        highlight: "größer",
       },
     },
-    prompt: "Ich gebe ___ Mann das Buch.",
-    hint: "I give the man the book.",
-    options: ["dem", "den", "der", "die"],
+    prompt: "Berlin ist ___ als Köln.",
+    hint: "Berlin is bigger than Köln.",
+    options: ["größer", "groß", "am größten", "größte"],
     correctIndex: 0,
-    explanation: "Mann is masculine; 'to the man' → Dativ: der → dem.",
+    explanation:
+      "Comparative of **groß** (with umlaut): **größer**. The pattern is adjective + -er, used with **als** for the thing you're comparing to.",
     tr: {
-      hint: "Adama kitabı veriyorum.",
-      explanation: "Mann eril; 'adama' → Dativ: der → dem.",
+      hint: "Berlin, Köln'den daha büyük.",
+      explanation:
+        "**groß**'un karşılaştırma hâli (umlaut ile): **größer**. Kalıp: adjektif + -er, karşılaştırılan şey için **als** ile.",
       learn: {
-        headline: "Dativ",
-        english: "Dolaylı nesne hâli: tüm cinsler değişir",
+        headline: "Komparativ / Superlativ",
+        english: "Sıfat karşılaştırma: schnell → schneller → am schnellsten",
         note:
-          "Dativ TÜM cinsleri değiştirir: der → **dem**, die → **der**, das → **dem**, die (çoğul) → **den** (çoğul isim ayrıca **-n** alır: den Kinder**n**).",
-        sample: { en: "Adama yardım ediyorum." },
+          "Düzenli: sıfat + **-er** karşılaştırma için, **am** + sıfat + **-sten** üstünlük için. Tek heceli ve a / o / u içeren sıfatlar genelde umlaut alır: jung → j**ü**nger, alt → **ä**lter, groß → gr**ö**ßer. Mutlaka bilinmesi gereken üç düzensiz (★): **gut → besser → am besten**, **viel → mehr → am meisten**, **gern → lieber → am liebsten**.",
+        sample: {
+          en: "Berlin, Köln'den daha büyük; ama München en pahalı.",
+        },
       },
     },
   },
@@ -869,45 +861,51 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 13 ─ Drills: Dativ-Artikel ───────────────────────────────────
+  // ── 13 ─ Drills: Komparativ / Superlativ ─────────────────────────
   {
-    topic: "Dativ-Artikel",
-    exerciseType: "multipleChoice",
-    prompt: "Ich helfe ___ Frau.",
-    options: ["der", "die", "den", "dem"],
-    correctIndex: 0,
-    explanation: "Frau is feminine; helfen takes Dativ: die → der.",
-    hint: "I help the woman.",
-    tr: {
-      hint: "Kadına yardım ediyorum.",
-      explanation: "Frau dişil; helfen Dativ alır: die → der.",
-    },
-  },
-  {
-    topic: "Dativ-Artikel",
+    topic: "Komparativ / Superlativ",
     exerciseType: "fillBlank",
-    prompt: "Sie wohnt bei ___ Eltern.",
-    answer: "den",
+    prompt: "Welche Stadt ist am ___? Berlin, München oder Hamburg?",
+    answer: "teuersten",
     explanation:
-      "Eltern is plural; bei + Dativ → die → den. The plural noun also adds -n when possible (Eltern already ends in -n).",
-    hint: "She lives with her parents.",
+      "Superlative of **teuer**: **am teuersten**. The regular -sten ending; teuer drops its 'e' in the comparative (teurer) but keeps it in the superlative.",
+    hint: "Which city is the most expensive? Berlin, München or Hamburg?",
     tr: {
-      hint: "Ebeveynleriyle yaşıyor.",
+      hint: "Hangi şehir en pahalı? Berlin, München yoksa Hamburg?",
       explanation:
-        "Eltern çoğul; bei + Dativ → die → den. Çoğul isim mümkünse -n alır (Eltern zaten -n ile bitiyor).",
+        "**teuer**'in üstünlük hâli: **am teuersten**. Düzenli -sten eki; teuer karşılaştırmada 'e' düşer (teurer) ama üstünlükte korur.",
     },
   },
   {
-    topic: "Dativ-Artikel",
+    topic: "Komparativ / Superlativ",
     exerciseType: "multipleChoice",
-    prompt: "Das Buch gehört ___ Kind.",
-    options: ["dem", "das", "den", "der"],
+    prompt: "Ich esse gern Pizza, aber ich esse ___ Pasta.",
+    options: ["lieber", "gerner", "am liebsten", "liebste"],
     correctIndex: 0,
-    explanation: "Kind is neuter; gehören takes Dativ: das → dem.",
-    hint: "The book belongs to the child.",
+    explanation:
+      "**gern** is one of the three irregulars. Comparative = **lieber** (not 'gerner'). Means 'I like pizza, but I like pasta more'.",
+    hint: "I like pizza, but I like pasta more.",
     tr: {
-      hint: "Kitap çocuğa ait.",
-      explanation: "Kind nötr; gehören Dativ alır: das → dem.",
+      hint: "Pizza severim, ama makarnayı daha çok severim.",
+      options: ["lieber", "gerner", "am liebsten", "liebste"],
+      explanation:
+        "**gern**, üç düzensizden biri. Karşılaştırma hâli: **lieber** ('gerner' yanlış). Anlamı: 'Pizzayı severim, ama makarnayı daha çok severim.'",
+    },
+  },
+  {
+    topic: "Komparativ / Superlativ",
+    exerciseType: "multipleChoice",
+    prompt: "Mein Bruder ist ___ als ich.",
+    options: ["älter", "alt", "am ältesten", "älteste"],
+    correctIndex: 0,
+    explanation:
+      "Comparative of **alt** with umlaut: **älter**. Used with **als** for 'than' — 'My brother is older than me.'",
+    hint: "My brother is older than me.",
+    tr: {
+      hint: "Erkek kardeşim benden yaşlı.",
+      options: ["älter", "alt", "am ältesten", "älteste"],
+      explanation:
+        "**alt**'ın umlautlu karşılaştırma hâli: **älter**. 'den' için **als** ile — 'Erkek kardeşim benden yaşlı.'",
     },
   },
 

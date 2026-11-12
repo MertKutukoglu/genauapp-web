@@ -14,6 +14,7 @@ import { GrammarArticleCasesCard } from "@/components/organisms/GrammarArticleCa
 import { GrammarActivePassiveCard } from "@/components/organisms/GrammarActivePassiveCard/GrammarActivePassiveCard";
 import { GrammarRelativePronounCard } from "@/components/organisms/GrammarRelativePronounCard/GrammarRelativePronounCard";
 import { GrammarConnectorCardsCard } from "@/components/organisms/GrammarConnectorCardsCard/GrammarConnectorCardsCard";
+import { GrammarComparisonTableCard } from "@/components/organisms/GrammarComparisonTableCard/GrammarComparisonTableCard";
 import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
 import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
@@ -368,6 +369,23 @@ function LearnCardSwitch({
           english={learn.english ?? ""}
           note={learn.note}
           connectors={learn.connectors}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "comparisonTable":
+      if (!learn.comparisons || learn.comparisons.length === 0) {
+        return <EmptyDeck label="Missing comparisons data." />;
+      }
+      return (
+        <GrammarComparisonTableCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          comparisons={learn.comparisons}
           sample={learn.sample}
           current={current}
           total={total}
