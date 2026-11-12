@@ -140,10 +140,12 @@ const en = {
         },
       },
     },
+    skillsCard: {
+      title: "Skills",
+    },
     leftCard: {
       title: "Your workout",
-      subtitle:
-        "Four workouts, five questions each. Tap any to begin, all four are open.",
+      subtitle: "Tap any to begin your workout.",
       chips: {
         words:    { title: "Words",    meta: "20 words · ~5 min" },
         grammar:  { title: "Grammar",  meta: "20 questions · ~5 min" },
@@ -355,10 +357,12 @@ const tr: typeof en = {
         },
       },
     },
+    skillsCard: {
+      title: "Beceriler",
+    },
     leftCard: {
       title: "Antrenmanın",
-      subtitle:
-        "Dört antrenman, her birinde beş soru. Birine basıp başla, dördü de açık.",
+      subtitle: "Birine dokun, antrenmanına başla.",
       chips: {
         words:    { title: "Kelimeler", meta: "20 kelime · ~5 dk" },
         grammar:  { title: "Gramer",    meta: "20 soru · ~5 dk" },

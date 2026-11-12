@@ -12,40 +12,66 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 /**
  * LeftCard — the /try/ page's sticky left column.
  *
- * Composition (top → bottom, per spec §7 + §9):
- *   1. Header row: "Your workout" h2 + WorkoutCounter
- *   2. Subtitle paragraph
- *   3. SkillStrip (deferred — rendered as a slot when the SkillStrip
- *      organism lands in its own round)
- *   4. ChipList
+ * Now composed of TWO stacked cards instead of one combined card:
  *
- * Reads chipStore here so the header counter + chip list stay in sync
- * from one source. If a future surface needs the same card with a
- * different data source, lift the counter out of this template and
- * pass count as a prop.
+ *   1. Skills card — "Skills" h2 above the SkillStrip. Carries only
+ *      the skill badges; progress rings + pending-badge collect
+ *      interactions live here.
+ *   2. Your workout card — the familiar chip picker: header
+ *      ("Your workout" + 0/4 counter) → one-line subtitle → ChipList.
  *
- * Sticky positioning (desktop): `top-[92px]` clears the floating
- * topnav; `self-start` prevents the card from stretching to the grid
- * row height. On mobile the parent /try/ layout drops the sticky so
- * the card scrolls with the page.
+ * Why split: one card trying to hold both responsibilities read as
+ * dense setup. Two cards each own one concept — glanceable, each
+ * card is a complete small unit the user can parse in one sweep.
  *
- * Spec: claude/GenauApp_Web_Try_ChipPicker_Brief.md §7, §9.
+ * Shared frame styling kept in the inner `Card` wrapper so both
+ * cards look identical and spacing + shadow stay consistent. The
+ * whole aside stays sticky on desktop; mobile stacks naturally.
+ *
+ * Spec: claude/GenauApp_Web_Try_ChipPicker_Brief.md §7, §9
+ * (updated layout — 2026-11-12).
  */
 
 export interface LeftCardProps {
   /**
-   * Override for the SkillStrip slot between subtitle and chip list.
-   * When `undefined` (default) an empty SkillStrip renders. Pass `null`
-   * to suppress it, or any React node to swap in a connected strip
-   * (e.g. one wired to the skill store).
+   * Override for the SkillStrip in the Skills card. When
+   * `undefined` (default) the strip is live-bound to the
+   * skillStore. Pass `null` to hide the Skills card entirely, or
+   * a React node to swap in a stub (used by stories / previews).
    */
   skillStrip?: React.ReactNode | null;
   className?: string;
 }
 
+/** Shared card frame — matches the one the old single-card LeftCard
+ *  used so the visual register of the column doesn't shift. */
+function Card({
+  children,
+  ariaLabel,
+  className,
+}: {
+  children: React.ReactNode;
+  ariaLabel: string;
+  className?: string;
+}) {
+  return (
+    <section
+      aria-label={ariaLabel}
+      className={clsx(
+        "bg-surface-card border border-border rounded-[22px] p-5",
+        "shadow-[0_18px_44px_-28px_rgba(26,19,18,0.26)]",
+        className,
+      )}
+    >
+      {children}
+    </section>
+  );
+}
+
 export function LeftCard({ skillStrip, className }: LeftCardProps) {
   const { strings } = useLocale();
   const t = strings.try.leftCard;
+  const skillsT = strings.try.skillsCard;
   const doneCount = useChipStore((s) =>
     Object.values(s.progress).filter((v) => v === "done").length,
   );
@@ -54,9 +80,9 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
   const pending = useSkillStore((s) => s.pending);
   const collect = useSkillStore((s) => s.collect);
 
-  // Default strip: live-bound to the skillStore. The pending prop is a
-  // boolean map (presence = badge visible); the number lives in the
-  // store. Clicking a badge fires `collect`, which applies that
+  // Default strip: live-bound to the skillStore. The pending prop is
+  // a boolean map (presence = badge visible); the number lives in
+  // the store. Clicking a badge fires `collect`, which applies that
   // skill's staged delta and clears the badge.
   const pendingFlags = React.useMemo(
     () => ({
@@ -83,40 +109,49 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
     <aside
       aria-label={t.title}
       className={clsx(
-        // Frame
-        "bg-surface-card border border-border rounded-[22px] p-5",
-        "shadow-[0_18px_44px_-28px_rgba(26,19,18,0.26)]",
-        // Sticky on desktop only; the parent grid stacks on mobile
+        // Column gap between the Skills card and Your workout card
+        // matches the spacing the old combined card used between
+        // its subtitle and the skill strip.
+        "flex flex-col gap-3.5",
+        // Sticky on desktop only; the parent grid stacks on mobile.
         "lg:sticky lg:top-[92px] lg:self-start",
         className,
       )}
     >
-      {/* Header: title + counter */}
-      <header className="flex items-center justify-between gap-3">
-        <h2
-          className={clsx(
-            "font-display font-semibold italic text-[22px] leading-tight",
-            "text-fg m-0",
-          )}
-        >
-          {t.title}
-        </h2>
-        <WorkoutCounter count={doneCount} total={4} />
-      </header>
-
-      {/* Subtitle */}
-      <p className="mt-2 mb-3.5 font-sans text-[13px] leading-normal text-fg-muted">
-        {t.subtitle}
-      </p>
-
-      {/* Skill strip — spec §8 placement: between subtitle and chip list,
-          `margin: 10px 0 14px`. */}
+      {/* Card 1 — Skills. Hidden when the caller explicitly passes
+          null, so previews can suppress it. */}
       {stripNode ? (
-        <div className="mt-2.5 mb-3.5">{stripNode}</div>
+        <Card ariaLabel={skillsT.title}>
+          <h2
+            className={clsx(
+              "font-display font-semibold italic text-[22px] leading-tight",
+              "text-fg m-0 mb-3",
+            )}
+          >
+            {skillsT.title}
+          </h2>
+          {stripNode}
+        </Card>
       ) : null}
 
-      {/* The picker itself */}
-      <ChipList />
+      {/* Card 2 — Your workout: header + subtitle + chip picker. */}
+      <Card ariaLabel={t.title}>
+        <header className="flex items-center justify-between gap-3">
+          <h2
+            className={clsx(
+              "font-display font-semibold italic text-[22px] leading-tight",
+              "text-fg m-0",
+            )}
+          >
+            {t.title}
+          </h2>
+          <WorkoutCounter count={doneCount} total={4} />
+        </header>
+        <p className="mt-2 mb-3.5 font-sans text-[13px] leading-normal text-fg-muted">
+          {t.subtitle}
+        </p>
+        <ChipList />
+      </Card>
     </aside>
   );
 }
