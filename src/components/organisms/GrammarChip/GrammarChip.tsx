@@ -298,6 +298,7 @@ function LearnCardSwitch({
         <GrammarVerbCardsCard
           english={learn.english ?? ""}
           prefixes={learn.prefixes}
+          tint={learn.tint}
           current={current}
           total={total}
           onRepeat={onRepeat}

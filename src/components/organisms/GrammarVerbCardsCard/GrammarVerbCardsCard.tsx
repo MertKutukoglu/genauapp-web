@@ -32,6 +32,12 @@ export interface GrammarVerbCardsCardProps {
    *  matching every other Grammar Learn card). */
   english: string;
   prefixes: SeparablePrefix[];
+  /** Optional colour override for the carousel. Defaults to
+   *  chip-grammar-purple for the A2 Trennbare-Verben carousel;
+   *  B1 Dativ-Präpositionen passes article-die red and B1
+   *  Akkusativ-Präpositionen passes article-das green so the case
+   *  is encoded in the colour the learner sees as they chevron. */
+  tint?: string;
   current: number;
   total: number;
   onRepeat?: () => void;
@@ -42,6 +48,7 @@ export interface GrammarVerbCardsCardProps {
 export function GrammarVerbCardsCard({
   english,
   prefixes,
+  tint,
   current,
   total,
   onRepeat,
@@ -92,6 +99,14 @@ export function GrammarVerbCardsCard({
   const nextLabel = locale === "tr" ? "Sonraki" : "Next";
   const sampleWordsLabel = locale === "tr" ? "Örnek kelimeler" : "Sample Words";
 
+  // Colour the hero, chevrons, sample-words border and progress-
+  // dots go in. Defaults to chip-grammar-purple; the B1 Dativ /
+  // Akkusativ prep carousels pass an article colour instead.
+  const color = tint ?? "var(--chip-grammar-color)";
+  const chevronBg = `color-mix(in srgb, ${color} 8%, transparent)`;
+  const sampleBorder = `color-mix(in srgb, ${color} 20%, transparent)`;
+  const dotInactive = `color-mix(in srgb, ${color} 25%, transparent)`;
+
   if (!active) return null;
 
   return (
@@ -128,18 +143,19 @@ export function GrammarVerbCardsCard({
               "w-9 h-9 rounded-full",
               "text-fg-muted hover:text-fg",
               "transition-colors",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
+              "focus:outline-none focus-visible:ring-2",
             )}
-            style={{
-              background:
-                "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
-            }}
+            style={{ background: chevronBg, outlineColor: color }}
           >
             <ChevronLeftIcon />
           </button>
           <div
             key={active.prefix}
-            className="font-sans font-bold text-[32px] text-fg leading-tight"
+            className={clsx(
+              "font-sans font-bold text-[32px] leading-tight",
+              !tint && "text-fg",
+            )}
+            style={tint ? { color } : undefined}
           >
             {active.prefix}
           </div>
@@ -152,12 +168,9 @@ export function GrammarVerbCardsCard({
               "w-9 h-9 rounded-full",
               "text-fg-muted hover:text-fg",
               "transition-colors",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
+              "focus:outline-none focus-visible:ring-2",
             )}
-            style={{
-              background:
-                "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
-            }}
+            style={{ background: chevronBg, outlineColor: color }}
           >
             <ChevronRightIcon />
           </button>
@@ -168,10 +181,14 @@ export function GrammarVerbCardsCard({
       </div>
 
       {/* Sample Words sunk tile — bullet-separated verbs. Wraps on
-          narrow widths via flex-wrap. */}
+          narrow widths via flex-wrap. Carries a thin case-colour
+          border when the anchor passes a tint. */}
       <div
         className="rounded-2xl p-4 flex flex-col gap-1.5"
-        style={{ background: "var(--surface-sunk)" }}
+        style={{
+          background: "var(--surface-sunk)",
+          border: tint ? `1px solid ${sampleBorder}` : undefined,
+        }}
       >
         <div
           className="font-sans font-normal text-sm leading-tight"
@@ -199,12 +216,13 @@ export function GrammarVerbCardsCard({
       </div>
 
       <RuleCard
-        tint="var(--chip-grammar-color)"
+        tint={color}
         body={active.rule}
         label={strings.try.learnCard.ruleLabel}
       />
 
-      {/* Progress dots: 12 ticks, active one widens + darkens. */}
+      {/* Progress dots: active one widens + darkens, inactive ones
+          get the 25% tint of the same colour. */}
       <div
         className="flex items-center justify-center gap-1.5 -mt-1"
         aria-hidden
@@ -216,10 +234,7 @@ export function GrammarVerbCardsCard({
             style={{
               width: i === idx ? 18 : 6,
               height: 6,
-              background:
-                i === idx
-                  ? "var(--chip-grammar-color)"
-                  : "color-mix(in srgb, var(--chip-grammar-color) 25%, transparent)",
+              background: i === idx ? color : dotInactive,
             }}
           />
         ))}

@@ -358,64 +358,351 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 5 ─ Anchor: Verben mit festen Präpositionen ──────────────────
+  // ── 5 ─ Anchor: Dativ-Präpositionen (red carousel, 9 preps) ──────
+  //
+  // Prep-verb carousel split into two case-colored anchors so the
+  // learner internalises "which prep → which case" visually: Dativ
+  // preps ride the red (--article-die) hero, Akkusativ preps ride
+  // the green (--article-das). Chevron + ← → walks through all 9
+  // Dativ preps in textbook order (an → aus → bei → mit → nach →
+  // von → vor → unter → zu). Each step shows: the prep as hero,
+  // 3-6 sample verbs that take it, a short meaning + case rule,
+  // and one example sentence with the prep bold-tinted.
   {
-    topic: "Verben mit festen Präpositionen",
-    exerciseType: "fillBlank",
+    topic: "Dativ-Präpositionen",
+    exerciseType: "multipleChoice",
     learn: {
-      layout: "connectorCards",
-      headline: "Verben mit festen Präpositionen",
-      english:
-        "Verbs with fixed prepositions: verb + prep + case as a unit",
-      note:
-        "The preposition and its case are part of the verb's lexical entry. Memorize as a unit: **sich bewerben UM + Akk**, **teilnehmen AN + Dat**, **warten AUF + Akk**, **sich freuen AUF + Akk** (future-focused).",
-      connectors: [
+      layout: "verbCards",
+      headline: "Dativ-Präpositionen",
+      english: "Verbs that always take this preposition + Dativ",
+      tint: "var(--article-die)",
+      prefixes: [
         {
-          word: "sich bewerben um",
-          example: "Ich bewerbe mich um die Stelle.",
-          english: "to apply for",
-          highlight: "um",
+          prefix: "an",
+          samples: ["arbeiten", "erkennen", "sterben", "teilnehmen", "zweifeln"],
+          rule:
+            "**an + Dativ** verbs are about **being attached to** or working at something.",
+          sample: {
+            de: "Ich arbeite an einem Projekt.",
+            en: "I'm working on a project.",
+            highlight: "an",
+          },
         },
         {
-          word: "teilnehmen an",
-          example: "Ich nehme an dem Kurs teil.",
-          english: "to participate in",
-          highlight: "an",
+          prefix: "aus",
+          samples: ["bestehen", "entstehen", "übersetzen"],
+          rule: "**aus + Dativ** verbs are about **origin** or **composition**.",
+          sample: {
+            de: "Das Buch besteht aus zehn Kapiteln.",
+            en: "The book consists of ten chapters.",
+            highlight: "aus",
+          },
         },
         {
-          word: "warten auf",
-          example: "Ich warte auf dich.",
-          english: "to wait for",
-          highlight: "auf",
+          prefix: "bei",
+          samples: ["anrufen", "sich bewerben"],
+          rule: "**bei + Dativ** marks the **place** or **company** you're at.",
+          sample: {
+            de: "Sie bewirbt sich bei der Firma.",
+            en: "She applies at the company.",
+            highlight: "bei",
+          },
         },
         {
-          word: "sich freuen auf",
-          example: "Ich freue mich auf das Wochenende.",
-          english: "to look forward to",
-          highlight: "auf",
+          prefix: "mit",
+          samples: [
+            "anfangen",
+            "aufhören",
+            "handeln",
+            "sich beschäftigen",
+            "rechnen",
+          ],
+          rule:
+            "**mit + Dativ** marks **accompaniment**, the **tool** or the **topic** you're engaged with.",
+          sample: {
+            de: "Ich rechne mit ihm.",
+            en: "I'm counting on him.",
+            highlight: "mit",
+          },
+        },
+        {
+          prefix: "nach",
+          samples: ["fragen", "riechen", "schmecken", "suchen"],
+          rule:
+            "**nach + Dativ** marks the **thing you're reaching for** — asking for, searching for, smelling of.",
+          sample: {
+            de: "Er fragt nach dem Weg.",
+            en: "He asks for directions.",
+            highlight: "nach",
+          },
+        },
+        {
+          prefix: "von",
+          samples: [
+            "abhängen",
+            "berichten",
+            "erzählen",
+            "hören",
+            "leben",
+            "verlangen",
+          ],
+          rule:
+            "**von + Dativ** marks the **source** — depending on, hearing from, reporting about.",
+          sample: {
+            de: "Alles hängt von dir ab.",
+            en: "Everything depends on you.",
+            highlight: "von",
+          },
+        },
+        {
+          prefix: "vor",
+          samples: ["fliehen", "warnen"],
+          rule:
+            "**vor + Dativ** marks the **thing you're fleeing from** or **warned about**.",
+          sample: {
+            de: "Er warnt mich vor der Gefahr.",
+            en: "He warns me about the danger.",
+            highlight: "vor",
+          },
+        },
+        {
+          prefix: "unter",
+          samples: ["leiden"],
+          rule: "**unter + Dativ** marks the **condition one suffers under**.",
+          sample: {
+            de: "Sie leidet unter dem Stress.",
+            en: "She suffers from the stress.",
+            highlight: "unter",
+          },
+        },
+        {
+          prefix: "zu",
+          samples: [
+            "einladen",
+            "auffordern",
+            "gehören",
+            "kommen",
+            "passen",
+            "überreden",
+          ],
+          rule:
+            "**zu + Dativ** marks the **belonging** or **invitation** — belongs to, invited to, fits with.",
+          sample: {
+            de: "Sie gehört zu unserer Gruppe.",
+            en: "She belongs to our group.",
+            highlight: "zu",
+          },
         },
       ],
       sample: {
-        de: "Ich bewerbe mich um die Stelle.",
-        en: "I'm applying for the position.",
-        highlight: "um",
+        de: "Ich arbeite an einem Projekt.",
+        en: "I'm working on a project.",
+        highlight: "an",
       },
     },
-    prompt: "Ich warte ___ dich.",
-    hint: "I'm waiting for you.",
-    answer: "auf",
-    explanation:
-      '"warten auf + Akk" is a fixed combination. The preposition \'auf\' is lexically tied to warten.',
+    prompt: "Ich arbeite ___ einem Projekt.",
+    hint: "I'm working on a project.",
+    options: ["an", "auf", "für", "um"],
+    correctIndex: 0,
+    explanation: '"arbeiten an + Dativ" — fixed combination.',
     tr: {
-      hint: "Seni bekliyorum.",
-      explanation:
-        '"warten auf + Akk" sabit kalıptır. Edat \'auf\' sözlüksel olarak warten\'e bağlıdır.',
+      hint: "Bir projede çalışıyorum.",
+      explanation: '"arbeiten an + Dativ" — sabit kalıp.',
       learn: {
-        headline: "Verben mit festen Präpositionen",
-        english: "Sabit edatlı fiiller: fiil + edat + hâl tek bir birim olarak",
-        note:
-          "Edat ve hâli kelimenin ayrılmaz parçasıdır. Birim olarak ezberle: **sich bewerben UM + Akk**, **teilnehmen AN + Dat**, **warten AUF + Akk**, **sich freuen AUF + Akk** (gelecek odaklı).",
-        sample: { en: "Pozisyona başvuruyorum." },
+        headline: "Dativ-Präpositionen",
+        english: "Her zaman bu edat + Dativ alan fiiller",
+        prefixes: [
+          {
+            rule:
+              "**an + Dativ** fiilleri **bir şeye tutunma** veya o şey üzerinde çalışma anlamı taşır.",
+            sample: { en: "Bir projede çalışıyorum." },
+          },
+          {
+            rule:
+              "**aus + Dativ** fiilleri **kaynak** veya **bileşim** anlamı taşır.",
+            sample: { en: "Kitap on bölümden oluşuyor." },
+          },
+          {
+            rule:
+              "**bei + Dativ** bulunulan **yer** veya **yanında olunan kişi/kurum**.",
+            sample: { en: "Firmaya başvuruyor." },
+          },
+          {
+            rule:
+              "**mit + Dativ** **eşlik**, kullanılan **araç** ya da **ilgilenilen konu**.",
+            sample: { en: "Ona güveniyorum." },
+          },
+          {
+            rule:
+              "**nach + Dativ** **ulaşılmak istenen şey** — sormak, aramak, kokmak.",
+            sample: { en: "Yolu soruyor." },
+          },
+          {
+            rule:
+              "**von + Dativ** **kaynak** — bağlı olmak, duymak, bahsetmek.",
+            sample: { en: "Her şey sana bağlı." },
+          },
+          {
+            rule:
+              "**vor + Dativ** **kaçtığın** veya **uyarıldığın** şey.",
+            sample: { en: "Beni tehlikeye karşı uyarıyor." },
+          },
+          {
+            rule:
+              "**unter + Dativ** **altında çekilen durum**.",
+            sample: { en: "Stresten muzdarip." },
+          },
+          {
+            rule:
+              "**zu + Dativ** **aidiyet** ya da **davet** — ait olmak, davet edilmek, uymak.",
+            sample: { en: "Grubumuza ait." },
+          },
+        ],
+        sample: { en: "Bir projede çalışıyorum." },
+      },
+    },
+  },
+
+  // ── 6 ─ Anchor: Akkusativ-Präpositionen (green carousel, 6) ──────
+  {
+    topic: "Akkusativ-Präpositionen",
+    exerciseType: "multipleChoice",
+    learn: {
+      layout: "verbCards",
+      headline: "Akkusativ-Präpositionen",
+      english: "Verbs that always take this preposition + Akkusativ",
+      tint: "var(--article-das)",
+      prefixes: [
+        {
+          prefix: "auf",
+          samples: ["achten", "antworten", "zielen", "hoffen", "aufpassen"],
+          rule:
+            "**auf + Akkusativ** — paying attention to, answering, aiming at, hoping for.",
+          sample: {
+            de: "Ich achte auf die Zeit.",
+            en: "I pay attention to the time.",
+            highlight: "auf",
+          },
+        },
+        {
+          prefix: "an",
+          samples: [
+            "denken",
+            "glauben",
+            "sich erinnern",
+            "sich gewöhnen",
+            "sich wenden",
+          ],
+          rule:
+            "**an + Akkusativ** — thinking of, believing in, remembering, getting used to.",
+          sample: {
+            de: "Ich denke oft an dich.",
+            en: "I often think about you.",
+            highlight: "an",
+          },
+        },
+        {
+          prefix: "für",
+          samples: ["danken", "kämpfen", "stimmen", "sein", "ausgeben"],
+          rule:
+            "**für + Akkusativ** — thanking for, fighting for, voting for, being in favour.",
+          sample: {
+            de: "Danke für das Geschenk.",
+            en: "Thanks for the gift.",
+            highlight: "für",
+          },
+        },
+        {
+          prefix: "gegen",
+          samples: ["protestieren", "kämpfen", "verstoßen", "stimmen", "sein"],
+          rule:
+            "**gegen + Akkusativ** — protesting against, fighting against, voting against.",
+          sample: {
+            de: "Wir protestieren gegen den Krieg.",
+            en: "We're protesting against the war.",
+            highlight: "gegen",
+          },
+        },
+        {
+          prefix: "über",
+          samples: [
+            "berichten",
+            "erzählen",
+            "sprechen",
+            "herrschen",
+            "lachen",
+            "regieren",
+          ],
+          rule:
+            "**über + Akkusativ** — talking about, reporting on, laughing at, ruling over.",
+          sample: {
+            de: "Wir sprechen über das Problem.",
+            en: "We're talking about the problem.",
+            highlight: "über",
+          },
+        },
+        {
+          prefix: "um",
+          samples: ["bitten", "gehen", "kämpfen", "spielen", "wetten"],
+          rule:
+            "**um + Akkusativ** — asking for, dealing with, betting on, playing for.",
+          sample: {
+            de: "Ich bitte dich um Hilfe.",
+            en: "I'm asking you for help.",
+            highlight: "um",
+          },
+        },
+      ],
+      sample: {
+        de: "Ich denke oft an dich.",
+        en: "I often think about you.",
+        highlight: "an",
+      },
+    },
+    prompt: "Ich denke oft ___ dich.",
+    hint: "I often think about you.",
+    options: ["an", "auf", "mit", "von"],
+    correctIndex: 0,
+    explanation: '"denken an + Akkusativ" — fixed combination.',
+    tr: {
+      hint: "Sık sık seni düşünüyorum.",
+      explanation: '"denken an + Akkusativ" — sabit kalıp.',
+      learn: {
+        headline: "Akkusativ-Präpositionen",
+        english: "Her zaman bu edat + Akkusativ alan fiiller",
+        prefixes: [
+          {
+            rule:
+              "**auf + Akkusativ** — dikkat etmek, cevaplamak, nişan almak, ummak.",
+            sample: { en: "Zamana dikkat ediyorum." },
+          },
+          {
+            rule:
+              "**an + Akkusativ** — düşünmek, inanmak, hatırlamak, alışmak.",
+            sample: { en: "Sık sık seni düşünüyorum." },
+          },
+          {
+            rule:
+              "**für + Akkusativ** — teşekkür etmek, mücadele etmek, lehte oy vermek.",
+            sample: { en: "Hediye için teşekkürler." },
+          },
+          {
+            rule:
+              "**gegen + Akkusativ** — protesto etmek, karşı mücadele, aleyhte oy.",
+            sample: { en: "Savaşa karşı protesto ediyoruz." },
+          },
+          {
+            rule:
+              "**über + Akkusativ** — bahsetmek, haber vermek, gülmek, hüküm sürmek.",
+            sample: { en: "Sorundan bahsediyoruz." },
+          },
+          {
+            rule:
+              "**um + Akkusativ** — bir şey istemek, söz konusu olmak, oyun oynamak.",
+            sample: { en: "Senden yardım istiyorum." },
+          },
+        ],
+        sample: { en: "Sık sık seni düşünüyorum." },
       },
     },
   },
@@ -649,9 +936,49 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 19 ─ Drills: Prep-verbs ──────────────────────────────────────
+  // ── 19 ─ Drills: Dativ-Präpositionen ─────────────────────────────
   {
-    topic: "Verben mit festen Präpositionen",
+    topic: "Dativ-Präpositionen",
+    exerciseType: "multipleChoice",
+    prompt: "Sie nimmt ___ dem Kurs teil.",
+    options: ["an", "auf", "für", "um"],
+    correctIndex: 0,
+    explanation: '"teilnehmen an + Dat" — fixed combination.',
+    hint: "She's participating in the course.",
+    tr: {
+      hint: "Kursa katılıyor.",
+      explanation: '"teilnehmen an + Dat" — sabit kalıp.',
+    },
+  },
+  {
+    topic: "Dativ-Präpositionen",
+    exerciseType: "fillBlank",
+    prompt: "Er fragt mich ___ dem Weg.",
+    answer: "nach",
+    explanation: '"fragen nach + Dat" — to ask for / about something.',
+    hint: "He asks me for directions.",
+    tr: {
+      hint: "Bana yolu soruyor.",
+      explanation: '"fragen nach + Dat" — bir şey sormak / hakkında sormak.',
+    },
+  },
+  {
+    topic: "Dativ-Präpositionen",
+    exerciseType: "multipleChoice",
+    prompt: "Alles hängt ___ dir ab.",
+    options: ["von", "an", "mit", "zu"],
+    correctIndex: 0,
+    explanation: '"abhängen von + Dat" — fixed combination.',
+    hint: "Everything depends on you.",
+    tr: {
+      hint: "Her şey sana bağlı.",
+      explanation: '"abhängen von + Dat" — sabit kalıp.',
+    },
+  },
+
+  // ── 22 ─ Drills: Akkusativ-Präpositionen ─────────────────────────
+  {
+    topic: "Akkusativ-Präpositionen",
     exerciseType: "multipleChoice",
     prompt: "Ich warte ___ dich.",
     options: ["auf", "an", "für", "um"],
@@ -664,7 +991,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
   {
-    topic: "Verben mit festen Präpositionen",
+    topic: "Akkusativ-Präpositionen",
     exerciseType: "fillBlank",
     prompt: "Sie denkt oft ___ ihre Familie.",
     answer: "an",
@@ -676,7 +1003,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
   {
-    topic: "Verben mit festen Präpositionen",
+    topic: "Akkusativ-Präpositionen",
     exerciseType: "multipleChoice",
     prompt: "Er bedankt sich ___ das Geschenk.",
     options: ["für", "an", "auf", "um"],

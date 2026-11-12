@@ -295,6 +295,13 @@ export interface GrammarLearnBlock {
    *  Verben anchor so the anchor teaches the whole family at once
    *  (one prefix per step) instead of four verbs side by side. */
   prefixes?: SeparablePrefix[];
+  /** Optional CSS colour override for carousel anchors. When set,
+   *  the hero, chevrons, sample-words border and progress-dots all
+   *  use this colour instead of chip-grammar-purple. Used by the B1
+   *  Dativ-Präpositionen anchor (red = article-die) and the B1
+   *  Akkusativ-Präpositionen anchor (green = article-das) so the
+   *  case is encoded in the colour the learner sees. */
+  tint?: string;
   /** A2 `articleCards`: 3 article cards with Nominativ + Akkusativ
    *  forms side by side. Distinct from the legacy `patterns` field
    *  on `articleSingle`. */
