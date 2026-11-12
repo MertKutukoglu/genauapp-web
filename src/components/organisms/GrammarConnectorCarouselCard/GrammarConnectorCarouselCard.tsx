@@ -303,23 +303,20 @@ export function GrammarConnectorCarouselCard({
         </div>
       </div>
 
-      {/* Formula strip — same shape for every connector; THAT is
-          the lesson. Reuses Sentence chip role colours so the strip
-          speaks the same visual dialect as weil-Nebensatz in
-          the Sentence chip. */}
-      <div
-        className="rounded-2xl py-3 px-4"
-        style={{ background: "var(--surface-sunk)" }}
-      >
-        <FormulaStrip parts={formulaParts} />
-      </div>
-
-      {/* Example sentence — connector + verb-final both bold-
-          purple so the formula strip above gets confirmed inside
-          a real sentence. */}
+      {/* Example sentence first — connector + verb-final both
+          bold-purple so the pattern lands in a real sentence
+          before the formula strip abstracts it. */}
       <div className="font-sans font-semibold text-[17px] text-fg text-center leading-snug">
         {renderWithHighlights(active.example, highlights)}
       </div>
+
+      {/* Formula strip under the example — no sunk background,
+          just the role-coloured pills in-flow so it reads as
+          "here's what you just saw, abstracted". Same shape for
+          every connector; THAT is the lesson. Role colours lifted
+          from the Sentence chip so the two chips speak one
+          dialect for Nebensatz word-order. */}
+      <FormulaStrip parts={formulaParts} />
 
       {/* Per-connector rule beats the shared note, same policy as
           the Konjunktiv II card. Falls back to the anchor note
