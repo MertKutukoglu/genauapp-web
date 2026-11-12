@@ -8,6 +8,7 @@ import { ChipList } from "@/components/organisms/ChipList/ChipList";
 import { useChipStore } from "@/stores/chipStore";
 import { useSkillStore } from "@/stores/skillStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { tryCardSurface } from "@/lib/ui/cardChrome";
 
 /**
  * LeftCard — the /try/ page's sticky left column.
@@ -58,8 +59,8 @@ function Card({
     <section
       aria-label={ariaLabel}
       className={clsx(
-        "bg-surface-card border border-border rounded-[22px] p-5",
-        "shadow-[0_18px_44px_-28px_rgba(26,19,18,0.26)]",
+        tryCardSurface,
+        "rounded-[22px] p-5",
         className,
       )}
     >

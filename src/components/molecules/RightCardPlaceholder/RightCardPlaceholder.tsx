@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { tryCardSurface } from "@/lib/ui/cardChrome";
 import type { ChipId } from "@/stores/chipStore";
 
 /**
@@ -45,9 +46,8 @@ export function RightCardPlaceholder({
     <section
       aria-label="Session area"
       className={clsx(
-        // Frame — mirrors LeftCard chrome
-        "bg-surface-card border border-border rounded-[22px] p-5",
-        "shadow-[0_18px_44px_-28px_rgba(26,19,18,0.26)]",
+        tryCardSurface,
+        "rounded-[22px] p-5",
         // Fill the right column. On desktop the parent grid stretches
         // us to match the LeftCard's row height (via items-stretch);
         // mobile keeps a sensible floor so the empty state doesn't

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { tryCardSurface } from "@/lib/ui/cardChrome";
 import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSentence/GrammarSampleSentence";
@@ -52,9 +53,8 @@ export function GrammarParticipleParadigmCard({
   return (
     <div
       className={clsx(
-        "bg-surface-card rounded-3xl p-5",
-        "shadow-[0_4px_12px_rgba(0,0,0,0.06)]",
-        "[html[data-theme=dark]_&]:shadow-[0_4px_12px_rgba(0,0,0,0.45)]",
+        tryCardSurface,
+        "rounded-3xl p-5",
         "flex flex-col gap-5",
         className,
       )}
