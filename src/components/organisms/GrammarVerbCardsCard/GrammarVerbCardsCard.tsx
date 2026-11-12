@@ -104,6 +104,7 @@ export function GrammarVerbCardsCard({
   // Akkusativ prep carousels pass an article colour instead.
   const color = tint ?? "var(--chip-grammar-color)";
   const chevronBg = `color-mix(in srgb, ${color} 8%, transparent)`;
+  const chevronBgHover = `color-mix(in srgb, ${color} 18%, transparent)`;
   const sampleBorder = `color-mix(in srgb, ${color} 20%, transparent)`;
   const dotInactive = `color-mix(in srgb, ${color} 25%, transparent)`;
 
@@ -140,12 +141,20 @@ export function GrammarVerbCardsCard({
             aria-label={prevLabel}
             className={clsx(
               "flex items-center justify-center",
-              "w-9 h-9 rounded-full",
+              "w-7 h-7 rounded-full",
               "text-fg-muted hover:text-fg",
-              "transition-colors",
+              "bg-[var(--chevron-bg)] hover:bg-[var(--chevron-bg-hover)]",
+              "active:scale-95",
+              "transition-[background-color,color,transform] duration-150",
               "focus:outline-none focus-visible:ring-2",
             )}
-            style={{ background: chevronBg, outlineColor: color }}
+            style={
+              {
+                "--chevron-bg": chevronBg,
+                "--chevron-bg-hover": chevronBgHover,
+                outlineColor: color,
+              } as React.CSSProperties
+            }
           >
             <ChevronLeftIcon />
           </button>
@@ -165,12 +174,20 @@ export function GrammarVerbCardsCard({
             aria-label={nextLabel}
             className={clsx(
               "flex items-center justify-center",
-              "w-9 h-9 rounded-full",
+              "w-7 h-7 rounded-full",
               "text-fg-muted hover:text-fg",
-              "transition-colors",
+              "bg-[var(--chevron-bg)] hover:bg-[var(--chevron-bg-hover)]",
+              "active:scale-95",
+              "transition-[background-color,color,transform] duration-150",
               "focus:outline-none focus-visible:ring-2",
             )}
-            style={{ background: chevronBg, outlineColor: color }}
+            style={
+              {
+                "--chevron-bg": chevronBg,
+                "--chevron-bg-hover": chevronBgHover,
+                outlineColor: color,
+              } as React.CSSProperties
+            }
           >
             <ChevronRightIcon />
           </button>
@@ -264,7 +281,7 @@ function ChevronLeftIcon() {
       strokeWidth="2.25"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-5 h-5"
+      className="w-4 h-4"
       aria-hidden
     >
       <path d="M15 18l-6-6 6-6" />
@@ -281,7 +298,7 @@ function ChevronRightIcon() {
       strokeWidth="2.25"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-5 h-5"
+      className="w-4 h-4"
       aria-hidden
     >
       <path d="M9 18l6-6-6-6" />

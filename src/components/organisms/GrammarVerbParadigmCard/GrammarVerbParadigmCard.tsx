@@ -156,13 +156,12 @@ export function GrammarVerbParadigmCard({
                 "flex items-center justify-center",
                 "w-7 h-7 rounded-full",
                 "text-fg-muted hover:text-fg",
-                "transition-colors",
+                "bg-[color-mix(in_srgb,var(--chip-grammar-color)_8%,transparent)]",
+                "hover:bg-[color-mix(in_srgb,var(--chip-grammar-color)_18%,transparent)]",
+                "active:scale-95",
+                "transition-[background-color,color,transform] duration-150",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
               )}
-              style={{
-                background:
-                  "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
-              }}
             >
               <ChevronLeftIcon />
             </button>
@@ -182,13 +181,12 @@ export function GrammarVerbParadigmCard({
                 "flex items-center justify-center",
                 "w-7 h-7 rounded-full",
                 "text-fg-muted hover:text-fg",
-                "transition-colors",
+                "bg-[color-mix(in_srgb,var(--chip-grammar-color)_8%,transparent)]",
+                "hover:bg-[color-mix(in_srgb,var(--chip-grammar-color)_18%,transparent)]",
+                "active:scale-95",
+                "transition-[background-color,color,transform] duration-150",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)]",
               )}
-              style={{
-                background:
-                  "color-mix(in srgb, var(--chip-grammar-color) 8%, transparent)",
-              }}
             >
               <ChevronRightIcon />
             </button>
