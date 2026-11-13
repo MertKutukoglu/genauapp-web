@@ -22,6 +22,8 @@ import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/Ex
 import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
+import { useGrammarAnswersStore } from "@/stores/grammarAnswersStore";
+import type { CEFRLabel } from "@/stores/wordAnswersStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { workoutCopy } from "@/lib/workout/strings";
 import {
@@ -460,10 +462,31 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
   const current = remaining[0];
   const done = remainingCount === 0 && deckSize > 0;
 
+  const appendGrammarAnswer = useGrammarAnswersStore((s) => s.append);
+  const currentLevel = useChipStore((s) => s.selectedLevel);
+
   const handleNext = React.useCallback(
     ({ correct }: { correct: boolean }) => {
       if (!current) return;
       const key = `${current.topic}|${current.prompt}`;
+      // Log the answer for the Grammar skill sheet. `isAnchor` tells
+      // downstream views whether the question was one of the 5-7
+      // anchor questions (with a `learn` block) or a drill — the
+      // sheet doesn't surface it yet, but it's worth keeping so a
+      // future per-section split (anchor vs drill accuracy) has the
+      // data it needs.
+      try {
+        appendGrammarAnswer({
+          topic: current.topic,
+          exerciseType: current.exerciseType,
+          correct,
+          timestamp: Date.now(),
+          level: (currentLevel ?? "A1") as CEFRLabel,
+          isAnchor: Boolean(current.learn),
+        });
+      } catch {
+        /* localStorage may be disabled; the ring + sheet still work */
+      }
       if (correct) {
         if (!missedSetRef.current.has(key)) {
           setCorrectCount((c) => c + 1);
@@ -500,7 +523,7 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
         }
       }
     },
-    [current],
+    [current, appendGrammarAnswer, currentLevel],
   );
 
   const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);

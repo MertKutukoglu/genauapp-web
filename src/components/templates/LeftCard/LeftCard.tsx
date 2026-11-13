@@ -10,6 +10,7 @@ import { useSkillStore } from "@/stores/skillStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { tryCardSurface } from "@/lib/ui/cardChrome";
 import { SkillSheetVocab } from "@/components/organisms/SkillSheet/SkillSheetVocab";
+import { SkillSheetGrammar } from "@/components/organisms/SkillSheet/SkillSheetGrammar";
 import type { SkillStripId } from "@/components/molecules/SkillStrip/SkillStrip";
 
 /**
@@ -111,13 +112,13 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
       const wasPending = Boolean(pendingFlags[skill]);
       if (wasPending) collect(skill);
       const openDelay = wasPending ? 500 : 0;
-      // Vocab is the only skill with a sheet right now; others fall
-      // through to the plain collect-only behaviour for parity.
-      if (skill !== "vocab") return;
+      // Vocab + Grammar have detail sheets; Reading / Writing fall
+      // through to collect-only behaviour until their sheets land.
+      if (skill !== "vocab" && skill !== "grammar") return;
       if (openDelay === 0) {
-        setOpenSheet("vocab");
+        setOpenSheet(skill);
       } else {
-        window.setTimeout(() => setOpenSheet("vocab"), openDelay);
+        window.setTimeout(() => setOpenSheet(skill), openDelay);
       }
     },
     [pendingFlags, collect],
@@ -188,6 +189,10 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
       <SkillSheetVocab
         open={openSheet === "vocab"}
         onOpenChange={(o) => setOpenSheet(o ? "vocab" : null)}
+      />
+      <SkillSheetGrammar
+        open={openSheet === "grammar"}
+        onOpenChange={(o) => setOpenSheet(o ? "grammar" : null)}
       />
     </aside>
   );
