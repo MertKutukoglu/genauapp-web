@@ -185,14 +185,11 @@ const en = {
         articleLabel: "Article performance",
         teaserLabel: "More in the app",
         teaserHeader: "More in the app",
-        teaserIntro:
-          "Features that live in the GenauApp iOS app for deeper practice:",
-        teaserBullets: [
-          "Weak words list to review",
-          "Bookmarks for later",
-          "Recent practice history",
-          "Pack mastery breakdown",
-        ],
+        mockPill: "App only",
+        mockWeakTitle: "Weak words",
+        mockBookmarksTitle: "Bookmarks",
+        mockHistoryTitle: "Today",
+        mockPacksTitle: "Packs",
         teaserCta: "Try the app →",
         emptyBody:
           "Complete your first Words workout to see your progress here.",
@@ -428,14 +425,11 @@ const tr: typeof en = {
         articleLabel: "Artikel performansı",
         teaserLabel: "Uygulamada daha fazlası",
         teaserHeader: "Uygulamada daha fazlası",
-        teaserIntro:
-          "GenauApp iOS uygulamasında daha derin çalışmak için şu özellikler var:",
-        teaserBullets: [
-          "Zayıf kelimeler listesi",
-          "Sonra bakmak için yer imleri",
-          "Son pratik geçmişi",
-          "Paket bazında ustalık",
-        ],
+        mockPill: "Uygulamada",
+        mockWeakTitle: "Zayıf kelimeler",
+        mockBookmarksTitle: "Yer imleri",
+        mockHistoryTitle: "Bugün",
+        mockPacksTitle: "Paketler",
         teaserCta: "Uygulamayı dene →",
         emptyBody:
           "İlk Kelime antrenmanını bitir, ilerlemeni burada göresin.",

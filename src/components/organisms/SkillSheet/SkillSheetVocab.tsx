@@ -131,7 +131,6 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
     >
       {isEmpty ? (
         <EmptyState
-          emoji="📚"
           body={t.emptyBody}
           cta={t.emptyCta}
           onCta={handleStartWords}
@@ -186,8 +185,11 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
         </>
       )}
 
-      {/* Section 3 — App-only teaser (always rendered, even in
-          empty state, since it's part conversion play). */}
+      {/* Section 3 — App-only teaser: four mini-feature mock cards
+          showing what Vocabulary looks like in the full iOS app,
+          each dressed with real-looking demo data and a small
+          "App only" pill in the top-right. More compelling than a
+          bullet list — eyes scan the mock, not a sentence. */}
       <div ref={teaserSectionRef}>
         <SkillSheetSection
           label={t.teaserLabel}
@@ -197,33 +199,17 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
             className="rounded-2xl p-4 flex flex-col gap-3"
             style={{
               background:
-                "color-mix(in srgb, var(--accent) 6%, var(--surface-card))",
+                "color-mix(in srgb, var(--accent) 5%, var(--surface-card))",
               border:
                 "1px dashed color-mix(in srgb, var(--accent) 24%, transparent)",
             }}
           >
-            <div className="flex items-start gap-2">
-              <LockIcon className="w-5 h-5 text-accent mt-0.5 shrink-0" />
-              <div className="font-sans font-semibold text-[15px] text-fg">
-                {t.teaserHeader}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <MockWeakWords label={t.mockWeakTitle} pill={t.mockPill} />
+              <MockBookmarks label={t.mockBookmarksTitle} pill={t.mockPill} />
+              <MockRecentHistory label={t.mockHistoryTitle} pill={t.mockPill} />
+              <MockPackMastery label={t.mockPacksTitle} pill={t.mockPill} />
             </div>
-            <p className="font-sans text-[14px] text-fg-muted m-0 leading-snug">
-              {t.teaserIntro}
-            </p>
-            <ul className="flex flex-col gap-1.5 m-0 pl-0 list-none">
-              {t.teaserBullets.map((b: string) => (
-                <li
-                  key={b}
-                  className="font-sans text-[14px] text-fg leading-snug flex items-start gap-2"
-                >
-                  <span className="text-accent leading-none mt-1" aria-hidden>
-                    •
-                  </span>
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
             <button
               type="button"
               onClick={handleTryApp}
@@ -324,12 +310,10 @@ function ArticleTile({
 }
 
 function EmptyState({
-  emoji,
   body,
   cta,
   onCta,
 }: {
-  emoji: string;
   body: string;
   cta: string;
   onCta: () => void;
@@ -339,8 +323,25 @@ function EmptyState({
       className="mt-5 rounded-2xl p-6 flex flex-col items-center gap-4 text-center"
       style={{ background: "var(--surface-sunk)" }}
     >
-      <div className="text-[48px] leading-none" aria-hidden>
-        {emoji}
+      {/* Compact ring mark in muted pink — the Vocabulary ring the
+          user just tapped, downshifted to signal "no data yet". */}
+      <div
+        className="w-14 h-14 rounded-full flex items-center justify-center"
+        style={{
+          background:
+            "color-mix(in srgb, var(--color-skill-vocab) 12%, transparent)",
+          border:
+            "1.5px solid color-mix(in srgb, var(--color-skill-vocab) 28%, transparent)",
+        }}
+        aria-hidden
+      >
+        <div
+          className="w-6 h-6 rounded-full"
+          style={{
+            background:
+              "color-mix(in srgb, var(--color-skill-vocab) 55%, transparent)",
+          }}
+        />
       </div>
       <p className="font-sans text-[15px] text-fg-muted m-0 leading-snug max-w-[280px]">
         {body}
@@ -359,6 +360,248 @@ function EmptyState({
         {cta}
       </button>
     </div>
+  );
+}
+
+/* ---------- App-only mini-mock cards ------------------------------
+   Each card is a scaled-down visual of a real Vocabulary feature
+   that lives only in the iOS app. Shared chrome: white-ish tile,
+   small eyebrow icon + title, a corner "App only" pill in cherry,
+   then 2-3 rows of real-looking demo data. No overlay darkens the
+   content — the pill + dashed teaser border carry the "elsewhere"
+   signal; a dim layer would just hide the thing we're trying to
+   showcase. */
+
+function MockCardFrame({
+  title,
+  icon,
+  pill,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  pill: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className="relative rounded-xl p-3 flex flex-col gap-2 overflow-hidden"
+      style={{
+        background: "var(--surface-card)",
+        border:
+          "1px solid color-mix(in srgb, var(--fg) 8%, transparent)",
+      }}
+    >
+      {/* Eyebrow: icon + title */}
+      <div className="flex items-center gap-1.5 min-w-0 pr-16">
+        <span className="text-fg-muted shrink-0">{icon}</span>
+        <span className="font-sans font-semibold text-[12px] text-fg-muted uppercase tracking-wide truncate">
+          {title}
+        </span>
+      </div>
+      {/* App-only pill, top-right */}
+      <div
+        className="absolute top-2.5 right-2.5 font-sans font-bold text-[10px] uppercase px-1.5 py-0.5 rounded-full"
+        style={{
+          letterSpacing: "0.4px",
+          background:
+            "color-mix(in srgb, var(--accent) 14%, transparent)",
+          color: "var(--accent)",
+        }}
+      >
+        {pill}
+      </div>
+      <div className="flex flex-col gap-1">{children}</div>
+    </div>
+  );
+}
+
+function MockWeakWords({ label, pill }: { label: string; pill: string }) {
+  const rows: Array<[string, string]> = [
+    ["das Problem", "0 / 3"],
+    ["der Nachteil", "1 / 4"],
+    ["sich kümmern", "2 / 5"],
+  ];
+  return (
+    <MockCardFrame
+      title={label}
+      pill={pill}
+      icon={
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-3.5 h-3.5"
+          aria-hidden
+        >
+          <path d="M21 12a9 9 0 11-3-6.7" />
+          <path d="M21 4v5h-5" />
+        </svg>
+      }
+    >
+      {rows.map(([w, n]) => (
+        <div
+          key={w}
+          className="flex items-center justify-between gap-2 text-[13px]"
+        >
+          <span className="font-sans font-semibold text-fg truncate">{w}</span>
+          <span className="font-sans font-normal text-[#EF4444] shrink-0">
+            {n}
+          </span>
+        </div>
+      ))}
+    </MockCardFrame>
+  );
+}
+
+function MockBookmarks({ label, pill }: { label: string; pill: string }) {
+  const rows = ["die Verantwortung", "entscheiden", "die Erfahrung"];
+  return (
+    <MockCardFrame
+      title={label}
+      pill={pill}
+      icon={
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-3.5 h-3.5"
+          aria-hidden
+        >
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+        </svg>
+      }
+    >
+      {rows.map((w) => (
+        <div key={w} className="flex items-center gap-2 text-[13px]">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-3 h-3 shrink-0"
+            style={{ color: "#F59E0B" }}
+            aria-hidden
+          >
+            <path d="M12 2l2.5 7h7l-5.5 4.5 2 7L12 16.5 5.5 20.5l2-7L2 9h7z" />
+          </svg>
+          <span className="font-sans font-semibold text-fg truncate">{w}</span>
+        </div>
+      ))}
+    </MockCardFrame>
+  );
+}
+
+function MockRecentHistory({
+  label,
+  pill,
+}: {
+  label: string;
+  pill: string;
+}) {
+  const rows: Array<[string, string]> = [
+    ["5 min", "20 Words"],
+    ["3 min", "12 Grammar"],
+    ["7 min", "1 Story"],
+  ];
+  return (
+    <MockCardFrame
+      title={label}
+      pill={pill}
+      icon={
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-3.5 h-3.5"
+          aria-hidden
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+      }
+    >
+      {rows.map(([time, what]) => (
+        <div
+          key={what}
+          className="flex items-center justify-between gap-2 text-[13px]"
+        >
+          <span className="font-sans font-semibold text-fg">{time}</span>
+          <span className="font-sans font-normal text-fg-muted truncate">
+            {what}
+          </span>
+        </div>
+      ))}
+    </MockCardFrame>
+  );
+}
+
+function MockPackMastery({
+  label,
+  pill,
+}: {
+  label: string;
+  pill: string;
+}) {
+  const rows: Array<[string, number]> = [
+    ["Travel", 0.8],
+    ["Work", 0.6],
+    ["Weekend", 0.4],
+  ];
+  return (
+    <MockCardFrame
+      title={label}
+      pill={pill}
+      icon={
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-3.5 h-3.5"
+          aria-hidden
+        >
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+          <path d="M3.3 7L12 12l8.7-5" />
+          <path d="M12 22V12" />
+        </svg>
+      }
+    >
+      {rows.map(([pack, p]) => (
+        <div key={pack} className="flex items-center gap-2 text-[12px]">
+          <span className="font-sans font-semibold text-fg min-w-[56px]">
+            {pack}
+          </span>
+          <div
+            className="flex-1 h-1.5 rounded-full overflow-hidden"
+            style={{
+              background: "color-mix(in srgb, var(--fg) 10%, transparent)",
+            }}
+            aria-hidden
+          >
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${Math.round(p * 100)}%`,
+                background: "var(--color-skill-vocab)",
+              }}
+            />
+          </div>
+          <span className="font-sans font-normal text-fg-muted shrink-0 w-7 text-right">
+            {Math.round(p * 100)}%
+          </span>
+        </div>
+      ))}
+    </MockCardFrame>
   );
 }
 
