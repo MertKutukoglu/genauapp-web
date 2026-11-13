@@ -139,7 +139,7 @@ export function GrammarArticleCard({
               </span>
               <span className="font-sans text-[15px] leading-tight">
                 <span className="font-normal text-fg">{p.example}</span>{" "}
-                <span className="italic text-fg-muted">
+                <span className="text-fg-muted">
                   {locale === "tr" ? p.gloss.tr : p.gloss.en}
                 </span>
               </span>

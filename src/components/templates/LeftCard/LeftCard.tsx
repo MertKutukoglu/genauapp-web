@@ -125,7 +125,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         <Card ariaLabel={skillsT.title}>
           <h2
             className={clsx(
-              "font-display font-semibold text-[22px] leading-tight",
+              "font-display font-bold text-[22px] leading-tight",
               "text-fg m-0 mb-3",
             )}
           >
@@ -140,7 +140,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         <header className="flex items-center justify-between gap-3">
           <h2
             className={clsx(
-              "font-display font-semibold text-[22px] leading-tight",
+              "font-display font-bold text-[22px] leading-tight",
               "text-fg m-0",
             )}
           >

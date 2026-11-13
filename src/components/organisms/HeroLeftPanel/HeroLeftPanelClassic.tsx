@@ -37,10 +37,10 @@ export function HeroLeftPanelClassic({ className }: HeroLeftPanelClassicProps) {
         </div>
       </div>
 
-      <h1 className="relative z-10 mt-6 font-display text-[40px] font-semibold leading-[1.05] text-fg sm:text-[52px]">
+      <h1 className="relative z-10 mt-6 font-display text-[40px] font-bold leading-[1.05] text-fg sm:text-[52px]">
         {strings.hero.h1Before}
         <br />
-        <span className="text-accent italic">{strings.hero.h1Emphasis}</span>
+        <span className="text-accent">{strings.hero.h1Emphasis}</span>
       </h1>
       <p className="relative z-10 max-w-[440px] text-base text-fg-muted md:text-lg">
         {strings.hero.sub}

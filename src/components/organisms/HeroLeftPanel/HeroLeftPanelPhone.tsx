@@ -28,10 +28,10 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
         className,
       )}
     >
-      <h1 className="font-display text-[26px] font-semibold leading-[1.1] text-fg sm:text-[30px] lg:text-[34px] xl:text-[38px]">
+      <h1 className="font-display text-[26px] font-bold leading-[1.1] text-fg sm:text-[30px] lg:text-[34px] xl:text-[38px]">
         {strings.hero.h1Before}
         <br />
-        <span className="text-accent italic">{strings.hero.h1Emphasis}</span>
+        <span className="text-accent">{strings.hero.h1Emphasis}</span>
       </h1>
       <p className="max-w-[440px] text-sm text-fg-muted md:text-base">
         {strings.hero.sub}

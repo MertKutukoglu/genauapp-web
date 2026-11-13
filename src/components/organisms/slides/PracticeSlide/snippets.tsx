@@ -115,7 +115,7 @@ export function ReadingSnippet() {
 function Mark({ children }: { children: React.ReactNode }) {
   return (
     <mark
-      className="rounded-[4px] px-[3px] italic"
+      className="rounded-[4px] px-[3px] font-semibold"
       style={{
         background: "color-mix(in srgb, var(--accent) 18%, transparent)",
         color: "var(--accent-ink)",
@@ -174,7 +174,7 @@ function GrammarFillSnippet({
 }) {
   const blank = (
     <span
-      className="mx-0.5 inline-block rounded-[7px] px-2 py-[1px] italic"
+      className="mx-0.5 inline-block rounded-[7px] px-2 py-[1px] font-semibold"
       style={{
         background: "color-mix(in srgb, var(--accent) 14%, transparent)",
         color: "var(--accent-ink)",

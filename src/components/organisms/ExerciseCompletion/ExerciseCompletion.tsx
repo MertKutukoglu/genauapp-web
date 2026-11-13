@@ -131,7 +131,7 @@ export function ExerciseCompletion({
       {/* Score — correct in accent, slash + total in fg. Serif
           display so it reads as a tally, not a counter. */}
       <div className="flex items-baseline justify-center gap-1 font-display font-semibold leading-none">
-        <span className="text-[56px] text-accent italic">{correct}</span>
+        <span className="text-[56px] text-accent font-bold">{correct}</span>
         <span className="text-[44px] text-fg-muted">/</span>
         <span className="text-[56px] text-fg">{total}</span>
       </div>

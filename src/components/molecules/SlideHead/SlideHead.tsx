@@ -29,7 +29,7 @@ export function SlideHead({ eyebrow, headline, sub, className }: SlideHeadProps)
       <p className="font-semibold uppercase tracking-[0.14em] text-[13px] text-accent">
         {eyebrow}
       </p>
-      <h2 className="font-display text-[28px] font-semibold leading-[1.1] text-fg md:text-[36px] [&_em]:italic [&_em]:text-accent">
+      <h2 className="font-display text-[28px] font-bold leading-[1.1] text-fg md:text-[36px] [&_em]:not-italic [&_em]:text-accent">
         {headline}
       </h2>
       {sub ? (
