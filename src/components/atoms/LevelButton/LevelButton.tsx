@@ -80,7 +80,7 @@ export function LevelButton({
       <div className="flex items-start justify-between gap-2">
         <span
           className={clsx(
-            "font-display italic font-semibold text-[32px] leading-none",
+            "font-display font-semibold text-[32px] leading-none",
             "text-accent",
             "transition-colors duration-200",
           )}

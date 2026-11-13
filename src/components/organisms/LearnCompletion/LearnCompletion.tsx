@@ -51,7 +51,7 @@ export function LearnCompletion({
       )}
     >
       <div className="flex flex-col gap-2 max-w-md">
-        <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
+        <h2 className="font-display font-semibold text-2xl text-fg m-0 leading-tight">
           {t.heading}
         </h2>
         <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">

@@ -137,7 +137,7 @@ export function ExerciseCompletion({
       </div>
 
       <div className="flex flex-col gap-3 items-center">
-        <h2 className="font-display italic font-semibold text-2xl text-fg m-0 leading-tight">
+        <h2 className="font-display font-semibold text-2xl text-fg m-0 leading-tight">
           {subtitle}
         </h2>
         <p className="font-sans text-[14px] text-fg-muted m-0 leading-relaxed max-w-[360px]">

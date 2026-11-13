@@ -80,7 +80,7 @@ export function RightCardPlaceholder({
 
         <h2
           className={clsx(
-            "font-display italic font-semibold text-fg m-0",
+            "font-display font-semibold text-fg m-0",
             "text-[22px] md:text-[26px] leading-tight",
           )}
         >

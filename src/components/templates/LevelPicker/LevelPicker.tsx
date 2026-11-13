@@ -62,7 +62,7 @@ export function LevelPicker({
         </p>
         <h1
           className={clsx(
-            "font-display italic font-semibold text-fg",
+            "font-display font-semibold text-fg",
             "text-[36px] sm:text-[44px] md:text-[48px] leading-[1.08]",
             "max-w-[720px] mx-auto",
           )}

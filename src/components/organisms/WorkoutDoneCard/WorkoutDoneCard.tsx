@@ -39,7 +39,7 @@ export function WorkoutDoneCard({ className }: WorkoutDoneCardProps) {
       )}
     >
       <div className="flex flex-col gap-1.5">
-        <h2 className="font-display italic font-semibold text-[26px] text-fg leading-tight m-0">
+        <h2 className="font-display font-semibold text-[26px] text-fg leading-tight m-0">
           {copy.heading}
         </h2>
         <p className="font-sans text-[15px] text-fg-muted m-0 leading-snug">

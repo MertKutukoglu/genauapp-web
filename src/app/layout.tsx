@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Spectral, Open_Sans, Source_Serif_4 } from "next/font/google";
+import { Nunito, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
@@ -12,32 +12,36 @@ import { CookieConsent } from "@/components/molecules/CookieConsent/CookieConsen
 import "./globals.css";
 
 /**
- * Spectral for display, Open Sans for body — self-hosted via next/font
- * (GDPR-safe: no runtime Google Fonts request).
+ * Nunito for display + body — a single rounded sans across the whole
+ * site chrome. Self-hosted via next/font (GDPR-safe: no runtime
+ * Google Fonts request).
  *
- * Swapped off Fraunces in Nov 2026 — Fraunces had become the default
- * tell of AI-generated / v0-template landing pages, which undercut
- * the "designed by a real designer" register the rest of GenauApp
- * aims for. Spectral is a humane editorial serif by Production Type
- * (via Google Fonts), warmer than Playfair, less common than
- * Fraunces, pairs naturally with Open Sans.
+ * Why Nunito (Nov 2026 swap from Spectral + Open Sans): the previous
+ * serif display register (Fraunces → Spectral) kept reading as "AI-
+ * template landing page" even after the Spectral swap, and italic
+ * headlines in particular landed too editorial for a friendly
+ * language-learning app. Nunito is the closest web-available face to
+ * Apple's SF Pro Rounded — fully rounded, highly readable at small
+ * and large sizes, and carries the "friendly, warm, modern app"
+ * register GenauApp aims for.
  *
- * Italic styles are loaded eagerly because the /try/ cards and blog
- * pull-quotes use the italic cut.
+ * Exposed under TWO CSS-variable names so the switchover is zero-
+ * touch across existing CSS: --font-fraunces (display) and
+ * --font-open-sans (body) both now resolve to Nunito via
+ * globals.css's --font-display / --font-body aliases. If a future
+ * pass splits the two again, just point --font-display to a
+ * different family here.
+ *
+ * Italic cuts are NOT loaded: the previous header `italic` register
+ * is being dropped site-wide (see paired header fixes). The inline
+ * `[&_em]:italic` on SlideHead falls back to browser-synthesised
+ * oblique for emphasis, which reads fine on Nunito.
  */
-const spectral = Spectral({
-  variable: "--font-fraunces",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-});
-
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 /**
@@ -127,7 +131,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${spectral.variable} ${openSans.variable} ${sourceSerif.variable} h-full antialiased`}
+      className={`${nunito.variable} ${sourceSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

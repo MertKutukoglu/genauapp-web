@@ -53,8 +53,13 @@
   --color-article-das-dark:  #4FC97A;
 
   /* ---------- Typography ---------- */
-  --font-display: var(--font-fraunces), Georgia, serif;
-  --font-body:    var(--font-open-sans), system-ui, -apple-system, sans-serif;
+  /* Nov 2026 — one rounded sans (Nunito) for display + body. The
+     --font-nunito variable is wired in src/app/layout.tsx; the
+     fallback stack keeps typography safe if the next/font subset
+     fails to load. --font-sans stays an alias of body so legacy
+     component classes resolve to the same face. */
+  --font-display: var(--font-nunito), -apple-system, "SF Pro Rounded", system-ui, sans-serif;
+  --font-body:    var(--font-nunito), -apple-system, "SF Pro Rounded", system-ui, sans-serif;
   --font-sans:    var(--font-body);
 
   /* ---------- Radii ---------- */
