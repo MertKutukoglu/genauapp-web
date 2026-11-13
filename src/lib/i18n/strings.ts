@@ -165,6 +165,40 @@ const en = {
       stubBody: "This workout lands in the next update. Try Words for now.",
       stubCta: "Back to Words",
     },
+    skillSheet: {
+      close: "Close",
+      vocab: {
+        title: "Vocabulary",
+        tiers: {
+          starting: "Starting",
+          building: "Building",
+          growing: "Growing",
+          strong: "Strong",
+          mastery: "Mastery",
+        },
+        masteryLabel: "Word mastery",
+        masteryMeta: "{count} total",
+        masteryStrong: "Strong",
+        masteryAverage: "Average",
+        masteryWeak: "Weak",
+        view: "View",
+        articleLabel: "Article performance",
+        teaserLabel: "More in the app",
+        teaserHeader: "More in the app",
+        teaserIntro:
+          "Features that live in the GenauApp iOS app for deeper practice:",
+        teaserBullets: [
+          "Weak words list to review",
+          "Bookmarks for later",
+          "Recent practice history",
+          "Pack mastery breakdown",
+        ],
+        teaserCta: "Try the app →",
+        emptyBody:
+          "Complete your first Words workout to see your progress here.",
+        emptyCta: "Start Words →",
+      },
+    },
     learnCard: {
       topicEyebrow: "", // reserved
       actions: {
@@ -373,6 +407,40 @@ const tr: typeof en = {
     mode: {
       learn: "Öğren",
       exercise: "Egzersiz",
+    },
+    skillSheet: {
+      close: "Kapat",
+      vocab: {
+        title: "Kelime",
+        tiers: {
+          starting: "Başlangıç",
+          building: "Gelişiyor",
+          growing: "Büyüyor",
+          strong: "Güçlü",
+          mastery: "Ustalık",
+        },
+        masteryLabel: "Kelime ustalığı",
+        masteryMeta: "{count} toplam",
+        masteryStrong: "Güçlü",
+        masteryAverage: "Orta",
+        masteryWeak: "Zayıf",
+        view: "Göster",
+        articleLabel: "Artikel performansı",
+        teaserLabel: "Uygulamada daha fazlası",
+        teaserHeader: "Uygulamada daha fazlası",
+        teaserIntro:
+          "GenauApp iOS uygulamasında daha derin çalışmak için şu özellikler var:",
+        teaserBullets: [
+          "Zayıf kelimeler listesi",
+          "Sonra bakmak için yer imleri",
+          "Son pratik geçmişi",
+          "Paket bazında ustalık",
+        ],
+        teaserCta: "Uygulamayı dene →",
+        emptyBody:
+          "İlk Kelime antrenmanını bitir, ilerlemeni burada göresin.",
+        emptyCta: "Kelimeye başla →",
+      },
     },
     rightPlaceholder: {
       idleHeading: "Başlamak için bir antrenman seç.",

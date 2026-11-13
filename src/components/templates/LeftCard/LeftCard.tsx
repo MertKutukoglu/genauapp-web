@@ -9,6 +9,8 @@ import { useChipStore } from "@/stores/chipStore";
 import { useSkillStore } from "@/stores/skillStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { tryCardSurface } from "@/lib/ui/cardChrome";
+import { SkillSheetVocab } from "@/components/organisms/SkillSheet/SkillSheetVocab";
+import type { SkillStripId } from "@/components/molecules/SkillStrip/SkillStrip";
 
 /**
  * LeftCard — the /try/ page's sticky left column.
@@ -95,12 +97,38 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
     [pending],
   );
 
+  // Which skill sheet (if any) is open. Null = closed. Vocab is the
+  // first skill to ship a sheet; Grammar/Reading/Writing will slot
+  // in the same orchestration pattern.
+  const [openSheet, setOpenSheet] = React.useState<SkillStripId | null>(null);
+
+  // Ring tap handler. If the ring has a pending delta, collect it
+  // first (fires the ring bump + tween) then open the sheet after
+  // the tween completes, so the "earned moment" lands before the
+  // detail view. Without pending, open immediately.
+  const handleRingTap = React.useCallback(
+    (skill: SkillStripId) => {
+      const wasPending = Boolean(pendingFlags[skill]);
+      if (wasPending) collect(skill);
+      const openDelay = wasPending ? 500 : 0;
+      // Vocab is the only skill with a sheet right now; others fall
+      // through to the plain collect-only behaviour for parity.
+      if (skill !== "vocab") return;
+      if (openDelay === 0) {
+        setOpenSheet("vocab");
+      } else {
+        window.setTimeout(() => setOpenSheet("vocab"), openDelay);
+      }
+    },
+    [pendingFlags, collect],
+  );
+
   const stripNode =
     skillStrip === undefined ? (
       <SkillStrip
         progress={progress}
         pending={pendingFlags}
-        onCollect={collect}
+        onCollect={handleRingTap}
       />
     ) : (
       skillStrip
@@ -153,6 +181,14 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         </p>
         <ChipList />
       </Card>
+
+      {/* Skill detail sheet — Radix Dialog portal lives outside the
+          card flow, so the fixed overlay covers the viewport
+          regardless of the sticky aside. */}
+      <SkillSheetVocab
+        open={openSheet === "vocab"}
+        onOpenChange={(o) => setOpenSheet(o ? "vocab" : null)}
+      />
     </aside>
   );
 }

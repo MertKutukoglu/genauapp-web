@@ -18,6 +18,12 @@ import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
 import { localizeWord, type WordItem } from "@/content/words-a1";
+import {
+  useWordAnswersStore,
+  makeWordId,
+  type WordAnswerExercise,
+  type CEFRLabel,
+} from "@/stores/wordAnswersStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { workoutCopy } from "@/lib/workout/strings";
 
@@ -305,10 +311,31 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
   const current = remaining[0];
   const done = remainingCount === 0 && deckSize > 0;
 
+  const appendAnswer = useWordAnswersStore((s) => s.append);
+  const currentLevel = useChipStore((s) => s.selectedLevel);
+
   const handleNext = React.useCallback(
     ({ correct }: { correct: boolean }) => {
       if (!current) return;
       const key = current.learn.word;
+      // Log the answer for the Vocabulary skill sheet. articlePicker
+      // and translationMC + typing all contribute to Word Mastery;
+      // articlePicker answers also feed per-article accuracy via
+      // `articleStats()` at sheet-open time.
+      try {
+        const article = current.learn.article ?? null;
+        appendAnswer({
+          wordId: makeWordId(current.learn.word, article),
+          word: current.learn.word,
+          article,
+          exerciseType: current.exerciseType as WordAnswerExercise,
+          correct,
+          timestamp: Date.now(),
+          level: (currentLevel ?? "A1") as CEFRLabel,
+        });
+      } catch {
+        /* localStorage may be disabled; the ring + sheet still work */
+      }
       if (correct) {
         // First-try scoring: only count toward `correct` if this word
         // hasn't been missed before.
@@ -348,7 +375,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
         }
       }
     },
-    [current],
+    [current, appendAnswer, currentLevel],
   );
 
   const stageSkillDeltas = useSkillStore((s) => s.stageDeltas);
