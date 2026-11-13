@@ -189,6 +189,19 @@ body {
   font-family: var(--font-body);
 }
 
+/*
+ * Belt-and-suspenders: force the Tailwind font-* utilities that
+ * many Learn / Exercise cards carry (font-sans on paradigm cells,
+ * font-display on verb heroes, etc.) to resolve to our fonts
+ * directly. Tailwind 4's @theme block should do this automatically
+ * via --font-sans / --font-display, but a stray Tailwind default
+ * stack kept leaking through on the chip cards. Pinning the
+ * utility classes to the CSS variable here settles it everywhere.
+ */
+.font-sans    { font-family: var(--font-body); }
+.font-display { font-family: var(--font-display); }
+.font-serif   { font-family: var(--font-source-serif), "Source Serif 4", Georgia, serif; }
+
 
 /* ---------- Component keyframes ---------- */
 
