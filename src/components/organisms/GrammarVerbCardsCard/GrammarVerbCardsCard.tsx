@@ -32,6 +32,10 @@ export interface GrammarVerbCardsCardProps {
   /** English gloss shown under the active prefix (regular 16 muted,
    *  matching every other Grammar Learn card). */
   english: string;
+  /** Chip-identity label shown in the top-left toolbar slot — the
+   *  anchor topic (e.g. "Dativ-Präpositionen"), so the learner
+   *  doesn't lose the topic when they chevron through variants. */
+  chipLabel?: string;
   prefixes: SeparablePrefix[];
   /** Optional colour override for the carousel. Defaults to
    *  chip-grammar-purple for the A2 Trennbare-Verben carousel;
@@ -48,6 +52,7 @@ export interface GrammarVerbCardsCardProps {
 
 export function GrammarVerbCardsCard({
   english,
+  chipLabel,
   prefixes,
   tint,
   current,
@@ -121,7 +126,7 @@ export function GrammarVerbCardsCard({
       )}
     >
       <CardToolbar
-        chipLabel={strings.try.chipLabels.grammar}
+        chipLabel={chipLabel}
         current={current}
         total={total}
       />

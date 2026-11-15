@@ -39,6 +39,11 @@ import type { ParadigmForm, VerbParadigmVariant } from "@/content/grammar-a1";
 export interface GrammarVerbParadigmCardProps {
   verb: string;
   english: string;
+  /** Chip-identity label shown in the top-left toolbar slot — the
+   *  anchor topic (e.g. "Konjunktiv II", "Modalverben"), so the
+   *  learner doesn't lose the topic when they chevron through
+   *  variants. */
+  chipLabel?: string;
   forms: ParadigmForm[];
   sample: { de: string; en: string; highlight: string };
   /** A2 carousel: when set with 2+ entries, chevron cycling kicks
@@ -57,6 +62,7 @@ export interface GrammarVerbParadigmCardProps {
 export function GrammarVerbParadigmCard({
   verb,
   english,
+  chipLabel,
   forms,
   sample,
   variants,
@@ -139,7 +145,7 @@ export function GrammarVerbParadigmCard({
       )}
     >
       <CardToolbar
-        chipLabel={strings.try.chipLabels.grammar}
+        chipLabel={chipLabel}
         current={current}
         total={total}
       />

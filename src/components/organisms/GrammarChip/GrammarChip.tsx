@@ -222,6 +222,7 @@ function LearnCardSwitch({
         <GrammarVerbParadigmCard
           verb={learn.verb ?? ""}
           english={learn.english ?? ""}
+          chipLabel={item.topic}
           forms={(learn.forms as ParadigmForm[]) ?? []}
           sample={learn.sample}
           variants={learn.variants}
@@ -257,6 +258,7 @@ function LearnCardSwitch({
         <GrammarArticleCard
           article={learn.article}
           role={learn.role}
+          chipLabel={item.topic}
           patterns={learn.patterns}
           rule={learn.rule}
           sample={learn.sample}
@@ -271,6 +273,7 @@ function LearnCardSwitch({
         <GrammarVerbConjugationCard
           verb={learn.verb ?? ""}
           english={learn.english ?? ""}
+          chipLabel={item.topic}
           note={learn.note}
           forms={(learn.forms as ConjugationForm[]) ?? []}
           sample={learn.sample}
@@ -301,6 +304,7 @@ function LearnCardSwitch({
       return (
         <GrammarVerbCardsCard
           english={learn.english ?? ""}
+          chipLabel={item.topic}
           prefixes={learn.prefixes}
           tint={learn.tint}
           current={current}

@@ -46,6 +46,10 @@ const ARTICLE_COLORS: Record<ArticleSingleCardProps["article"], string> = {
 type ArticleSingleCardProps = {
   article: "der" | "die" | "das";
   role: string;
+  /** Chip-identity label shown in the top-left toolbar slot — the
+   *  anchor topic (e.g. "Artikel der"), so the learner always sees
+   *  which grammar topic they're on. */
+  chipLabel?: string;
   patterns: ArticleSuffixPattern[];
   /**
    * Shared RuleCard body — the "by meaning" categories that also
@@ -67,6 +71,7 @@ export type GrammarArticleCardProps = ArticleSingleCardProps;
 export function GrammarArticleCard({
   article,
   role,
+  chipLabel,
   patterns,
   rule,
   sample,
@@ -88,7 +93,7 @@ export function GrammarArticleCard({
         className,
       )}
     >
-      <CardToolbar chipLabel={strings.try.chipLabels.grammar} current={current} total={total} />
+      <CardToolbar chipLabel={chipLabel} current={current} total={total} />
 
       {/* Hero — article word as the subject of the card, big enough
           to carry the whole frame; role below as a muted subtitle. */}
