@@ -35,7 +35,13 @@ export type GrammarTag =
   | "prep-an-dat"
   | "prep-auf-akk"
   | "prep-um-akk"
-  | "inseparable";
+  | "inseparable"
+  // B2 additions: two more prepositional patterns, variable
+  // prefix (same spelling, two verbs), and Nomen-Verb-Verbindungen.
+  | "prep-mit-dat"
+  | "prep-von-dat"
+  | "variable-prefix"
+  | "nvv";
 
 interface TagDef {
   label: string;
@@ -129,6 +135,30 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     color: "#DB2777",
     explanation:
       "The prefix stays attached in every conjugation — it never moves to the end like a separable verb does: überlegen → Ich überlege, nicht \"Ich lege über\".",
+  },
+  "prep-mit-dat": {
+    label: "mit + Dat",
+    color: "var(--article-das)",
+    explanation:
+      "Fixed preposition + case combo with the Dativ. sich beschäftigen mit + Dat → Womit beschäftigst du dich? Also: umgehen mit, sprechen mit.",
+  },
+  "prep-von-dat": {
+    label: "von + Dat",
+    color: "var(--article-das)",
+    explanation:
+      "Fixed preposition + case combo with the Dativ. abhängen von + Dat → Das hängt vom Wetter ab. Refer back with davon: Das hängt davon ab.",
+  },
+  "variable-prefix": {
+    label: "Variable prefix",
+    color: "#E8A838",
+    explanation:
+      "Same spelling, two verbs. Stress on the prefix (UM-gehen) = separable, 'to deal with', aux sein. Stress on the stem (um-GEH-en) = inseparable, 'to bypass', aux haben.",
+  },
+  nvv: {
+    label: "NVV",
+    color: "#8B5CF6",
+    explanation:
+      "Nomen-Verb-Verbindung: a 'light' verb (ziehen, stellen, treffen) plus a noun that carries the meaning — drilled as one unit. in Betracht ziehen = to consider. zur Verfügung stellen = to provide.",
   },
 };
 

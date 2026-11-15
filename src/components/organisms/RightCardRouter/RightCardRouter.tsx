@@ -12,6 +12,7 @@ import { WorkoutCompleteFlow } from "@/components/organisms/WorkoutCompleteFlow/
 import { WORDS_A1 } from "@/content/words-a1";
 import { WORDS_A2 } from "@/content/words-a2";
 import { WORDS_B1 } from "@/content/words-b1";
+import { WORDS_B2 } from "@/content/words-b2";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { GRAMMAR_A2 } from "@/content/grammar-a2";
 import { GRAMMAR_B1 } from "@/content/grammar-b1";
@@ -55,18 +56,18 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   const showSummary = useChipStore((s) => s.showSummary);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  // Pick the Words deck by level. Words ships A1, A2, and B1 decks;
-  // Grammar / Sentence / Reading only ship A1 + A2 so far — a B1 user
-  // sees B1 Words next to A2 Grammar/Sentence/Reading until those
-  // content docs land. B2 users land on A2 for everything for now;
-  // the LevelPicker tracks their actual pick in PostHog so we see the
-  // interest shape before we build the missing decks.
+  // Pick the Words deck by level. Words now ships A1, A2, B1, and
+  // B2 decks — Grammar / Sentence / Reading still only ship A1 +
+  // A2 + B1, so a B2 user sees B2 Words next to B1 Grammar /
+  // Sentence / Reading until those content docs land.
   const wordsDeck =
-    selectedLevel === "B1"
-      ? WORDS_B1
-      : selectedLevel === "A2"
-        ? WORDS_A2
-        : WORDS_A1;
+    selectedLevel === "B2"
+      ? WORDS_B2
+      : selectedLevel === "B1"
+        ? WORDS_B1
+        : selectedLevel === "A2"
+          ? WORDS_A2
+          : WORDS_A1;
   // Grammar ships A1, A2, and now B1. Sentence still only ships
   // A1 + A2; B1 and B2 users fall back to A2 (closer to their
   // baseline than A1) until B1/B2 Sentence decks land.
