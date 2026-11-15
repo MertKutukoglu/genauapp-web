@@ -58,8 +58,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     learn: {
       layout: "sentenceFormula",
       headline: "Wenn-Satz",
-      english:
-        "Hypothetical: wenn-clause (Konjunktiv II) + würde-clause with inversion",
+      english: "Hypothetical: 'if X were true, Y would happen'",
       parts: [
         { text: "wenn", translation: "Connector", caption: "Konnektor", role: "verb" },
         { text: "Subjekt", translation: "Subject", caption: "Nebensatz", role: "subject" },
@@ -92,13 +91,12 @@ export const SENTENCE_B1: SentenceQuestion[] = [
           en: "If he were here, we would eat together.",
         },
       ],
-      body:
-        "Hypothetical conditional has TWO Konjunktiv II clauses. The **wenn-Nebensatz** puts its verb (**hätte / wäre / würde**) at the end. The **Hauptsatz** starts with **würde** (because the Nebensatz occupies position 1, so the verb inverts before the subject) and the main verb's infinitive sits at the end.",
+      body: "Both halves are **Konjunktiv II**.",
     },
     tr: {
       topic: "Wenn cümlesi (hipotetik)",
       learn: {
-        english: "Hipotetik: wenn-cümlesi (Konjunktiv II) + würde-cümlesi, devrik",
+        english: "Hipotetik: 'X olsaydı, Y olurdu'",
         partCaptions: [
           "Bağlaç",
           "Yan cümle",
@@ -110,8 +108,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
           "Daha fazla zamanım olsa, seyahat ederdim.",
           "O burada olsaydı, birlikte yerdik.",
         ],
-        body:
-          "Hipotetik koşul iki Konjunktiv II cümlesi içerir. **wenn yan cümlesi** fiili (**hätte / wäre / würde**) sona atar. **Ana cümle** **würde** ile başlar (yan cümle 1. pozisyonda olduğu için fiil özneyle yer değiştirir) ve asıl fiilin mastar hâli cümlenin sonundadır.",
+        body: "İki cümle de **Konjunktiv II**'dir.",
       },
     },
   },
