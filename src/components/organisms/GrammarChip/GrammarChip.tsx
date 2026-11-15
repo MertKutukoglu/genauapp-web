@@ -507,7 +507,14 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
           setIncorrectCount((c) => c + 1);
         }
         setRemaining((r) => {
-          if (r.length <= 1) return r;
+          // On the very last question: ending the deck is the only
+          // way forward. Returning `r` unchanged used to leave the
+          // user stuck on the "Incorrect" banner — they'd already
+          // seen the correct answer, but Next did nothing because
+          // the item at index 0 didn't change, so the exercise card
+          // stayed mounted with the answered state. Slice it off
+          // instead and roll into the completion screen.
+          if (r.length <= 1) return r.slice(1);
           const [head, ...rest] = r;
           const idx = 1 + Math.floor(Math.random() * rest.length);
           return [...rest.slice(0, idx), head, ...rest.slice(idx)];

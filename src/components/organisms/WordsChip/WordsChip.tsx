@@ -360,7 +360,12 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
           setIncorrectCount((c) => c + 1);
         }
         setRemaining((r) => {
-          if (r.length <= 1) return r;
+          // Last-item wrong: advance anyway. Keeping the same item
+          // at head leaves the ExerciseCard stuck on its Incorrect
+          // banner — Next has nowhere to go. User already saw the
+          // correct answer; rolling into the completion screen is
+          // the honest finish.
+          if (r.length <= 1) return r.slice(1);
           const [head, ...rest] = r;
           const idx = 1 + Math.floor(Math.random() * rest.length);
           return [...rest.slice(0, idx), head, ...rest.slice(idx)];
