@@ -493,6 +493,13 @@ export interface GrammarQuestion {
 export function normalizeDE(s: string): string {
   return s
     .trim()
+    // Collapse any whitespace run (internal or trailing) to one space
+    // so multi-word fillBlank answers accept "die Lösung sei" with
+    // odd spacing or a stray trailing space.
+    .replace(/\s+/g, " ")
+    // Strip trailing sentence punctuation so answers can be typed
+    // with or without a period ("ich habe geholfen" vs "ich habe geholfen.").
+    .replace(/[.,!?;]+$/, "")
     .toLowerCase()
     .replace(/ä/g, "a")
     .replace(/ö/g, "o")

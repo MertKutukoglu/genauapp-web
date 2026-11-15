@@ -18,16 +18,31 @@
  *      Verbalstil ↔ Nominalstil as Aktiv ↔ Passiv.
  *
  * Deck composition:
- *   1-6   Anchors (with `learn`): Konjunktiv I, Passiv alle Zeiten,
- *         Konjunktiv II Vergangenheit, wo- und da-Wörter,
- *         Nominalstil, Modalverben: Vermutung.
- *   7-24  18 topic-grouped drills (3 per anchor): MC → fillBlank
- *         → MC inside each batch, as the B1 brief established.
+ *   1-6    Anchors (with `learn`): Konjunktiv I, Passiv alle Zeiten,
+ *          Konjunktiv II Vergangenheit, wo- und da-Wörter,
+ *          Nominalstil, Modalverben: Vermutung.
+ *   7-12   Pass 1 — 1 easy MC per topic, in anchor order (blocked).
+ *   13-18  Pass 2 — 1 fillBlank per topic, INTERLEAVED order.
+ *          Three of these are MULTI-WORD fill-in-sentence items
+ *          (items 14, 15, 16): first production practice in the
+ *          B2 web deck. Learner types a short clause fragment,
+ *          not a single token. The normalizer collapses whitespace
+ *          and strips trailing punctuation.
+ *   19-24  Pass 3 — 1 hard MC per topic, INTERLEAVED in a different
+ *          order so no topic lands in the same slot across passes.
  *
- * Mix: 17 multipleChoice + 7 fillBlank. Slightly more MC than
- * B1 (14/10) on purpose — several B2 blanks have more than one
- * grammatical answer (KI vs KII, Vorgang vs Zustand) and MC lets
- * us control distractors.
+ * Mix: 17 multipleChoice + 7 fillBlank (3 of those multi-word).
+ * Slightly more MC than B1 (14/10) on purpose — several B2 blanks
+ * have more than one grammatical answer (KI vs KII, Vorgang vs
+ * Zustand) and MC lets us control distractors.
+ *
+ * Why interleaved + growing difficulty: Bjork's "desirable
+ * difficulties" research (plus Hwang 2025 on language learners
+ * specifically) shows blocked practice is better for initial
+ * encoding, interleaved practice is better for long-term retention
+ * and discrimination between similar forms. Hybrid is the fit.
+ * Pass 1 stays blocked-ish; passes 2 and 3 mix. Difficulty climbs
+ * in parallel so the back half asks more while the mind is warmer.
  *
  * `correctIndex` spread across 0-3 (B1 was always 0) so a learner
  * can't pattern-match position.
@@ -579,7 +594,33 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Drills 7-9 — Konjunktiv I ──
+  // ─────────────────────────────────────────────────────────────────
+  // Drills 7-24 in INTERLEAVED order (not blocked by topic).
+  //
+  // Pass 1 (items 7-12): easiest MC per topic, in anchor order. Feels
+  //   like "confirm each pattern once, right after you walked the
+  //   anchors." Still blocked-ish because the anchor section (1-6)
+  //   just walked all six topics one after another, so hitting them
+  //   in the same order here is a safe baseline before mixing.
+  //
+  // Pass 2 (items 13-18): fillBlank per topic, interleaved order.
+  //   Three of these are MULTI-WORD fill-in-sentence items — the
+  //   learner types a short clause fragment, not a single token.
+  //   First production practice in the B2 web deck.
+  //
+  // Pass 3 (items 19-24): hardest MC per topic, interleaved again
+  //   in a different order so no topic sits in the same slot across
+  //   passes.
+  //
+  // Difficulty grows with each pass (easy MC → fillBlank + production
+  //   → hard MC); interleaving grows with each pass (anchor order →
+  //   mixed → mixed differently). The two curves align so the back
+  //   half of the deck lands the "desirable difficulty" research
+  //   recommends without breaking low-achievers who need the
+  //   blocked-first warm-up.
+  // ─────────────────────────────────────────────────────────────────
+
+  // ── Pass 1 · Item 7 — Konjunktiv I (easy MC) ──
   {
     topic: "Konjunktiv I",
     exerciseType: "multipleChoice",
@@ -595,37 +636,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "haben'in Konjunktiv I'i, 3. tekil: kök hab + e → er habe.",
     },
   },
-  {
-    topic: "Konjunktiv I",
-    exerciseType: "fillBlank",
-    prompt: "Sie sagte, sie ___ morgen. (kommen)",
-    answer: "komme",
-    explanation:
-      "Konjunktiv I of kommen, 3rd person singular: stem komm + e → sie komme. Different from the indicative 'kommt', so Konjunktiv I works here.",
-    hint: "She said she would come tomorrow.",
-    tr: {
-      hint: "Yarın geleceğini söyledi.",
-      explanation:
-        "kommen'in Konjunktiv I'i, 3. tekil: kök komm + e → sie komme. Bildirme kipindeki 'kommt'tan farklı olduğu için burada Konjunktiv I kullanılır.",
-    },
-  },
-  {
-    topic: "Konjunktiv I",
-    exerciseType: "multipleChoice",
-    prompt: "Die Nachbarn sagen, sie ___ keine Zeit.",
-    options: ["haben", "hätten", "habe", "hatten"],
-    correctIndex: 1,
-    explanation:
-      "Konjunktiv I plural would be 'sie haben', identical to the indicative. When that happens, German switches to Konjunktiv II: sie hätten.",
-    hint: "The neighbors say they have no time.",
-    tr: {
-      hint: "Komşular vakitleri olmadığını söylüyor.",
-      explanation:
-        "Çoğulda Konjunktiv I 'sie haben' olurdu, bu da bildirme kipiyle aynı. Böyle durumlarda Almanca Konjunktiv II'ye geçer: sie hätten.",
-    },
-  },
 
-  // ── Drills 10-12 — Passiv ──
+  // ── Pass 1 · Item 8 — Passiv (easy MC) ──
   {
     topic: "Passiv",
     exerciseType: "multipleChoice",
@@ -641,37 +653,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "Geçmişte tamamlanmış bir eylem → edilgen Präteritum: wurde + Partizip II.",
     },
   },
-  {
-    topic: "Passiv",
-    exerciseType: "fillBlank",
-    prompt: "Die Unterlagen müssen bis Freitag unterschrieben ___.",
-    answer: "werden",
-    explanation:
-      "Modal + passive: the modal in position 2, and Partizip II + werden at the end. 'müssen ... unterschrieben werden' = have to be signed.",
-    hint: "The documents have to be signed by Friday.",
-    tr: {
-      hint: "Belgelerin cumaya kadar imzalanması gerekiyor.",
-      explanation:
-        "Modal + edilgen: modal fiil 2. pozisyonda, sonda Partizip II + werden. 'müssen ... unterschrieben werden' = imzalanmaları gerekiyor.",
-    },
-  },
-  {
-    topic: "Passiv",
-    exerciseType: "multipleChoice",
-    prompt: "Das Fenster ___ schon repariert. Es funktioniert wieder.",
-    options: ["wird", "ist", "worden", "hat"],
-    correctIndex: 1,
-    explanation:
-      "'Es funktioniert wieder' tells you the repair is finished. A result state → Zustandspassiv: ist + Partizip II. 'wird repariert' would mean someone is still working on it.",
-    hint: "The window is already repaired. It works again.",
-    tr: {
-      hint: "Pencere çoktan tamir edildi. Yine çalışıyor.",
-      explanation:
-        "'Es funktioniert wieder' tamirin bittiğini gösteriyor. Sonuç durumu → Zustandspassiv: ist + Partizip II. 'wird repariert' hâlâ biri üzerinde çalışıyor demek olurdu.",
-    },
-  },
 
-  // ── Drills 13-15 — Konjunktiv II Vergangenheit ──
+  // ── Pass 1 · Item 9 — KII Vergangenheit (easy MC) ──
   {
     topic: "Konjunktiv II Vergangenheit",
     exerciseType: "multipleChoice",
@@ -687,37 +670,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "helfen Perfekt'te haben alır (ich habe geholfen), yani geçmiş hipotez: ich hätte geholfen.",
     },
   },
-  {
-    topic: "Konjunktiv II Vergangenheit",
-    exerciseType: "fillBlank",
-    prompt: "Wenn es nicht geregnet hätte, ___ wir gewandert.",
-    answer: "wären",
-    explanation:
-      "wandern is movement and takes sein in the Perfekt (wir sind gewandert) → wir wären gewandert. The verb comes first because the wenn-clause is in position 1.",
-    hint: "If it hadn't rained, we would have gone hiking.",
-    tr: {
-      hint: "Yağmur yağmasaydı yürüyüşe giderdik.",
-      explanation:
-        "wandern hareket fiili, Perfekt'te sein alır (wir sind gewandert) → wir wären gewandert. wenn-cümlesi 1. pozisyonda olduğu için fiil önce gelir.",
-    },
-  },
-  {
-    topic: "Konjunktiv II Vergangenheit",
-    exerciseType: "multipleChoice",
-    prompt: "Du ___ das früher sagen sollen!",
-    options: ["wärst", "würdest", "hättest", "hattest"],
-    correctIndex: 2,
-    explanation:
-      "Modal verbs take haben, and with another verb you get a double infinitive: du hättest ... sagen sollen = you should have said that.",
-    hint: "You should have said that earlier!",
-    tr: {
-      hint: "Bunu daha önce söylemeliydin!",
-      explanation:
-        "Modal fiiller haben alır ve başka bir fiille çift mastar oluşur: du hättest ... sagen sollen = bunu söylemeliydin.",
-    },
-  },
 
-  // ── Drills 16-18 — wo- und da-Wörter ──
+  // ── Pass 1 · Item 10 — wo-/da-Wörter (easy MC) ──
   {
     topic: "wo- und da-Wörter",
     exerciseType: "multipleChoice",
@@ -733,37 +687,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "Kardeş bir insan, bu yüzden da- sözcüğü kullanılmaz: edat + zamir → auf ihn. 'darauf' sadece şeyler için.",
     },
   },
-  {
-    topic: "wo- und da-Wörter",
-    exerciseType: "fillBlank",
-    prompt: "___ interessierst du dich? Für Politik.",
-    answer: "Wofür",
-    explanation:
-      "sich interessieren für + Akk; asking about a thing → wo + für = Wofür.",
-    hint: "What are you interested in? Politics.",
-    tr: {
-      hint: "Neyle ilgileniyorsun? Siyasetle.",
-      explanation:
-        "sich interessieren für + Akk; bir şeyi sorarken → wo + für = Wofür.",
-    },
-  },
-  {
-    topic: "wo- und da-Wörter",
-    exerciseType: "multipleChoice",
-    prompt: "___ denkst du gerade? An meine Prüfung.",
-    options: ["Worauf", "Wovon", "Woran", "Womit"],
-    correctIndex: 2,
-    explanation:
-      "denken an + Akk. 'an' starts with a vowel, so an r is added: wo + r + an = Woran.",
-    hint: "What are you thinking about right now? About my exam.",
-    tr: {
-      hint: "Şu an ne düşünüyorsun? Sınavımı.",
-      explanation:
-        "denken an + Akk. 'an' ünlüyle başladığı için araya r girer: wo + r + an = Woran.",
-    },
-  },
 
-  // ── Drills 19-21 — Nominalstil ──
+  // ── Pass 1 · Item 11 — Nominalstil (easy MC) ──
   {
     topic: "Nominalstil",
     exerciseType: "multipleChoice",
@@ -779,37 +704,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "Hastalık gelmemesinin nedeni → wegen (= weil er krank ist). 'Trotz' 'rağmen' demek olurdu.",
     },
   },
-  {
-    topic: "Nominalstil",
-    exerciseType: "fillBlank",
-    prompt: "Trotz ___ Regens gehen wir spazieren.",
-    answer: "des",
-    explanation:
-      "trotz + Genitiv. der Regen is masculine → des Regens (noun adds -s).",
-    hint: "Despite the rain, we're going for a walk.",
-    tr: {
-      hint: "Yağmura rağmen yürüyüşe çıkıyoruz.",
-      explanation:
-        "trotz + Genitiv. der Regen eril → des Regens (isim -s alır).",
-    },
-  },
-  {
-    topic: "Nominalstil",
-    exerciseType: "multipleChoice",
-    prompt: "Während ___ Sitzung darf man nicht telefonieren.",
-    options: ["die", "dem", "der", "des"],
-    correctIndex: 2,
-    explanation:
-      "während + Genitiv. die Sitzung is feminine → Genitiv der Sitzung. 'des' is only for masculine and neuter.",
-    hint: "You're not allowed to make calls during the meeting.",
-    tr: {
-      hint: "Toplantı sırasında telefonla konuşmak yasak.",
-      explanation:
-        "während + Genitiv. die Sitzung dişil → Genitiv der Sitzung. 'des' sadece eril ve nötr için.",
-    },
-  },
 
-  // ── Drills 22-24 — Modalverben Vermutung ──
+  // ── Pass 1 · Item 12 — Modalverben (easy MC) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",
@@ -826,6 +722,97 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "İki net ipucu var → neredeyse eminsin → müssen: sie muss zu Hause sein.",
     },
   },
+
+  // ── Pass 2 · Item 13 — wo-/da-Wörter (fillBlank single-word) ──
+  {
+    topic: "wo- und da-Wörter",
+    exerciseType: "fillBlank",
+    prompt: "___ interessierst du dich? Für Politik.",
+    answer: "Wofür",
+    explanation:
+      "sich interessieren für + Akk; asking about a thing → wo + für = Wofür.",
+    hint: "What are you interested in? Politics.",
+    tr: {
+      hint: "Neyle ilgileniyorsun? Siyasetle.",
+      explanation:
+        "sich interessieren für + Akk; bir şeyi sorarken → wo + für = Wofür.",
+    },
+  },
+
+  // ── Pass 2 · Item 14 — Konjunktiv I (MULTI-WORD fill-in-sentence) ──
+  // First production item: the learner types a whole reported-speech
+  // clause fragment, not a single K-I form. Tests that they can
+  // assemble "Sie sagte, die Lösung sei" as a unit — subject
+  // introduction, reported subject, verb-in-K-I — in one go.
+  {
+    topic: "Konjunktiv I",
+    exerciseType: "fillBlank",
+    prompt: "___ nicht perfekt.",
+    answer: "Sie sagte, die Lösung sei",
+    explanation:
+      'Full reported-speech opener. Introducer in Präteritum (Sie sagte), reported subject (die Lösung), and Konjunktiv I of sein (sei). The K-I verb at the end is what matters.',
+    hint: "She said the solution wasn't perfect. (type the whole opener)",
+    tr: {
+      hint: "Çözümün mükemmel olmadığını söyledi. (girişin tamamını yaz)",
+      explanation:
+        "Aktarılan sözün tam açılışı. Giriş fiili Präteritum'da (Sie sagte), aktarılan özne (die Lösung), ve sein'in Konjunktiv I'i (sei). Asıl mesele sondaki K-I fiili.",
+    },
+  },
+
+  // ── Pass 2 · Item 15 — Nominalstil (MULTI-WORD fill-in-sentence) ──
+  // Production of a Genitiv noun phrase as a chunk — the Nominalstil
+  // whole move in miniature. Replaces the earlier des-only fillBlank.
+  {
+    topic: "Nominalstil",
+    exerciseType: "fillBlank",
+    prompt: "___ gehen wir spazieren.",
+    answer: "Trotz des Regens",
+    explanation:
+      "Verbalstil 'obwohl es regnet' → Nominalstil 'trotz des Regens'. trotz triggers Genitiv; der Regen (masc.) → des Regens (noun adds -s).",
+    hint: "Despite the rain, we're going for a walk. (type the whole phrase)",
+    tr: {
+      hint: "Yağmura rağmen yürüyüşe çıkıyoruz. (ifadenin tamamını yaz)",
+      explanation:
+        "Verbalstil 'obwohl es regnet' → Nominalstil 'trotz des Regens'. trotz Genitiv alır; der Regen (eril) → des Regens (isim -s alır).",
+    },
+  },
+
+  // ── Pass 2 · Item 16 — KII Vergangenheit (MULTI-WORD fill-in-sentence) ──
+  // Production of the Hauptsatz half of a past hypothetical. Tests
+  // the wäre/hätte choice (gekommen → sein → wäre) AND the inversion
+  // (verb first because the wenn-clause occupies position 1).
+  {
+    topic: "Konjunktiv II Vergangenheit",
+    exerciseType: "fillBlank",
+    prompt: "Wenn ich das gewusst hätte, ___.",
+    answer: "wäre ich gekommen",
+    explanation:
+      "The wenn-clause fills position 1, so the Hauptsatz verb comes first (inversion). kommen is movement → sein → wäre. Pattern: wäre + Subjekt + Partizip II = wäre ich gekommen.",
+    hint: "If I had known that, I would have come. (type the main clause)",
+    tr: {
+      hint: "Bunu bilseydim gelirdim. (ana cümleyi yaz)",
+      explanation:
+        "wenn-cümlesi 1. pozisyonu doldurur, bu yüzden ana cümle fiili önce gelir (devrik). kommen hareket fiili → sein → wäre. Kalıp: wäre + Özne + Partizip II = wäre ich gekommen.",
+    },
+  },
+
+  // ── Pass 2 · Item 17 — Passiv (fillBlank single-word) ──
+  {
+    topic: "Passiv",
+    exerciseType: "fillBlank",
+    prompt: "Die Unterlagen müssen bis Freitag unterschrieben ___.",
+    answer: "werden",
+    explanation:
+      "Modal + passive: the modal in position 2, and Partizip II + werden at the end. 'müssen ... unterschrieben werden' = have to be signed.",
+    hint: "The documents have to be signed by Friday.",
+    tr: {
+      hint: "Belgelerin cumaya kadar imzalanması gerekiyor.",
+      explanation:
+        "Modal + edilgen: modal fiil 2. pozisyonda, sonda Partizip II + werden. 'müssen ... unterschrieben werden' = imzalanmaları gerekiyor.",
+    },
+  },
+
+  // ── Pass 2 · Item 18 — Modalverben (fillBlank single-word) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "fillBlank",
@@ -840,6 +827,93 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         "'Laut Zeitung' = gazeteye göre, yani duyum → sollen: das Konzert soll ausverkauft sein.",
     },
   },
+
+  // ── Pass 3 · Item 19 — wo-/da-Wörter (hard MC) ──
+  {
+    topic: "wo- und da-Wörter",
+    exerciseType: "multipleChoice",
+    prompt: "___ denkst du gerade? An meine Prüfung.",
+    options: ["Worauf", "Wovon", "Woran", "Womit"],
+    correctIndex: 2,
+    explanation:
+      "denken an + Akk. 'an' starts with a vowel, so an r is added: wo + r + an = Woran.",
+    hint: "What are you thinking about right now? About my exam.",
+    tr: {
+      hint: "Şu an ne düşünüyorsun? Sınavımı.",
+      explanation:
+        "denken an + Akk. 'an' ünlüyle başladığı için araya r girer: wo + r + an = Woran.",
+    },
+  },
+
+  // ── Pass 3 · Item 20 — KII Vergangenheit (hard MC — double infinitive) ──
+  {
+    topic: "Konjunktiv II Vergangenheit",
+    exerciseType: "multipleChoice",
+    prompt: "Du ___ das früher sagen sollen!",
+    options: ["wärst", "würdest", "hättest", "hattest"],
+    correctIndex: 2,
+    explanation:
+      "Modal verbs take haben, and with another verb you get a double infinitive: du hättest ... sagen sollen = you should have said that.",
+    hint: "You should have said that earlier!",
+    tr: {
+      hint: "Bunu daha önce söylemeliydin!",
+      explanation:
+        "Modal fiiller haben alır ve başka bir fiille çift mastar oluşur: du hättest ... sagen sollen = bunu söylemeliydin.",
+    },
+  },
+
+  // ── Pass 3 · Item 21 — Konjunktiv I (hard MC — KII escape rule) ──
+  {
+    topic: "Konjunktiv I",
+    exerciseType: "multipleChoice",
+    prompt: "Die Nachbarn sagen, sie ___ keine Zeit.",
+    options: ["haben", "hätten", "habe", "hatten"],
+    correctIndex: 1,
+    explanation:
+      "Konjunktiv I plural would be 'sie haben', identical to the indicative. When that happens, German switches to Konjunktiv II: sie hätten.",
+    hint: "The neighbors say they have no time.",
+    tr: {
+      hint: "Komşular vakitleri olmadığını söylüyor.",
+      explanation:
+        "Çoğulda Konjunktiv I 'sie haben' olurdu, bu da bildirme kipiyle aynı. Böyle durumlarda Almanca Konjunktiv II'ye geçer: sie hätten.",
+    },
+  },
+
+  // ── Pass 3 · Item 22 — Passiv (hard MC — Zustandspassiv) ──
+  {
+    topic: "Passiv",
+    exerciseType: "multipleChoice",
+    prompt: "Das Fenster ___ schon repariert. Es funktioniert wieder.",
+    options: ["wird", "ist", "worden", "hat"],
+    correctIndex: 1,
+    explanation:
+      "'Es funktioniert wieder' tells you the repair is finished. A result state → Zustandspassiv: ist + Partizip II. 'wird repariert' would mean someone is still working on it.",
+    hint: "The window is already repaired. It works again.",
+    tr: {
+      hint: "Pencere çoktan tamir edildi. Yine çalışıyor.",
+      explanation:
+        "'Es funktioniert wieder' tamirin bittiğini gösteriyor. Sonuç durumu → Zustandspassiv: ist + Partizip II. 'wird repariert' hâlâ biri üzerinde çalışıyor demek olurdu.",
+    },
+  },
+
+  // ── Pass 3 · Item 23 — Nominalstil (hard MC — Genitiv feminine) ──
+  {
+    topic: "Nominalstil",
+    exerciseType: "multipleChoice",
+    prompt: "Während ___ Sitzung darf man nicht telefonieren.",
+    options: ["die", "dem", "der", "des"],
+    correctIndex: 2,
+    explanation:
+      "während + Genitiv. die Sitzung is feminine → Genitiv der Sitzung. 'des' is only for masculine and neuter.",
+    hint: "You're not allowed to make calls during the meeting.",
+    tr: {
+      hint: "Toplantı sırasında telefonla konuşmak yasak.",
+      explanation:
+        "während + Genitiv. die Sitzung dişil → Genitiv der Sitzung. 'des' sadece eril ve nötr için.",
+    },
+  },
+
+  // ── Pass 3 · Item 24 — Modalverben (hard MC — wollen own claim) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",
