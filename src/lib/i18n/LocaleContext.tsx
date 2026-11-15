@@ -10,7 +10,7 @@ import {
 import { getStrings, type Strings } from "./strings";
 
 /**
- * useLocale — the one hook all localized client components call.
+ * useLocale, the one hook all localized client components call.
  *
  * Primary source is the live pathname: `/tr/*` → "tr", anything else
  * → "en". That means shared chrome rendered in the root layout
@@ -22,7 +22,7 @@ import { getStrings, type Strings } from "./strings";
  * Optional override: `<LocaleOverride locale="tr">` wraps a subtree
  * with an explicit locale, used by Storybook stories and tests that
  * want to render a component in a locale without faking a URL. In the
- * app itself the override is never used — the pathname decides.
+ * app itself the override is never used, the pathname decides.
  */
 
 const LocaleOverrideContext = React.createContext<Locale | null>(null);

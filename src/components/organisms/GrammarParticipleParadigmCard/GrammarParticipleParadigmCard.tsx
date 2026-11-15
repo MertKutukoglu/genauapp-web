@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ParticipleForm } from "@/content/grammar-a1";
 
 /**
- * GrammarParticipleParadigmCard — the A2 `participleParadigm`
+ * GrammarParticipleParadigmCard, the A2 `participleParadigm`
  * layout. A 3-column lookup table showing a verb's Perfekt form:
  * infinitive · aux · Partizip II. Drives the Perfekt anchor.
  *

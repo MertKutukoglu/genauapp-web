@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * Badge — small label pill (level badge "A1", "SOON", chip-done check).
+ * Badge, small label pill (level badge "A1", "SOON", chip-done check).
  * Four tones map onto semantic tokens so they follow the theme.
  */
 

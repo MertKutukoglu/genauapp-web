@@ -1,6 +1,6 @@
 /**
  * Thin typed wrapper around `window.__track` so callers don't repeat the
- * try/catch. Use the event names from the handoff spec verbatim — PostHog
+ * try/catch. Use the event names from the handoff spec verbatim, PostHog
  * dashboards depend on them.
  */
 
@@ -27,6 +27,6 @@ export function track(event: DemoEvent, props: Record<string, unknown> = {}) {
   try {
     window.__track?.(event, props);
   } catch {
-    /* swallow — analytics must never break the UI */
+    /* swallow, analytics must never break the UI */
   }
 }

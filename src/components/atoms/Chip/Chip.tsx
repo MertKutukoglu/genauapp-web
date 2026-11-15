@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Icon, type IconName } from "@/components/atoms/Icon/Icon";
 
 /**
- * Chip — the workout picker tile. Four flavors keyed to the four demo
+ * Chip, the workout picker tile. Four flavors keyed to the four demo
  * workouts; the color comes from a CSS var that the chip tints.
  *
  * Handoff §5 states:

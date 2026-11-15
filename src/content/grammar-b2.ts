@@ -1,5 +1,5 @@
 /**
- * Grammar — B2 deck (24 items). Port of
+ * Grammar, B2 deck (24 items). Port of
  * claude/GenauApp_Web_Try_Grammar_Content_B2.md §4, with two
  * deliberate adaptations in line with the patterns we settled on
  * at A2 / B1:
@@ -21,18 +21,18 @@
  *   1-6    Anchors (with `learn`): Konjunktiv I, Passiv alle Zeiten,
  *          Konjunktiv II Vergangenheit, wo- und da-Wörter,
  *          Nominalstil, Modalverben: Vermutung.
- *   7-12   Pass 1 — 1 easy MC per topic, in anchor order (blocked).
- *   13-18  Pass 2 — 1 fillBlank per topic, INTERLEAVED order.
+ *   7-12   Pass 1, 1 easy MC per topic, in anchor order (blocked).
+ *   13-18  Pass 2, 1 fillBlank per topic, INTERLEAVED order.
  *          Three of these are MULTI-WORD fill-in-sentence items
  *          (items 14, 15, 16): first production practice in the
  *          B2 web deck. Learner types a short clause fragment,
  *          not a single token. The normalizer collapses whitespace
  *          and strips trailing punctuation.
- *   19-24  Pass 3 — 1 hard MC per topic, INTERLEAVED in a different
+ *   19-24  Pass 3, 1 hard MC per topic, INTERLEAVED in a different
  *          order so no topic lands in the same slot across passes.
  *
  * Mix: 17 multipleChoice + 7 fillBlank (3 of those multi-word).
- * Slightly more MC than B1 (14/10) on purpose — several B2 blanks
+ * Slightly more MC than B1 (14/10) on purpose, several B2 blanks
  * have more than one grammatical answer (KI vs KII, Vorgang vs
  * Zustand) and MC lets us control distractors.
  *
@@ -55,7 +55,7 @@
  *   - Paradigm cells (forms, verbs, connectors, stylePairs, labels)
  *     stay German in the TR mirror.
  *   - `**bold**` works in note / rule / explanation via RuleCard.
- *   - Distractors are clearly wrong — never a colloquially
+ *   - Distractors are clearly wrong, never a colloquially
  *     acceptable alternative (B2 §6 rule).
  */
 
@@ -131,7 +131,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
             highlight: "habe",
           },
           rule:
-            "**haben** follows the regular rule: stem **hab** + **e** → er **habe**. Note the plural (wir **haben**, sie **haben**) is identical to the indicative — when that happens, German switches to Konjunktiv II: sie **hätten**.",
+            "**haben** follows the regular rule: stem **hab** + **e** → er **habe**. Note the plural (wir **haben**, sie **haben**) is identical to the indicative, when that happens, German switches to Konjunktiv II: sie **hätten**.",
         },
         {
           verb: "kommen",
@@ -150,7 +150,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
             highlight: "komme",
           },
           rule:
-            "Regular verbs: stem + **e**. **kommen** → er **komme**. This is the one form you really need in practice — journalists use er/sie/es Konjunktiv I almost exclusively.",
+            "Regular verbs: stem + **e**. **kommen** → er **komme**. This is the one form you really need in practice, journalists use er/sie/es Konjunktiv I almost exclusively.",
         },
         {
           verb: "können",
@@ -206,7 +206,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
             english: "gelmek (kök + e kuralı)",
             sample: { en: "Patron geç geleceğini söylüyor." },
             rule:
-              "Düzenli fiiller: kök + **e**. **kommen** → er **komme**. Pratikte gerçekten gereken tek biçim bu — gazeteciler neredeyse sadece er/sie/es Konjunktiv I kullanır.",
+              "Düzenli fiiller: kök + **e**. **kommen** → er **komme**. Pratikte gerçekten gereken tek biçim bu, gazeteciler neredeyse sadece er/sie/es Konjunktiv I kullanır.",
           },
           {
             english: "yapabilmek (kök + e kuralı)",
@@ -267,7 +267,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
   },
 
   // ── 3 ─ Anchor: Konjunktiv II Vergangenheit (chevron carousel) ──
-  // Was side-by-side `connectorCards` — too much on one card. Same
+  // Was side-by-side `connectorCards`, too much on one card. Same
   // feedback Mert gave for anchors 4 and 6: four items at once
   // overwhelms, chevron through them one at a time instead.
   // showFormula is false because this isn't a Konnektor family,
@@ -670,7 +670,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
   //   in the same order here is a safe baseline before mixing.
   //
   // Pass 2 (items 13-18): fillBlank per topic, interleaved order.
-  //   Three of these are MULTI-WORD fill-in-sentence items — the
+  //   Three of these are MULTI-WORD fill-in-sentence items, the
   //   learner types a short clause fragment, not a single token.
   //   First production practice in the B2 web deck.
   //
@@ -686,7 +686,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
   //   blocked-first warm-up.
   // ─────────────────────────────────────────────────────────────────
 
-  // ── Pass 1 · Item 7 — Konjunktiv I (easy MC) ──
+  // ── Pass 1 · Item 7, Konjunktiv I (easy MC) ──
   {
     topic: "Konjunktiv I",
     exerciseType: "multipleChoice",
@@ -703,7 +703,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 1 · Item 8 — Passiv (easy MC) ──
+  // ── Pass 1 · Item 8, Passiv (easy MC) ──
   {
     topic: "Passiv",
     exerciseType: "multipleChoice",
@@ -720,7 +720,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 1 · Item 9 — KII Vergangenheit (easy MC) ──
+  // ── Pass 1 · Item 9, KII Vergangenheit (easy MC) ──
   {
     topic: "Konjunktiv II Vergangenheit",
     exerciseType: "multipleChoice",
@@ -737,7 +737,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 1 · Item 10 — wo-/da-Wörter (easy MC) ──
+  // ── Pass 1 · Item 10, wo-/da-Wörter (easy MC) ──
   {
     topic: "wo- und da-Wörter",
     exerciseType: "multipleChoice",
@@ -754,7 +754,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 1 · Item 11 — Nominalstil (easy MC) ──
+  // ── Pass 1 · Item 11, Nominalstil (easy MC) ──
   {
     topic: "Nominalstil",
     exerciseType: "multipleChoice",
@@ -771,7 +771,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 1 · Item 12 — Modalverben (easy MC) ──
+  // ── Pass 1 · Item 12, Modalverben (easy MC) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",
@@ -789,7 +789,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 13 — wo-/da-Wörter (fillBlank single-word) ──
+  // ── Pass 2 · Item 13, wo-/da-Wörter (fillBlank single-word) ──
   {
     topic: "wo- und da-Wörter",
     exerciseType: "fillBlank",
@@ -805,11 +805,11 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 14 — Konjunktiv I (MULTI-WORD fill-in-sentence) ──
+  // ── Pass 2 · Item 14, Konjunktiv I (MULTI-WORD fill-in-sentence) ──
   // First production item: the learner types a whole reported-speech
   // clause fragment, not a single K-I form. Tests that they can
-  // assemble "Sie sagte, die Lösung sei" as a unit — subject
-  // introduction, reported subject, verb-in-K-I — in one go.
+  // assemble "Sie sagte, die Lösung sei" as a unit, subject
+  // introduction, reported subject, verb-in-K-I, in one go.
   {
     topic: "Konjunktiv I",
     exerciseType: "fillBlank",
@@ -825,8 +825,8 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 15 — Nominalstil (MULTI-WORD fill-in-sentence) ──
-  // Production of a Genitiv noun phrase as a chunk — the Nominalstil
+  // ── Pass 2 · Item 15, Nominalstil (MULTI-WORD fill-in-sentence) ──
+  // Production of a Genitiv noun phrase as a chunk, the Nominalstil
   // whole move in miniature. Replaces the earlier des-only fillBlank.
   {
     topic: "Nominalstil",
@@ -843,7 +843,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 16 — KII Vergangenheit (MULTI-WORD fill-in-sentence) ──
+  // ── Pass 2 · Item 16, KII Vergangenheit (MULTI-WORD fill-in-sentence) ──
   // Production of the Hauptsatz half of a past hypothetical. Tests
   // the wäre/hätte choice (gekommen → sein → wäre) AND the inversion
   // (verb first because the wenn-clause occupies position 1).
@@ -862,7 +862,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 17 — Passiv (fillBlank single-word) ──
+  // ── Pass 2 · Item 17, Passiv (fillBlank single-word) ──
   {
     topic: "Passiv",
     exerciseType: "fillBlank",
@@ -878,7 +878,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 2 · Item 18 — Modalverben (fillBlank single-word) ──
+  // ── Pass 2 · Item 18, Modalverben (fillBlank single-word) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "fillBlank",
@@ -894,7 +894,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 19 — wo-/da-Wörter (hard MC) ──
+  // ── Pass 3 · Item 19, wo-/da-Wörter (hard MC) ──
   {
     topic: "wo- und da-Wörter",
     exerciseType: "multipleChoice",
@@ -911,7 +911,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 20 — KII Vergangenheit (hard MC — double infinitive) ──
+  // ── Pass 3 · Item 20, KII Vergangenheit (hard MC, double infinitive) ──
   {
     topic: "Konjunktiv II Vergangenheit",
     exerciseType: "multipleChoice",
@@ -928,7 +928,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 21 — Konjunktiv I (hard MC — KII escape rule) ──
+  // ── Pass 3 · Item 21, Konjunktiv I (hard MC, KII escape rule) ──
   {
     topic: "Konjunktiv I",
     exerciseType: "multipleChoice",
@@ -945,7 +945,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 22 — Passiv (hard MC — Zustandspassiv) ──
+  // ── Pass 3 · Item 22, Passiv (hard MC, Zustandspassiv) ──
   {
     topic: "Passiv",
     exerciseType: "multipleChoice",
@@ -962,7 +962,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 23 — Nominalstil (hard MC — Genitiv feminine) ──
+  // ── Pass 3 · Item 23, Nominalstil (hard MC, Genitiv feminine) ──
   {
     topic: "Nominalstil",
     exerciseType: "multipleChoice",
@@ -979,7 +979,7 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── Pass 3 · Item 24 — Modalverben (hard MC — wollen own claim) ──
+  // ── Pass 3 · Item 24, Modalverben (hard MC, wollen own claim) ──
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",

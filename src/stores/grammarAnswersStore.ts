@@ -1,19 +1,19 @@
 "use client";
 
 /**
- * grammarAnswersStore — append-only log of per-question Grammar-chip
+ * grammarAnswersStore, append-only log of per-question Grammar-chip
  * answers, written by the Exercise variants on every submit. Sibling
  * of wordAnswersStore but keyed by `topic` instead of `wordId`
  * because Grammar's unit of progress is the topic (Verb sein,
  * Perfekt, Konjunktiv II, …), not the individual question.
  *
  * Owns:
- *   - `answers` — raw array, persisted to localStorage at
+ *   - `answers`, raw array, persisted to localStorage at
  *     `taste.grammarAnswers`. 200-entry cap matches Vocab.
  *
  * Derivation helpers (`computeTopicStats`, `momentum`,
  * `progressFill`, `weakestTopic`) run on the array at sheet-open
- * time — no incremental state, no stale cache. Spec:
+ * time, no incremental state, no stale cache. Spec:
  * claude/GenauApp_Web_Try_SkillSheet_Grammar.md §4.
  */
 
@@ -31,7 +31,7 @@ export interface GrammarAnswer {
   level: CEFRLabel;
   /** True when this question's item carries a `learn` block (it's
    *  one of the 5-7 anchor questions, not a drill). Kept on the
-   *  record even though the Grammar sheet doesn't surface it yet —
+   *  record even though the Grammar sheet doesn't surface it yet,
    *  a future per-section split might. */
   isAnchor: boolean;
 }
@@ -40,11 +40,11 @@ export interface TopicStat {
   topic: string;
   attempts: number;
   correct: number;
-  /** correct / attempts, 0..1 — NaN-safe (0 for empty). */
+  /** correct / attempts, 0..1, NaN-safe (0 for empty). */
   accuracy: number;
   /** Last up to 10 answers, newest-first. True = correct. */
   lastN: boolean[];
-  /** Last up to 3 answers, oldest-first — for momentum math. */
+  /** Last up to 3 answers, oldest-first, for momentum math. */
   recent3: boolean[];
   /** All answers BEFORE the last 3, for baseline. */
   prior: boolean[];
@@ -55,7 +55,7 @@ export interface TopicStat {
 export type Momentum = "up" | "down" | "stable" | null;
 
 /**
- * Grammar mastery tier — mirrors the iOS app's three-way split in
+ * Grammar mastery tier, mirrors the iOS app's three-way split in
  * TOPIC PERFORMANCE: Strong / Practicing / Needs work. Bucketed on
  * accuracy with a small attempts gate so one lucky run doesn't
  * promote a topic to Strong.
@@ -64,14 +64,14 @@ export type GrammarTier = "strong" | "practicing" | "needsWork";
 
 export function grammarTier(stat: TopicStat): GrammarTier {
   // Under 3 attempts: not enough signal to flag, but we still have
-  // to bucket it — Practicing is the honest middle.
+  // to bucket it, Practicing is the honest middle.
   if (stat.attempts < 3) return "practicing";
   if (stat.accuracy >= 0.85 && stat.attempts >= 5) return "strong";
   if (stat.accuracy < 0.6) return "needsWork";
   return "practicing";
 }
 
-/** Count topics in each tier — for the filter chips. */
+/** Count topics in each tier, for the filter chips. */
 export function countByTier(
   stats: TopicStat[],
 ): Record<GrammarTier, number> {
@@ -149,9 +149,9 @@ export function computeTopicStats(answers: GrammarAnswer[]): TopicStat[] {
 }
 
 /**
- * Honest momentum arrow — recent-3 vs prior accuracy, 10% threshold
+ * Honest momentum arrow, recent-3 vs prior accuracy, 10% threshold
  * to flip. Returns `null` on under-3 attempts so the UI can render
- * a muted `—` ("not enough data yet") instead of a false `stable`.
+ * a muted `·` ("not enough data yet") instead of a false `stable`.
  * This matches the iOS SkillCalculator and the landing-slide 3
  * convention: down arrows exist, mixed up/down is the point.
  */

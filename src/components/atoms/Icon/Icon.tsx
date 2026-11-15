@@ -5,13 +5,13 @@ import { ICONS, type IconName } from "./icons";
 export type { IconName };
 
 /**
- * Icon — a tint-friendly SVG symbol.
+ * Icon, a tint-friendly SVG symbol.
  *
  * Usage:
  *   <Icon name="lightbulb" className="w-5 h-5 text-accent" />
  *
  * Sizing is driven by Tailwind utilities on className (w-4 h-4, w-6 h-6…)
- * and color by currentColor — set text-{token} and the icon tints with it.
+ * and color by currentColor, set text-{token} and the icon tints with it.
  * Decorative by default (aria-hidden); pass `title` to expose it with a
  * <title> element and role="img".
  */

@@ -1,5 +1,5 @@
 /**
- * Words — A2 deck (20 items). Verbatim port of
+ * Words, A2 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Words_Content_A2.md §3.
  *
  * Same shape as WORDS_A1: each item carries its Learn block, its
@@ -8,9 +8,9 @@
  * overlay mirroring the English-side learner copy.
  *
  * A2 brings three new verb-kind grammar tags:
- *   - "regular"      — weak verb, no stem change (sich beeilen, sich erinnern)
- *   - "separable"    — prefix splits off (aufstehen, einkaufen, anrufen, einladen)
- *   - "prep-an-akk"  — fixed "an + Akkusativ" preposition (sich erinnern)
+ *   - "regular"     , weak verb, no stem change (sich beeilen, sich erinnern)
+ *   - "separable"   , prefix splits off (aufstehen, einkaufen, anrufen, einladen)
+ *   - "prep-an-akk" , fixed "an + Akkusativ" preposition (sich erinnern)
  *
  * Reflexive verbs ship with their canonical "sich +" form in
  * `learn.word` / `answer`. The ExerciseTyping normalizer strips a

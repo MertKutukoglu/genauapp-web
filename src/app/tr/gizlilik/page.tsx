@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 
 /**
- * /tr/gizlilik — Datenschutzerklärung (TR özet).
+ * /tr/gizlilik, Datenschutzerklärung (TR özet).
  *
  * TR özet: ne topluyoruz, nereye gidiyor, nasıl silinir, nasıl ulaşılır.
  * Bağlayıcı yasal metin EN /datenschutz'ta duruyor (tam GDPR
@@ -13,7 +13,7 @@ import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 export const metadata = {
   title: "Gizlilik",
   description:
-    "GenauApp olarak hangi verileri topluyoruz, nereye gidiyor, nasıl silinir — kısa Türkçe özet.",
+    "GenauApp olarak hangi verileri topluyoruz, nereye gidiyor, nasıl silinir, kısa Türkçe özet.",
   alternates: {
     canonical: "/tr/gizlilik",
     languages: {
@@ -46,7 +46,7 @@ export default function GizlilikPage() {
 
       <h3>Bekleme listesi (waitlist)</h3>
       <p>
-        Landing sayfasındaki forma girdiğin e-mail adresini — ve
+        Landing sayfasındaki forma girdiğin e-mail adresini, ve
         hangi seviye için ilgilendiğini (A1/A2/B1/B2) kaydediyoruz.
         Başka hiçbir kişisel veri alınmıyor; ad, telefon, adres
         istemiyoruz.

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 /**
- * PostHogPageview — fires a $pageview capture on every App Router
+ * PostHogPageview, fires a $pageview capture on every App Router
  * route change.
  *
  * Why: posthog.init({ capture_pageview: true }) only fires on the
@@ -16,7 +16,7 @@ import { usePathname, useSearchParams } from "next/navigation";
  * pageview captures from here instead, including the first one, so
  * there's exactly one event per visible route.
  *
- * Gated on window.__posthogReady — users who rejected analytics
+ * Gated on window.__posthogReady, users who rejected analytics
  * never get captured.
  */
 

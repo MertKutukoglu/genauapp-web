@@ -7,7 +7,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { SNIPPETS, SnipCaption } from "./snippets";
 
 /**
- * Slide 2 — Practice. Verbatim port of the production slide
+ * Slide 2, Practice. Verbatim port of the production slide
  * (claude/GenauApp_Web_Landing_Slide2_Practice.md).
  *
  * The same word, "gehen", shown across 9 practice surfaces. One
@@ -15,7 +15,7 @@ import { SNIPPETS, SnipCaption } from "./snippets";
  * swaps; absolutely stacked so height never changes.
  *
  * Pauses when the slide isn't the carousel's active one; resets to
- * snippet 0 on re-activation — matches the production behaviour.
+ * snippet 0 on re-activation, matches the production behaviour.
  */
 
 export interface PracticeSlideProps {

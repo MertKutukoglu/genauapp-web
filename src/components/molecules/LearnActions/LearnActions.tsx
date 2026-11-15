@@ -5,11 +5,11 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * LearnActions — the bottom row of the Learn card: `Repeat` + `I know`.
+ * LearnActions, the bottom row of the Learn card: `Repeat` + `I know`.
  *
  * Spec §7:
  *   - Both buttons IDENTICAL ghost styling. No primary CTA in Learn
- *     mode — there is no "correct" choice, and visually pushing the
+ *     mode, there is no "correct" choice, and visually pushing the
  *     user toward one would distort the Learn-mode signal.
  *   - Flex 1 each, height 52, radius 16, gap 12
  *   - Background: color-mix(in srgb, var(--fg) 6%, transparent)
@@ -18,7 +18,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *
  * Icons inlined so both use the same 2.2-stroke outline grammar:
  *   - Repeat: arrow.counterclockwise outline
- *   - I know: thumbs-up outline (stroked, not filled — the two
+ *   - I know: thumbs-up outline (stroked, not filled, the two
  *     actions carry equal weight; a filled thumb was reading as the
  *     primary CTA)
  */
@@ -28,10 +28,10 @@ export interface LearnActionsProps {
   onIKnow?: () => void;
   /** Disables both buttons (card-level lock). */
   disabled?: boolean;
-  /** Disables Repeat alone — e.g. when the deck is in a transient state. */
+  /** Disables Repeat alone, e.g. when the deck is in a transient state. */
   repeatDisabled?: boolean;
   /**
-   * Disables I know alone — used by the assembly variants to gate
+   * Disables I know alone, used by the assembly variants to gate
    * advancement until the puzzle is solved.
    */
   iKnowDisabled?: boolean;
@@ -77,7 +77,7 @@ export function LearnActions({
       >
         {/* thumbs-up outline, same 2.2 stroke as the Repeat icon so
             the pair reads as one visual family. Open contour by
-            design — no primary CTA in Learn mode. */}
+            design, no primary CTA in Learn mode. */}
         <svg
           viewBox="0 0 24 24"
           fill="none"

@@ -6,7 +6,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { SkillRing, type Skill } from "@/components/atoms/SkillRing/SkillRing";
 
 /**
- * SkillSheet — the shared shell behind each skill-ring detail
+ * SkillSheet, the shared shell behind each skill-ring detail
  * popup. Bottom sheet on mobile, centered modal on desktop.
  *
  * Radix Dialog handles focus trap, scroll lock, Portal, Escape
@@ -19,7 +19,7 @@ import { SkillRing, type Skill } from "@/components/atoms/SkillRing/SkillRing";
  *
  * Mirrors claude/GenauApp_Web_Try_SkillSheet_Vocab.md §4 verbatim,
  * with the typography register adjusted to Nunito (the doc
- * mentions Open Sans — we've since moved the whole site onto
+ * mentions Open Sans, we've since moved the whole site onto
  * Nunito; rounded sans reads cleaner on the condensed sheet
  * tiles anyway).
  */
@@ -33,14 +33,14 @@ export interface SkillSheetProps {
   title: string;
   /** "Starting" / "Building" / "Growing" / "Strong" / "Mastery". */
   tier: string;
-  /** 0..1 — fills the mini header ring; also displayed as a %. */
+  /** 0..1, fills the mini header ring; also displayed as a %. */
   progress: number;
   closeLabel: string;
   children: React.ReactNode;
 }
 
 /**
- * Shared section header — thin top divider + eyebrow label + optional
+ * Shared section header, thin top divider + eyebrow label + optional
  * right-aligned meta. Every skill-sheet section uses this.
  */
 export function SkillSheetSection({
@@ -107,14 +107,14 @@ export function SkillSheet({
           aria-describedby={undefined}
           className={clsx(
             "fixed z-[101]",
-            // Mobile — bottom sheet
+            // Mobile, bottom sheet
             "inset-x-0 bottom-0",
             "h-[92vh] max-h-[92vh]",
             "rounded-t-[20px]",
             "flex flex-col overflow-hidden",
             "bg-surface-card",
             "shadow-[0_-12px_32px_-12px_rgba(0,0,0,0.25)]",
-            // Desktop — centered modal via inset:0 + margin:auto.
+            // Desktop, centered modal via inset:0 + margin:auto.
             // Avoids the translate(-50%,-50%) centering trick so it
             // doesn't fight the animation's own transform (that was
             // the top-left flash on first open).
@@ -123,7 +123,7 @@ export function SkillSheet({
             "md:h-fit md:max-h-[85vh]",
             "md:rounded-[24px]",
             "md:shadow-[0_24px_64px_-16px_rgba(0,0,0,0.3)]",
-            // Animations — mobile slides up from the bottom edge,
+            // Animations, mobile slides up from the bottom edge,
             // desktop drops in from 16px above; backdrop fades in.
             "animate-[sheet-slide-up_280ms_cubic-bezier(0.22,0.61,0.36,1)]",
             "md:animate-[sheet-drop-in_260ms_ease-out]",
@@ -142,7 +142,7 @@ export function SkillSheet({
             />
           </div>
 
-          {/* Scroll container — only the body scrolls. */}
+          {/* Scroll container, only the body scrolls. */}
           <div className="flex-1 overflow-y-auto px-5 pt-5 pb-5 md:pt-6">
             {/* Header */}
             <header className="flex items-start justify-between gap-4">
@@ -171,7 +171,7 @@ export function SkillSheet({
             {children}
           </div>
 
-          {/* Footer — ghost Close button pinned bottom */}
+          {/* Footer, ghost Close button pinned bottom */}
           <div className="border-t border-[color:color-mix(in_srgb,var(--fg)_8%,transparent)] px-5 py-4 bg-surface-card">
             <Dialog.Close asChild>
               <button

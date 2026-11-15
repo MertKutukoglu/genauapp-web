@@ -1,5 +1,5 @@
 /**
- * Reading — B1 content. Verbatim port of
+ * Reading, B1 content. Verbatim port of
  * claude/GenauApp_Web_Try_Reading_Content_B1.md §3.
  *
  * Lifts from A2:
@@ -20,7 +20,7 @@
  * (Entscheidung, Erfahrung, Verantwortung, sich bewerben, Vorteil,
  * Nachteil, Unterschied, Zweck, überlegen, Beispiel, entscheiden,
  * Ergebnis, sich freuen auf, ausdrücken, Meinung, Gefühl). The
- * four not reused — teilnehmen, sich kümmern, Vorurteil, Lösung —
+ * four not reused, teilnehmen, sich kümmern, Vorurteil, Lösung,
  * don't fit the career-decision narrative.
  */
 
@@ -35,7 +35,7 @@ export const READING_B1: ReadingContent = {
     title: "Lena'nın zor kararı",
   },
   // Tap-to-translate hints: 6 nouns (article balance 4 die · 4 der ·
-  // 1 das) + 1 reflexive verb (sich bewerben um + Akk — the B1
+  // 1 das) + 1 reflexive verb (sich bewerben um + Akk, the B1
   // Grammar anchor for reflexive + fixed preposition + case). Nouns
   // chosen to recall the B1 gender canon: three -ung → die, one
   // -nis → das. No visibly-split separable verb in this passage.
@@ -107,7 +107,7 @@ export const READING_B1: ReadingContent = {
     },
   ],
   questions: [
-    // 1 — Main Idea
+    // 1, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -134,7 +134,7 @@ export const READING_B1: ReadingContent = {
           "Tüm anlatı Lena'nın öğretmenlikten gazeteciliğe geçip geçmeyeceği etrafında döner. Giriş paragrafı kariyer tereddüdünü kurar; gerisi kararı yürütür.",
       },
     },
-    // 2 — Main Idea
+    // 2, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -147,7 +147,7 @@ export const READING_B1: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        'She gets the job ("Lena hat die Stelle bekommen") and looks forward to it, but is also sad about leaving her students — the mixed-feeling ending is explicit in the final paragraph.',
+        'She gets the job ("Lena hat die Stelle bekommen") and looks forward to it, but is also sad about leaving her students, the mixed-feeling ending is explicit in the final paragraph.',
       tr: {
         topic: "Ana fikir",
         prompt: "Hikâye nasıl bitiyor?",
@@ -158,10 +158,10 @@ export const READING_B1: ReadingContent = {
           "Lena Berlin'den ayrılır.",
         ],
         explanation:
-          'İşi alır ("Lena hat die Stelle bekommen") ve ona sabırsızlıkla bekler, ama öğrencilerini bırakacağı için de üzgün — karışık duygu finali son paragrafta açık.',
+          'İşi alır ("Lena hat die Stelle bekommen") ve ona sabırsızlıkla bekler, ama öğrencilerini bırakacağı için de üzgün, karışık duygu finali son paragrafta açık.',
       },
     },
-    // 3 — Detail
+    // 3, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -178,7 +178,7 @@ export const READING_B1: ReadingContent = {
           '"Lena arbeitet seit fünf Jahren als Lehrerin in Berlin." Açılış cümlesinde.',
       },
     },
-    // 4 — Detail
+    // 4, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -205,7 +205,7 @@ export const READING_B1: ReadingContent = {
           '"Letzte Woche hat sie mit ihrer Schwester Anna gesprochen." Anna 2. paragrafın danışmanı.',
       },
     },
-    // 5 — Vocabulary
+    // 5, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -213,7 +213,7 @@ export const READING_B1: ReadingContent = {
       options: ["to regret", "to forget", "to apologize", "to repeat"],
       correctIndex: 0,
       explanation:
-        '"Aber wenn du dich nicht bewirbst, wirst du es später vielleicht bereuen." — Anna warns that NOT applying could lead to later regret.',
+        '"Aber wenn du dich nicht bewirbst, wirst du es später vielleicht bereuen.", Anna warns that NOT applying could lead to later regret.',
       tr: {
         topic: "Kelime",
         prompt: 'Metindeki "bereuen" ne demek?',
@@ -222,7 +222,7 @@ export const READING_B1: ReadingContent = {
           '"Aber wenn du dich nicht bewirbst, wirst du es später vielleicht bereuen." Anna, başvurmamanın daha sonra pişmanlığa yol açabileceği uyarısında bulunuyor.',
       },
     },
-    // 6 — Vocabulary
+    // 6, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -239,7 +239,7 @@ export const READING_B1: ReadingContent = {
           '"Der Zweck des Briefes war, die Zeitung zu überzeugen." Mektubun amacı gazeteyi onu işe almaya ikna etmek.',
       },
     },
-    // 7 — Inference
+    // 7, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -252,7 +252,7 @@ export const READING_B1: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        '"Trotzdem ist sie ein bisschen traurig, weil sie ihre Schüler verlassen muss." The sadness is explicitly tied to leaving her students — not to money or distance.',
+        '"Trotzdem ist sie ein bisschen traurig, weil sie ihre Schüler verlassen muss." The sadness is explicitly tied to leaving her students, not to money or distance.',
       tr: {
         topic: "Çıkarım",
         prompt: 'Lena sonunda neden "biraz üzgün"?',
@@ -266,7 +266,7 @@ export const READING_B1: ReadingContent = {
           '"Trotzdem ist sie ein bisschen traurig, weil sie ihre Schüler verlassen muss." Üzüntü açıkça öğrencileri bırakmaya bağlanmış, paraya ya da mesafeye değil.',
       },
     },
-    // 8 — Inference
+    // 8, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -293,7 +293,7 @@ export const READING_B1: ReadingContent = {
           'Paragraf, mektubun amacının gazeteyi ikna etmek olduğunu söyler; gençlik projesi örnek olarak verilir ("Zum Beispiel"). O örnek ilgili deneyimi kanıtlar.',
       },
     },
-    // 9 — Inference
+    // 9, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -306,7 +306,7 @@ export const READING_B1: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        'The text doesn\'t say directly, but Lena opens with "Was denkst du?" — she\'s seeking her sister\'s perspective before deciding. Classic second-opinion move.',
+        'The text doesn\'t say directly, but Lena opens with "Was denkst du?", she\'s seeking her sister\'s perspective before deciding. Classic second-opinion move.',
       tr: {
         topic: "Çıkarım",
         prompt: "Lena karar vermeden önce neden Anna ile konuşuyor?",
@@ -317,10 +317,10 @@ export const READING_B1: ReadingContent = {
           "Lena kız kardeşinden utandığı için.",
         ],
         explanation:
-          'Metin doğrudan söylemez ama Lena "Was denkst du?" diye başlar — karar vermeden önce kız kardeşinin perspektifini arıyor. Klasik ikinci görüş davranışı.',
+          'Metin doğrudan söylemez ama Lena "Was denkst du?" diye başlar, karar vermeden önce kız kardeşinin perspektifini arıyor. Klasik ikinci görüş davranışı.',
       },
     },
-    // 10 — Inference
+    // 10, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -333,7 +333,7 @@ export const READING_B1: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        "She says this right after describing the mixed joy-sadness. It's the acceptance line — she's reflected and is at peace with both sides.",
+        "She says this right after describing the mixed joy-sadness. It's the acceptance line, she's reflected and is at peace with both sides.",
       tr: {
         topic: "Çıkarım",
         prompt: '"Jede Entscheidung hat zwei Seiten" ifadesi neyi gösteriyor?',
@@ -344,10 +344,10 @@ export const READING_B1: ReadingContent = {
           "Lena emin değil.",
         ],
         explanation:
-          "Bu cümleyi karışık sevinç-üzüntüyü anlattıktan hemen sonra söyler. Kabullenme cümlesi — kararını tartmış ve her iki tarafla barışık.",
+          "Bu cümleyi karışık sevinç-üzüntüyü anlattıktan hemen sonra söyler. Kabullenme cümlesi, kararını tartmış ve her iki tarafla barışık.",
       },
     },
-    // 11 — Sequence
+    // 11, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",
@@ -374,7 +374,7 @@ export const READING_B1: ReadingContent = {
           "3. paragraf (Anna konuşmasından sonra, P2'den sonra) avantajları, dezavantajları ve iki meslek arasındaki farkı anlatır. Ancak ondan sonra 4. paragraf başvuruyu gösterir.",
       },
     },
-    // 12 — Sequence
+    // 12, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",

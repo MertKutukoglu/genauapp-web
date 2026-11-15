@@ -1,18 +1,18 @@
 "use client";
 
 /**
- * wordAnswersStore — append-only log of per-question Words-chip
+ * wordAnswersStore, append-only log of per-question Words-chip
  * answers, written by the Exercise variants on every submit.
  *
  * Owns:
- *   - `answers` — the raw array (persisted to localStorage under
+ *   - `answers`, the raw array (persisted to localStorage under
  *     `taste.wordAnswers`). Capped at 200 entries on write to
  *     prevent unbounded growth; a 5-minute demo never exceeds this.
  *
  * Derivation helpers (`computeWordStats`, `tier`, `articleStats`)
  * are exported from this module so the Vocabulary skill sheet can
  * compute Word Mastery + Article Performance from the log at
- * open-time — no incremental state, no stale cache.
+ * open-time, no incremental state, no stale cache.
  *
  * Shape mirrors the spec in
  * claude/GenauApp_Web_Try_SkillSheet_Vocab.md §3, with the one
@@ -129,9 +129,9 @@ export function computeWordStats(answers: WordAnswer[]): WordStat[] {
 /**
  * Mastery tier per word, matching the thresholds documented in
  * SkillSheet §3.3 (and the iOS SkillCalculator):
- *   strong  — last 3 attempts all correct OR ≥80% w/ ≥3 attempts
- *   average — ≥50% accuracy
- *   weak    — everything else
+ *   strong , last 3 attempts all correct OR ≥80% w/ ≥3 attempts
+ *   average, ≥50% accuracy
+ *   weak   , everything else
  */
 export function tier(stat: WordStat): MasteryTier {
   if (stat.lastAttempts.length >= 3 && stat.lastAttempts.every((x) => x)) {

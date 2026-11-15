@@ -4,11 +4,11 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * SpeakerButton — 24×24 speaker icon that fires browser TTS on the
+ * SpeakerButton, 24×24 speaker icon that fires browser TTS on the
  * German word/sentence passed in. Shared across every card toolbar.
  *
  * Browser-native TTS (`SpeechSynthesisUtterance`) instead of audio
- * files — no download weight, works offline, supports every German
+ * files, no download weight, works offline, supports every German
  * voice the OS already has. Quality is OS-dependent but fine for the
  * taste demo. Firebox / older Safari may not have a German voice; we
  * silently no-op rather than erroring.

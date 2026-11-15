@@ -6,18 +6,18 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { workoutCopy } from "@/lib/workout/strings";
 
 /**
- * WorkoutFeedbackCard — the "soft intercept" shown when the user
+ * WorkoutFeedbackCard, the "soft intercept" shown when the user
  * dismisses the Summary's email ask. One textarea, one send, one
  * skip. We fire PostHog events on either exit; nothing is written
  * to Supabase (feedback text isn't a waitlist signup, and we don't
  * want to leak free-form prose into a signups table).
  *
- * The parent closes the flow either way via `onDone` — this card is
+ * The parent closes the flow either way via `onDone`, this card is
  * strictly a last-breath data pull before the user leaves the demo.
  */
 
 export interface WorkoutFeedbackCardProps {
-  /** Fired whichever way the user exits — Send or Skip. */
+  /** Fired whichever way the user exits, Send or Skip. */
   onDone: () => void;
   className?: string;
 }
@@ -35,7 +35,7 @@ export function WorkoutFeedbackCard({
     if (trimmed.length === 0) return;
     try {
       window.__track?.("demo_workout_feedback_submitted", {
-        // Clip to a sane bound before firing — PostHog charges per
+        // Clip to a sane bound before firing, PostHog charges per
         // property and a runaway paste shouldn't become a bill.
         text: trimmed.slice(0, 2000),
         length: trimmed.length,

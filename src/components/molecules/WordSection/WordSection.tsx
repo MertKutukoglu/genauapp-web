@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * WordSection — the hero of the Learn card: the big German word, with
+ * WordSection, the hero of the Learn card: the big German word, with
  * its English translation on the line below.
  *
  * Per spec §5:
@@ -25,7 +25,7 @@ const ARTICLE_TOKEN: Record<Exclude<ArticleColor, null>, string> = {
 };
 
 export interface WordSectionProps {
-  /** Base German form. For nouns don't include the article here — pass it separately. */
+  /** Base German form. For nouns don't include the article here, pass it separately. */
   german: string;
   english: string;
   /** Article drives tint + display prefix. Null = verb/adj/adv. */

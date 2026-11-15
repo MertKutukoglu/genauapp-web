@@ -11,7 +11,7 @@ import {
 } from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
- * WaitlistForm — email + submit for the landing hero and taste-summary
+ * WaitlistForm, email + submit for the landing hero and taste-summary
  * CTAs. Writes to public.waitlist_emails in Supabase through
  * useWaitlistSubmit, which also captures UTM + referrer + landing_url
  * and fires the waitlist_submit_* PostHog event family.

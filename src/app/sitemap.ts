@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 /**
- * sitemap.xml — the public surface we want indexed. Add new static
+ * sitemap.xml, the public surface we want indexed. Add new static
  * routes here as they land (blog posts, docs pages, product pages).
  * Dates are last-reviewed timestamps, bumped whenever content moves.
  */

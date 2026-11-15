@@ -15,7 +15,7 @@ import {
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * LanguagePicker — compact "EN · TR" toggle that lives in the topnav's
+ * LanguagePicker, compact "EN · TR" toggle that lives in the topnav's
  * right cluster.
  *
  * The active locale is derived from the pathname (`/tr/...` → tr,
@@ -27,7 +27,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *      EN↔TR path map in config; falls back to that locale's root
  *      when the current path isn't mapped yet.
  *
- * No flags. Two 2-letter labels, a middle dot, equal weight — reads
+ * No flags. Two 2-letter labels, a middle dot, equal weight, reads
  * as a control, not a flag chooser. Accessible via a pair of buttons
  * with `aria-pressed` on the active one.
  */

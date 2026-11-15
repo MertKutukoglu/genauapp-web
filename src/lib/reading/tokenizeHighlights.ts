@@ -1,5 +1,5 @@
 /**
- * tokenizeHighlights — splits a Reading passage into a flat token
+ * tokenizeHighlights, splits a Reading passage into a flat token
  * stream where each token is either plain text or a tap-to-translate
  * HIGHLIGHT bound to one of the content's declared highlights.
  *
@@ -21,10 +21,10 @@
  *     so the renderer can group tokens back into <p> blocks.
  *
  * Returned tokens:
- *   - { kind: "text",  text }               — plain text (letters,
+ *   - { kind: "text",  text }              , plain text (letters,
  *                                              punctuation, spaces,
  *                                              or the "\n\n" break)
- *   - { kind: "highlight", text, highlight } — a word bound to a
+ *   - { kind: "highlight", text, highlight }, a word bound to a
  *                                              ReadingHighlight.
  *
  * Non-goals right now: fuzzy matching, lemma-based matching,
@@ -43,14 +43,14 @@ const WORD_SPLIT_RE = /([A-Za-zÄÖÜäöüß]+)/;
 
 /**
  * Split a single paragraph (no `\n\n`) into tokens. Paragraph-level
- * splitting happens in the caller — this keeps the function pure.
+ * splitting happens in the caller, this keeps the function pure.
  *
  * Two match sets travel through the whole passage:
  *   - surfaceClaimed: highlights whose `surface` word was already
  *     bound to a token.
  *   - companionClaimed: highlights whose detached prefix (companion)
  *     was already bound. Companion can only match AFTER its own
- *     highlight's surface was claimed, and only once — otherwise
+ *     highlight's surface was claimed, and only once, otherwise
  *     every later occurrence of a common preposition (e.g. "auf"
  *     in "Schlüssel auf den Tisch") would keep latching onto the
  *     first separable verb and read as part of it. Separable verbs
@@ -72,7 +72,7 @@ function tokenizeParagraph(
       out.push({ kind: "text", text: part });
       continue;
     }
-    // Word part — first try surface matches.
+    // Word part, first try surface matches.
     let matched: ReadingHighlight | null = null;
     for (let i = 0; i < highlights.length; i++) {
       if (surfaceClaimed.has(i)) continue;
@@ -84,7 +84,7 @@ function tokenizeParagraph(
       }
     }
     if (!matched) {
-      // Companion pass — only highlights whose surface has already
+      // Companion pass, only highlights whose surface has already
       // been claimed AND whose companion hasn't been claimed yet
       // can bind a detached prefix. This stops a bare preposition
       // elsewhere in the text from being read as the separable
@@ -119,7 +119,7 @@ export function tokenizeHighlights(
   highlights: ReadingHighlight[] | undefined,
 ): HighlightToken[] {
   if (!highlights || highlights.length === 0) {
-    // Nothing to annotate — return the paragraphs as plain text with
+    // Nothing to annotate, return the paragraphs as plain text with
     // explicit `\n\n` breaks, so callers use the same group-by-break
     // code path either way.
     const parts = passage.split("\n\n");

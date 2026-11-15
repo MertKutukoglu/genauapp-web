@@ -1,9 +1,9 @@
 /**
- * Slide 1 — Workout: data definitions.
+ * Slide 1, Workout: data definitions.
  *
  * Verbatim content lifted from `_landing-deploy/index.html` per
  * `claude/GenauApp_Web_Landing_Slide1_Workout.md`. Per-chip colors are
- * the inline rgba values from the live markup — kept here (not via
+ * the inline rgba values from the live markup, kept here (not via
  * design tokens) because they're part of the content, not the theme.
  */
 
@@ -38,7 +38,7 @@ export const CHIP_LAYOUT: ChipSpec[] = [
 ];
 
 /**
- * Cycling order the controller walks through — matches the live JS's
+ * Cycling order the controller walks through, matches the live JS's
  * ORDER array. Grammar first on first paint; Words last.
  */
 export const CYCLE_ORDER: WorkoutChipKey[] = [

@@ -2,13 +2,13 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * SceneCard — container for each scene in the landing's right column.
+ * SceneCard, container for each scene in the landing's right column.
  *
  * Every scene has:
- *   - An eyebrow (small uppercase cherry label) — e.g. "WORKOUT"
+ *   - An eyebrow (small uppercase cherry label), e.g. "WORKOUT"
  *   - A Fraunces headline with optional cherry italic emphasis
  *   - A body paragraph
- *   - A visual slot (child) — the WorkoutCardMock, Grammar score card,
+ *   - A visual slot (child), the WorkoutCardMock, Grammar score card,
  *     Packs grid, etc.
  *
  * The container itself owns padding and the content column width;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * PhoneStack — three stacked iOS phones in the hero.
+ * PhoneStack, three stacked iOS phones in the hero.
  *
  * - Side phones (Prepositions / Word card) inset from the card edges
  *   so they don't touch the card wall; respects a horizontal rhythm.
@@ -30,14 +30,14 @@ export function PhoneStack({ className }: PhoneStackProps) {
         className,
       )}
       style={{
-        // Bottom fade — phones dissolve, no hard crop line.
+        // Bottom fade, phones dissolve, no hard crop line.
         WebkitMaskImage:
           "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
         maskImage:
           "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
       }}
     >
-      {/* Back-left — Prepositions. Inset from the card edge by 4% so
+      {/* Back-left, Prepositions. Inset from the card edge by 4% so
           it has breathing room against the card boundary. */}
       <Slot
         className="absolute inset-y-0 left-[4%] w-[30%] -rotate-[9deg] translate-y-4"
@@ -50,7 +50,7 @@ export function PhoneStack({ className }: PhoneStackProps) {
         />
       </Slot>
 
-      {/* Back-right — Word card, same inset on the right. */}
+      {/* Back-right, Word card, same inset on the right. */}
       <Slot
         className="absolute inset-y-0 right-[4%] w-[30%] rotate-[9deg] translate-y-4"
         filter={dropShadowSide}
@@ -62,7 +62,7 @@ export function PhoneStack({ className }: PhoneStackProps) {
         />
       </Slot>
 
-      {/* Center — Home, up front. */}
+      {/* Center, Home, up front. */}
       <Slot
         className="relative z-20 inset-y-0 h-full w-[36%]"
         filter={dropShadowBig}

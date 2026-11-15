@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { DoneBadge } from "@/components/atoms/DoneBadge/DoneBadge";
 
 /**
- * Chip — a single row in the /try/ left card's picker. Mirrors the
+ * Chip, a single row in the /try/ left card's picker. Mirrors the
  * production markup in claude/GenauApp_Web_Try_ChipPicker_Brief.md §3.
  *
  * Shape (left to right): colored icon slot · title + meta · optional
@@ -22,7 +22,7 @@ import { DoneBadge } from "@/components/atoms/DoneBadge/DoneBadge";
  *   - selected: 28% tint bg + solid 1.5px border + chip-color shadow
  *               glow; icon slot fills solid, icon turns white
  *   - done:     10% tint bg + muted title + DoneBadge in corner
- *   - locked:   reserved — NOT USED in v1 per spec §1
+ *   - locked:   reserved, NOT USED in v1 per spec §1
  *
  * The component is presentational: hand it a state and an onClick and
  * it renders. The picker organism owns the state → store wiring.
@@ -127,20 +127,20 @@ export function Chip({
       aria-pressed={state === "selected"}
       style={style}
       className={clsx(
-        // Layout — mobile tiles vertically stacked content + centered
+        // Layout, mobile tiles vertically stacked content + centered
         // alignment so 4 chips fit in a horizontal strip across the
         // narrow left card on small screens. At lg+ the row-style chip
         // from the spec returns (icon-left + title/meta right).
         "group relative w-full rounded-[18px]",
         "flex flex-col items-center gap-1 px-2.5 py-2.5 text-center",
         "lg:flex-row lg:items-center lg:gap-3.5 lg:px-4 lg:py-3.5 lg:text-left",
-        // Default surface — 14% chip-color mixed into the card
+        // Default surface, 14% chip-color mixed into the card
         "bg-[color-mix(in_srgb,var(--chip-color)_14%,var(--surface-card))]",
         "border border-transparent",
         // Motion
         "transition-[background,border-color,box-shadow,transform]",
         "duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)]",
-        // Hover — 22% tint + 1px lift. Locked gets no hover.
+        // Hover, 22% tint + 1px lift. Locked gets no hover.
         !disabled &&
           "hover:-translate-y-px hover:bg-[color-mix(in_srgb,var(--chip-color)_22%,var(--surface-card))]",
         !disabled && "cursor-pointer",
@@ -159,7 +159,7 @@ export function Chip({
         className,
       )}
     >
-      {/* Colored icon slot — 40×40, radius 12 */}
+      {/* Colored icon slot, 40×40, radius 12 */}
       <span
         className={clsx(
           "flex-shrink-0 inline-flex items-center justify-center",
@@ -181,7 +181,7 @@ export function Chip({
 
       {/* Title + meta column. On mobile tiles: just the title, centered,
           smaller. At lg+: both lines, left-aligned, title 15px. Meta is
-          hidden on mobile — the strip has no vertical room for a second
+          hidden on mobile, the strip has no vertical room for a second
           line and the title alone identifies the chip. */}
       <span
         className={clsx(
@@ -209,7 +209,7 @@ export function Chip({
         </span>
       </span>
 
-      {/* Done badge — pinned bottom-right, outside normal flow */}
+      {/* Done badge, pinned bottom-right, outside normal flow */}
       {state === "done" && (
         <span className="absolute -bottom-1.5 -right-1.5 pointer-events-none">
           <DoneBadge />

@@ -14,18 +14,18 @@ import { SkillSheetGrammar } from "@/components/organisms/SkillSheet/SkillSheetG
 import type { SkillStripId } from "@/components/molecules/SkillStrip/SkillStrip";
 
 /**
- * LeftCard — the /try/ page's sticky left column.
+ * LeftCard, the /try/ page's sticky left column.
  *
  * Now composed of TWO stacked cards instead of one combined card:
  *
- *   1. Skills card — "Skills" h2 above the SkillStrip. Carries only
+ *   1. Skills card, "Skills" h2 above the SkillStrip. Carries only
  *      the skill badges; progress rings + pending-badge collect
  *      interactions live here.
- *   2. Your workout card — the familiar chip picker: header
+ *   2. Your workout card, the familiar chip picker: header
  *      ("Your workout" + 0/4 counter) → one-line subtitle → ChipList.
  *
  * Why split: one card trying to hold both responsibilities read as
- * dense setup. Two cards each own one concept — glanceable, each
+ * dense setup. Two cards each own one concept, glanceable, each
  * card is a complete small unit the user can parse in one sweep.
  *
  * Shared frame styling kept in the inner `Card` wrapper so both
@@ -33,7 +33,7 @@ import type { SkillStripId } from "@/components/molecules/SkillStrip/SkillStrip"
  * whole aside stays sticky on desktop; mobile stacks naturally.
  *
  * Spec: claude/GenauApp_Web_Try_ChipPicker_Brief.md §7, §9
- * (updated layout — 2026-11-12).
+ * (updated layout, 2026-11-12).
  */
 
 export interface LeftCardProps {
@@ -47,7 +47,7 @@ export interface LeftCardProps {
   className?: string;
 }
 
-/** Shared card frame — matches the one the old single-card LeftCard
+/** Shared card frame, matches the one the old single-card LeftCard
  *  used so the visual register of the column doesn't shift. */
 function Card({
   children,
@@ -151,7 +151,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         className,
       )}
     >
-      {/* Card 1 — Skills. Hidden when the caller explicitly passes
+      {/* Card 1, Skills. Hidden when the caller explicitly passes
           null, so previews can suppress it. */}
       {stripNode ? (
         <Card ariaLabel={skillsT.title}>
@@ -167,7 +167,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         </Card>
       ) : null}
 
-      {/* Card 2 — Your workout: header + subtitle + chip picker. */}
+      {/* Card 2, Your workout: header + subtitle + chip picker. */}
       <Card ariaLabel={t.title}>
         <header className="flex items-center justify-between gap-3">
           <h2
@@ -186,7 +186,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         <ChipList />
       </Card>
 
-      {/* Skill detail sheet — Radix Dialog portal lives outside the
+      {/* Skill detail sheet, Radix Dialog portal lives outside the
           card flow, so the fixed overlay covers the viewport
           regardless of the sticky aside. */}
       <SkillSheetVocab

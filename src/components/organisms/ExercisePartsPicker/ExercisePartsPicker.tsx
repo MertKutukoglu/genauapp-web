@@ -6,7 +6,7 @@ import { tryCardSurface } from "@/lib/ui/cardChrome";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * ExercisePartsPicker — breaks a long Exercise deck into a small set
+ * ExercisePartsPicker, breaks a long Exercise deck into a small set
  * of parts so the learner doesn't face a 40-item wall in one sitting.
  *
  * Shown only when the authored deck is big enough that one sitting
@@ -17,7 +17,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *
  * Each part card shows:
  *   - "Part N of X · Y questions" eyebrow (localized)
- *   - A 1-line topic preview — distinct topics in authored order,
+ *   - A 1-line topic preview, distinct topics in authored order,
  *     joined by ·. Capped at 3 topics; the rest collapse into "…".
  *
  * Presentational: parent owns `parts` and `onSelect`. The actual
@@ -54,8 +54,8 @@ export function ExercisePartsPicker({
     locale === "tr" ? "Hangi bölümden başlayalım?" : "Pick a part to start";
   const subtitle =
     locale === "tr"
-      ? "Egzersiz uzun — küçük parçalara böldük. Hepsi bitince Grammer tamamlanmış sayılır."
-      : "The exercise is long — we broke it into smaller parts. Grammar counts as done when every part is finished.";
+      ? "Egzersiz uzun, küçük parçalara böldük. Hepsi bitince Grammer tamamlanmış sayılır."
+      : "The exercise is long, we broke it into smaller parts. Grammar counts as done when every part is finished.";
   const questionsLabel = locale === "tr" ? "soru" : "questions";
   const partLabel = locale === "tr" ? "Bölüm" : "Part";
   const doneBadge = locale === "tr" ? "✓ tamam" : "✓ done";
@@ -135,7 +135,7 @@ export function ExercisePartsPicker({
 }
 
 /** Compact "Topic · Topic · Topic" preview, capped with …. Stable
- *  across parts — distinct topics in first-appearance order. */
+ *  across parts, distinct topics in first-appearance order. */
 function formatTopicPreview(topics: string[], max: number): string {
   if (topics.length === 0) return "";
   if (topics.length <= max) return topics.join(" · ");

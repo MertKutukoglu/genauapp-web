@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * PostHog EU client — initialized lazily, ONLY after the user accepts
+ * PostHog EU client, initialized lazily, ONLY after the user accepts
  * analytics cookies. Consent lives in localStorage under
  * `genauapp-consent` (see src/lib/consent/consent.ts); this provider
  * listens for the `genauapp:consent-change` event so an accept click
@@ -38,7 +38,7 @@ function initPostHog() {
   posthog.init(POSTHOG_KEY, {
     api_host: POSTHOG_HOST,
     person_profiles: "identified_only",
-    // We own pageviews — the PostHogPageview client component fires
+    // We own pageviews, the PostHogPageview client component fires
     // $pageview on every App Router navigation (first included).
     // Leaving this true would double-count the initial load.
     capture_pageview: false,
@@ -63,7 +63,7 @@ export function PostHogProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Install the tracker shim once. It is safe before PostHog is ready —
+    // Install the tracker shim once. It is safe before PostHog is ready,
     // window.posthog is undefined until init, so the capture call no-ops.
     window.__track = (name, props = {}) => {
       try {

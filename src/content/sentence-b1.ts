@@ -1,5 +1,5 @@
 /**
- * Sentence — B1 deck (12 items). Verbatim port of
+ * Sentence, B1 deck (12 items). Verbatim port of
  * claude/GenauApp_Web_Try_Sentence_Content_B1.md §4.
  *
  * Deck composition:
@@ -10,11 +10,11 @@
  *        construction, The new neighbor, Study plan, Travel plans,
  *        Morning routine.
  *
- * No schema changes versus A2 — same SentenceQuestion shape,
+ * No schema changes versus A2, same SentenceQuestion shape,
  * same role palette (connector/verb/subject/object/time/place/
  * reflexive/neutral). The Verbklammer visual (two cherry pills
  * either side of neutral) repeats across anchors 1, 2 and 6
- * intentionally — that IS the lesson ("all these brackets work
+ * intentionally, that IS the lesson ("all these brackets work
  * the same way").
  *
  * Content rules honored (§6 of the brief):
@@ -24,7 +24,7 @@
  *   - `correctOrder` identity across every item.
  *   - Scenes have no `learn`.
  *   - Relativsatz main-clause portions (`Der Mann,`, `ist mein Vater.`)
- *     are intentionally `neutral` — understated so the relative
+ *     are intentionally `neutral`, understated so the relative
  *     clause itself visually pops.
  *   - Manner adverbials (TEKAMOLO) land on `neutral` role; no new
  *     manner colour.
@@ -41,7 +41,7 @@ export {
 } from "@/content/sentence-a1";
 
 export const SENTENCE_B1: SentenceQuestion[] = [
-  // 1 — Anchor: Wenn-Satz (hypothetical conditional)
+  // 1, Anchor: Wenn-Satz (hypothetical conditional)
   {
     topic: "Wenn-Satz (hypothetical)",
     words: [
@@ -116,7 +116,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     },
   },
 
-  // 2 — Anchor: Vorgangspassiv
+  // 2, Anchor: Vorgangspassiv
   {
     topic: "Vorgangspassiv",
     words: ["Das", "Haus", "wird", "von", "Architekten", "gebaut."],
@@ -152,7 +152,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
         },
       ],
       body:
-        "Same bracket as Perfekt — this time **werden** holds position 2 and the **Partizip II** goes to the end. The doer (the agent) often disappears; when named, it appears as **von + Dativ**. Tense lives in werden: **wird** (Präsens), **wurde** (Präteritum), **ist ... worden** (Perfekt).",
+        "Same bracket as Perfekt, this time **werden** holds position 2 and the **Partizip II** goes to the end. The doer (the agent) often disappears; when named, it appears as **von + Dativ**. Tense lives in werden: **wird** (Präsens), **wurde** (Präteritum), **ist ... worden** (Perfekt).",
     },
     tr: {
       topic: "Edilgen (hareket)",
@@ -165,12 +165,12 @@ export const SENTENCE_B1: SentenceQuestion[] = [
           "Mektup dün yazıldı.",
         ],
         body:
-          "Perfekt ile aynı köprü — bu sefer **werden** 2. pozisyonu, **Partizip II** sonu tutar. Eylemi yapan genelde kaybolur; adı anıldığında **von + Dativ** ile görünür. Zaman werden'de yaşar: **wird** (Präsens), **wurde** (Präteritum), **ist ... worden** (Perfekt).",
+          "Perfekt ile aynı köprü, bu sefer **werden** 2. pozisyonu, **Partizip II** sonu tutar. Eylemi yapan genelde kaybolur; adı anıldığında **von + Dativ** ile görünür. Zaman werden'de yaşar: **wird** (Präsens), **wurde** (Präteritum), **ist ... worden** (Perfekt).",
       },
     },
   },
 
-  // 3 — Anchor: Relativsatz
+  // 3, Anchor: Relativsatz
   {
     topic: "Relativsatz",
     words: ["Der", "Mann,", "der", "dort", "steht,", "ist", "mein", "Vater."],
@@ -238,7 +238,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     },
   },
 
-  // 4 — Anchor: um ... zu + Infinitiv
+  // 4, Anchor: um ... zu + Infinitiv
   {
     topic: "um ... zu + Infinitiv",
     words: ["Ich", "lerne", "Deutsch,", "um", "in", "Berlin", "zu", "arbeiten."],
@@ -279,7 +279,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: {
       topic: "um ... zu + mastar",
       learn: {
-        english: "Amaç: '-mek için' — um + ... + zu + mastar sonda",
+        english: "Amaç: '-mek için', um + ... + zu + mastar sonda",
         partCaptions: [
           "önce gelir",
           "Bağlaç",
@@ -297,7 +297,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     },
   },
 
-  // 5 — Anchor: Zeit – Modal – Ort (TEKAMOLO)
+  // 5, Anchor: Zeit – Modal – Ort (TEKAMOLO)
   {
     topic: "Zeit – Modal – Ort",
     words: [
@@ -346,7 +346,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
         },
       ],
       body:
-        "Inside the Mittelfeld, adverbials typically follow the order **Zeit → Modal → Ort** (Time → Manner → Place). Full mnemonic: **TEKAMOLO** (Temporal, Kausal, Modal, Lokal). Any one adverbial can move to position 1 for emphasis — the verb still stays in position 2.",
+        "Inside the Mittelfeld, adverbials typically follow the order **Zeit → Modal → Ort** (Time → Manner → Place). Full mnemonic: **TEKAMOLO** (Temporal, Kausal, Modal, Lokal). Any one adverbial can move to position 1 for emphasis, the verb still stays in position 2.",
     },
     tr: {
       topic: "Zaman – Tarz – Yer",
@@ -365,12 +365,12 @@ export const SENTENCE_B1: SentenceQuestion[] = [
           "Bugün kafede severek buluşuruz.",
         ],
         body:
-          "Mittelfeld'de zarflar genelde şu sırayı izler: **Zaman → Tarz → Yer** (Zeit → Modal → Ort). Tam ipucu: **TEKAMOLO** (Temporal, Kausal, Modal, Lokal). Zarflardan herhangi biri vurgu için 1. pozisyona çıkabilir — fiil hâlâ 2. pozisyonda kalır.",
+          "Mittelfeld'de zarflar genelde şu sırayı izler: **Zaman → Tarz → Yer** (Zeit → Modal → Ort). Tam ipucu: **TEKAMOLO** (Temporal, Kausal, Modal, Lokal). Zarflardan herhangi biri vurgu için 1. pozisyona çıkabilir, fiil hâlâ 2. pozisyonda kalır.",
       },
     },
   },
 
-  // 6 — Anchor: Nachdem + Perfekt / Plusquamperfekt
+  // 6, Anchor: Nachdem + Perfekt / Plusquamperfekt
   {
     topic: "Nachdem",
     words: [
@@ -388,7 +388,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
       layout: "sentenceFormula",
       headline: "Nachdem",
       english:
-        "Temporal: 'after' — nachdem-clause one tense deeper than the Hauptsatz",
+        "Temporal: 'after', nachdem-clause one tense deeper than the Hauptsatz",
       parts: [
         { text: "Nachdem", translation: "Connector", caption: "Konnektor", role: "verb" },
         { text: "Subjekt", translation: "Subject", caption: "Nebensatz", role: "subject" },
@@ -428,7 +428,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
       topic: "Nachdem",
       learn: {
         english:
-          "Zamansal: '-dikten sonra' — nachdem cümlesi ana cümleden bir zaman daha geride",
+          "Zamansal: '-dikten sonra', nachdem cümlesi ana cümleden bir zaman daha geride",
         partCaptions: [
           "Bağlaç",
           "Yan cümle",
@@ -451,7 +451,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     },
   },
 
-  // 7 — Scene: Job dream (Wenn-Satz with sein-wäre)
+  // 7, Scene: Job dream (Wenn-Satz with sein-wäre)
   {
     topic: "Job dream",
     words: ["Wenn", "ich", "reich", "wäre,", "würde", "ich", "reisen."],
@@ -459,7 +459,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: { topic: "İş hayali" },
   },
 
-  // 8 — Scene: House construction (Vorgangspassiv agent-less)
+  // 8, Scene: House construction (Vorgangspassiv agent-less)
   {
     topic: "House construction",
     words: ["Das", "Haus", "wird", "gebaut."],
@@ -467,7 +467,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: { topic: "Ev inşaatı" },
   },
 
-  // 9 — Scene: The new neighbor (Relativsatz feminine Nom)
+  // 9, Scene: The new neighbor (Relativsatz feminine Nom)
   {
     topic: "The new neighbor",
     words: ["Die", "Frau,", "die", "neben", "uns", "wohnt,", "ist", "nett."],
@@ -475,7 +475,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: { topic: "Yeni komşu" },
   },
 
-  // 10 — Scene: Study plan (um…zu with object)
+  // 10, Scene: Study plan (um…zu with object)
   {
     topic: "Study plan",
     words: [
@@ -492,7 +492,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: { topic: "Çalışma planı" },
   },
 
-  // 11 — Scene: Travel plans (TEKAMOLO variant)
+  // 11, Scene: Travel plans (TEKAMOLO variant)
   {
     topic: "Travel plans",
     words: [
@@ -509,7 +509,7 @@ export const SENTENCE_B1: SentenceQuestion[] = [
     tr: { topic: "Seyahat planları" },
   },
 
-  // 12 — Scene: Morning routine (Nachdem + Perfekt chain)
+  // 12, Scene: Morning routine (Nachdem + Perfekt chain)
   {
     topic: "Morning routine",
     words: ["Nachdem", "ich", "geduscht", "habe,", "trinke", "ich", "Kaffee."],

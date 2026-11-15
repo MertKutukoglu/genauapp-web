@@ -7,7 +7,7 @@ import { PhoneStack } from "@/components/molecules/PhoneStack/PhoneStack";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * HeroLeftPanelPhone — phone-forward composition. Headline + subhead at
+ * HeroLeftPanelPhone, phone-forward composition. Headline + subhead at
  * the top, a three-phone stack in the middle showing Home + Prepositions
  * + Word card, TryDemoCard pinned beneath.
  *
@@ -37,7 +37,7 @@ export function HeroLeftPanelPhone({ className }: HeroLeftPanelPhoneProps) {
         {strings.hero.sub}
       </p>
 
-      {/* Phone stack — full card width, soaks remaining vertical space.
+      {/* Phone stack, full card width, soaks remaining vertical space.
           Images are object-contain so they shrink to fit; the stack's
           bottom-fade mask dissolves the phones into the TryDemoCard
           below. */}

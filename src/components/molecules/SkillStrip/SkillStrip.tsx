@@ -5,18 +5,18 @@ import { clsx } from "@/lib/utils/clsx";
 import { SkillRing, type Skill } from "@/components/atoms/SkillRing/SkillRing";
 
 /**
- * SkillStrip — the row of four 54×54 skill badges that sits between
+ * SkillStrip, the row of four 54×54 skill badges that sits between
  * the left card's subtitle and the chip list.
  *
  * Mirrors the production markup in
  * claude/GenauApp_Web_Try_ChipPicker_Brief.md §8 and the geometry
  * from claude/GenauApp_Web_SkillBadges_SVG.md.
  *
- * Listen is deliberately excluded from the demo per spec — the four
+ * Listen is deliberately excluded from the demo per spec, the four
  * badges are Vocab, Gram, Read, Write in that order.
  *
  * Progress is passed in as a per-skill 0..1 map. The parent owns the
- * numbers — this component is presentational so the same strip can
+ * numbers, this component is presentational so the same strip can
  * sit on surfaces with different data sources (store, static demo,
  * server-rendered summary). `pending` and `onCollect` are per-skill
  * too, powering the "tap to collect" mechanic from §8; omit them and
@@ -71,7 +71,7 @@ export function SkillStrip({
             key={id}
             type="button"
             onClick={() => onCollect?.(id)}
-            aria-label={`${id} skill${isPending ? " — pending progress" : ""}`}
+            aria-label={`${id} skill${isPending ? ", pending progress" : ""}`}
             className={clsx(
               "appearance-none bg-transparent border-0 p-0 cursor-pointer",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",

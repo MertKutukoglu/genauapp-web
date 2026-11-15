@@ -7,15 +7,15 @@ import { workoutCopy } from "@/lib/workout/strings";
 import { useWaitlistSubmit } from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
- * WorkoutSummaryCard — the first screen of the demo-complete flow.
+ * WorkoutSummaryCard, the first screen of the demo-complete flow.
  *
  * Shape (top → bottom):
  *   1. Heading + subheading (small win, continuity line)
  *   2. First-try stats tile (correct / total summed across the four
  *      chip sessions the caller tracked)
- *   3. Content preview — A1 scope under the taste demo, 4 bullets,
+ *   3. Content preview, A1 scope under the taste demo, 4 bullets,
  *     with a one-line footnote about higher levels
- *   4. Email capture — single input + submit button; dismiss link
+ *   4. Email capture, single input + submit button; dismiss link
  *     underneath that routes the parent to the feedback screen
  *
  * Supabase submit goes through `useWaitlistSubmit` with
@@ -24,7 +24,7 @@ import { useWaitlistSubmit } from "@/lib/waitlist/useWaitlistSubmit";
  * Duplicate (409) counts as success for the user (we don't leak
  * whether they signed up before).
  *
- * On success the card delegates to its parent via `onSuccess` —
+ * On success the card delegates to its parent via `onSuccess`,
  * the WorkoutCompleteFlow swaps in the Done card. On explicit
  * dismiss it fires `onDismiss` and the parent swaps in Feedback.
  */
@@ -58,7 +58,7 @@ export function WorkoutSummaryCard({
       e.preventDefault();
       if (state === "loading") return;
       const next = await submit({ email, source: "demo_complete" });
-      // Treat duplicate like success — the user has already opted in,
+      // Treat duplicate like success, the user has already opted in,
       // so moving them forward is the honest path.
       if (next === "success" || next === "duplicate") {
         onSuccess();

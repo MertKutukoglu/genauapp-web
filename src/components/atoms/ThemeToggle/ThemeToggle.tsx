@@ -6,7 +6,7 @@ import { track } from "@/lib/analytics/track";
 import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
- * ThemeToggle — sun/moon round button.
+ * ThemeToggle, sun/moon round button.
  *
  * Reads/writes the same localStorage key as the live landing
  * ("genauapp-landing-theme") so a user's preference carries across the

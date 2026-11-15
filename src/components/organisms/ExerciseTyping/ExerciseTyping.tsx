@@ -8,7 +8,7 @@ import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/Exerci
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * ExerciseTyping — type the German word for the English prompt.
+ * ExerciseTyping, type the German word for the English prompt.
  *
  * Layout per iOS reference:
  *   1. CardToolbar (speaker + counter)
@@ -17,12 +17,12 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   4. Rounded text input with placeholder "Type in German…"
  *   5. Full-width Check button underneath
  *
- * Enter in the input also fires Check — the keyboard flow matches
+ * Enter in the input also fires Check, the keyboard flow matches
  * what a typist expects from a single-field form.
  *
  * Tolerant comparison: case-insensitive; umlaut-tolerant (ü↔ue,
  * ö↔oe, ä↔oe, ß↔ss); whitespace trimmed. The source of truth for
- * the correct spelling stays what the content supplied — tolerance
+ * the correct spelling stays what the content supplied, tolerance
  * only applies to the user's input.
  */
 
@@ -34,13 +34,13 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  * Reflexive strip (A2+): the canonical lexical form of a reflexive
  * verb carries "sich" in front (`sich beeilen`), but learners who
  * type just the infinitive ("beeilen") are grammatically right too
- * — the pronoun conjugates with the subject at usage time, it's
+ *, the pronoun conjugates with the subject at usage time, it's
  * not part of the stem. Accepting both sides ships the right
  * grammar without wrong-flagging the shorter form the way the iOS
  * app once did (see softlaunch backlog 2026-11-10).
  *
  * Trailing-prep strip (B1+): a fixed reflexive-prepositional verb
- * like `sich bewerben um` is a lexical unit — our own Learn copy
+ * like `sich bewerben um` is a lexical unit, our own Learn copy
  * teaches it that way. A learner who types "sich bewerben um"
  * against a stored "sich bewerben" is RIGHT, not wrong, so strip
  * a trailing single-word preposition before comparing. The small
@@ -69,7 +69,7 @@ export interface ExerciseTypingProps {
   answer: string;
   /** Shown inside the input before typing (defaults to "Type in German…"). */
   placeholder?: string;
-  /** TTS target — defaults to `answer` (the German word). */
+  /** TTS target, defaults to `answer` (the German word). */
   speakText?: string;
   /** Shown in ExerciseFeedback on commit. */
   explanation?: React.ReactNode;
@@ -98,7 +98,7 @@ export function ExerciseTyping({
 
   // Reset when the word changes.
   React.useEffect(() => {
-    // Intentional state sync on word change — reset the input + any
+    // Intentional state sync on word change, reset the input + any
     // committed verdict so the next card starts fresh.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue("");
@@ -165,7 +165,7 @@ export function ExerciseTyping({
         </div>
       </div>
 
-      {/* Input — tinted sunken surface with a visible caret color
+      {/* Input, tinted sunken surface with a visible caret color
           driven by --accent so it reads as a focused field. */}
       <input
         type="text"

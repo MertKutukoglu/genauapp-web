@@ -1,7 +1,7 @@
 import * as React from "react";
 
 /**
- * GenauApp wordmark — vector only, no beta pill, no container.
+ * GenauApp wordmark, vector only, no beta pill, no container.
  * Composable: Wordmark (molecule-adjacent) combines this with Badge.
  * SVG ported verbatim from the live landing (claude/GenauApp_Web_Topnav_Source.md).
  */

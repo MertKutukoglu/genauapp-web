@@ -1,5 +1,5 @@
 /**
- * i18n — string dictionaries for landing + blog + legal + nav.
+ * i18n, string dictionaries for landing + blog + legal + nav.
  *
  * Shape conventions:
  *   - Keys are nested by surface (nav, hero, slides, footer, …) for
@@ -9,7 +9,7 @@
  *     `<span>` without the dictionary knowing about React.
  *
  * `strings` is strongly typed on EN. TR must satisfy the same type, so
- * missing keys fail typecheck — which is the point: a TR lookup can't
+ * missing keys fail typecheck, which is the point: a TR lookup can't
  * silently fall through to a placeholder English fragment in prod.
  *
  * Content in this file is sourced from:
@@ -20,7 +20,7 @@
 
 import type { Locale } from "./config";
 
-/** The EN dictionary — treated as the schema; TR must match its shape. */
+/** The EN dictionary, treated as the schema; TR must match its shape. */
 const en = {
   nav: {
     origins: "Read our story",
@@ -28,7 +28,7 @@ const en = {
   },
   // (`as const` is deliberately NOT used on `en`: it would narrow each
   // value to its literal string type and make the TR dict uninhabitable
-  // — "Günlük hayat" doesn't extend "Daily life". The loose-string
+  //, "Günlük hayat" doesn't extend "Daily life". The loose-string
   // shape still gives us structural key-level completeness via
   // `typeof en` below.)
   languagePicker: {
@@ -263,10 +263,10 @@ const en = {
       nextLabel: "Next →",
     },
     articlePicker: {
-      // No prompt line — the noun + English hint carry the question.
+      // No prompt line, the noun + English hint carry the question.
     },
     translationMC: {
-      // No prompt line — the German word carries the question.
+      // No prompt line, the German word carries the question.
     },
     typing: {
       eyebrow: "Translate to German",
@@ -275,13 +275,13 @@ const en = {
     },
     learnCompletion: {
       heading: "You walked the deck.",
-      sub: "Learn shows you the pattern. Exercise is where it sticks — and where your skill rings fill up.",
+      sub: "Learn shows you the pattern. Exercise is where it sticks, and where your skill rings fill up.",
       startOver: "Start over",
       switchToExercise: "Lock it in with Exercise →",
     },
     exerciseCompletion: {
       doneSuffix: "Done",
-      // Subtitle bands keyed by the ratio band — matches subtitleFor().
+      // Subtitle bands keyed by the ratio band, matches subtitleFor().
       subtitles: {
         empty: "Deck empty.",
         nothing: "Nothing landed yet.",
@@ -307,7 +307,7 @@ const en = {
   },
 };
 
-/** The TR dictionary — must satisfy the EN shape. */
+/** The TR dictionary, must satisfy the EN shape. */
 const tr: typeof en = {
   nav: {
     origins: "Kökenler",
@@ -317,7 +317,7 @@ const tr: typeof en = {
     ariaLabel: "Dili değiştir",
   },
   hero: {
-    // Final pick (approved by Mert) — blends options B + C: the "sen
+    // Final pick (approved by Mert), blends options B + C: the "sen
     // Almancayı öğreniyorsun" active-subject rhythm from C paired with
     // the "paslanmasına" metaphor from B (Turkish's standard figure for
     // a skill going stale, stronger than "solmasına").
@@ -357,7 +357,7 @@ const tr: typeof en = {
       h2Before: "",
       h2Emphasis: "Gerçekten yaşayacağın",
       h2After: " anlar için pack'ler.",
-      sub: "Berberde, Bürgeramt'ta, eczanede, markette. Her pack o anın kelimelerini taşır — Almanların hayatı gruplandırdığı gibi.",
+      sub: "Berberde, Bürgeramt'ta, eczanede, markette. Her pack o anın kelimelerini taşır, Almanların hayatı gruplandırdığı gibi.",
     },
   },
   packs: {
@@ -386,7 +386,7 @@ const tr: typeof en = {
     cookies: "Çerezler",
   },
   blogCta: {
-    // Tagline stays in German — it's brand (same note as in the
+    // Tagline stays in German, it's brand (same note as in the
     // Brand Voice doc). Everything around it is TR.
     heading: "Dein Deutsch, dein Workout.",
     body: "Listeye katıl. GenauApp çıkınca sana haber vereceğiz.",
@@ -558,7 +558,7 @@ const tr: typeof en = {
     },
     learnCompletion: {
       heading: "Desteyi gezdin.",
-      sub: "Öğren kalıbı gösterir. Egzersiz onları pekiştirir — skill halkaların burada dolar.",
+      sub: "Öğren kalıbı gösterir. Egzersiz onları pekiştirir, skill halkaların burada dolar.",
       startOver: "Baştan başla",
       switchToExercise: "Egzersizle pekiştir →",
     },

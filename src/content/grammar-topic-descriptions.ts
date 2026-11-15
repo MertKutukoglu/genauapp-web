@@ -1,19 +1,19 @@
 /**
- * grammar-topic-descriptions — one-line descriptions used in the
+ * grammar-topic-descriptions, one-line descriptions used in the
  * Grammar SkillSheet topic cards (iOS parity). Each description
  * mirrors the "say what it is in plain language, give a tiny
  * example or anchor" shape from the app, so a topic the user
  * doesn't immediately recognise still reads at a glance.
  *
  * Keyed by the EXACT `topic` string used in the grammar-a1/a2/b1.ts
- * content files — collect them with:
+ * content files, collect them with:
  *   grep -rh '^\s*topic:' src/content/grammar-*.ts | sort -u
  * and make sure every key here appears there verbatim. Topics
  * without an entry fall back to an empty description (the card
  * still renders cleanly).
  *
  * Keep each description to one line of ~60 chars. Example first,
- * then plain-English anchor — e.g. "aufstehen → ich stehe auf. The
+ * then plain-English anchor, e.g. "aufstehen → ich stehe auf. The
  * prefix flies off." reads faster than a dry definition.
  */
 

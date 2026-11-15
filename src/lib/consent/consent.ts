@@ -1,5 +1,5 @@
 /**
- * Cookie consent — the single source of truth for whether the user has
+ * Cookie consent, the single source of truth for whether the user has
  * agreed to analytics. PostHog gates its init on this; Vercel Web
  * Analytics is cookieless and runs regardless.
  *

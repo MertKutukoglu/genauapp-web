@@ -12,7 +12,7 @@ import { CookieConsent } from "@/components/molecules/CookieConsent/CookieConsen
 import "./globals.css";
 
 /**
- * Nunito for display + body — a single rounded sans across the whole
+ * Nunito for display + body, a single rounded sans across the whole
  * site chrome. Self-hosted via next/font (GDPR-safe: no runtime
  * Google Fonts request).
  *
@@ -21,7 +21,7 @@ import "./globals.css";
  * template landing page" even after the Spectral swap, and italic
  * headlines in particular landed too editorial for a friendly
  * language-learning app. Nunito is the closest web-available face to
- * Apple's SF Pro Rounded — fully rounded, highly readable at small
+ * Apple's SF Pro Rounded, fully rounded, highly readable at small
  * and large sizes, and carries the "friendly, warm, modern app"
  * register GenauApp aims for.
  *
@@ -45,7 +45,7 @@ const nunito = Nunito({
 });
 
 /**
- * Source Serif 4 — used in /blog/* articles for a reading-column feel
+ * Source Serif 4, used in /blog/* articles for a reading-column feel
  * (body copy). Headings stay on Open Sans for brand consistency.
  */
 const sourceSerif = Source_Serif_4({
@@ -55,11 +55,11 @@ const sourceSerif = Source_Serif_4({
   weight: ["400", "500", "600", "700"],
 });
 
-// Verbatim from claude/GenauApp_Web_OG_Image.md §4 — matches the live
+// Verbatim from claude/GenauApp_Web_OG_Image.md §4, matches the live
 // landing's current social meta exactly, so unfurls in Slack / iMessage /
 // LinkedIn / Twitter look identical to the old deploy.
 const OG_TITLE =
-  "GenauApp — You keep learning German. We keep it from fading.";
+  "GenauApp, You keep learning German. We keep it from fading.";
 const OG_DESCRIPTION =
   "A sharp, honest companion for active German learners. Built in Berlin.";
 
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     url: "https://www.genauapp.io/",
     title: OG_TITLE,
     description: OG_DESCRIPTION,
-    // images come from app/opengraph-image.tsx (Next 16 convention) —
+    // images come from app/opengraph-image.tsx (Next 16 convention),
     // it's picked up automatically, no need to list it here.
   },
   twitter: {
@@ -107,11 +107,11 @@ export const viewport: Viewport = {
 };
 
 /**
- * Inline theme script — set data-theme BEFORE the first paint to avoid FOUC.
+ * Inline theme script, set data-theme BEFORE the first paint to avoid FOUC.
  * Uses the same storage key as the live landing ("genauapp-landing-theme")
  * so a user's saved preference carries across the domain cutover.
  *
- * Default theme is DARK — the brand reads best there, so first-time
+ * Default theme is DARK, the brand reads best there, so first-time
  * visitors land in dark mode regardless of their OS setting. Once they
  * toggle, their choice persists in localStorage and overrides the default.
  */

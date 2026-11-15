@@ -22,8 +22,8 @@ export default function DatenschutzPage() {
 
       <p>
         This Privacy Notice for <strong>Mert Kuetuekoglu</strong> (doing
-        business as <strong>Genau App</strong>) — &quot;we&quot;,
-        &quot;us&quot;, or &quot;our&quot; — describes how and why we might
+        business as <strong>Genau App</strong>), &quot;we&quot;,
+        &quot;us&quot;, or &quot;our&quot;, describes how and why we might
         access, collect, store, use, and/or share (&quot;process&quot;) your
         personal information when you use our Services, including when you:
       </p>
@@ -38,7 +38,7 @@ export default function DatenschutzPage() {
           application of ours that links to this Privacy Notice
         </li>
         <li>
-          Use Genau App — an online educational platform designed to assist
+          Use Genau App, an online educational platform designed to assist
           users in expanding their German vocabulary, particularly in
           preparation for TELC exams
         </li>
@@ -128,23 +128,23 @@ export default function DatenschutzPage() {
       </p>
       <ul>
         <li>
-          <strong>Consent</strong> — you have given us permission to use your
+          <strong>Consent</strong>, you have given us permission to use your
           personal information for a specific purpose
         </li>
         <li>
-          <strong>Performance of a contract</strong> — necessary to fulfill
+          <strong>Performance of a contract</strong>, necessary to fulfill
           contractual obligations
         </li>
         <li>
-          <strong>Legitimate interests</strong> — to achieve our legitimate
+          <strong>Legitimate interests</strong>, to achieve our legitimate
           business interests while respecting your rights
         </li>
         <li>
-          <strong>Legal obligations</strong> — compliance with legal
+          <strong>Legal obligations</strong>, compliance with legal
           requirements
         </li>
         <li>
-          <strong>Vital interests</strong> — to protect your vital interests or
+          <strong>Vital interests</strong>, to protect your vital interests or
           those of a third party
         </li>
       </ul>
@@ -187,7 +187,7 @@ export default function DatenschutzPage() {
         >
           Google Analytics Opt-out
         </a>
-        . Legal basis: Art. 6(1)(a) GDPR — consent via our cookie banner.
+        . Legal basis: Art. 6(1)(a) GDPR, consent via our cookie banner.
       </p>
 
       <h3>Hotjar</h3>
@@ -203,7 +203,7 @@ export default function DatenschutzPage() {
         >
           Hotjar Opt-out
         </a>
-        . Legal basis: Art. 6(1)(a) GDPR — consent via our cookie banner.
+        . Legal basis: Art. 6(1)(a) GDPR, consent via our cookie banner.
       </p>
 
       <h2>6. Do we offer AI-based products?</h2>

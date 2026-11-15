@@ -1,5 +1,5 @@
 /**
- * pickLearnCardType — chooses which Learn card variant to render per
+ * pickLearnCardType, chooses which Learn card variant to render per
  * word. Mirrors `LearnCardType.random(for:)` from the iOS spec
  * (ExerciseView.swift lines ~1911–1925):
  *
@@ -7,7 +7,7 @@
  *     (chunkCompose with a single chunk is a degenerate puzzle)
  *   - ≥ 2 chunks → pool is [normal, scrambled, chunkCompose]
  *
- * Each card pick is independent — a word that comes back on a
+ * Each card pick is independent, a word that comes back on a
  * subsequent Repeat may get a different variant, which keeps the
  * Learn walk fresh.
  */

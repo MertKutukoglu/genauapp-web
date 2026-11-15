@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
- * StreakPill — "🔥 7 days" chip shown in the Workout slide header.
+ * StreakPill, "🔥 7 days" chip shown in the Workout slide header.
  * Amber-tinted pill, consistent with the app's streak treatment.
  */
 

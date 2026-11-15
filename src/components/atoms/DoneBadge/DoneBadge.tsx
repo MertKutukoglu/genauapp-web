@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * DoneBadge — the 22×22 green ✓ circle that appears bottom-right on a
+ * DoneBadge, the 22×22 green ✓ circle that appears bottom-right on a
  * completed chip in the /try/ picker.
  *
  * Spec: claude/GenauApp_Web_Try_ChipPicker_Brief.md §3.1 (`.chip-state`)
@@ -13,7 +13,7 @@ import { clsx } from "@/lib/utils/clsx";
  *   - 12×12 check SVG, polyline "5 12 10 17 19 7"
  *
  * Positioning is the parent's job (absolute placement relative to the
- * chip). This component is pure visual — no state, no behavior.
+ * chip). This component is pure visual, no state, no behavior.
  */
 
 export interface DoneBadgeProps {

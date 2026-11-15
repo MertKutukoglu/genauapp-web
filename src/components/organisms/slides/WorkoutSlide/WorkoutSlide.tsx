@@ -14,7 +14,7 @@ import {
 import { WpChipIcon } from "./WpChipIcons";
 
 /**
- * Slide 1 — Workout. Verbatim port of the production landing slide
+ * Slide 1, Workout. Verbatim port of the production landing slide
  * (claude/GenauApp_Web_Landing_Slide1_Workout.md).
  *
  * Behavior spec:
@@ -27,7 +27,7 @@ import { WpChipIcon } from "./WpChipIcons";
  *     parent sets `isActiveSlide`); resets to Grammar on re-activation.
  *   - CTA label comes from the active slot's `cta` string (never falls
  *     back to a generic "Start").
- *   - Active slot is absolutely stacked — all 6 mounted, only the
+ *   - Active slot is absolutely stacked, all 6 mounted, only the
  *     active one has opacity 1 (220ms ease fade between swaps).
  */
 
@@ -82,7 +82,7 @@ export function WorkoutSlide({
         sub={slide.sub}
       />
 
-      {/* Workout peek — app-faithful card */}
+      {/* Workout peek, app-faithful card */}
       <section
         aria-label="Workout sneak peek"
         className="mx-auto flex w-full max-w-[420px] flex-col gap-3.5 rounded-[24px] border border-border bg-surface-card p-5 shadow-[0_24px_56px_-24px_rgba(26,19,18,0.28)]"
@@ -146,7 +146,7 @@ export function WorkoutSlide({
           })}
         </div>
 
-        {/* Stacked slots — only the active one is visible */}
+        {/* Stacked slots, only the active one is visible */}
         <div className="relative grid [grid-template-areas:'stack']">
           {CYCLE_ORDER.map((k) => {
             const s = SLOT_CONTENT[k];
@@ -174,7 +174,7 @@ export function WorkoutSlide({
         </div>
 
         {/*
-          CTA — white fill + cherry stroke + cherry text so this
+          CTA, white fill + cherry stroke + cherry text so this
           widget-level primary button sits one level quieter than
           the landing-page hero's solid-cherry Try button. Hover
           softly fills in with 6% cherry; focus-visible keeps the

@@ -11,7 +11,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { FormulaExample } from "@/content/sentence-a1";
 
 /**
- * SentenceBuilderCard — the Sentence chip's single Exercise card:
+ * SentenceBuilderCard, the Sentence chip's single Exercise card:
  * a tap-to-order word-chip reorderer (brief §5).
  *
  * The user taps words from the shuffled pool below. Each tap moves
@@ -24,7 +24,7 @@ import type { FormulaExample } from "@/content/sentence-a1";
  *
  * Shuffle is one-shot per item (seeded on the `wordsKey`) so React
  * re-renders don't reshuffle under the user. `words` itself is the
- * canonical order; `correctOrder` is identity in current content —
+ * canonical order; `correctOrder` is identity in current content,
  * we always validate against `words` by position for safety.
  */
 
@@ -98,7 +98,7 @@ export function SentenceBuilderCard({
   const wordsKey = React.useMemo(() => words.join("|"), [words]);
 
   /**
-   * poolOrder is the display order of the pool chips — a shuffled
+   * poolOrder is the display order of the pool chips, a shuffled
    * permutation of word indices. It never changes once the item
    * mounts. `placed` holds the indices the user has placed, in slot
    * order (null = empty slot).
@@ -233,7 +233,7 @@ export function SentenceBuilderCard({
         {instructionLabel}
       </div>
 
-      {/* Slot row — dashed outline container, min-height 80, flex wrap */}
+      {/* Slot row, dashed outline container, min-height 80, flex wrap */}
       <div
         className="rounded-2xl p-4 min-h-[80px] flex flex-wrap gap-2 items-center"
         style={{
@@ -258,7 +258,7 @@ export function SentenceBuilderCard({
         )}
       </div>
 
-      {/* Pool row — shuffled chips. A chip that has been placed is
+      {/* Pool row, shuffled chips. A chip that has been placed is
           rendered as an invisible gap in the pool so the layout
           doesn't collapse when the user places one; the same slot
           re-appears when they un-tap. */}
@@ -304,7 +304,7 @@ export function SentenceBuilderCard({
           {locale === "tr" ? "Kontrol et" : "Check"}
         </button>
       ) : (
-        // On correct, the auto-advance timer carries the user on — no
+        // On correct, the auto-advance timer carries the user on, no
         // visible Next needed. The Incorrect banner above already
         // owns its own Next.
         <div className="mt-auto" />
@@ -314,7 +314,7 @@ export function SentenceBuilderCard({
 }
 
 /**
- * EmptySlot — the dashed-outline placeholder for an unfilled slot.
+ * EmptySlot, the dashed-outline placeholder for an unfilled slot.
  * Matches the WordChip's min-height so the slot row doesn't jump
  * when chips fill it.
  */
@@ -332,7 +332,7 @@ function EmptySlot() {
 }
 
 /**
- * CorrectReveal — the "correct sentence" block rendered inside the
+ * CorrectReveal, the "correct sentence" block rendered inside the
  * Incorrect feedback banner. Role-colored when the question carries
  * `revealSegments` (anchor items 1–6); plain fg for the 6 pack-themed
  * scenes (they ship no `learn` metadata, so there's no segment info).

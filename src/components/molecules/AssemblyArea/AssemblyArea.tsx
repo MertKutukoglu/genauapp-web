@@ -5,10 +5,10 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * AssemblyArea — shared tile-puzzle mechanic for the Scrambled +
+ * AssemblyArea, shared tile-puzzle mechanic for the Scrambled +
  * ChunkCompose Learn variants.
  *
- * Caller hands the component `pieces` — the target string split into
+ * Caller hands the component `pieces`, the target string split into
  * the ordered sequence the user needs to reconstruct. For Scrambled
  * that's the word split into single letters; for ChunkCompose it's
  * the syllable chunks.
@@ -17,7 +17,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   - Slot row: one dash per CHARACTER in the target (not per piece).
  *     Placed pieces fill characters left-to-right, so a chunk like
  *     "Fa" fills slots 0 + 1. The assembled characters read as a
- *     single continuous word — no visible gap between consecutive
+ *     single continuous word, no visible gap between consecutive
  *     filled characters, which was the bug the chunk layout had
  *     previously.
  *   - Tile pool: pieces as bigger rectangular tiles + backspace at
@@ -34,12 +34,12 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export interface AssemblyAreaProps {
   /**
-   * The user-pickable sequence in target order — Scrambled: single
+   * The user-pickable sequence in target order, Scrambled: single
    * letters; ChunkCompose: syllable chunks. For article-aware prompts
    * the article's letters/chunk come first in this array, e.g.:
    *   • scrambled "das Fenster" → ["d","a","s","F","e","n","s","t","e","r"]
    *   • chunkCompose "die Familie" → ["die","Fa","mi","lie"]
-   * No whitespace tokens in here — the space between article and word
+   * No whitespace tokens in here, the space between article and word
    * is a non-pickable gap driven by `displayTarget` below.
    */
   pieces: string[];
@@ -205,7 +205,7 @@ export function AssemblyArea({
 
   return (
     <div className={clsx("flex flex-col gap-6 items-center", className)}>
-      {/* Slot row — iterates `display` so spaces land as visible gaps
+      {/* Slot row, iterates `display` so spaces land as visible gaps
           (no dash, wider column), while letter slots fill sequentially
           from `assembled`. Running `letterIdx` counter tracks which
           letter-position we're on, independent of the index into
@@ -218,7 +218,7 @@ export function AssemblyArea({
           let letterIdx = 0;
           return display.split("").map((char, i) => {
             // Non-letter display chars (currently just space) render
-            // as a wider column with no dash — reads as a word gap.
+            // as a wider column with no dash, reads as a word gap.
             if (char === " ") {
               return (
                 <div

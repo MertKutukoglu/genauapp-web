@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * PackMarqueeCard — the pack tile used inside the Packs slide marquee.
+ * PackMarqueeCard, the pack tile used inside the Packs slide marquee.
  *
  * Differs from the atomic PackCard by design:
  *   - Title + CEFR level sit UNDER the illustration (a row below), not
@@ -46,7 +46,7 @@ export function PackMarqueeCard({
       >
         {imageSrc ? (
           // Plain <img> instead of next/image so a missing webp doesn't crash
-          // the slide — once the real files land in public/, they're served
+          // the slide, once the real files land in public/, they're served
           // as-is. Optimize later via next/image if the covers get large.
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -54,7 +54,7 @@ export function PackMarqueeCard({
             alt={imageAlt ?? ""}
             width={240}
             height={240}
-            // No loading="lazy" — the Packs slide sits inside the
+            // No loading="lazy", the Packs slide sits inside the
             // opacity:0 inactive slides of the carousel, and Safari
             // mobile sometimes defers lazy images inside hidden
             // containers past the point where the carousel reveals

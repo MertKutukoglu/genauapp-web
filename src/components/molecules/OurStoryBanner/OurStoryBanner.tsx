@@ -9,11 +9,11 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 /**
  * Mobile promo banner pointing to the origins blog post. Rendered as
  * a rounded card below the topnav so it reads as a second stacked
- * item in the header stack (not a full-bleed strip). Dismissable —
+ * item in the header stack (not a full-bleed strip). Dismissable,
  * the × stores { dismissedAt } under `genauapp-story-banner-dismissed`
  * in localStorage so it stays dismissed across sessions on that device.
  *
- * Hidden on desktop (lg:hidden) — desktop uses NavOriginsLink in the
+ * Hidden on desktop (lg:hidden), desktop uses NavOriginsLink in the
  * topnav itself.
  *
  * The card itself is a <div> (not a <Link>) so the × click target is

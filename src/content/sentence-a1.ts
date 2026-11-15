@@ -1,5 +1,5 @@
 /**
- * Sentence — A1 deck (12 items). Verbatim port of
+ * Sentence, A1 deck (12 items). Verbatim port of
  * claude/GenauApp_Web_Try_Sentence_Content_A1.md §2, with a `tr`
  * overlay on each item translating every learner-facing English
  * string: subtitle, pill captions, example glosses, body prose, and
@@ -7,9 +7,9 @@
  *
  * German-side data stays German across locales:
  *   - `words` (the sentence tokenization, with punctuation attached)
- *   - `learn.headline` (Hauptsatz, Ortsangabe, ... — brand-stable
+ *   - `learn.headline` (Hauptsatz, Ortsangabe, ..., brand-stable
  *     grammar terms the learner needs to recognize in any locale)
- *   - `learn.parts[].text` (Subjekt, Verb, Objekt, Zeit, Ort, W-Wort —
+ *   - `learn.parts[].text` (Subjekt, Verb, Objekt, Zeit, Ort, W-Wort,
  *     ditto, structural German terms)
  *   - `learn.examples[].segments[].text` (the example sentence content)
  *
@@ -80,7 +80,7 @@ export interface SentenceLearnBlock {
  * can't drift them by index.
  */
 export interface SentenceLocaleOverlay {
-  /** Translated topic eyebrow (used on pack-themed scenes mainly —
+  /** Translated topic eyebrow (used on pack-themed scenes mainly,
    *  Learn-anchor topics like "Subject + Verb + Object" also get a
    *  TR gloss here). */
   topic?: string;
@@ -112,7 +112,7 @@ export interface SentenceQuestion {
 }
 
 export const SENTENCE_A1: SentenceQuestion[] = [
-  // 1 — Anchor: Hauptsatz (SVO)
+  // 1, Anchor: Hauptsatz (SVO)
   {
     topic: "Subject + Verb + Object",
     words: ["Ich", "esse", "Brot."],
@@ -157,7 +157,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 2 — Anchor: Ortsangabe (place)
+  // 2, Anchor: Ortsangabe (place)
   {
     topic: "Prepositional phrase",
     words: ["Wir", "wohnen", "in", "Berlin."],
@@ -202,7 +202,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 3 — Anchor: Possessivartikel
+  // 3, Anchor: Possessivartikel
   {
     topic: "Possessive",
     words: ["Er", "ist", "mein", "Bruder."],
@@ -252,7 +252,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 4 — Anchor: Zeitangabe (time adverb)
+  // 4, Anchor: Zeitangabe (time adverb)
   {
     topic: "Time adverb",
     words: ["Ich", "kaufe", "heute", "Brot."],
@@ -300,7 +300,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 5 — Anchor: Richtung (direction — accusative two-way)
+  // 5, Anchor: Richtung (direction, accusative two-way)
   {
     topic: "Direction (two-way preposition)",
     words: ["Sie", "geht", "in", "die", "Schule."],
@@ -345,7 +345,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 6 — Anchor: W-Frage (question word)
+  // 6, Anchor: W-Frage (question word)
   {
     topic: "Question (W-word)",
     words: ["Wo", "wohnst", "du?"],
@@ -390,7 +390,7 @@ export const SENTENCE_A1: SentenceQuestion[] = [
       },
     },
   },
-  // 7–12 — pack-themed drills (no learn block)
+  // 7–12, pack-themed drills (no learn block)
   {
     topic: "Daily Life",
     words: ["Ich", "trinke", "Kaffee."],

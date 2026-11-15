@@ -1,5 +1,5 @@
 /**
- * Grammar — A2 deck (20 items). Verbatim port of
+ * Grammar, A2 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Grammar_Content_A2.md §4.
  *
  * Deck composition:
@@ -25,7 +25,7 @@
  *   - Umlauts live as real characters (`ä`, `ö`, `ü`, `ß`); the
  *     normalizer handles alt input.
  *   - German paradigm cells (`forms`, `verbs`, `articles`) stay
- *     German in the TR mirror — they're language-neutral tables.
+ *     German in the TR mirror, they're language-neutral tables.
  *   - `sample.highlight` is a substring of `sample.de`; the Perfekt
  *     anchor falls back to single-token `"gelernt"` since the
  *     renderer's `indexOf` match doesn't span non-adjacent tokens
@@ -63,7 +63,7 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
       sample: {
         de: "Ich habe Deutsch gelernt.",
         en: "I learned German.",
-        // Single-token fallback per content rule — the renderer's
+        // Single-token fallback per content rule, the renderer's
         // indexOf cannot span non-adjacent tokens, so "habe gelernt"
         // would render plain. "gelernt" alone still lands the signal.
         highlight: "gelernt",
@@ -91,7 +91,7 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
 
   // ── 2 ─ Anchor: Modalverben (carousel: all 6 modals in one card) ─
   //
-  // One anchor, six paradigms — the chevrons + ArrowLeft/Right cycle
+  // One anchor, six paradigms, the chevrons + ArrowLeft/Right cycle
   // through müssen → können → möchten → wollen → dürfen → sollen.
   // The purple RuleCard below carries the shared "position 2 /
   // infinitive at end" rule so it doesn't repeat per variant.
@@ -270,7 +270,7 @@ export const GRAMMAR_A2: GrammarQuestion[] = [
 
   // ── 3 ─ Anchor: Trennbare Verben (12-prefix carousel) ────────────
   //
-  // One anchor, twelve prefixes — chevrons + ← → walk through
+  // One anchor, twelve prefixes, chevrons + ← → walk through
   // ab- → an- → auf- → aus- → bei- → ein- → los- → mit- → nach-
   // → vor- → weg- → zu-. Each step shows the prefix as the hero,
   // a "Sample Words" tile with 3 verbs built on it, and a purple

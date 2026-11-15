@@ -7,7 +7,7 @@ import { tryCardSurface } from "@/lib/ui/cardChrome";
 import type { ChipId } from "@/stores/chipStore";
 
 /**
- * RightCardPlaceholder — the /try/ right column's empty state.
+ * RightCardPlaceholder, the /try/ right column's empty state.
  *
  * Two shapes:
  *   - `null` chip → "Pick a workout to begin." (the default landing
@@ -16,7 +16,7 @@ import type { ChipId } from "@/stores/chipStore";
  *     for chips whose session content hasn't landed yet)
  *
  * Replaces itself with a real chip session component once that chip's
- * session lands. Kept here so the right column is never empty — a
+ * session lands. Kept here so the right column is never empty, a
  * blank slot across a 2-col grid reads broken on both desktop and
  * mobile.
  *
@@ -57,7 +57,7 @@ export function RightCardPlaceholder({
       )}
     >
       <div className="m-auto flex flex-col items-center gap-4 px-6 py-10 text-center max-w-[380px]">
-        {/* Soft sparkle mark — matches the TryDemoCard icon on the landing */}
+        {/* Soft sparkle mark, matches the TryDemoCard icon on the landing */}
         <span
           aria-hidden
           className={clsx(
@@ -73,7 +73,7 @@ export function RightCardPlaceholder({
             className="w-6 h-6"
             aria-hidden
           >
-            {/* Four-point star — same one used in TryDemoCard */}
+            {/* Four-point star, same one used in TryDemoCard */}
             <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z" />
           </svg>
         </span>

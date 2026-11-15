@@ -8,7 +8,7 @@ import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/Exerci
 import { highlightArticles } from "@/lib/grammar/highlightArticles";
 
 /**
- * GrammarExerciseMC — the Grammar chip's multiple-choice exercise
+ * GrammarExerciseMC, the Grammar chip's multiple-choice exercise
  * card. Parallel of Words' ExerciseTranslationMC but tuned for the
  * cloze shape Grammar uses:
  *
@@ -18,7 +18,7 @@ import { highlightArticles } from "@/lib/grammar/highlightArticles";
  *   - Prompt renders the sentence with its literal `___` triple
  *     underscore intact (per brief §4 / content rule).
  *   - Hint (English or Turkish gloss) is always shown under the
- *     prompt — not tap-to-reveal. It's the one thing that tells the
+ *     prompt, not tap-to-reveal. It's the one thing that tells the
  *     user what sentence they're completing.
  *   - 3 or 4 options in a vertical stack, A/S/D/F keyboard shortcuts.
  *   - On commit: ExerciseFeedback at the top with explanation;
@@ -27,7 +27,7 @@ import { highlightArticles } from "@/lib/grammar/highlightArticles";
  *     colors (shared helper), so "Frau is feminine → die." shows
  *     die in red inside the feedback card.
  *
- * No speaker on the toolbar — the card teaches a paradigm/choice,
+ * No speaker on the toolbar, the card teaches a paradigm/choice,
  * nothing short to pronounce.
  */
 
@@ -58,7 +58,7 @@ const CORRECT_ADVANCE_MS = 1400;
  * Render a cloze prompt with the picked option dropped into the
  * `___` slot. Before commit (`filled == null`), the triple-
  * underscore is shown muted. After commit it swaps for the picked
- * value with a colored pill — green for correct, cherry for wrong.
+ * value with a colored pill, green for correct, cherry for wrong.
  * Matches more than one blank on the same prompt (replaces each),
  * though today's content only ever uses one.
  */
@@ -218,7 +218,7 @@ export function GrammarExerciseMC({
         </div>
       </div>
 
-      {/* Options — vertical stack on mobile, horizontal row on lg+.
+      {/* Options, vertical stack on mobile, horizontal row on lg+.
           A full-width column on a wide desktop card made each button
           look like a CTA; the horizontal row reads as a tight picker
           and cuts the option area's dead weight. */}

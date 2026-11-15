@@ -7,7 +7,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PROGRESS_CARDS } from "./cards";
 
 /**
- * Slide 3 — Your progress. Verbatim port of the production slide
+ * Slide 3, Your progress. Verbatim port of the production slide
  * (claude/GenauApp_Web_Landing_Slide3_Progress.md).
  *
  * Four SkillDetailSheet-replica cards cycling on a 2500ms interval:

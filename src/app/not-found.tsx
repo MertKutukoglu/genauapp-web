@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 /**
- * /not-found — Next's App Router default handler for any URL that
+ * /not-found, Next's App Router default handler for any URL that
  * doesn't match a route. Kept small and on-brand: cherry 404 mark,
  * one line of apology, link home. No topnav/footer chrome; the root
  * layout wraps this automatically.

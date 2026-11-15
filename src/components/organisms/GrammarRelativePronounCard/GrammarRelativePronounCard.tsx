@@ -12,14 +12,14 @@ import type {
 } from "@/content/grammar-a1";
 
 /**
- * GrammarRelativePronounCard — the B1 `relativePronounGrid` layout.
+ * GrammarRelativePronounCard, the B1 `relativePronounGrid` layout.
  *
  * Shape:
  *   toolbar
  *   → centered headline (bold 32) + english gloss (muted base)
  *   → 4×3 grid: gender rows × case cols (Nom / Akk / Dat).
  *     Anomalous forms the learner trips on get a subtle purple
- *     tint — `der` (fem Dat), `dem` (masc & neut Dat) and `denen`
+ *     tint, `der` (fem Dat), `dem` (masc & neut Dat) and `denen`
  *     (plural Dat).
  *   → 2 inline-coloured example sentences under the grid, each
  *     highlighting the relative pronoun of a different case so
@@ -31,7 +31,7 @@ import type {
 
 /** Per-cell colour: Dativ column → green, Akkusativ column → red,
  *  Nominativ column → default foreground (no tint). Grammar-purple
- *  is deliberately NOT the catch-all here — case colours carry the
+ *  is deliberately NOT the catch-all here, case colours carry the
  *  pedagogical signal, matching the Dat-/Akk-Präp anchor convention
  *  (Dativ → --article-das, Akkusativ → --article-die). The learner
  *  reads a Dativ row and an Akk row as different cases by colour,
@@ -70,7 +70,7 @@ export interface GrammarRelativePronounCardProps {
 }
 
 /**
- * Minimal single-token highlighter — wraps the first occurrence of
+ * Minimal single-token highlighter, wraps the first occurrence of
  * `highlight` in the text with a purple strong span. Keeps the
  * example sentences inline (no ReactNode arrays in content).
  */
@@ -176,7 +176,7 @@ export function GrammarRelativePronounCard({
         </div>
       </div>
 
-      {/* Inline example sentences — 2 of them, each with its
+      {/* Inline example sentences, 2 of them, each with its
           relative pronoun bold-purple and a small muted role
           caption underneath. */}
       {examples && examples.length > 0 ? (

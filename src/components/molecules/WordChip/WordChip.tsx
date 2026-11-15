@@ -4,7 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * WordChip — the tappable word button in the Sentence Exercise's
+ * WordChip, the tappable word button in the Sentence Exercise's
  * builder. One component covers four render states (brief §5.7):
  *
  *   idle         pool chip, awaiting tap
@@ -12,13 +12,13 @@ import { clsx } from "@/lib/utils/clsx";
  *   correct      post-check, in the right position; green tint
  *   wrong        post-check, in a wrong position; red tint
  *
- * No role-color surfacing here on purpose — the brief's design
+ * No role-color surfacing here on purpose, the brief's design
  * principle (§8.9) is that pool chips are neutral until the check
  * step; role coloring only appears in Learn examples and in the
  * post-check Incorrect banner's reveal. Painting the pool chips
  * would telegraph the answer.
  *
- * `locked` disables the click but doesn't re-tint — used post-check
+ * `locked` disables the click but doesn't re-tint, used post-check
  * so the user can see the colored verdict without being able to
  * rearrange things.
  */
@@ -68,7 +68,7 @@ export function WordChip({
 /**
  * Inline color table instead of CSS classes because the "placed"
  * state uses the chip-sentence-color token and the correct/wrong
- * states mix `--ok` and a fixed red — easier to keep all four shapes
+ * states mix `--ok` and a fixed red, easier to keep all four shapes
  * next to each other as plain objects than to shuttle through
  * Tailwind arbitrary values.
  */

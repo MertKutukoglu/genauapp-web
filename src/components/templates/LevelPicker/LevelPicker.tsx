@@ -9,19 +9,19 @@ import {
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * LevelPicker — the gateway screen between landing and /try/.
+ * LevelPicker, the gateway screen between landing and /try/.
  *
  * Four CEFR cards in a 4-col grid that collapses to 2 cols at ≤820px
  * and 1 col at ≤480px. The user picks one; the parent takes them
  * into the demo tuned to that level.
  *
- * C1/C2 aren't rendered at all right now — the live demand data
+ * C1/C2 aren't rendered at all right now, the live demand data
  * suggests they don't justify the content investment yet. The
  * LevelButton atom keeps a `soon` variant in its API for the day
  * they come back as locked tiles.
  *
  * Copy is Mert's own, written for the brand's second-person, direct
- * voice — don't edit it into something more generic.
+ * voice, don't edit it into something more generic.
  */
 
 type OfferedLevel = Extract<CEFRLevel, "A1" | "A2" | "B1" | "B2">;

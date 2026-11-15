@@ -27,14 +27,14 @@ import { READING_B1 } from "@/content/reading-b1";
 import { READING_B2 } from "@/content/reading-b2";
 
 /**
- * RightCardRouter — resolves `chipStore.selected` to the right-column
+ * RightCardRouter, resolves `chipStore.selected` to the right-column
  * content on the /try/ page.
  *
  * Current map:
  *   - null                → RightCardPlaceholder (idle)
  *   - 'words'             → <WordsChip words={WORDS_A1} />
  *   - 'grammar' | 'sentence' | 'reading'
- *                         → RightCardPlaceholder (stub — chip wiring
+ *                         → RightCardPlaceholder (stub, chip wiring
  *                           lands when that chip's content ships)
  *
  * Mobile auto-focus: when `selected` transitions from null → a chip,
@@ -60,7 +60,7 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Pick the Words deck by level. Words now ships A1, A2, B1, and
-  // B2 decks — Grammar / Sentence / Reading still only ship A1 +
+  // B2 decks, Grammar / Sentence / Reading still only ship A1 +
   // A2 + B1, so a B2 user sees B2 Words next to B1 Grammar /
   // Sentence / Reading until those content docs land.
   const wordsDeck =

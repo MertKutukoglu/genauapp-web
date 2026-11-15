@@ -3,19 +3,19 @@ import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 import { ChangeConsentButton } from "@/components/molecules/CookieConsent/ChangeConsentButton";
 
 /**
- * /tr/cerezler — Cookie Policy, tam Türkçe.
+ * /tr/cerezler, Cookie Policy, tam Türkçe.
  *
  * Datenschutz / Impressum'un aksine çerez politikasının Almanca
  * tutulması yasal zorunluluk değil. Metin kısa ve doğrudan
  * kullanıcıya yarar sağlayan türden olduğu için tamamını TR'ye
- * lokalize ediyoruz. ChangeConsentButton EN sayfadaki ile aynı — rıza
+ * lokalize ediyoruz. ChangeConsentButton EN sayfadaki ile aynı, rıza
  * seçimini sıfırlar ve banner'ı yeniden açar.
  */
 
 export const metadata = {
   title: "Çerezler",
   description:
-    "GenauApp'in çerez kullanımı — hangi çerezler neden, nasıl kontrol edilir.",
+    "GenauApp'in çerez kullanımı, hangi çerezler neden, nasıl kontrol edilir.",
   alternates: {
     canonical: "/tr/cerezler",
     languages: {
@@ -55,7 +55,7 @@ export default function CerezlerPage() {
 
       <h3>🔒 Zorunlu çerezler</h3>
       <p>
-        Bu çerezler site çalışsın diye var — temayı ve dili
+        Bu çerezler site çalışsın diye var, temayı ve dili
         hatırlamak, güvenlik. Rıza gerektirmezler, kapatılamazlar;
         site olmazsa olmaz altyapısı.
       </p>
@@ -63,14 +63,14 @@ export default function CerezlerPage() {
       <h3>📊 Analitik çerezler</h3>
       <p>
         Bu çerezler siteyi nasıl kullandığını anlamamıza yardımcı olur
-        — hangi sayfa görüntüleniyor, hangi butona basılıyor. Kimlik
+       , hangi sayfa görüntüleniyor, hangi butona basılıyor. Kimlik
         bilgin bu verilere bağlanmıyor. <strong>PostHog</strong> (AB
         sunucularında) ile tutuluyor.
       </p>
 
       <h3>📈 Vercel Analytics</h3>
       <p>
-        Çerezsiz çalışıyor — sadece anonim sayfa görüntülemelerini
+        Çerezsiz çalışıyor, sadece anonim sayfa görüntülemelerini
         sayıyor. Rıza gerektirmez, hiçbir kişisel veri toplamaz.
       </p>
 

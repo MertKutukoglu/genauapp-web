@@ -9,7 +9,7 @@ import { ProgressSlide } from "@/components/organisms/slides/ProgressSlide/Progr
 import { PacksSlide } from "@/components/organisms/slides/PacksSlide/PacksSlide";
 
 /**
- * Landing page — the public home.
+ * Landing page, the public home.
  *
  * Two-column desktop split (phone-forward hero on the left, auto-
  * advancing carousel on the right) that collapses to a single-column

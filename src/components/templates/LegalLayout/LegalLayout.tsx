@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * LegalLayout — reading-column shell for Impressum / Datenschutz /
+ * LegalLayout, reading-column shell for Impressum / Datenschutz /
  * Cookie Policy. Keeps the content on a card surface consistent with
  * the hero cards' chrome (rounded, subtle top sheen), but with
  * generous padding and a ~760px reading column optimized for prose.

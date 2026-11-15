@@ -1,5 +1,5 @@
 /**
- * Words — A1 deck (20 items). Verbatim port of
+ * Words, A1 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Words_Content_A1.md §2.
  *
  * Shape matches the JSON brief:
@@ -9,7 +9,7 @@
  *   - `chunks` is a chunkCompose-ready syllable split (single chunk for
  *     one-syllable words; the Learn card picker falls back to normal
  *     or scrambled in that case per spec §3.1)
- *   - `grammarTags` on verbs — derived from standard A1 German
+ *   - `grammarTags` on verbs, derived from standard A1 German
  *     grammar (not in the source JSON, added here so verb Learn cards
  *     show the pill row)
  *   - `tr` is an optional per-item overlay mirroring the English-side
@@ -17,7 +17,7 @@
  *     and grammar tags stay language-agnostic; only the
  *     learner-facing English copy gets a TR variant. Consumers pass
  *     each item through `localizeWord(item, locale)` before rendering
- *     — the helper swaps the overlay fields in and leaves the
+ *    , the helper swaps the overlay fields in and leaves the
  *     German-side data untouched.
  *
  * Grammar-tag reasoning (verbs only, keeping pills minimal and
@@ -30,7 +30,7 @@
  *   - schreiben → ["akkusativ"]                 regular, eine E-Mail schreiben
  *
  * Case tags carry the verb's standard object case so the NormalLearnCard
- * can skip the RuleCard for verbs — the pill row already says what the
+ * can skip the RuleCard for verbs, the pill row already says what the
  * rule body would say (which case the verb takes), without the extra
  * paragraph underneath.
  */
@@ -50,7 +50,7 @@ export interface WordsLearnBlock {
    * The grammar rule shown on the Learn card's RuleCard.
    *
    * Only included when there IS a real, teachable suffix/pattern rule
-   * that predicts the article — e.g. -ie feminine, -e feminine, -o
+   * that predicts the article, e.g. -ie feminine, -e feminine, -o
    * loan-neuter, -in feminine, natural gender for people. Words that
    * take their article by convention alone (Brot, Haus, Tisch, Zeit,
    * Wasser, …) deliberately have no `rule`; inventing a rule like
@@ -82,7 +82,7 @@ export interface WordItemLocaleOverlay {
   };
   /** Exercise hint under the prompt (articlePicker) / typing instruction. */
   hint?: string;
-  /** Exercise prompt — only needs localizing for typing (EN gloss → TR gloss). */
+  /** Exercise prompt, only needs localizing for typing (EN gloss → TR gloss). */
   prompt?: string;
   /** translationMC option labels in picker order. */
   options?: string[];
@@ -105,7 +105,7 @@ export interface WordItem {
   chunks: string[];
   /** Verb-only grammar tags, rendered as pills on the Learn card. */
   grammarTags?: GrammarTag[];
-  /** Turkish overlay — same shape as the EN-side learner copy. */
+  /** Turkish overlay, same shape as the EN-side learner copy. */
   tr?: WordItemLocaleOverlay;
 }
 
@@ -118,7 +118,7 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Brot",
       english: "bread",
-      // No reliable suffix rule — Brot takes das by convention.
+      // No reliable suffix rule, Brot takes das by convention.
       sample: { de: "Ich esse ein Brot mit Käse.", en: "I eat a slice of bread with cheese." },
     },
     prompt: "Brot",
@@ -261,7 +261,7 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Haus",
       english: "house",
-      // No reliable suffix rule — Haus takes das by convention.
+      // No reliable suffix rule, Haus takes das by convention.
       sample: { de: "Das Haus ist sehr groß.", en: "The house is very big." },
     },
     prompt: "Haus",
@@ -318,7 +318,7 @@ export const WORDS_A1: WordItem[] = [
       article: "der",
       word: "Hund",
       english: "dog",
-      // No reliable suffix rule — Hund takes der by convention.
+      // No reliable suffix rule, Hund takes der by convention.
       sample: { de: "Der Hund läuft im Park.", en: "The dog is running in the park." },
     },
     prompt: "Hund",
@@ -382,7 +382,7 @@ export const WORDS_A1: WordItem[] = [
     answer: "trinken",
     explanation: '"trinken" is the infinitive for drinking.',
     chunks: ["trin", "ken"],
-    // Transitive, regular — Akkusativ for the drink itself.
+    // Transitive, regular, Akkusativ for the drink itself.
     grammarTags: ["akkusativ"],
     tr: {
       topic: "İçecek fiilleri",
@@ -404,7 +404,7 @@ export const WORDS_A1: WordItem[] = [
       article: "der",
       word: "Tisch",
       english: "table",
-      // No reliable suffix rule — Tisch takes der by convention.
+      // No reliable suffix rule, Tisch takes der by convention.
       sample: { de: "Auf dem Tisch steht ein Glas.", en: "There's a glass on the table." },
     },
     prompt: "Tisch",
@@ -432,7 +432,7 @@ export const WORDS_A1: WordItem[] = [
       article: "die",
       word: "Tür",
       english: "door",
-      // No reliable suffix rule — Tür takes die by convention.
+      // No reliable suffix rule, Tür takes die by convention.
       sample: { de: "Die Tür ist offen.", en: "The door is open." },
     },
     prompt: "Tür",
@@ -520,7 +520,7 @@ export const WORDS_A1: WordItem[] = [
       article: "die",
       word: "Zeit",
       english: "time",
-      // No reliable suffix rule — Zeit takes die by convention.
+      // No reliable suffix rule, Zeit takes die by convention.
       sample: { de: "Ich habe heute keine Zeit.", en: "I have no time today." },
     },
     prompt: "Zeit",
@@ -608,7 +608,7 @@ export const WORDS_A1: WordItem[] = [
       article: "das",
       word: "Wasser",
       english: "water",
-      // No reliable suffix rule — Wasser takes das by convention.
+      // No reliable suffix rule, Wasser takes das by convention.
       sample: { de: "Das Wasser ist kalt.", en: "The water is cold." },
     },
     prompt: "Wasser",
@@ -699,7 +699,7 @@ export const WORDS_A1: WordItem[] = [
  * data (word, article, sample.de, chunks, grammarTags, exerciseType)
  * is locale-agnostic and always passes through.
  *
- * Note: `learn.english` keeps its property name across locales — in
+ * Note: `learn.english` keeps its property name across locales, in
  * TR it carries the Turkish gloss. Renaming would force every consumer
  * to branch on locale, which is exactly what this helper exists to
  * avoid.

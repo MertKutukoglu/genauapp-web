@@ -5,12 +5,12 @@
  *   - Each chip has 1 primary skill (bigger pay) + 2 fed skills
  *     (smaller pay). The 4th skill is deliberately not fed, so each
  *     chip "misses" one ring.
- *   - Reading ring is only fed by the Reading chip — other chips
+ *   - Reading ring is only fed by the Reading chip, other chips
  *     touch vocab/grammar/writing but never reading. That makes
  *     reading comprehension feel like its own practice path.
  *
  *   - Deltas apply ONCE, at the end of a session (not per question).
- *   - Deltas are positive-only — a bad run earns less bonus, never
+ *   - Deltas are positive-only, a bad run earns less bonus, never
  *     costs ring progress. Demo framing: completion = effort, score
  *     = reward on top.
  *
@@ -61,7 +61,7 @@ export type SkillDeltas = Partial<Record<SkillKey, number>>;
  * Compute per-skill deltas for a finished chip session.
  *
  * Edge case: when `total === 0` (nothing was asked) both deltas
- * collapse to their floors (15% / 5%). We still fire — the user
+ * collapse to their floors (15% / 5%). We still fire, the user
  * reached the completion screen, which counts as completion. If a
  * caller wants to suppress that (e.g. early-exit), it can simply not
  * call `computeSkillDeltas`.

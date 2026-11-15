@@ -7,7 +7,7 @@ import { Icon } from "@/components/atoms/Icon/Icon";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * TryDemoCard — the hero-level invitation to the /try taste demo.
+ * TryDemoCard, the hero-level invitation to the /try taste demo.
  *
  * Horizontal row layout: [icon] [heading + body (stacked)] [CTA button],
  * with a small centered footnote below. Compact vertical height so the
@@ -17,8 +17,8 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  * on one row, CTA goes full-width beneath, footnote stays centered under.
  *
  * `variant` lets callers pick the grain:
- *   - "soft"  (default) — surface-card bg with a cherry 6% wash.
- *   - "solid" — full cherry fill with a white pill CTA.
+ *   - "soft"  (default), surface-card bg with a cherry 6% wash.
+ *   - "solid", full cherry fill with a white pill CTA.
  */
 
 type Variant = "soft" | "solid";
@@ -37,7 +37,7 @@ export interface TryDemoCardProps {
 export function TryDemoCard({
   // ?level forces the /try gateway to re-show the LevelPicker even when
   // a level is already persisted from a previous visit. Progress is
-  // preserved — only selectedLevel gets cleared. Deep links to plain
+  // preserved, only selectedLevel gets cleared. Deep links to plain
   // /try keep the resume-last-level behavior.
   href = "/try?level",
   variant = "soft",

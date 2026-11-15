@@ -14,7 +14,7 @@ import { workoutCopy } from "@/lib/workout/strings";
 import { localizeReading, type ReadingContent } from "@/content/reading-a1";
 
 /**
- * ReadingChip — the Reading chip's right-card experience. Different
+ * ReadingChip, the Reading chip's right-card experience. Different
  * from the other three chips in two ways:
  *
  *   1. The mode toggle reads "Read / Exercise" (via `labels`) rather
@@ -31,7 +31,7 @@ import { localizeReading, type ReadingContent } from "@/content/reading-a1";
  *
  * Completion: reading primary + vocab + grammar fed (per the
  * CHIP_SKILL_MAP), staged to the skill store, chip marked done,
- * ExerciseCompletion carries a "Continue with X" CTA — in practice
+ * ExerciseCompletion carries a "Continue with X" CTA, in practice
  * there's no next chip after Reading in the canonical order, so the
  * CTA falls back to null and the user lands on the LeftCard picker.
  */
@@ -88,7 +88,7 @@ export function ReadingChip({
     (next: WordsMode) => {
       if (next === mode) return;
       if (mode === "learn" && next === "exercise") {
-        // User just finished reading and tapped Exercise — start fresh.
+        // User just finished reading and tapped Exercise, start fresh.
         setQIdx(0);
         setCorrectCount(0);
         setIncorrectCount(0);

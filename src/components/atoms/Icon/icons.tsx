@@ -113,7 +113,7 @@ export const ICONS = {
   ),
   "chip-sentence": (
     <>
-      {/* Formula: 3 aligned dash-groups — subject · verb · object. */}
+      {/* Formula: 3 aligned dash-groups, subject · verb · object. */}
       <path d="M4 8h5M11 8h4M17 8h3" />
       <path d="M4 12h3M9 12h7M18 12h2" />
       <path d="M4 16h6M12 16h3M17 16h3" />

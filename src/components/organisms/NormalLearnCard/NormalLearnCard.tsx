@@ -9,7 +9,7 @@ import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
 import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
 
 /**
- * NormalLearnCard — the canonical Learn-mode card for the Words chip.
+ * NormalLearnCard, the canonical Learn-mode card for the Words chip.
  *
  * Composes the six spec blocks top-to-bottom:
  *   1. CardToolbar (speaker + counter)
@@ -20,7 +20,7 @@ import { LearnActions } from "@/components/molecules/LearnActions/LearnActions";
  *   6. LearnActions (Repeat / I know)
  *
  * Every optional block renders only when its data is present. Missing
- * blocks collapse cleanly — the card's padding + shadow still make it
+ * blocks collapse cleanly, the card's padding + shadow still make it
  * feel complete.
  *
  * Spec: claude/GenauApp_Web_Try_Words_Learn_Card.md §2–§7.

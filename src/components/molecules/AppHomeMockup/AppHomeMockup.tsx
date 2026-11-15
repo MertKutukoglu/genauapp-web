@@ -5,11 +5,11 @@ import { SkillRing } from "@/components/atoms/SkillRing/SkillRing";
 import { StreakPill } from "@/components/atoms/StreakPill/StreakPill";
 
 /**
- * AppHomeMockup — a scaled-down replica of the iOS app Home screen,
+ * AppHomeMockup, a scaled-down replica of the iOS app Home screen,
  * built in HTML + CSS from the design system's own atoms (SkillRing,
  * StreakPill, Icon). Lives inside PhoneFrame on the landing hero.
  *
- * Deliberately NOT an image — if the token system changes, this mock
+ * Deliberately NOT an image, if the token system changes, this mock
  * moves with it. Content mirrors the real app's top-of-home: level
  * badge + chrome icons + Skills row (Vocab/Gram/Read) + "Your Workout"
  * card with a chip strip and a start CTA.
@@ -73,7 +73,7 @@ export function AppHomeMockup({ className }: AppHomeMockupProps) {
           <h5 className="text-[10px] font-bold text-[#141112]">Your Workout</h5>
           <StreakPill days={2} className="!h-4 !px-1.5 !text-[8px]" />
         </div>
-        {/* Chip strip — simple colored squares */}
+        {/* Chip strip, simple colored squares */}
         <div className="grid grid-cols-5 gap-1">
           {CHIP_SPECS.map((c, i) => (
             <div

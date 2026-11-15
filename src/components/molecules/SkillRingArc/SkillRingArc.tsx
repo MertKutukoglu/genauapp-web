@@ -3,9 +3,9 @@ import { clsx } from "@/lib/utils/clsx";
 import { SkillRing, type Skill } from "@/components/atoms/SkillRing/SkillRing";
 
 /**
- * SkillRingArc — the 5 SkillRings arranged in a gentle arc at the top of
+ * SkillRingArc, the 5 SkillRings arranged in a gentle arc at the top of
  * the landing hero. Outer rings sit slightly below, middle ring rises
- * highest — a shallow smile.
+ * highest, a shallow smile.
  *
  * Callers pass per-skill progress; the arc shape is a layout-only decoration
  * provided by this molecule.
@@ -33,7 +33,7 @@ const DEFAULT: SkillRingArcEntry[] = [
   { skill: "listening", progress: 0.2  },
 ];
 
-// Y offset per index for a 5-ring smile — zero at the peak, grows toward the edges.
+// Y offset per index for a 5-ring smile, zero at the peak, grows toward the edges.
 const ARC_OFFSETS = [10, -14, -24, -14, 10];
 
 export function SkillRingArc({

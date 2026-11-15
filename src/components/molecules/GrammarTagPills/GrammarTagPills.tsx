@@ -4,17 +4,17 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * GrammarTagPills — center-aligned row of clickable grammar pills.
+ * GrammarTagPills, center-aligned row of clickable grammar pills.
  *
  * Each pill is a button; tapping one expands a small explanation card
  * beneath the row (and closes any previously open one). Tapping the
  * same pill again, or the ✕ inside the card, dismisses it. Keeps the
- * surface quiet by default — explanations only appear when asked.
+ * surface quiet by default, explanations only appear when asked.
  *
  * Color conventions follow the textbook / blog tradition the rest of
  * the app uses:
- *   - akkusativ → accent (red/rose) — matches `.color-akk` in the blog
- *   - dativ     → article-das (green) — matches `.color-dat`
+ *   - akkusativ → accent (red/rose), matches `.color-akk` in the blog
+ *   - dativ     → article-das (green), matches `.color-dat`
  *
  * These pull through CSS variables so dark mode flips with the rest of
  * the theme; no need for per-pill dark overrides.
@@ -45,7 +45,7 @@ export type GrammarTag =
 
 interface TagDef {
   label: string;
-  /** CSS color expression — either a token var() reference or a hex. */
+  /** CSS color expression, either a token var() reference or a hex. */
   color: string;
   /** One or two sentences, shown in the expanded card. */
   explanation: string;
@@ -80,13 +80,13 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     label: "Intransitive",
     color: "#64748B",
     explanation:
-      "No direct object — the action stands on its own: Ich gehe. Ich schlafe.",
+      "No direct object, the action stands on its own: Ich gehe. Ich schlafe.",
   },
   regular: {
     label: "Regular",
     color: "#64748B",
     explanation:
-      "Weak verb — predictable endings on a stable stem, no stem-vowel change: lernen → ich lerne, du lernst, er lernt.",
+      "Weak verb, predictable endings on a stable stem, no stem-vowel change: lernen → ich lerne, du lernst, er lernt.",
   },
   irregular: {
     label: "Irregular",
@@ -134,7 +134,7 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     label: "Inseparable",
     color: "#DB2777",
     explanation:
-      "The prefix stays attached in every conjugation — it never moves to the end like a separable verb does: überlegen → Ich überlege, nicht \"Ich lege über\".",
+      "The prefix stays attached in every conjugation, it never moves to the end like a separable verb does: überlegen → Ich überlege, nicht \"Ich lege über\".",
   },
   "prep-mit-dat": {
     label: "mit + Dat",
@@ -158,7 +158,7 @@ const TAG_DEFS: Record<GrammarTag, TagDef> = {
     label: "NVV",
     color: "#8B5CF6",
     explanation:
-      "Nomen-Verb-Verbindung: a 'light' verb (ziehen, stellen, treffen) plus a noun that carries the meaning — drilled as one unit. in Betracht ziehen = to consider. zur Verfügung stellen = to provide.",
+      "Nomen-Verb-Verbindung: a 'light' verb (ziehen, stellen, treffen) plus a noun that carries the meaning, drilled as one unit. in Betracht ziehen = to consider. zur Verfügung stellen = to provide.",
   },
 };
 
@@ -186,7 +186,7 @@ const CLOSE_ICON = (
 export function GrammarTagPills({ tags, className }: GrammarTagPillsProps) {
   const [active, setActive] = React.useState<GrammarTag | null>(null);
 
-  // Collapse any open card when the tag list itself changes — a new
+  // Collapse any open card when the tag list itself changes, a new
   // card word should start with everything closed.
   const tagsKey = tags.join("|");
   React.useEffect(() => {
@@ -200,7 +200,7 @@ export function GrammarTagPills({ tags, className }: GrammarTagPillsProps) {
 
   return (
     <div className={clsx("flex flex-col gap-3", className)}>
-      {/* Pills row — centered so the group reads as a header strip,
+      {/* Pills row, centered so the group reads as a header strip,
           not a flush-left meta line. */}
       <div className="flex flex-wrap items-center justify-center gap-2">
         {tags.map((t) => {
@@ -212,7 +212,7 @@ export function GrammarTagPills({ tags, className }: GrammarTagPillsProps) {
               type="button"
               onClick={() => setActive(isActive ? null : t)}
               aria-expanded={isActive}
-              aria-label={`${def.label} — tap to learn more`}
+              aria-label={`${def.label}, tap to learn more`}
               className={clsx(
                 "inline-flex items-center rounded-full",
                 "px-2.5 py-1.5 font-sans font-semibold text-[13px] leading-none",
@@ -236,7 +236,7 @@ export function GrammarTagPills({ tags, className }: GrammarTagPillsProps) {
         })}
       </div>
 
-      {/* Expanded card — appears inline below the pill row when a
+      {/* Expanded card, appears inline below the pill row when a
           pill is open. The background tint already carries the pill's
           color association; no extra border stripe needed. */}
       {activeDef ? (

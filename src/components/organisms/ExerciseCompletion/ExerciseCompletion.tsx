@@ -9,7 +9,7 @@ import type { Strings } from "@/lib/i18n/strings";
 import type { ChipKey, SkillKey, SkillDeltas } from "@/lib/skills/map";
 
 /**
- * ExerciseCompletion — end-of-round summary for the Exercise deck.
+ * ExerciseCompletion, end-of-round summary for the Exercise deck.
  *
  * Shape follows Mert's iOS reference:
  *   - Chip + DONE eyebrow
@@ -18,7 +18,7 @@ import type { ChipKey, SkillKey, SkillDeltas } from "@/lib/skills/map";
  *   - Short instruction pointing the user at the collect badges
  *   - "YOU FED" divider + per-skill badges (icon + name + delta%)
  *
- * The screen has no action buttons by design — the user's next move
+ * The screen has no action buttons by design, the user's next move
  * is already on the LeftCard: tap the ↗ badges to collect, or click
  * a different chip to start a new workout. The ModeToggle above the
  * card still lets them flip back to Learn if they want to re-run.
@@ -63,13 +63,13 @@ function orderSkills(deltas: SkillDeltas): SkillKey[] {
   return entries.map(([k]) => k);
 }
 
-/** Format a delta as "+N%" with integer rounding — matches iOS reference. */
+/** Format a delta as "+N%" with integer rounding, matches iOS reference. */
 function formatDelta(n: number): string {
   return `+${Math.round(n * 100)}%`;
 }
 
 export interface ExerciseCompletionProps {
-  /** Which chip the round belongs to — drives the eyebrow label. */
+  /** Which chip the round belongs to, drives the eyebrow label. */
   chip: ChipKey;
   correct: number;
   total: number;
@@ -79,7 +79,7 @@ export interface ExerciseCompletionProps {
    * Optional "Continue with {workout} →" CTA at the bottom. The
    * parent computes the next workout from the chipStore (first
    * non-done chip after the current one) and wires onContinue to
-   * closeChip + openChip. Omit to hide the CTA entirely — the user
+   * closeChip + openChip. Omit to hide the CTA entirely, the user
    * then returns via the LeftCard chip picker.
    */
   nextWorkout?: {
@@ -87,7 +87,7 @@ export interface ExerciseCompletionProps {
     onContinue: () => void;
   };
   /**
-   * Alternate CTA shown INSTEAD OF `nextWorkout` — used when the
+   * Alternate CTA shown INSTEAD OF `nextWorkout`, used when the
    * whole workout cycle is done (all 4 chips completed) and the next
    * step is the demo-complete summary flow rather than another chip.
    * Takes precedence over `nextWorkout` when present.
@@ -128,7 +128,7 @@ export function ExerciseCompletion({
         {chipLabel} · {t.doneSuffix}
       </div>
 
-      {/* Score — correct in accent, slash + total in fg. Serif
+      {/* Score, correct in accent, slash + total in fg. Serif
           display so it reads as a tally, not a counter. */}
       <div className="flex items-baseline justify-center gap-1 font-display font-semibold leading-none">
         <span className="text-[56px] text-accent font-bold">{correct}</span>
@@ -147,7 +147,7 @@ export function ExerciseCompletion({
 
       {skills.length > 0 ? (
         <div className="w-full flex flex-col items-center gap-5 mt-2">
-          {/* YOU FED divider — hairline with centered label */}
+          {/* YOU FED divider, hairline with centered label */}
           <div className="w-full flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
             <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-fg-faint">

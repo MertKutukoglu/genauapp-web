@@ -21,24 +21,24 @@ import { describeGrammarTopic } from "@/content/grammar-topic-descriptions";
 import { SkillSheet, SkillSheetSection } from "./SkillSheet";
 
 /**
- * SkillSheetGrammar — Grammar (purple) skill sheet.
+ * SkillSheetGrammar, Grammar (purple) skill sheet.
  *
  * Reuses the shell from SkillSheet.tsx; ships two live sections +
  * the shared app-only teaser:
  *
- *   1. Grammar topics list — one row per topic the user has
+ *   1. Grammar topics list, one row per topic the user has
  *      touched. Topic name + confidence-weighted purple progress
  *      bar + whole-number % + honest momentum arrow (up / down /
- *      stable / — if insufficient data). Row click updates the
+ *      stable /, if insufficient data). Row click updates the
  *      Topic Focus below. Row ordering: most-practiced first.
  *
- *   2. Topic Focus — big ring, Last-10 strip (green/red/muted
+ *   2. Topic Focus, big ring, Last-10 strip (green/red/muted
  *      slots), and a purple "Practice X →" CTA that closes the
  *      sheet and routes to the Grammar chip. Defaults to the
  *      weakest topic (≥ 2 attempts) on open; row tap in section 1
  *      swaps the focus.
  *
- *   3. App-only teaser — same 4-mock-card pattern as Vocab, with
+ *   3. App-only teaser, same 4-mock-card pattern as Vocab, with
  *      Grammar-specific features (weak-topics queue, mastery
  *      tree, per-pack progress, writing-vs-MC accuracy split).
  *
@@ -68,7 +68,7 @@ export function SkillSheetGrammar({
   const defaultFocus = React.useMemo(() => weakestTopic(stats), [stats]);
 
   // iOS parity: tier filter defaults to Practicing (the biggest
-  // bucket, and the one the user usually came to the sheet for —
+  // bucket, and the one the user usually came to the sheet for,
   // "what should I keep working on?"). Falls through to whichever
   // bucket has rows if Practicing is empty.
   const [tierFilter, setTierFilter] = React.useState<GrammarTier>("practicing");
@@ -146,10 +146,10 @@ export function SkillSheetGrammar({
         />
       ) : (
         <>
-          {/* Section 1 — Topic Focus (now top-of-sheet).
+          {/* Section 1, Topic Focus (now top-of-sheet).
               The weakest-topic focus used to sit under the topics
               list, but Mert wanted the "here's what to work on next"
-              answer front-and-centre — you open the sheet, you see
+              answer front-and-centre, you open the sheet, you see
               the call-to-action. Topic performance moved below. */}
           <div ref={focusRef}>
             <SkillSheetSection
@@ -176,7 +176,7 @@ export function SkillSheetGrammar({
             </SkillSheetSection>
           </div>
 
-          {/* Section 2 — Topic performance (iOS parity) */}
+          {/* Section 2, Topic performance (iOS parity) */}
           <SkillSheetSection label={t.topicsLabel}>
             <TierFilterRow
               active={tierFilter}
@@ -216,7 +216,7 @@ export function SkillSheetGrammar({
         </>
       )}
 
-      {/* Section 3 — App-only teaser (Grammar variant) */}
+      {/* Section 3, App-only teaser (Grammar variant) */}
       <SkillSheetSection
         label={t.teaserLabel}
         meta={<LockIcon className="w-4 h-4 text-accent" />}
@@ -251,7 +251,7 @@ export function SkillSheetGrammar({
 /* ---------- Section 1: Tier filter + Topic cards ---------------- */
 
 /**
- * Tier filter chips — Strong / Practicing / Needs work, each with
+ * Tier filter chips, Strong / Practicing / Needs work, each with
  * its count. iOS parity: active chip is purple (chip-grammar), the
  * rest are neutral. Horizontally scrollable on narrow mobile so the
  * three never wrap.
@@ -320,7 +320,7 @@ function TierFilterRow({
 }
 
 /**
- * TopicCard — iOS parity. Momentum badge in a tinted circle on the
+ * TopicCard, iOS parity. Momentum badge in a tinted circle on the
  * left, topic name + description in the middle, CEFR level pill on
  * the right, status pill at the bottom.
  */
@@ -339,7 +339,7 @@ function TopicCard({
 }) {
   const m = momentum(stat);
   const tier = grammarTier(stat);
-  // Status pill color — green for Strong, amber for Practicing,
+  // Status pill color, green for Strong, amber for Practicing,
   // cherry for Needs work. Matches the Practice-words tier colors
   // in the Vocab sheet so the two sheets stay visually aligned.
   const pillColor =
@@ -369,7 +369,7 @@ function TopicCard({
           : undefined,
       }}
     >
-      {/* Row 1 — momentum badge + topic + CEFR */}
+      {/* Row 1, momentum badge + topic + CEFR */}
       <div className="flex items-start gap-3">
         <MomentumBadge m={m} />
         <div className="flex-1 min-w-0">
@@ -395,7 +395,7 @@ function TopicCard({
         </div>
       </div>
 
-      {/* Row 2 — status pill (colored dot + tier label) */}
+      {/* Row 2, status pill (colored dot + tier label) */}
       <div className="mt-3 flex items-center gap-1.5">
         <span
           className="w-2 h-2 rounded-full"
@@ -414,7 +414,7 @@ function TopicCard({
 }
 
 /**
- * MomentumBadge — circle wrapper with a diagonal arrow for up/down,
+ * MomentumBadge, circle wrapper with a diagonal arrow for up/down,
  * a horizontal right-arrow for stable, and a muted dash when there
  * isn't enough data yet. iOS parity, same color coding as the
  * MomentumGlyph we had on the old row.
@@ -440,7 +440,7 @@ function MomentumBadge({ m }: { m: Momentum }) {
           className="font-sans font-bold text-[14px]"
           style={{ color: "var(--fg-faint)" }}
         >
-          —
+         ,
         </span>
       ) : (
         <svg
@@ -549,7 +549,7 @@ function TopicFocusCard({
         ) : null}
       </div>
 
-      {/* Practice CTA — carries an "App only" badge: topic-level
+      {/* Practice CTA, carries an "App only" badge: topic-level
           drilling (practice just this one topic, skipping the rest
           of the deck) lives in the app. On web the button still
           reopens the Grammar workout, but the badge is the honest

@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ArticleSuffixPattern } from "@/content/grammar-a1";
 
 /**
- * GrammarArticleCard — the Grammar chip's `articleSingle` Learn
+ * GrammarArticleCard, the Grammar chip's `articleSingle` Learn
  * layout. Each of the three definite articles gets its own card in
  * the Learn deck (der → die → das in authored order), replacing the
  * earlier side-by-side three-column layout.
@@ -19,13 +19,13 @@ import type { ArticleSuffixPattern } from "@/content/grammar-a1";
  *     skimmed it and left without internalizing the suffix → gender
  *     patterns.
  *   - A single article per card lets the article be the hero
- *     (large, in its own color) and the pattern list breathe —
+ *     (large, in its own color) and the pattern list breathe,
  *     3-4 rows instead of 3 cramped columns.
  *   - The chip's purple accent gets replaced by the article color
  *     on this card type, matching the article-color contract the
  *     rest of the app uses (Words article pills, article-colored
  *     highlights in explanations). The whole card reads as "about
- *     this one article" — not a navy visit to the grammar chip.
+ *     this one article", not a navy visit to the grammar chip.
  *
  * Shape:
  *   toolbar
@@ -46,13 +46,13 @@ const ARTICLE_COLORS: Record<ArticleSingleCardProps["article"], string> = {
 type ArticleSingleCardProps = {
   article: "der" | "die" | "das";
   role: string;
-  /** Chip-identity label shown in the top-left toolbar slot — the
+  /** Chip-identity label shown in the top-left toolbar slot, the
    *  anchor topic (e.g. "Artikel der"), so the learner always sees
    *  which grammar topic they're on. */
   chipLabel?: string;
   patterns: ArticleSuffixPattern[];
   /**
-   * Shared RuleCard body — the "by meaning" categories that also
+   * Shared RuleCard body, the "by meaning" categories that also
    * take this article, so the learner leaves the card knowing both
    * suffix signals AND semantic categories (Days/months → der,
    * Trees/flowers → die, Diminutives → das, etc.).
@@ -95,7 +95,7 @@ export function GrammarArticleCard({
     >
       <CardToolbar chipLabel={chipLabel} current={current} total={total} />
 
-      {/* Hero — article word as the subject of the card, big enough
+      {/* Hero, article word as the subject of the card, big enough
           to carry the whole frame; role below as a muted subtitle. */}
       <div className="flex flex-col items-center gap-1 text-center py-2">
         <div
@@ -112,7 +112,7 @@ export function GrammarArticleCard({
         </div>
       </div>
 
-      {/* Pattern grid — no tinted sunk container around it any more;
+      {/* Pattern grid, no tinted sunk container around it any more;
           the article hero + RuleCard beneath already carry the
           article's color weight, and a third tinted surface in
           between made the card read as busy. Grid is center-pinned
@@ -121,7 +121,7 @@ export function GrammarArticleCard({
           stretching across the surface.
           Three columns: suffix (right-aligned) · arrow · example +
           italic gloss (left-aligned). Grid instead of flex so every
-          row lines up vertically regardless of word length — Honig
+          row lines up vertically regardless of word length, Honig
           and Schmetterling share the same left edge. */}
       <div className="flex justify-center">
         <div

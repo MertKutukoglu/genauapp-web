@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
- * PagerStrip — the progress-bar row above the landing scene showcase.
+ * PagerStrip, the progress-bar row above the landing scene showcase.
  *
  * N bars representing N scenes. The active bar fills over
  * `durationMs` milliseconds, then the strip auto-advances to the next
@@ -36,7 +36,7 @@ export function PagerStrip({
   onPauseToggle,
   className,
 }: PagerStripProps) {
-  // Local "progress" for the active bar — 0..1. Resets when activeIndex changes.
+  // Local "progress" for the active bar, 0..1. Resets when activeIndex changes.
   const [progress, setProgress] = React.useState(0);
   const rafRef = React.useRef<number | null>(null);
   const startRef = React.useRef<number | null>(null);
@@ -44,7 +44,7 @@ export function PagerStrip({
   // Reset on activeIndex change.
   React.useEffect(() => {
     // Reset the progress bar when a new slide becomes active.
-    // Intentional sync — the dwell timer below reads this.
+    // Intentional sync, the dwell timer below reads this.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(0);
     startRef.current = null;

@@ -1,28 +1,28 @@
 "use client";
 
 /**
- * chipStore — the /try/ demo chip-picker state, plus the chosen CEFR
+ * chipStore, the /try/ demo chip-picker state, plus the chosen CEFR
  * level that opens the whole flow.
  *
  * Owns:
- *   - `selectedLevel` — CEFR level picked on the gateway screen.
+ *   - `selectedLevel`, CEFR level picked on the gateway screen.
  *     Persisted so a returning visitor skips the picker and lands
  *     straight in the demo at their last level.
- *   - `progress[chipId]` — persisted `'active' | 'done'` per chip,
+ *   - `progress[chipId]`, persisted `'active' | 'done'` per chip,
  *     written to localStorage under `taste.chipProgress`. A refresh
  *     keeps completed chips as done so a returning visitor sees
  *     their earlier effort.
- *   - `selected` — which chip the right card is currently showing.
+ *   - `selected`, which chip the right card is currently showing.
  *     In-memory only; a refresh goes back to the placeholder right
  *     card, by design (the right card re-opens on tap).
  *
  * Actions:
- *   - `setLevel(level)` / `clearLevel()` — gateway flow
- *   - `openChip(id)`     — sets `selected`, fires `demo_chip_opened`
- *   - `completeChip(id)` — marks a chip done (idempotent for re-plays)
- *   - `closeChip()`      — clears selection, right card returns to
+ *   - `setLevel(level)` / `clearLevel()`, gateway flow
+ *   - `openChip(id)`    , sets `selected`, fires `demo_chip_opened`
+ *   - `completeChip(id)`, marks a chip done (idempotent for re-plays)
+ *   - `closeChip()`     , clears selection, right card returns to
  *                          placeholder
- *   - `resetAll()`       — wipes every piece of state (used by
+ *   - `resetAll()`      , wipes every piece of state (used by
  *                          /try/?reset and dev tooling)
  *
  * Shape matches claude/GenauApp_Web_Try_ChipPicker_Brief.md §11 + §12
@@ -55,7 +55,7 @@ export interface ChipStore {
   selected: ChipId | null;
   /**
    * `true` once the user taps "See workout summary →" on the all-done
-   * ExerciseCompletion. Not persisted — the summary is a one-time flow
+   * ExerciseCompletion. Not persisted, the summary is a one-time flow
    * per session, we don't want returning visitors to land on the
    * summary screen without context.
    */
@@ -64,7 +64,7 @@ export interface ChipStore {
    * Running first-try stats across the 4-chip workout. Each chip's
    * ExerciseDeck pushes its own correct + total into `addStats` when
    * the deck empties. The Summary screen reads these numbers in the
-   * "N / T first-try" tile. Not persisted — the stats pair starts
+   * "N / T first-try" tile. Not persisted, the stats pair starts
    * fresh on every refresh.
    */
   workoutStats: { correct: number; total: number };
@@ -108,7 +108,7 @@ const safeStorage: PersistStorage<Persisted> = {
     try {
       window.localStorage.setItem(name, JSON.stringify(value));
     } catch {
-      /* quota / private mode — drop the write silently */
+      /* quota / private mode, drop the write silently */
     }
   },
   removeItem: (name) => {
@@ -185,7 +185,7 @@ export const useChipStore = create<ChipStore>()(
     {
       name: "taste.chipProgress",
       storage: safeStorage,
-      // `selected` stays in memory — a refresh drops the current pick
+      // `selected` stays in memory, a refresh drops the current pick
       // and returns the right card to its placeholder (spec §11).
       partialize: (s) => ({
         selectedLevel: s.selectedLevel,

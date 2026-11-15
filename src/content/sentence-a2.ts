@@ -1,5 +1,5 @@
 /**
- * Sentence — A2 deck (12 items). Verbatim port of
+ * Sentence, A2 deck (12 items). Verbatim port of
  * claude/GenauApp_Web_Try_Sentence_Content_A2.md §4.
  *
  * Deck composition:
@@ -16,7 +16,7 @@
  *     `src/lib/sentence/roleColors.ts`.
  *   - The Verbklammer teaching happens visually: Perfekt / Modalverb
  *     / Trennbares Verb all ship two cherry (`verb` role) pills at
- *     the edges of the parts strip with `neutral` in between — the
+ *     the edges of the parts strip with `neutral` in between, the
  *     color repetition IS the pedagogy.
  *
  * Content rules honored (§6 of the brief):
@@ -39,7 +39,7 @@ export {
 } from "@/content/sentence-a1";
 
 export const SENTENCE_A2: SentenceQuestion[] = [
-  // 1 — Anchor: Perfekt
+  // 1, Anchor: Perfekt
   {
     topic: "Perfekt",
     words: ["Ich", "habe", "Brot", "gegessen."],
@@ -90,7 +90,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     },
   },
 
-  // 2 — Anchor: Modalverb
+  // 2, Anchor: Modalverb
   {
     topic: "Modalverb",
     words: ["Ich", "möchte", "heute", "kochen."],
@@ -141,7 +141,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     },
   },
 
-  // 3 — Anchor: Trennbares Verb
+  // 3, Anchor: Trennbares Verb
   {
     topic: "Trennbares Verb",
     words: ["Ich", "stehe", "um", "sieben", "auf."],
@@ -192,7 +192,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     },
   },
 
-  // 4 — Anchor: Nebensatz mit weil
+  // 4, Anchor: Nebensatz mit weil
   {
     topic: "Nebensatz mit weil",
     words: ["Ich", "bleibe", "zu", "Hause,", "weil", "ich", "müde", "bin."],
@@ -230,7 +230,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
         },
       ],
       body:
-        "Subordinating connectors — **weil** (because), **dass** (that), **wenn** (when/if), **obwohl** (although), **damit** (so that) — push the finite verb to the **end** of their clause. Comma before the connector. Same rule for all of them.",
+        "Subordinating connectors, **weil** (because), **dass** (that), **wenn** (when/if), **obwohl** (although), **damit** (so that), push the finite verb to the **end** of their clause. Comma before the connector. Same rule for all of them.",
     },
     tr: {
       topic: "weil ile yan cümle",
@@ -243,12 +243,12 @@ export const SENTENCE_A2: SentenceQuestion[] = [
           "Yarın geleceğini söylüyor.",
         ],
         body:
-          "Alt bağlaçlar — **weil** (çünkü), **dass** (ki), **wenn** (ne zaman/eğer), **obwohl** (rağmen), **damit** (-sin diye) — çekimli fiili yan cümlenin **sonuna** gönderir. Bağlaçtan önce virgül. Hepsinde aynı kural.",
+          "Alt bağlaçlar, **weil** (çünkü), **dass** (ki), **wenn** (ne zaman/eğer), **obwohl** (rağmen), **damit** (-sin diye), çekimli fiili yan cümlenin **sonuna** gönderir. Bağlaçtan önce virgül. Hepsinde aynı kural.",
       },
     },
   },
 
-  // 5 — Anchor: Reflexivpronomen
+  // 5, Anchor: Reflexivpronomen
   {
     topic: "Reflexivpronomen",
     words: ["Ich", "wasche", "mich", "jeden", "Morgen."],
@@ -304,7 +304,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     },
   },
 
-  // 6 — Anchor: Richtung vs. Ort
+  // 6, Anchor: Richtung vs. Ort
   {
     topic: "Richtung vs. Ort",
     words: ["Ich", "fahre", "in", "die", "Stadt."],
@@ -352,7 +352,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     },
   },
 
-  // 7 — Scene: Daily rush
+  // 7, Scene: Daily rush
   {
     topic: "Daily rush",
     words: ["Ich", "muss", "mich", "beeilen."],
@@ -360,7 +360,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     tr: { topic: "Günlük telaş" },
   },
 
-  // 8 — Scene: Weekend plans
+  // 8, Scene: Weekend plans
   {
     topic: "Weekend plans",
     words: ["Am", "Wochenende", "lade", "ich", "Tom", "ein."],
@@ -368,7 +368,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     tr: { topic: "Hafta sonu planları" },
   },
 
-  // 9 — Scene: Doctor visit
+  // 9, Scene: Doctor visit
   {
     topic: "Doctor visit",
     words: ["Ich", "bin", "zum", "Arzt", "gegangen."],
@@ -376,7 +376,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     tr: { topic: "Doktor ziyareti" },
   },
 
-  // 10 — Scene: Phone call
+  // 10, Scene: Phone call
   {
     topic: "Phone call",
     words: ["Tom", "ruft", "mich", "heute", "Abend", "an."],
@@ -384,7 +384,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     tr: { topic: "Telefon görüşmesi" },
   },
 
-  // 11 — Scene: Staying home
+  // 11, Scene: Staying home
   {
     topic: "Staying home",
     words: ["Ich", "bleibe", "zu", "Hause,", "weil", "ich", "müde", "bin."],
@@ -392,7 +392,7 @@ export const SENTENCE_A2: SentenceQuestion[] = [
     tr: { topic: "Evde kalmak" },
   },
 
-  // 12 — Scene: Remembering
+  // 12, Scene: Remembering
   {
     topic: "Remembering",
     words: ["Ich", "habe", "mich", "an", "dich", "erinnert."],

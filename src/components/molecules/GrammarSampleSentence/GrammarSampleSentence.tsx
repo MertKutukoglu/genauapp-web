@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * GrammarSampleSentence — the Grammar chip's sunk "Sample Sentence"
+ * GrammarSampleSentence, the Grammar chip's sunk "Sample Sentence"
  * block, with an in-sentence highlight substring.
  *
  * Mirrors the Words brief's SampleSentence shape (sunk container, 16
@@ -11,13 +11,13 @@ import { clsx } from "@/lib/utils/clsx";
  * pedagogical trick: inside the German line, the string passed as
  * `highlight` is rendered bold + grammar-purple
  * (`var(--chip-grammar-color)`). This is where the abstract paradigm
- * on the card materializes inside real syntax — the whole point of
+ * on the card materializes inside real syntax, the whole point of
  * the "sample with highlight" pattern in the brief.
  *
  * Matching is a plain `indexOf` on the German line. If the highlight
  * substring does not appear in `sentence`, the component falls back
  * to rendering the plain sentence without a highlight rather than
- * throwing — a content typo degrades the lesson gracefully instead
+ * throwing, a content typo degrades the lesson gracefully instead
  * of crashing the card.
  *
  * `translation` is optional and, when present, lives one typographic

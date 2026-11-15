@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 /**
- * Default Open Graph / Twitter card image — rendered at build time by
+ * Default Open Graph / Twitter card image, rendered at build time by
  * Next's opengraph-image convention and cached forever by the CDN,
  * matching the verbatim landing design in
  * claude/GenauApp_Web_OG_Image.md:
@@ -12,11 +12,11 @@ import { join } from "node:path";
  *   - Brand lockup top-left: white G disc + cherry 4-point sparkle +
  *     "GenauApp" wordmark in Fraunces
  *   - Headline center-left: "You keep learning German. / We keep it
- *     from fading." — "from fading" in cherry rose italic
+ *     from fading.", "from fading" in cherry rose italic
  *   - Footer: muted tagline on the left, URL in white on the right
  *
  * Fraunces (normal + italic) and Open Sans ship from the repo at
- * src/assets/fonts/ — an earlier version fetched them from Google's
+ * src/assets/fonts/, an earlier version fetched them from Google's
  * CDN and the build broke when Google returned a 404 HTML page
  * instead of the font binary. Reading from disk is both reliable
  * and faster at build time.
@@ -27,7 +27,7 @@ import { join } from "node:path";
  * copy.
  */
 
-export const alt = "GenauApp — You keep learning German. We keep it from fading.";
+export const alt = "GenauApp, You keep learning German. We keep it from fading.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

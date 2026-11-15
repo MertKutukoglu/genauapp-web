@@ -7,7 +7,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PackMarqueeCard, type CEFRLevel } from "./PackMarqueeCard";
 
 /**
- * Slide 4 — Real life events (Packs).
+ * Slide 4, Real life events (Packs).
  *
  * Verbatim port of the production slide
  * (claude/GenauApp_Web_Landing_Slide4_Packs.md).

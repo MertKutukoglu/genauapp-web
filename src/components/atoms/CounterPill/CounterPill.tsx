@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * CounterPill — the small `N/total` pill in the top-right of every
+ * CounterPill, the small `N/total` pill in the top-right of every
  * card toolbar (Learn + Exercise). Shared across all chips.
  *
  * Spec: claude/GenauApp_Web_Try_Words_Learn_Card.md §4 (toolbar).
@@ -12,7 +12,7 @@ import { clsx } from "@/lib/utils/clsx";
  *   - Background: color-mix(in srgb, var(--fg) 6%, transparent)
  *   - Text: var(--fg)
  *
- * No animation on count change — the card itself re-mounts between
+ * No animation on count change, the card itself re-mounts between
  * words, which is enough of a transition cue. A bump here would
  * compete with the card swap.
  */

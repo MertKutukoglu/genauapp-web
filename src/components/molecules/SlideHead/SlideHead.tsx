@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * SlideHead — the eyebrow + headline + sub block shared by every
+ * SlideHead, the eyebrow + headline + sub block shared by every
  * carousel slide (and reusable in the mobile scroll-snap variant).
  *
  * `headline` should contain an <em> for the italic cherry emphasis

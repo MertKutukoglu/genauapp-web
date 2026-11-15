@@ -7,18 +7,18 @@ import { Wordmark } from "@/components/atoms/Wordmark/Wordmark";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * Site footer — a pure-black band with a hairline top border so it
+ * Site footer, a pure-black band with a hairline top border so it
  * always separates from the hero cards (in dark mode the ambient bg
  * is near-black too, so without the border the footer was dissolving).
  *
- * Desktop: three-column grid — wordmark left, "Made in Berlin · 2026"
+ * Desktop: three-column grid, wordmark left, "Made in Berlin · 2026"
  * centered, legal links right.
  * Mobile: single-column stack.
  *
  * Locale-aware: link labels come from the i18n dict; the href for
  * each legal page points to its TR counterpart when the viewer is on
- * the TR tree. Those TR routes don't exist in Step 2 — Step 4 ships
- * them — so TR visitors currently fall through to the EN page via
+ * the TR tree. Those TR routes don't exist in Step 2, Step 4 ships
+ * them, so TR visitors currently fall through to the EN page via
  * Next's not-found. Acceptable for a short window; the Künye/Gizlilik/
  * Çerezler files land before the public TR announcement.
  */

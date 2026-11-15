@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import type { Skill } from "@/components/atoms/SkillRing/SkillRing";
 
 /**
- * NodeGraph — the labeled-dot decoration under the SkillRingArc on the
+ * NodeGraph, the labeled-dot decoration under the SkillRingArc on the
  * landing hero. Six content nodes (Words, Grammar, Stories, Sentences,
  * Reading, Pronunciation) sit around the hero text, each connected by
  * thin lines to the skill ring that feeds it.

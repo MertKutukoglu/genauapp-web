@@ -8,7 +8,7 @@ import { WaitlistForm } from "@/components/molecules/WaitlistForm/WaitlistForm";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * HeroLeftPanelClassic — the original left-column treatment:
+ * HeroLeftPanelClassic, the original left-column treatment:
  * SkillRingArc on top, NodeGraph beneath it with thin feed lines,
  * Fraunces headline in the center, subhead, then WaitlistForm pinned
  * to the bottom.

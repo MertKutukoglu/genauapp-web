@@ -9,7 +9,7 @@ import { ProgressSlide } from "@/components/organisms/slides/ProgressSlide/Progr
 import { PacksSlide } from "@/components/organisms/slides/PacksSlide/PacksSlide";
 
 /**
- * TrLandingClient — the TR landing's interactive body.
+ * TrLandingClient, the TR landing's interactive body.
  *
  * Mirrors the EN `app/page.tsx` composition exactly: same layout, same
  * hero, same carousel with the same four slides and dwell timings. The

@@ -17,26 +17,26 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { SkillSheet, SkillSheetSection } from "./SkillSheet";
 
 /**
- * SkillSheetVocab — Vocabulary (pink) skill sheet.
+ * SkillSheetVocab, Vocabulary (pink) skill sheet.
  *
  * Reads live from the wordAnswers log + skillStore every time it
- * opens (no incremental caching — the log is small and the
+ * opens (no incremental caching, the log is small and the
  * derivations are O(n)). Renders four sections:
  *
- *   1. Empty state       — shown when the log is empty; replaces
+ *   1. Empty state      , shown when the log is empty; replaces
  *                          the mastery and article grids with a
  *                          single "Complete your first Words
  *                          workout" prompt.
- *   2. Word Mastery grid — Strong / Average / Weak tiles with the
+ *   2. Word Mastery grid, Strong / Average / Weak tiles with the
  *                          counts + a "View →" link. View → on the
  *                          Weak tile scrolls to the app-only
  *                          teaser; on Strong + Average it scrolls
  *                          to the Article Performance section.
- *   3. Article Performance — der / die / das accuracy tiles. Only
+ *   3. Article Performance, der / die / das accuracy tiles. Only
  *                          articlePicker answers feed these;
- *                          attempts = 0 shows `—` to avoid a
+ *                          attempts = 0 shows `·` to avoid a
  *                          punishing fake 0%.
- *   4. App-only teaser   — dashed cherry border + 4 bullets + a
+ *   4. App-only teaser  , dashed cherry border + 4 bullets + a
  *                          "Try the app →" CTA that scrolls the
  *                          landing waitlist into view.
  *
@@ -125,7 +125,7 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
         />
       ) : (
         <>
-          {/* Section 1 — Word Mastery */}
+          {/* Section 1, Word Mastery */}
           <SkillSheetSection
             label={t.masteryLabel}
             meta={t.masteryMeta.replace("{count}", String(totalWords))}
@@ -155,7 +155,7 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
             </div>
           </SkillSheetSection>
 
-          {/* Section 2 — Article Performance */}
+          {/* Section 2, Article Performance */}
           <div ref={articleSectionRef}>
             <SkillSheetSection label={t.articleLabel}>
               <div className="grid grid-cols-3 gap-2.5">
@@ -173,11 +173,11 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
         </>
       )}
 
-      {/* Section 3 — App-only teaser: four mini-feature mock cards
+      {/* Section 3, App-only teaser: four mini-feature mock cards
           showing what Vocabulary looks like in the full iOS app,
           each dressed with real-looking demo data and a small
           "App only" pill in the top-right. More compelling than a
-          bullet list — eyes scan the mock, not a sentence. */}
+          bullet list, eyes scan the mock, not a sentence. */}
       <div ref={teaserSectionRef}>
         <SkillSheetSection
           label={t.teaserLabel}
@@ -282,10 +282,10 @@ function ArticleTile({
         {article}
       </div>
       <div className="font-sans font-bold text-[24px] text-fg leading-tight mt-2">
-        {pct === null ? "—" : `${pct}%`}
+        {pct === null ? "·" : `${pct}%`}
       </div>
       <div className="font-sans text-[12px] text-fg-muted leading-tight">
-        {pct === null ? "—" : `${correct} / ${attempts}`}
+        {pct === null ? "·" : `${correct} / ${attempts}`}
       </div>
     </div>
   );
@@ -305,7 +305,7 @@ function EmptyState({
       className="mt-5 rounded-2xl p-6 flex flex-col items-center gap-4 text-center"
       style={{ background: "var(--surface-sunk)" }}
     >
-      {/* Compact ring mark in muted pink — the Vocabulary ring the
+      {/* Compact ring mark in muted pink, the Vocabulary ring the
           user just tapped, downshifted to signal "no data yet". */}
       <div
         className="w-14 h-14 rounded-full flex items-center justify-center"
@@ -350,7 +350,7 @@ function EmptyState({
    that lives only in the iOS app. Shared chrome: white-ish tile,
    small eyebrow icon + title, a corner "App only" pill in cherry,
    then 2-3 rows of real-looking demo data. No overlay darkens the
-   content — the pill + dashed teaser border carry the "elsewhere"
+   content, the pill + dashed teaser border carry the "elsewhere"
    signal; a dim layer would just hide the thing we're trying to
    showcase. */
 
@@ -479,11 +479,11 @@ function MockBookmarks({ label, pill }: { label: string; pill: string }) {
 }
 
 /**
- * MockPracticeWords — teaser for the "Practice words" mix. The app's
+ * MockPracticeWords, teaser for the "Practice words" mix. The app's
  * Practice workout seeds a session with the words the user is
  * currently struggling with, rounded out with a few average and
  * strong ones. We show that composition rather than a duration,
- * so the pitch isn't "5 minutes" (every language app says that) —
+ * so the pitch isn't "5 minutes" (every language app says that),
  * it's "built from your weak ones first", which is the actual
  * differentiator. Numbers come from live stats when available,
  * fall back to a 10 / 5 / 5 teaser when the log is empty.

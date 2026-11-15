@@ -4,7 +4,7 @@ import { SpeakerButton } from "@/components/atoms/SpeakerButton/SpeakerButton";
 import { CounterPill } from "@/components/atoms/CounterPill/CounterPill";
 
 /**
- * CardToolbar — the top row of every chip card (Learn + Exercise,
+ * CardToolbar, the top row of every chip card (Learn + Exercise,
  * Words + Grammar + Sentence + Reading).
  *
  * Shape: speaker left, counter pill right. Spec §4 of the Learn-card
@@ -13,7 +13,7 @@ import { CounterPill } from "@/components/atoms/CounterPill/CounterPill";
  * meaningful behind the tap), so the toolbar is just the audio cue +
  * the deck position.
  *
- * Presentational — the parent card drives the speaker's text and the
+ * Presentational, the parent card drives the speaker's text and the
  * counter's numbers.
  */
 
@@ -29,7 +29,7 @@ export interface CardToolbarProps {
   chipLabel?: string;
   /**
    * Deck-position pair. Omit both (or set either to undefined) to
-   * hide the counter pill — Reading's Read mode uses this when
+   * hide the counter pill, Reading's Read mode uses this when
    * there's no "card N of total" concept to show.
    */
   current?: number;

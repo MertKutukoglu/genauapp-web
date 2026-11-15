@@ -7,7 +7,7 @@ import { WorkoutDoneCard } from "@/components/organisms/WorkoutDoneCard/WorkoutD
 import { useChipStore } from "@/stores/chipStore";
 
 /**
- * WorkoutCompleteFlow — the three-view state machine shown after
+ * WorkoutCompleteFlow, the three-view state machine shown after
  * the user finishes all 4 chip sessions and taps the summary CTA.
  *
  *   summary → (submit) → done
@@ -39,7 +39,7 @@ export function WorkoutCompleteFlow({ className }: WorkoutCompleteFlowProps) {
       <WorkoutFeedbackCard
         className={className}
         onDone={() => {
-          // Close the overlay entirely — the user is done.
+          // Close the overlay entirely, the user is done.
           closeSummary();
         }}
       />

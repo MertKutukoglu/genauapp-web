@@ -2,13 +2,13 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * ParadigmGrid — the 2-column pronoun→form table shared by the
+ * ParadigmGrid, the 2-column pronoun→form table shared by the
  * Grammar chip's verbParadigm, pronounChart, and verbConjugation
  * layouts.
  *
  * The left column is the pronoun (or whatever the row is keyed by),
  * right-aligned and muted. The right column is the form (or gloss),
- * left-aligned and semi-bold `--fg`. Row gap is 10px — spacing alone
+ * left-aligned and semi-bold `--fg`. Row gap is 10px, spacing alone
  * separates rows; divider lines would read as a worksheet.
  *
  * The whole grid sits inside a sunk container (`--surface-sunk`,
@@ -16,7 +16,7 @@ import { clsx } from "@/lib/utils/clsx";
  * against the card's own surface.
  *
  * For verbConjugation's "stem · ending" shape the caller passes a
- * React node in `form` — the two-part typography (muted stem / purple
+ * React node in `form`, the two-part typography (muted stem / purple
  * ending) is the caller's job, not the grid's.
  */
 
@@ -35,7 +35,7 @@ export interface ParadigmGridProps {
 
 export function ParadigmGrid({ rows, className }: ParadigmGridProps) {
   return (
-    // No sunk container around the grid any more — the card
+    // No sunk container around the grid any more, the card
     // surface alone frames it, which keeps the eye on the content
     // instead of the box. `justify-items-center` pins the 2-col
     // grid to the center of the card width; `w-max mx-auto` keeps

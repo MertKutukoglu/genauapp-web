@@ -1,5 +1,5 @@
 /**
- * Grammar — B1 deck (40 items).
+ * Grammar, B1 deck (40 items).
  *
  * Deck composition:
  *   1-10  Anchors (with `learn`): Konjunktiv II, Vorgangspassiv,
@@ -122,7 +122,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             highlight: "hätte",
           },
           rule:
-            "**hätte** is the direct Konjunktiv II of **haben** — no würde needed. Backbone of polite requests at the counter: Ich hätte gerne…, hätten Sie…?",
+            "**hätte** is the direct Konjunktiv II of **haben**, no würde needed. Backbone of polite requests at the counter: Ich hätte gerne…, hätten Sie…?",
         },
         {
           verb: "sein → wäre",
@@ -141,7 +141,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             highlight: "wäre",
           },
           rule:
-            "**wäre** is the direct Konjunktiv II of **sein** — again no würde. Classic 'if I were…' construction: Wenn ich du wäre, wäre das anders.",
+            "**wäre** is the direct Konjunktiv II of **sein**, again no würde. Classic 'if I were…' construction: Wenn ich du wäre, wäre das anders.",
         },
       ],
     },
@@ -170,13 +170,13 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             english: "sahip olurdum / ... isterim",
             sample: { en: "Bir kahve alabilir miyim." },
             rule:
-              "**hätte**, **haben** fiilinin doğrudan Konjunktiv II hâlidir — würde'ye gerek yok. Kibar isteğin bel kemiği: Ich hätte gerne…, hätten Sie…?",
+              "**hätte**, **haben** fiilinin doğrudan Konjunktiv II hâlidir, würde'ye gerek yok. Kibar isteğin bel kemiği: Ich hätte gerne…, hätten Sie…?",
           },
           {
             english: "... olsam / ... olurdu",
             sample: { en: "Yerinde olsam onu yapardım." },
             rule:
-              "**wäre**, **sein** fiilinin doğrudan Konjunktiv II hâlidir — yine würde yok. Klasik 'olsam' kalıbı: Wenn ich du wäre, wäre das anders.",
+              "**wäre**, **sein** fiilinin doğrudan Konjunktiv II hâlidir, yine würde yok. Klasik 'olsam' kalıbı: Wenn ich du wäre, wäre das anders.",
           },
         ],
       },
@@ -241,12 +241,12 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
   // A2 content (A2 already taught Akkusativ changes; Dativ is the
   // natural follow-up, not a B1 lift). Komparativ/Superlativ is
   // the daily-speech B1 anchor: besser als, am besten, mehr,
-  // lieber — the comparison grammar that unlocks every ordinary
+  // lieber, the comparison grammar that unlocks every ordinary
   // opinion statement.
   //
   // Design: same 3-col lookup-table template as participleParadigm
   // (Positiv muted · Komparativ bold-purple · Superlativ bold-fg)
-  // because the lesson has the same shape — the middle column is
+  // because the lesson has the same shape, the middle column is
   // the first transformation, the right column is the destination.
   {
     topic: "Komparativ / Superlativ",
@@ -442,7 +442,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           prefix: "nach",
           samples: ["fragen", "riechen", "schmecken", "suchen"],
           rule:
-            "**nach + Dativ** marks the **thing you're reaching for** — asking for, searching for, smelling of.",
+            "**nach + Dativ** marks the **thing you're reaching for**, asking for, searching for, smelling of.",
           sample: {
             de: "Er fragt nach dem Weg.",
             en: "He asks for directions.",
@@ -460,7 +460,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             "verlangen",
           ],
           rule:
-            "**von + Dativ** marks the **source** — depending on, hearing from, reporting about.",
+            "**von + Dativ** marks the **source**, depending on, hearing from, reporting about.",
           sample: {
             de: "Alles hängt von dir ab.",
             en: "Everything depends on you.",
@@ -499,7 +499,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             "überreden",
           ],
           rule:
-            "**zu + Dativ** marks the **belonging** or **invitation** — belongs to, invited to, fits with.",
+            "**zu + Dativ** marks the **belonging** or **invitation**, belongs to, invited to, fits with.",
           sample: {
             de: "Sie gehört zu unserer Gruppe.",
             en: "She belongs to our group.",
@@ -517,10 +517,10 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     hint: "I'm working on a project.",
     options: ["an", "auf", "für", "um"],
     correctIndex: 0,
-    explanation: '"arbeiten an + Dativ" — fixed combination.',
+    explanation: '"arbeiten an + Dativ", fixed combination.',
     tr: {
       hint: "Bir projede çalışıyorum.",
-      explanation: '"arbeiten an + Dativ" — sabit kalıp.',
+      explanation: '"arbeiten an + Dativ", sabit kalıp.',
       learn: {
         headline: "Dativ-Präpositionen",
         english: "Her zaman bu edat + Dativ alan fiiller",
@@ -547,12 +547,12 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           },
           {
             rule:
-              "**nach + Dativ** **ulaşılmak istenen şey** — sormak, aramak, kokmak.",
+              "**nach + Dativ** **ulaşılmak istenen şey**, sormak, aramak, kokmak.",
             sample: { en: "Yolu soruyor." },
           },
           {
             rule:
-              "**von + Dativ** **kaynak** — bağlı olmak, duymak, bahsetmek.",
+              "**von + Dativ** **kaynak**, bağlı olmak, duymak, bahsetmek.",
             sample: { en: "Her şey sana bağlı." },
           },
           {
@@ -567,7 +567,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           },
           {
             rule:
-              "**zu + Dativ** **aidiyet** ya da **davet** — ait olmak, davet edilmek, uymak.",
+              "**zu + Dativ** **aidiyet** ya da **davet**, ait olmak, davet edilmek, uymak.",
             sample: { en: "Grubumuza ait." },
           },
         ],
@@ -590,7 +590,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           prefix: "auf",
           samples: ["achten", "antworten", "zielen", "hoffen", "aufpassen"],
           rule:
-            "**auf + Akkusativ** — paying attention to, answering, aiming at, hoping for.",
+            "**auf + Akkusativ**, paying attention to, answering, aiming at, hoping for.",
           sample: {
             de: "Ich achte auf die Zeit.",
             en: "I pay attention to the time.",
@@ -607,7 +607,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             "sich wenden",
           ],
           rule:
-            "**an + Akkusativ** — thinking of, believing in, remembering, getting used to.",
+            "**an + Akkusativ**, thinking of, believing in, remembering, getting used to.",
           sample: {
             de: "Ich denke oft an dich.",
             en: "I often think about you.",
@@ -618,7 +618,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           prefix: "für",
           samples: ["danken", "kämpfen", "stimmen", "sein", "ausgeben"],
           rule:
-            "**für + Akkusativ** — thanking for, fighting for, voting for, being in favour.",
+            "**für + Akkusativ**, thanking for, fighting for, voting for, being in favour.",
           sample: {
             de: "Danke für das Geschenk.",
             en: "Thanks for the gift.",
@@ -629,7 +629,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           prefix: "gegen",
           samples: ["protestieren", "kämpfen", "verstoßen", "stimmen", "sein"],
           rule:
-            "**gegen + Akkusativ** — protesting against, fighting against, voting against.",
+            "**gegen + Akkusativ**, protesting against, fighting against, voting against.",
           sample: {
             de: "Wir protestieren gegen den Krieg.",
             en: "We're protesting against the war.",
@@ -647,7 +647,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             "regieren",
           ],
           rule:
-            "**über + Akkusativ** — talking about, reporting on, laughing at, ruling over.",
+            "**über + Akkusativ**, talking about, reporting on, laughing at, ruling over.",
           sample: {
             de: "Wir sprechen über das Problem.",
             en: "We're talking about the problem.",
@@ -658,7 +658,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           prefix: "um",
           samples: ["bitten", "gehen", "kämpfen", "spielen", "wetten"],
           rule:
-            "**um + Akkusativ** — asking for, dealing with, betting on, playing for.",
+            "**um + Akkusativ**, asking for, dealing with, betting on, playing for.",
           sample: {
             de: "Ich bitte dich um Hilfe.",
             en: "I'm asking you for help.",
@@ -676,42 +676,42 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     hint: "I often think about you.",
     options: ["an", "auf", "mit", "von"],
     correctIndex: 0,
-    explanation: '"denken an + Akkusativ" — fixed combination.',
+    explanation: '"denken an + Akkusativ", fixed combination.',
     tr: {
       hint: "Sık sık seni düşünüyorum.",
-      explanation: '"denken an + Akkusativ" — sabit kalıp.',
+      explanation: '"denken an + Akkusativ", sabit kalıp.',
       learn: {
         headline: "Akkusativ-Präpositionen",
         english: "Her zaman bu edat + Akkusativ alan fiiller",
         prefixes: [
           {
             rule:
-              "**auf + Akkusativ** — dikkat etmek, cevaplamak, nişan almak, ummak.",
+              "**auf + Akkusativ**, dikkat etmek, cevaplamak, nişan almak, ummak.",
             sample: { en: "Zamana dikkat ediyorum." },
           },
           {
             rule:
-              "**an + Akkusativ** — düşünmek, inanmak, hatırlamak, alışmak.",
+              "**an + Akkusativ**, düşünmek, inanmak, hatırlamak, alışmak.",
             sample: { en: "Sık sık seni düşünüyorum." },
           },
           {
             rule:
-              "**für + Akkusativ** — teşekkür etmek, mücadele etmek, lehte oy vermek.",
+              "**für + Akkusativ**, teşekkür etmek, mücadele etmek, lehte oy vermek.",
             sample: { en: "Hediye için teşekkürler." },
           },
           {
             rule:
-              "**gegen + Akkusativ** — protesto etmek, karşı mücadele, aleyhte oy.",
+              "**gegen + Akkusativ**, protesto etmek, karşı mücadele, aleyhte oy.",
             sample: { en: "Savaşa karşı protesto ediyoruz." },
           },
           {
             rule:
-              "**über + Akkusativ** — bahsetmek, haber vermek, gülmek, hüküm sürmek.",
+              "**über + Akkusativ**, bahsetmek, haber vermek, gülmek, hüküm sürmek.",
             sample: { en: "Sorundan bahsediyoruz." },
           },
           {
             rule:
-              "**um + Akkusativ** — bir şey istemek, söz konusu olmak, oyun oynamak.",
+              "**um + Akkusativ**, bir şey istemek, söz konusu olmak, oyun oynamak.",
             sample: { en: "Senden yardım istiyorum." },
           },
         ],
@@ -723,7 +723,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
   // ── 7 ─ Anchor: Wechselpräpositionen (chevron carousel, 9) ──────
   //
   // Nine prepositions that take EITHER Dativ or Akkusativ depending
-  // on the question (Wo? vs Wohin?). Chevron carousel — one prep
+  // on the question (Wo? vs Wohin?). Chevron carousel, one prep
   // per card. The universal flip rule lives in the anchor-level
   // `note`; each variant's `rule` teaches that preposition's
   // spatial meaning only (no case explanation repeated 9 times).
@@ -732,7 +732,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
   // ("dem", "der", "den", "die") so the case marker is visible.
   // `showFormula: false` hides the Nebensatz formula strip (not
   // relevant to preposition case). Tint uses --article-der (blue)
-  // to signal "dual case" — distinct from Dativ-Präp (das/green)
+  // to signal "dual case", distinct from Dativ-Präp (das/green)
   // and Akk-Präp (die/red).
   {
     topic: "Wechselpräpositionen",
@@ -936,7 +936,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
 
   // ── 8 ─ Anchor: Positionsverben (Wo? → Dativ, green carousel, 4) ─
   //
-  // Split from the earlier single Pos/Dir anchor — the "mor =
+  // Split from the earlier single Pos/Dir anchor, the "mor =
   // grammar" convention was swallowing the case signal. One anchor
   // per case now: this one teaches the Wo? → Dativ family
   // (stehen, sitzen, liegen, hängen), all irregular, intransitive,
@@ -952,7 +952,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       layout: "connectorCarousel",
       headline: "Positionsverben",
       english:
-        "4 Wo? verbs — state / location, Dativ, all irregular, no object",
+        "4 Wo? verbs, state / location, Dativ, all irregular, no object",
       tint: "var(--article-das)",
       showFormula: false,
       note:
@@ -1002,7 +1002,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           example: "Der Mantel hängt im Schrank.",
           english: "to hang · hing, gehangen",
           rule:
-            "**hängen** (Wo?) = to be hanging. Irregular here: Präteritum **hing**, Partizip II **gehangen**. Same infinitive as the direction verb — the conjugation tells them apart.",
+            "**hängen** (Wo?) = to be hanging. Irregular here: Präteritum **hing**, Partizip II **gehangen**. Same infinitive as the direction verb, the conjugation tells them apart.",
           sample: {
             de: "Der Mantel hängt im Schrank.",
             en: "The coat is hanging in the wardrobe.",
@@ -1029,7 +1029,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         "'auf dem Tisch' = Wo? + Dativ → konum fiili **liegen** (düzensiz, 3. tekil: liegt).",
       learn: {
         headline: "Konum Fiilleri (Wo?)",
-        english: "4 Wo? fiili — konum, Dativ, hepsi düzensiz, nesne yok",
+        english: "4 Wo? fiili, konum, Dativ, hepsi düzensiz, nesne yok",
         note:
           "**Wo? → Dativ.** Bu 4 fiil düzensiz ve nesnesizdir (Akk almaz). **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Dativ ile çalışır.",
         sample: { en: "Vazo masanın üstünde duruyor." },
@@ -1055,7 +1055,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           {
             english: "asılı olmak · hing, gehangen",
             rule:
-              "**hängen** (Wo?) = asılı durmak. Burada düzensiz: Präteritum **hing**, Partizip II **gehangen**. Yön fiili ile aynı mastar — ayırt eden çekim.",
+              "**hängen** (Wo?) = asılı durmak. Burada düzensiz: Präteritum **hing**, Partizip II **gehangen**. Yön fiili ile aynı mastar, ayırt eden çekim.",
             sample: { en: "Palto dolapta asılı." },
           },
         ],
@@ -1065,12 +1065,12 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
 
   // ── 9 ─ Anchor: Direktionsverben (Wohin? → Akk, red carousel, 4) ─
   //
-  // Companion to Positionsverben — the Wohin? → Akk family
+  // Companion to Positionsverben, the Wohin? → Akk family
   // (stellen, setzen, legen, hängen), all regular, all transitive
   // (take an Akk object). Chevron carousel, 4 variants, each with
   // its Präteritum/Partizip in the rule and a Wohin? sample.
   // Tint --article-die (red). The shared 4th verb hängen appears
-  // here too with its REGULAR conjugation (hängte, gehängt) — the
+  // here too with its REGULAR conjugation (hängte, gehängt), the
   // tricky same-form pair with the position-side hängen.
   {
     topic: "Direktionsverben",
@@ -1079,7 +1079,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       layout: "connectorCarousel",
       headline: "Direktionsverben",
       english:
-        "4 Wohin? verbs — movement / direction, Akk, all regular, Akk object",
+        "4 Wohin? verbs, movement / direction, Akk, all regular, Akk object",
       tint: "var(--article-die)",
       showFormula: false,
       note:
@@ -1129,7 +1129,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           example: "Sie hängt den Mantel in den Schrank.",
           english: "to hang something · hängte, gehängt",
           rule:
-            "**hängen** (Wohin?) = to hang something up. Regular here: Präteritum **hängte**, Partizip II **gehängt**. Same infinitive as the position verb — only the conjugation tells them apart.",
+            "**hängen** (Wohin?) = to hang something up. Regular here: Präteritum **hängte**, Partizip II **gehängt**. Same infinitive as the position verb, only the conjugation tells them apart.",
           sample: {
             de: "Sie hängt den Mantel in den Schrank.",
             en: "She hangs the coat in the wardrobe.",
@@ -1157,7 +1157,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       learn: {
         headline: "Yön Fiilleri (Wohin?)",
         english:
-          "4 Wohin? fiili — hareket, Akk, hepsi düzenli, Akk nesne alır",
+          "4 Wohin? fiili, hareket, Akk, hepsi düzenli, Akk nesne alır",
         note:
           "**Wohin? → Akkusativ.** Bu 4 fiil düzenli ve geçişlidir (hep Akk nesne alır). **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Akk ile çalışır.",
         sample: { en: "Vazoyu masanın üstüne koyuyor." },
@@ -1183,7 +1183,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           {
             english: "asmak · hängte, gehängt",
             rule:
-              "**hängen** (Wohin?) = bir şeyi asmak. Burada düzenli: Präteritum **hängte**, Partizip II **gehängt**. Konum fiili ile aynı mastar — ayırt eden sadece çekim.",
+              "**hängen** (Wohin?) = bir şeyi asmak. Burada düzenli: Präteritum **hängte**, Partizip II **gehängt**. Konum fiili ile aynı mastar, ayırt eden sadece çekim.",
             sample: { en: "Paltoyu dolaba asıyor." },
           },
         ],
@@ -1194,7 +1194,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
   // ── 10 ─ Anchor: Konnektoren (chevron carousel) ──────────────────
   //
   // Split out as a chevron carousel instead of four cards side by
-  // side — four connectors at once overwhelms the learner, and
+  // side, four connectors at once overwhelms the learner, and
   // the real lesson ("they all do the same thing: verb to the
   // end") lands harder when you SEE the same formula strip
   // repeat on each step. Design borrows the Sentence chip's
@@ -1219,7 +1219,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           english: "although (concessive)",
           verbFinal: "regnet",
           rule:
-            "**obwohl** marks a **concession** — the main clause happens despite the subclause. Pairs well with 'trotzdem' or just stands alone.",
+            "**obwohl** marks a **concession**, the main clause happens despite the subclause. Pairs well with 'trotzdem' or just stands alone.",
           sample: {
             de: "Ich bleibe zu Hause, obwohl das Wetter schön ist.",
             en: "I'm staying home even though the weather is nice.",
@@ -1232,7 +1232,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           english: "so that (purpose)",
           verbFinal: "kann",
           rule:
-            "**damit** marks a **purpose** — the main clause happens in order to make the subclause happen. Different subjects between clauses; same subject uses **um … zu**.",
+            "**damit** marks a **purpose**, the main clause happens in order to make the subclause happen. Different subjects between clauses; same subject uses **um … zu**.",
           sample: {
             de: "Sie spart Geld, damit sie reisen kann.",
             en: "She saves money so that she can travel.",
@@ -1290,13 +1290,13 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           {
             english: "rağmen (karşıtlık)",
             rule:
-              "**obwohl** **karşıtlık** kurar — ana cümle, yan cümleye RAĞMEN gerçekleşir. 'trotzdem' ile eşleşir ya da tek başına kullanılır.",
+              "**obwohl** **karşıtlık** kurar, ana cümle, yan cümleye RAĞMEN gerçekleşir. 'trotzdem' ile eşleşir ya da tek başına kullanılır.",
             sample: { en: "Hava güzel olmasına rağmen evde kalıyorum." },
           },
           {
             english: "... olsun diye (amaç)",
             rule:
-              "**damit** **amaç** kurar — ana cümle, yan cümle olsun diye gerçekleşir. İki farklı özne varsa damit; aynı özneyse **um … zu**.",
+              "**damit** **amaç** kurar, ana cümle, yan cümle olsun diye gerçekleşir. İki farklı özne varsa damit; aynı özneyse **um … zu**.",
             sample: {
               en: "Seyahat edebilsin diye para biriktiriyor.",
             },
@@ -1448,13 +1448,13 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     options: ["älter", "alt", "am ältesten", "älteste"],
     correctIndex: 0,
     explanation:
-      "Comparative of **alt** with umlaut: **älter**. Used with **als** for 'than' — 'My brother is older than me.'",
+      "Comparative of **alt** with umlaut: **älter**. Used with **als** for 'than', 'My brother is older than me.'",
     hint: "My brother is older than me.",
     tr: {
       hint: "Erkek kardeşim benden yaşlı.",
       options: ["älter", "alt", "am ältesten", "älteste"],
       explanation:
-        "**alt**'ın umlautlu karşılaştırma hâli: **älter**. 'den' için **als** ile — 'Erkek kardeşim benden yaşlı.'",
+        "**alt**'ın umlautlu karşılaştırma hâli: **älter**. 'den' için **als** ile, 'Erkek kardeşim benden yaşlı.'",
     },
   },
 
@@ -1508,11 +1508,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     prompt: "Sie nimmt ___ dem Kurs teil.",
     options: ["an", "auf", "für", "um"],
     correctIndex: 0,
-    explanation: '"teilnehmen an + Dat" — fixed combination.',
+    explanation: '"teilnehmen an + Dat", fixed combination.',
     hint: "She's participating in the course.",
     tr: {
       hint: "Kursa katılıyor.",
-      explanation: '"teilnehmen an + Dat" — sabit kalıp.',
+      explanation: '"teilnehmen an + Dat", sabit kalıp.',
     },
   },
   {
@@ -1520,11 +1520,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     exerciseType: "fillBlank",
     prompt: "Er fragt mich ___ dem Weg.",
     answer: "nach",
-    explanation: '"fragen nach + Dat" — to ask for / about something.',
+    explanation: '"fragen nach + Dat", to ask for / about something.',
     hint: "He asks me for directions.",
     tr: {
       hint: "Bana yolu soruyor.",
-      explanation: '"fragen nach + Dat" — bir şey sormak / hakkında sormak.',
+      explanation: '"fragen nach + Dat", bir şey sormak / hakkında sormak.',
     },
   },
   {
@@ -1533,11 +1533,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     prompt: "Alles hängt ___ dir ab.",
     options: ["von", "an", "mit", "zu"],
     correctIndex: 0,
-    explanation: '"abhängen von + Dat" — fixed combination.',
+    explanation: '"abhängen von + Dat", fixed combination.',
     hint: "Everything depends on you.",
     tr: {
       hint: "Her şey sana bağlı.",
-      explanation: '"abhängen von + Dat" — sabit kalıp.',
+      explanation: '"abhängen von + Dat", sabit kalıp.',
     },
   },
 
@@ -1548,11 +1548,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     prompt: "Ich warte ___ dich.",
     options: ["auf", "an", "für", "um"],
     correctIndex: 0,
-    explanation: '"warten auf + Akk" — fixed combination.',
+    explanation: '"warten auf + Akk", fixed combination.',
     hint: "I'm waiting for you.",
     tr: {
       hint: "Seni bekliyorum.",
-      explanation: '"warten auf + Akk" — sabit kalıp.',
+      explanation: '"warten auf + Akk", sabit kalıp.',
     },
   },
   {
@@ -1560,11 +1560,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     exerciseType: "fillBlank",
     prompt: "Sie denkt oft ___ ihre Familie.",
     answer: "an",
-    explanation: '"denken an + Akk" — to think about someone/something.',
+    explanation: '"denken an + Akk", to think about someone/something.',
     hint: "She often thinks about her family.",
     tr: {
       hint: "Sık sık ailesini düşünüyor.",
-      explanation: '"denken an + Akk" — birini/bir şeyi düşünmek.',
+      explanation: '"denken an + Akk", birini/bir şeyi düşünmek.',
     },
   },
   {
@@ -1573,11 +1573,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     prompt: "Er bedankt sich ___ das Geschenk.",
     options: ["für", "an", "auf", "um"],
     correctIndex: 0,
-    explanation: '"sich bedanken für + Akk" — to thank someone FOR something.',
+    explanation: '"sich bedanken für + Akk", to thank someone FOR something.',
     hint: "He thanks (them) for the gift.",
     tr: {
       hint: "Hediye için teşekkür ediyor.",
-      explanation: '"sich bedanken für + Akk" — bir şey için teşekkür etmek.',
+      explanation: '"sich bedanken für + Akk", bir şey için teşekkür etmek.',
     },
   },
 

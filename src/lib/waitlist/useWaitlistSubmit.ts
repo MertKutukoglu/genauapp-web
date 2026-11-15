@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 /**
- * useWaitlistSubmit — the one entry point every waitlist form uses to
+ * useWaitlistSubmit, the one entry point every waitlist form uses to
  * record a signup. Writes to public.waitlist_emails via anon POST,
  * captures UTM + referrer + landing_url, and keeps PostHog event
  * names identical to what the current landing emits so existing
@@ -84,7 +84,7 @@ function identifyInPostHog(email: string, source: string) {
     }
     ph.identify?.(email, personProps);
   } catch {
-    /* identify is best-effort — never block the UX */
+    /* identify is best-effort, never block the UX */
   }
 }
 
@@ -114,7 +114,7 @@ export function useWaitlistSubmit(): UseWaitlistSubmit {
         /* no-op */
       }
 
-      // Env not wired — fail soft so local dev still works, but tell
+      // Env not wired, fail soft so local dev still works, but tell
       // the user clearly and surface the miss in PostHog.
       if (!isSupabaseConfigured()) {
         setState("error");

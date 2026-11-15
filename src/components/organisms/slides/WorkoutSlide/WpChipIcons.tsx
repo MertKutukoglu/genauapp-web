@@ -9,7 +9,7 @@ import type { WorkoutChipKey } from "./slots";
  * 24×24 with currentColor fill; the parent chip tints via `color`.
  *
  * These are NOT the same as the generic chip-* icons in the Icon
- * library — those are schematic glyphs for the /try/ demo chip
+ * library, those are schematic glyphs for the /try/ demo chip
  * picker. These are the workout-peek's app-faithful SF-Symbol
  * equivalents.
  */

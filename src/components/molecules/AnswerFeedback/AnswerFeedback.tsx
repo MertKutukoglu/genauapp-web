@@ -6,22 +6,22 @@ import { SpeakerButton } from "@/components/atoms/SpeakerButton/SpeakerButton";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * AnswerFeedback — the generic correct/incorrect result banner that
+ * AnswerFeedback, the generic correct/incorrect result banner that
  * appears beneath an answer surface (scrambled tiles, chunk tiles,
  * typing) once the user has committed an attempt.
  *
  * Two states, same chrome shape so the vertical rhythm doesn't jump:
  *
- *   • Correct — green-tinted card, ✓ + "Correct". Auto-dismisses
+ *   • Correct, green-tinted card, ✓ + "Correct". Auto-dismisses
  *     (parent decides when to call onContinue / auto-advance).
  *
- *   • Incorrect — red-tinted card, ✗ + "Not quite.", reveals the
+ *   • Incorrect, red-tinted card, ✗ + "Not quite.", reveals the
  *     target word with a speaker icon so the user can both see and
  *     hear it. Pinned [Continue →] button fires `onContinue`, which
- *     typically routes to the deck's Repeat action — the card goes
+ *     typically routes to the deck's Repeat action, the card goes
  *     back into the queue for a later retry.
  *
- * Presentational — the parent decides when to mount this and which
+ * Presentational, the parent decides when to mount this and which
  * state to show. No internal timers.
  */
 

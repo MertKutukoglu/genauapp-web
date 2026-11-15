@@ -2,11 +2,11 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * PhoneFrame — a CSS iPhone 14 Pro-style hardware shell.
+ * PhoneFrame, a CSS iPhone 14 Pro-style hardware shell.
  *
  * Pure CSS: rounded corners (~48px), thin bezel, side buttons on the
  * left + a power button on the right, and a Dynamic Island cutout
- * centered at the top. Accepts any children that paint the screen —
+ * centered at the top. Accepts any children that paint the screen,
  * usually AppHomeMockup, but could also be a single screenshot.
  *
  * The `screenClassName` prop lets callers paint the screen's own
@@ -39,7 +39,7 @@ export function PhoneFrame({
         aspectRatio: "9 / 19.5",
       }}
     >
-      {/* Body — black hardware bezel with a subtle sheen */}
+      {/* Body, black hardware bezel with a subtle sheen */}
       <div
         className="absolute inset-0 rounded-[13%] bg-[#141112] shadow-[0_28px_60px_-20px_rgba(0,0,0,0.45),inset_0_0_0_2px_rgba(255,255,255,0.06)]"
         aria-hidden
@@ -63,7 +63,7 @@ export function PhoneFrame({
         {children}
       </div>
 
-      {/* Dynamic Island — pill cutout on top of the screen */}
+      {/* Dynamic Island, pill cutout on top of the screen */}
       <div
         aria-hidden
         className="absolute left-1/2 top-[2.4%] z-10 h-[3.6%] w-[34%] -translate-x-1/2 rounded-full bg-black"

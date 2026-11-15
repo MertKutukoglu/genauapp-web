@@ -4,7 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * WorkoutCounter — the dumbbell pill on the /try/ left card header.
+ * WorkoutCounter, the dumbbell pill on the /try/ left card header.
  *
  * Shows how many chips the user has completed, 0 → 4. Bumps briefly
  * on every increment (spring scale), and flips to a green --ok tint
@@ -55,14 +55,14 @@ export function WorkoutCounter({
         "rounded-full",
         // Type
         "font-sans font-bold text-sm text-fg-muted leading-none",
-        // Default surface — sunk pill
+        // Default surface, sunk pill
         "bg-surface-sunk",
         // Motion
         "transition-[transform,color,background-color]",
         "duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-        // Bump — 1.12 scale when count changes
+        // Bump, 1.12 scale when count changes
         bump && "scale-[1.12]",
-        // Maxed — green tint when count hits total
+        // Maxed, green tint when count hits total
         maxed &&
           "!bg-[color:color-mix(in_srgb,var(--ok)_14%,var(--surface-card))] !text-[color:var(--ok)]",
         className,

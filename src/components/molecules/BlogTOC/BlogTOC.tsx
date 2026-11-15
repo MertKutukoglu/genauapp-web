@@ -4,7 +4,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * BlogTOC — sticky table-of-contents sidebar used by the blog layout.
+ * BlogTOC, sticky table-of-contents sidebar used by the blog layout.
  *
  * Numbered list (decimal-leading-zero via CSS counters) of section
  * anchors. Clicking smooth-scrolls to the section with a top offset
@@ -13,7 +13,7 @@ import { clsx } from "@/lib/utils/clsx";
  * section is currently in view so the TOC auto-focuses as the
  * reader scrolls.
  *
- * Hidden below lg — mobile readers scroll through the article
+ * Hidden below lg, mobile readers scroll through the article
  * linearly without a nav aid.
  */
 

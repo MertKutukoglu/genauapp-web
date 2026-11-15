@@ -10,14 +10,14 @@ import { normalizeDE } from "@/content/grammar-a1";
 import { highlightArticles } from "@/lib/grammar/highlightArticles";
 
 /**
- * GrammarExerciseFillBlank — the Grammar chip's typed-answer
+ * GrammarExerciseFillBlank, the Grammar chip's typed-answer
  * exercise card.
  *
  * Layout per brief §4.2:
  *   - CardToolbar (counter only; no speaker on a sentence stem)
  *   - ExerciseFeedback at the top on commit
  *   - Topic eyebrow (always visible, uppercased)
- *   - Prompt with literal `___` (center, bold 24 — drops to 20 on
+ *   - Prompt with literal `___` (center, bold 24, drops to 20 on
  *     long strings)
  *   - Hint under the prompt, always visible (per brief: not
  *     tap-to-reveal)
@@ -87,7 +87,7 @@ export function GrammarExerciseFillBlank({
     // "Wir" that begins its sentence), require the user's input to
     // also start with uppercase. Mid-sentence answers (bist, habt,
     // hörst, gehen) start with lowercase in the canonical form and
-    // don't trigger the check — those stay fully case-insensitive.
+    // don't trigger the check, those stay fully case-insensitive.
     const expectUpper = /^[A-ZÄÖÜ]/.test(answer);
     const trimmed = value.trim();
     const startsUpper = /^[A-ZÄÖÜ]/.test(trimmed);

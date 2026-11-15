@@ -1,12 +1,12 @@
 /**
- * Words — B1 deck (20 items). Verbatim port of
+ * Words, B1 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Words_Content_B1.md §3.
  *
  * Same shape as WORDS_A2 (WordItem, WordsLearnBlock, TR overlay).
  *
  * B1 brings:
  *   - Abstract compound nouns: Entscheidung, Verantwortung, Erfahrung,
- *     Unterschied, Vorurteil, Ergebnis — the "ideas" vocab.
+ *     Unterschied, Vorurteil, Ergebnis, the "ideas" vocab.
  *   - New real rule: **-nis → das** (Ergebnis). Alongside A2's
  *     -ung → die, abstract -e → die, Ge- → das.
  *   - Fixed reflexive-preposition combos as lexical units with an
@@ -24,10 +24,10 @@
  * strip handles bare/reflexive input symmetrically.
  *
  * New grammarTags introduced at B1:
- *   - "prep-um-akk"  — um + Akkusativ (sich bewerben, sich kümmern)
- *   - "prep-an-dat"  — an + Dativ (teilnehmen)
- *   - "prep-auf-akk" — auf + Akkusativ (sich freuen auf)
- *   - "inseparable"  — prefix never splits (überlegen)
+ *   - "prep-um-akk" , um + Akkusativ (sich bewerben, sich kümmern)
+ *   - "prep-an-dat" , an + Dativ (teilnehmen)
+ *   - "prep-auf-akk", auf + Akkusativ (sich freuen auf)
+ *   - "inseparable" , prefix never splits (überlegen)
  *
  * Deck composition: 10 articlePicker + 5 typing + 5 translationMC
  * (same ratio as A1/A2). Noun article balance 4·5·4 across 13
@@ -238,7 +238,7 @@ export const WORDS_B1: WordItem[] = [
     hint: "Type the German verb.",
     answer: "teilnehmen",
     explanation:
-      '"teilnehmen an + Dat" — separable (teil at end), strong (nimmst/nimmt), with fixed \'an + Dativ\'.',
+      '"teilnehmen an + Dat", separable (teil at end), strong (nimmst/nimmt), with fixed \'an + Dativ\'.',
     chunks: ["teil", "neh", "men"],
     grammarTags: ["separable", "irregular", "prep-an-dat"] as GrammarTag[],
     tr: {
@@ -252,7 +252,7 @@ export const WORDS_B1: WordItem[] = [
       prompt: "katılmak",
       hint: "Almancasını yaz.",
       explanation:
-        '"teilnehmen an + Dat" — ayrılabilir (teil sonda), düzensiz (nimmst/nimmt), sabit \'an + Dativ\' ile.',
+        '"teilnehmen an + Dat", ayrılabilir (teil sonda), düzensiz (nimmst/nimmt), sabit \'an + Dativ\' ile.',
     },
   },
 
@@ -343,7 +343,7 @@ export const WORDS_B1: WordItem[] = [
     hint: "Type the German verb.",
     answer: "sich kümmern",
     explanation:
-      '"sich kümmern um + Akk" — reflexive, regular, with fixed \'um + Akkusativ\'.',
+      '"sich kümmern um + Akk", reflexive, regular, with fixed \'um + Akkusativ\'.',
     chunks: ["sich", "küm", "mern"],
     grammarTags: ["reflexive", "regular", "prep-um-akk"] as GrammarTag[],
     tr: {
@@ -357,7 +357,7 @@ export const WORDS_B1: WordItem[] = [
       prompt: "ilgilenmek",
       hint: "Almancasını yaz.",
       explanation:
-        '"sich kümmern um + Akk" — dönüşlü, düzenli, sabit \'um + Akkusativ\' ile.',
+        '"sich kümmern um + Akk", dönüşlü, düzenli, sabit \'um + Akkusativ\' ile.',
     },
   },
 
@@ -676,7 +676,7 @@ export const WORDS_B1: WordItem[] = [
     options: ["solution", "problem", "question", "answer"],
     correctIndex: 0,
     explanation:
-      '"die Lösung" — feminine -ung noun. From the verb lösen (to solve).',
+      '"die Lösung", feminine -ung noun. From the verb lösen (to solve).',
     chunks: ["Lö", "sung"],
     tr: {
       topic: "Problem çözme",
@@ -687,7 +687,7 @@ export const WORDS_B1: WordItem[] = [
       },
       options: ["çözüm", "problem", "soru", "cevap"],
       explanation:
-        '"die Lösung" — dişil -ung ismi. lösen (çözmek) fiilinden.',
+        '"die Lösung", dişil -ung ismi. lösen (çözmek) fiilinden.',
     },
   },
 
@@ -710,7 +710,7 @@ export const WORDS_B1: WordItem[] = [
     options: ["opinion", "fact", "guess", "memory"],
     correctIndex: 0,
     explanation:
-      '"die Meinung" — feminine -ung noun. Collocation: seine Meinung sagen / ausdrücken.',
+      '"die Meinung", feminine -ung noun. Collocation: seine Meinung sagen / ausdrücken.',
     chunks: ["Mei", "nung"],
     tr: {
       topic: "Görüşler",
@@ -721,7 +721,7 @@ export const WORDS_B1: WordItem[] = [
       },
       options: ["görüş", "gerçek", "tahmin", "hatıra"],
       explanation:
-        '"die Meinung" — dişil -ung ismi. Kalıp: seine Meinung sagen / ausdrücken (fikrini söylemek / ifade etmek).',
+        '"die Meinung", dişil -ung ismi. Kalıp: seine Meinung sagen / ausdrücken (fikrini söylemek / ifade etmek).',
     },
   },
 
@@ -743,7 +743,7 @@ export const WORDS_B1: WordItem[] = [
     options: ["feeling", "thought", "memory", "sense"],
     correctIndex: 0,
     explanation:
-      '"das Gefühl" is neuter. Ge- prefix hints at neuter (though not strictly a rule here — Gefühl is conventionally das).',
+      '"das Gefühl" is neuter. Ge- prefix hints at neuter (though not strictly a rule here, Gefühl is conventionally das).',
     chunks: ["Ge", "fühl"],
     tr: {
       topic: "Duygular",

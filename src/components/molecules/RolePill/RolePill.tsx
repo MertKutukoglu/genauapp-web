@@ -4,12 +4,12 @@ import { ROLE_COLORS } from "@/lib/sentence/roleColors";
 import type { SentenceRole } from "@/content/sentence-a1";
 
 /**
- * RolePill — one pill in the Sentence formula strip. Shows a bold
+ * RolePill, one pill in the Sentence formula strip. Shows a bold
  * role label (Subjekt / Verb / Objekt / Zeit / Ort / W-Wort) in the
  * role's color, with a small muted caption underneath ("Position 1",
  * "Where", "When", …).
  *
- * The label may contain a literal `\n` ("Possessiv +\nNomen") —
+ * The label may contain a literal `\n` ("Possessiv +\nNomen"),
  * preserve it with `whitespace-pre-line` so the pill renders two
  * lines instead of stretching sideways.
  *
@@ -30,7 +30,7 @@ export interface RolePillProps {
    * Turkish on /tr/try). Rendered one typographic step down from
    * `text` so the learner can anchor the German grammar term to a
    * word they already know. Preserves embedded `\n` the same way
-   * `text` does — the Possessiv + Nomen pill breaks both lines.
+   * `text` does, the Possessiv + Nomen pill breaks both lines.
    */
   translation?: string;
   caption: string;

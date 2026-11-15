@@ -5,14 +5,14 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * ExerciseFeedback — correct/incorrect result card for every Exercise
+ * ExerciseFeedback, correct/incorrect result card for every Exercise
  * variant (articlePicker / translationMC / typing).
  *
  * Sits at the TOP of the card (above the prompt) per the iOS
  * reference, with an outlined [Next →] button the user taps to
  * advance. Unlike the Learn-mode AnswerFeedback, Exercise feedback is
- * explicit — the user commits, sees the verdict with an explanation,
- * then taps Next themselves (no auto-advance — scoring hinges on
+ * explicit, the user commits, sees the verdict with an explanation,
+ * then taps Next themselves (no auto-advance, scoring hinges on
  * conscious close of the loop).
  *
  * Two state shapes, same chrome:

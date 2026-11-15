@@ -39,7 +39,7 @@ import {
 } from "@/content/grammar-a1";
 
 /**
- * GrammarChip — the Grammar chip's right-card experience. Sibling of
+ * GrammarChip, the Grammar chip's right-card experience. Sibling of
  * WordsChip, owning:
  *   - mode (learn / exercise) via the shared ModeToggle
  *   - Learn deck: 5-7 anchors (whichever carry a `learn` block),
@@ -93,7 +93,7 @@ export function GrammarChip({
 
   // When the deck is split into parts (B1 Grammar at 40 items),
   // Grammar workout only counts as "done" once EVERY part has been
-  // completed — mirroring the app's per-workout completion mantık.
+  // completed, mirroring the app's per-workout completion mantık.
   // Per-part skill deltas still stage, per-part completion still
   // renders; only the chip-level "done" flip is deferred to the last
   // part. Set of completed part indices.
@@ -113,7 +113,7 @@ export function GrammarChip({
     return result;
   }, [localizedItems]);
 
-  // Localized stat label on the Learn completion — "Cards" / "Kartlar"
+  // Localized stat label on the Learn completion, "Cards" / "Kartlar"
   // reads right when the Learn deck is a handful of anchors rather
   // than a long word list.
   const itemsLabel = locale === "tr" ? "Kartlar" : "Cards";
@@ -136,7 +136,7 @@ export function GrammarChip({
         const next = new Set(prev);
         next.add(partIdx);
         if (next.size >= parts.length) {
-          // All parts finished — only now does Grammar count as
+          // All parts finished, only now does Grammar count as
           // a completed workout in the daily plan.
           chipCompleteChip("grammar");
         }
@@ -216,7 +216,7 @@ function distinctTopics(items: GrammarQuestion[]): string[] {
 }
 
 /** Tiny breadcrumb shown above ExerciseDeck when a part is active,
- *  so the learner can bail back to the picker at any point —
+ *  so the learner can bail back to the picker at any point,
  *  including after completion, since ExerciseCompletion renders in
  *  place of the deck and this row stays visible above it. The right
  *  side shows a small "N / total done" tally so the learner sees how
@@ -284,7 +284,7 @@ function PartsBreadcrumb({
 }
 
 /**
- * LearnDeck — walks the anchors as cards. Carried over from the
+ * LearnDeck, walks the anchors as cards. Carried over from the
  * first Grammar pass so the Exercise work could land without
  * touching the Learn shape.
  */
@@ -373,7 +373,7 @@ function LearnDeck({
 }
 
 /**
- * LearnCardSwitch — dispatch a question's `learn.layout` to the right
+ * LearnCardSwitch, dispatch a question's `learn.layout` to the right
  * card organism. Unknown layouts fall back to an empty card rather
  * than throw: a content-only mistake shouldn't crash the UI.
  */
@@ -626,7 +626,7 @@ function LearnCardSwitch({
 }
 
 /**
- * ExerciseDeck — walks every GrammarQuestion in authored order and
+ * ExerciseDeck, walks every GrammarQuestion in authored order and
  * dispatches by `exerciseType` to the MC or fillBlank organism.
  *
  * Deck mechanic matches Words Exercise:
@@ -641,7 +641,7 @@ function LearnCardSwitch({
  * vocab fed, per CHIP_SKILL_MAP), stage them to the skillStore (shown
  * as YOU FED badges on the completion card), mark the grammar chip
  * done so the LeftCard's workout counter ticks, and emit the finish
- * PostHog event with flat delta_* props (never the nested object —
+ * PostHog event with flat delta_* props (never the nested object,
  * the analytics SDK rejects those).
  */
 function ExerciseDeck({
@@ -652,11 +652,11 @@ function ExerciseDeck({
   items: GrammarQuestion[];
   /** When false, the deck stages skill deltas + addStats but does NOT
    *  call completeChip("grammar"). Used by the parts picker so the
-   *  chip only flips to "done" once every part has been completed —
+   *  chip only flips to "done" once every part has been completed,
    *  mirroring the app's per-workout completion semantics. Default
    *  true (single-deck behaviour). */
   completesChip?: boolean;
-  /** Fires once when the deck reaches completion — the chip uses this
+  /** Fires once when the deck reaches completion, the chip uses this
    *  to track which parts have been finished so it can decide when
    *  to call completeChip("grammar"). Ignored when completesChip is
    *  true (the chip owns its own completion in that case). */
@@ -695,7 +695,7 @@ function ExerciseDeck({
       const key = `${current.topic}|${current.prompt}`;
       // Log the answer for the Grammar skill sheet. `isAnchor` tells
       // downstream views whether the question was one of the 5-7
-      // anchor questions (with a `learn` block) or a drill — the
+      // anchor questions (with a `learn` block) or a drill, the
       // sheet doesn't surface it yet, but it's worth keeping so a
       // future per-section split (anchor vs drill accuracy) has the
       // data it needs.
@@ -733,7 +733,7 @@ function ExerciseDeck({
         setRemaining((r) => {
           // On the very last question: ending the deck is the only
           // way forward. Returning `r` unchanged used to leave the
-          // user stuck on the "Incorrect" banner — they'd already
+          // user stuck on the "Incorrect" banner, they'd already
           // seen the correct answer, but Next did nothing because
           // the item at index 0 didn't change, so the exercise card
           // stayed mounted with the answered state. Slice it off

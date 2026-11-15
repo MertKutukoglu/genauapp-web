@@ -6,7 +6,7 @@
  * whole lift, 1-pixel top-edge inset sheen for glass. On warmdk-900
  * (the dark page bg) this reads as a softly lifted glass tile.
  *
- * Light mode diverges from the home card recipe — the home cards
+ * Light mode diverges from the home card recipe, the home cards
  * use a near-invisible black gradient (3% → 7%) that barely
  * separates from a warm-50 page bg, so /try/ cards bled into the
  * background. Switch light mode to an opaque white (`--surface-
@@ -14,7 +14,7 @@
  * the page's warm cream. The home page keeps its glass recipe
  * untouched.
  *
- * Does NOT set radius, padding, display or layout — callers keep
+ * Does NOT set radius, padding, display or layout, callers keep
  * their own geometry so this utility drops in anywhere a card
  * lives without fighting layout.
  */

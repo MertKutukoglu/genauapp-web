@@ -4,13 +4,13 @@ import { clsx } from "@/lib/utils/clsx";
 import { Badge } from "@/components/atoms/Badge/Badge";
 
 /**
- * PackCard — illustrated pack tile for the landing Packs scene.
+ * PackCard, illustrated pack tile for the landing Packs scene.
  *
  * Shape: square aspect, rounded-xl, illustration fills the whole tile
  * with a dark gradient scrim at the bottom. Title sits over the scrim
  * on the bottom-left; CEFR level badge in the bottom-right.
  *
- * `imageSrc` is optional — when missing, the tile renders a tinted
+ * `imageSrc` is optional, when missing, the tile renders a tinted
  * placeholder so pack covers can land incrementally.
  */
 

@@ -7,7 +7,7 @@ import { GrammarSampleSentence } from "@/components/molecules/GrammarSampleSente
 import { RuleCard } from "@/components/molecules/RuleCard/RuleCard";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 /**
- * GrammarActivePassiveCard — the B1 `activePassiveComparison`
+ * GrammarActivePassiveCard, the B1 `activePassiveComparison`
  * layout, generalised at B2 to also drive the `styleComparison`
  * layout (Verbalstil ↔ Nominalstil). Three pairs rendered side by
  * side so the learner sees the transformation line by line:
@@ -17,14 +17,14 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   Das Team hat das Haus ...   →    Das Haus wurde gebaut.
  *
  * Pedagogical signal: the RIGHT column's header tints purple
- * (chip-grammar-color) because that's where the pattern lives —
+ * (chip-grammar-color) because that's where the pattern lives,
  * werden + Partizip II in Aktiv↔Passiv, the Genitiv noun phrase
  * in Verbal↔Nominal. The left column stays fg-muted so the eye
  * pulls to the right.
  *
  * Column labels come from `labels` when given (`["Verbalstil",
  * "Nominalstil"]`), else fall back to `["Aktiv", "Passiv"]`. The
- * `pairs` prop is a flat `{ left, right }` shape — the B1 content
+ * `pairs` prop is a flat `{ left, right }` shape, the B1 content
  * (with `aktiv`/`passiv` keys) gets normalised in the GrammarChip
  * router, so this card doesn't need to know about the two shapes.
  */

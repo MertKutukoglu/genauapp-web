@@ -2,15 +2,15 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * LandingLayout — the two-column shell for the home page.
+ * LandingLayout, the two-column shell for the home page.
  *
  * Card treatment matches the Figma testimonial card
  * (file KKZjlNDb3FQM8lAbt6534y, node 2555:172):
  *   - Rounded 32px corners
- *   - Very subtle vertical translucent gradient (6% → 12% fg) — reads
+ *   - Very subtle vertical translucent gradient (6% → 12% fg), reads
  *     as a soft "lift" in either theme without hard borders
  *   - An inset 1px white (or theme-fg translucent) top-edge highlight
- *     — the glass sheen along the top of the card
+ *    , the glass sheen along the top of the card
  *   - No stroke; the treatment is all surface + light
  *
  * Desktop (≥ 1024px): the layout fits the viewport. On mobile/tablet

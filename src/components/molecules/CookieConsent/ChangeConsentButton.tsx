@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { readConsent, writeConsent, type ConsentState } from "@/lib/consent/consent";
 
 /**
- * ChangeConsentButton — the GDPR "withdraw consent" affordance on the
+ * ChangeConsentButton, the GDPR "withdraw consent" affordance on the
  * Cookie Policy page. Clearing the stored value re-opens the banner
  * on the next render (the banner is bound to state === "unset").
  *

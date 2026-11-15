@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Skill } from "./SkillRing";
 
 /**
- * SkillBadgeArt — the per-skill illustration drawn at the center of a
+ * SkillBadgeArt, the per-skill illustration drawn at the center of a
  * SegmentedSkillRing. Ported verbatim from
  * `claude/GenauApp_Web_SkillBadges_SVG.md`, which itself mirrors the
  * iOS *TierBadge.swift files.
@@ -14,7 +14,7 @@ import type { Skill } from "./SkillRing";
 export function SkillBadgeArt({ skill }: { skill: Skill }) {
   switch (skill) {
     case "vocab":
-      // VocabLernerBadge — closed book, pink cover, -5° tilt
+      // VocabLernerBadge, closed book, pink cover, -5° tilt
       return (
         <g transform="translate(43 43) rotate(-5)">
           <ellipse cx="0" cy="22" rx="12" ry="1.5" fill="rgba(0,0,0,0.15)" />
@@ -27,7 +27,7 @@ export function SkillBadgeArt({ skill }: { skill: Skill }) {
         </g>
       );
     case "grammar":
-      // GrammarLernerBadge — hollow purple set-square, hatch marks, -6°
+      // GrammarLernerBadge, hollow purple set-square, hatch marks, -6°
       return (
         <g transform="translate(43 43) rotate(-6)">
           <polygon points="-18,18 18,18 -18,-18" fill="#8B5CF6" />
@@ -43,7 +43,7 @@ export function SkillBadgeArt({ skill }: { skill: Skill }) {
         </g>
       );
     case "reading":
-      // ReadLernerBadge — unfolded newspaper, blue palette, -4° tilt
+      // ReadLernerBadge, unfolded newspaper, blue palette, -4° tilt
       return (
         <g transform="translate(43 43) rotate(-4)">
           <rect x="-14.5" y="-17.5" width="32" height="38" rx="0.5" fill="black" fillOpacity="0.12" />
@@ -63,7 +63,7 @@ export function SkillBadgeArt({ skill }: { skill: Skill }) {
         </g>
       );
     case "writing":
-      // WritingAnfangerBadge — short worn pencil, -28° tilt
+      // WritingAnfangerBadge, short worn pencil, -28° tilt
       return (
         <g transform="translate(43 43) rotate(-28)">
           <rect x="-8" y="-18" width="16" height="4" rx="1.5" fill="#E8A7B5" />

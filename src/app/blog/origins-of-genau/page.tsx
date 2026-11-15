@@ -3,7 +3,7 @@ import { BlogLayout } from "@/components/templates/BlogLayout/BlogLayout";
 import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 
 /**
- * /blog/origins-of-genau — Mert's origin story for GenauApp, ported
+ * /blog/origins-of-genau, Mert's origin story for GenauApp, ported
  * verbatim from `claude/GenauApp_Landing_Origins_Blog.md` in the
  * project. Article colors on German nouns / cases follow the system
  * tokens (--article-der/die/das, --accent for Akk, --ok for Dat,

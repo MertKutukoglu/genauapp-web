@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { SeparablePrefix } from "@/content/grammar-a1";
 
 /**
- * GrammarVerbCardsCard — the A2 `verbCards` layout, rendered as a
+ * GrammarVerbCardsCard, the A2 `verbCards` layout, rendered as a
  * prefix carousel: one separable prefix per step, chevrons flanking
  * the hero, cycles through all twelve (ab-, an-, auf-, aus-, bei-,
  * ein-, los-, mit-, nach-, vor-, weg-, zu-) with ← → support.
@@ -32,7 +32,7 @@ export interface GrammarVerbCardsCardProps {
   /** English gloss shown under the active prefix (regular 16 muted,
    *  matching every other Grammar Learn card). */
   english: string;
-  /** Chip-identity label shown in the top-left toolbar slot — the
+  /** Chip-identity label shown in the top-left toolbar slot, the
    *  anchor topic (e.g. "Dativ-Präpositionen"), so the learner
    *  doesn't lose the topic when they chevron through variants. */
   chipLabel?: string;
@@ -132,7 +132,7 @@ export function GrammarVerbCardsCard({
       />
 
       {/*
-        Headline block — prefix hero at 32px to match every other
+        Headline block, prefix hero at 32px to match every other
         Grammar Learn card (VerbParadigm, ParticipleParadigm,
         ArticleCases all share text-[32px] headlines) and the
         English gloss at text-base muted beneath, same shape as
@@ -202,7 +202,7 @@ export function GrammarVerbCardsCard({
         </div>
       </div>
 
-      {/* Sample Words sunk tile — bullet-separated verbs. Wraps on
+      {/* Sample Words sunk tile, bullet-separated verbs. Wraps on
           narrow widths via flex-wrap. Carries a thin case-colour
           border when the anchor passes a tint. */}
       <div

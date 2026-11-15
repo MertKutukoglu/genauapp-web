@@ -4,7 +4,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { WordmarkLogo } from "./WordmarkLogo";
 
 /**
- * Wordmark — the GenauApp logo as a link back to /, with an optional
+ * Wordmark, the GenauApp logo as a link back to /, with an optional
  * "SOON" beta pill nudged to its top-right corner.
  *
  * Variants:
@@ -44,7 +44,7 @@ export function Wordmark({
   return (
     <Link
       href={href}
-      aria-label="GenauApp — back to landing"
+      aria-label="GenauApp, back to landing"
       className={clsx(
         "relative inline-flex items-center text-fg",
         isFooter && "text-white/90",

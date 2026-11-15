@@ -1,12 +1,12 @@
 /**
- * Words — B2 deck (20 items). Verbatim port of
+ * Words, B2 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Words_Content_B2.md §3.
  *
  * Same shape as WORDS_A2 / WORDS_B1 (WordItem, WordsLearnBlock,
  * TR overlay). B2 levels up on six axes:
  *
  *   - Society-and-argument nouns: Gesellschaft, Nachhaltigkeit,
- *     Maßnahme, Voraussetzung, Zusammenhang, Widerspruch —
+ *     Maßnahme, Voraussetzung, Zusammenhang, Widerspruch,
  *     the vocab of news and essays, not personal position.
  *   - New gender rules in the canon: -keit/-heit → die, -schaft
  *     → die, -tum → das (with named exceptions der Irrtum /
@@ -14,7 +14,7 @@
  *     useful rule at B2: **compound nouns take the gender of
  *     the LAST part** (das Sein → das Bewusstsein).
  *   - Prepositional verbs + their wo-/da- compounds (Womit?
- *     Damit. Darauf. Davon.) — asking and referring back.
+ *     Damit. Darauf. Davon.), asking and referring back.
  *   - Variable-prefix verbs: same spelling, two verbs with
  *     different meanings, aux and stress (umgehen mit = deal
  *     with, aux sein; umgehen = bypass, aux haben).
@@ -35,10 +35,10 @@
  * verlassen). No change needed in ExerciseTyping.
  *
  * New grammarTags introduced at B2:
- *   - "prep-mit-dat"      — sich beschäftigen, umgehen
- *   - "prep-von-dat"      — abhängen
- *   - "variable-prefix"   — umgehen
- *   - "nvv"               — in Betracht ziehen, zur Verfügung
+ *   - "prep-mit-dat"     , sich beschäftigen, umgehen
+ *   - "prep-von-dat"     , abhängen
+ *   - "variable-prefix"  , umgehen
+ *   - "nvv"              , in Betracht ziehen, zur Verfügung
  *                            stellen
  *
  * Deck composition: 10 articlePicker + 5 typing + 5 translationMC

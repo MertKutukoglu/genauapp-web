@@ -10,7 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ParadigmForm, VerbParadigmVariant } from "@/content/grammar-a1";
 
 /**
- * GrammarVerbParadigmCard — the Grammar chip's `verbParadigm` Learn
+ * GrammarVerbParadigmCard, the Grammar chip's `verbParadigm` Learn
  * layout. Drives the A1 sein/haben anchors (single-paradigm shape)
  * AND the A2 Modalverben anchor (carousel shape).
  *
@@ -19,7 +19,7 @@ import type { ParadigmForm, VerbParadigmVariant } from "@/content/grammar-a1";
  *   → centered verb (bold 32) + English gloss (regular 16 muted)
  *     with optional chevrons flanking the verb (carousel mode)
  *   → 6-row ParadigmGrid
- *   → optional note (purple RuleCard — A2 Modalverben ships one)
+ *   → optional note (purple RuleCard, A2 Modalverben ships one)
  *   → sample sentence with highlight
  *   → Repeat / I know (bottom-pinned)
  *
@@ -28,7 +28,7 @@ import type { ParadigmForm, VerbParadigmVariant } from "@/content/grammar-a1";
  * (with wraparound); ArrowLeft / ArrowRight do the same from the
  * keyboard when the card is focused. A set of tiny dots under the
  * sample marks the current index so the learner knows they're in
- * a multi-step card — three successive clicks without a visual cue
+ * a multi-step card, three successive clicks without a visual cue
  * read as "it's broken".
  *
  * The toolbar's speaker reads the active variant's verb so the
@@ -39,7 +39,7 @@ import type { ParadigmForm, VerbParadigmVariant } from "@/content/grammar-a1";
 export interface GrammarVerbParadigmCardProps {
   verb: string;
   english: string;
-  /** Chip-identity label shown in the top-left toolbar slot — the
+  /** Chip-identity label shown in the top-left toolbar slot, the
    *  anchor topic (e.g. "Konjunktiv II", "Modalverben"), so the
    *  learner doesn't lose the topic when they chevron through
    *  variants. */
@@ -150,7 +150,7 @@ export function GrammarVerbParadigmCard({
         total={total}
       />
 
-      {/* Headline block — verb flanked by chevrons in carousel mode. */}
+      {/* Headline block, verb flanked by chevrons in carousel mode. */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
         <div className="flex items-center justify-center gap-3">
           {hasCarousel ? (

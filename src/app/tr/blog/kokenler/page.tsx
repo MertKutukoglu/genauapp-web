@@ -3,7 +3,7 @@ import { BlogLayout } from "@/components/templates/BlogLayout/BlogLayout";
 import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 
 /**
- * /tr/blog/kokenler — Origins of Genau, Turkish version.
+ * /tr/blog/kokenler, Origins of Genau, Turkish version.
  *
  * Localized (not translated) from `claude/GenauApp_Landing_Origins_Blog.md`
  * via the approved TR copy in `claude/GenauApp_Web_TR_Localization_Draft.md`
@@ -12,8 +12,8 @@ import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
  * labels and all body prose are Turkish.
  *
  * German inline words (der / die / das, Akkusativ, Dativ, Genitiv,
- * sein, Perfekt, helfen, Bürgeramt) stay in German — that's the
- * subject matter, not translation surface — with the same article-
+ * sein, Perfekt, helfen, Bürgeramt) stay in German, that's the
+ * subject matter, not translation surface, with the same article-
  * color spans the EN post uses.
  */
 
@@ -83,9 +83,9 @@ export default function KokenlerPage() {
         <em>der / die / das</em> için. Üçüncüsü vocabulary için ama o kadar
         gamified&apos;di ki birisi bana dil öğretmek yerine çiftlik
         kurdurtmak istiyor gibiydi. Dördüncüsü cümleler için. Düzgün bir
-        Almanca gramer uygulaması bulmam haftalar aldı — çünkü kimse
+        Almanca gramer uygulaması bulmam haftalar aldı, çünkü kimse
         yapmıyor. Sonunda telefonumda beş uygulama açıktı, her birine ayda
-        aşağı yukarı on avro ödüyordum, toplam elli avro — bir de yeni bir
+        aşağı yukarı on avro ödüyordum, toplam elli avro, bir de yeni bir
         ülkeye taşınmanın diğer tüm masrafları üstüne. Yine de bir sekmeden
         diğerine atlayıp duruyordum, bir sonraki ihtiyacım olan şeyi
         hangisinin öğreteceğini çözmeye çalışıyordum.
@@ -167,7 +167,7 @@ export default function KokenlerPage() {
         renklerini değiştirebilirsin. Otomatik sesi açıp kapatabilirsin.
         Kural hatırlatıcılarını toggle edebilirsin. Dikkatini dağıtıyorsa
         örnek cümleleri gizleyebilirsin. Uygulama seni, beynin olduğu yerde
-        karşılıyor — başka birinin kitabının olman gerektiğini düşündüğü
+        karşılıyor, başka birinin kitabının olman gerektiğini düşündüğü
         yerde değil.
       </p>
 
@@ -213,7 +213,7 @@ export default function KokenlerPage() {
         kelimelerine. Bir yazılım mühendisi işinin kelimelerine. Herhangi
         bir grup kursu ortalama hızında hareket eder, ve dili belirli bir
         hayatı için isteyen yetişkin öğreniciler B1 civarında bir tavana
-        çarpar. Format alan kalmaz — öğretmenler önemsemediği için değil,
+        çarpar. Format alan kalmaz, öğretmenler önemsemediği için değil,
         bire-çok öğretim, acele etmekte olan belirli bir yetişkin için
         tasarlanmamıştı.
       </p>
@@ -267,7 +267,7 @@ export default function KokenlerPage() {
         <em>Genau</em> Almancada ilk öğrendiğin kelimelerden biri.
         &ldquo;Tam&rdquo; ya da &ldquo;doğru&rdquo; anlamına geliyor. Birisi
         seni doğru anladığında söylediğin şey. Almanlar seninle hemfikir
-        olduklarında da söylüyor — ki bu çok oluyor. Biraz daha Alman gibi
+        olduklarında da söylüyor, ki bu çok oluyor. Biraz daha Alman gibi
         görünmek istiyorsan, fırsat buldukça <em>genau</em> demekten
         kötüsünü yapabilirsin.
       </p>

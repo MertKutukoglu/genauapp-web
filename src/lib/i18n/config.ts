@@ -1,5 +1,5 @@
 /**
- * i18n — locale configuration.
+ * i18n, locale configuration.
  *
  * The site ships English at the root (`/`) and Turkish under a `/tr/`
  * prefix. English stays at the root (not `/en/`) because it's the

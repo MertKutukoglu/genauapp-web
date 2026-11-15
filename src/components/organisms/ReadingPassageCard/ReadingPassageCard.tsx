@@ -13,7 +13,7 @@ import {
 import { HighlightChip } from "@/components/molecules/HighlightChip/HighlightChip";
 
 /**
- * ReadingPassageCard — the Reading chip's Read-mode card. One
+ * ReadingPassageCard, the Reading chip's Read-mode card. One
  * passage, prose on the card surface, cherry "Try the questions →"
  * CTA at the bottom.
  *
@@ -22,7 +22,7 @@ import { HighlightChip } from "@/components/molecules/HighlightChip/HighlightChi
  * no padding beyond the card's own 20. Wrapping prose in an inner
  * surface reads as a quote-pull, which the passage is not.
  *
- * The toolbar's counter pill is hidden here — Reading has one
+ * The toolbar's counter pill is hidden here, Reading has one
  * passage, so there's no "card N of total" to show. The
  * CardToolbar molecule accepts undefined current/total and
  * collapses the pill accordingly.
@@ -65,7 +65,7 @@ export function ReadingPassageCard({
     locale === "tr" ? "Soruları dene →" : "Try the questions →";
 
   // Tokenize once per passage/highlights change. Grouping back by
-  // paragraph keeps the <p> layout we had before — the only change
+  // paragraph keeps the <p> layout we had before, the only change
   // is that some tokens now become <button>s.
   const paragraphs = React.useMemo(() => {
     const tokens = tokenizeHighlights(passage, highlights);
@@ -75,7 +75,7 @@ export function ReadingPassageCard({
   const [active, setActive] = React.useState<ReadingHighlight | null>(null);
 
   // Clear the active chip if the passage changes (level switch,
-  // etc.) — a chip stuck on a word from the previous passage would
+  // etc.), a chip stuck on a word from the previous passage would
   // never find a matching highlight to re-open.
   React.useEffect(() => {
     setActive(null);
@@ -104,12 +104,12 @@ export function ReadingPassageCard({
       {/* No toolbar on Reading. The counter pill would be empty
           (one passage, no deck position), and the whole-passage
           speaker played the full text start-to-finish with no
-          pause control — a cumbersome affordance for a wall of
+          pause control, a cumbersome affordance for a wall of
           prose. Per-word pronunciation now lives on the
           HighlightChip (the chip's 🔊 button speaks just the
           lemma), which is the actual useful case. */}
 
-      {/* Header — title + subtitle, centered. */}
+      {/* Header, title + subtitle, centered. */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
         <div className="font-sans font-bold text-[24px] text-fg leading-tight">
           {title}
@@ -122,7 +122,7 @@ export function ReadingPassageCard({
         </div>
       </div>
 
-      {/* Passage — plain prose, directly on the card. Tokens render
+      {/* Passage, plain prose, directly on the card. Tokens render
           as text runs or highlight buttons depending on the token's
           kind. 16/1.7 for breathing room. */}
       <div className="flex flex-col gap-3 flex-1">
@@ -196,14 +196,14 @@ export function ReadingPassageCard({
 }
 
 /**
- * HighlightMark — an inline <button> that renders a single
+ * HighlightMark, an inline <button> that renders a single
  * highlighted word in the passage. Visual: subtle 1.5px underline
  * in the accent color so the word reads as "tap me" without
  * shouting at the reader. Active state deepens the underline and
  * tints the background slightly.
  *
  * The button sits inside a <p>, so we have to set `display: inline`
- * and keep it baseline-aligned — using an <a>-style inline element
+ * and keep it baseline-aligned, using an <a>-style inline element
  * instead of block button so it wraps across lines naturally.
  */
 function HighlightMark({

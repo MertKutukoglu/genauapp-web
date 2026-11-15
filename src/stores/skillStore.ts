@@ -1,26 +1,26 @@
 "use client";
 
 /**
- * skillStore — ring values for the /try/ skill-feeding system.
+ * skillStore, ring values for the /try/ skill-feeding system.
  *
  * Owns:
- *   - `progress[skill]` — 0..1 ring fill per skill. Persisted so the
+ *   - `progress[skill]`, 0..1 ring fill per skill. Persisted so the
  *     user's earned rings carry across refreshes.
- *   - `pending[skill]` — a staged delta per skill, applied the moment
+ *   - `pending[skill]`, a staged delta per skill, applied the moment
  *     the user taps the ring's "↗ collect" badge. Kept IN MEMORY so a
  *     refresh re-asks the user to earn the bonus (prevents a stale
  *     badge nagging after they closed the tab mid-collect; a chip
  *     completed in a new session will re-stage anyway).
  *
  * Actions:
- *   - `stageDeltas(deltas)` — merges pending deltas (sums with any
+ *   - `stageDeltas(deltas)`, merges pending deltas (sums with any
  *     already staged for the same skill). Called by the chip's
  *     completion screen with the output of `computeSkillDeltas`.
- *   - `collect(skill)` — applies the pending delta for one skill to
+ *   - `collect(skill)`, applies the pending delta for one skill to
  *     its progress (clamped to 1), clears that pending entry.
- *   - `collectAll()` — convenience: collect every skill with a
+ *   - `collectAll()`, convenience: collect every skill with a
  *     pending delta at once.
- *   - `resetAll()` — wipes progress + pending (dev / taste reset).
+ *   - `resetAll()`, wipes progress + pending (dev / taste reset).
  *
  * Design intent: the two-step stage → collect flow makes each ring
  * bump a conscious, earned moment instead of a confetti spam after
@@ -33,8 +33,8 @@ import type { SkillKey, SkillDeltas } from "@/lib/skills/map";
 
 /**
  * Flatten a per-skill delta map into analytics-safe props. Vercel's
- * track() rejects nested objects — only strings / numbers / booleans
- * / null are allowed — so a shape like `{ deltas: { vocab: 0.23 } }`
+ * track() rejects nested objects, only strings / numbers / booleans
+ * / null are allowed, so a shape like `{ deltas: { vocab: 0.23 } }`
  * throws. Spreading into keyed primitives (`delta_vocab: 0.23`) also
  * makes PostHog filters much easier to slice later.
  */
@@ -93,7 +93,7 @@ const safeStorage: PersistStorage<Persisted> = {
     try {
       window.localStorage.setItem(name, JSON.stringify(value));
     } catch {
-      /* quota / private mode — drop silently */
+      /* quota / private mode, drop silently */
     }
   },
   removeItem: (name) => {

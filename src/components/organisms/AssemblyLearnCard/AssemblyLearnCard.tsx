@@ -10,19 +10,19 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
 
 /**
- * AssemblyLearnCard — the shared frame for the two assembly-puzzle
+ * AssemblyLearnCard, the shared frame for the two assembly-puzzle
  * Learn variants (`scrambled` = letters, `chunkCompose` = syllable
  * chunks). Only difference between modes is what the tiles are;
- * everything else — toolbar, English hero, slots, tile pool, auto-
- * advance on completion — matches.
+ * everything else, toolbar, English hero, slots, tile pool, auto-
+ * advance on completion, matches.
  *
  * Shape, per the iOS reference Mert shared:
  *   1. CardToolbar (speaker + counter). No bookmark, no grade pill.
  *   2. Topic eyebrow + mode-specific prompt line
  *   3. Big bold English hero with inline speaker (hears the German)
- *   4. AssemblyArea — thin-dash slots + tile pool + backspace
+ *   4. AssemblyArea, thin-dash slots + tile pool + backspace
  *
- * No sample. No rule. No user-driven Repeat / I know buttons — the
+ * No sample. No rule. No user-driven Repeat / I know buttons, the
  * attempt itself is the signal:
  *   • Correct attempt → brief green "Correct" flash → auto-advance
  *     via onIKnow after `advanceDelay` so the deck shrinks.
@@ -86,10 +86,10 @@ export function AssemblyLearnCard({
       : assemblyCopy.promptChunkCompose;
 
   // Pieces + display target. When the word carries an article, the
-  // article becomes part of the puzzle — scrambled treats each of
+  // article becomes part of the puzzle, scrambled treats each of
   // its letters as a tile; chunkCompose treats the article as its
   // own leading chunk. The space between article and word is
-  // non-pickable — it comes from `displayTarget` and reads as a gap
+  // non-pickable, it comes from `displayTarget` and reads as a gap
   // in the slot row.
   const { pieces, displayTarget } = React.useMemo(() => {
     const bareWord = word.replace(/\s/g, "");
@@ -162,7 +162,7 @@ export function AssemblyLearnCard({
         </div>
       </div>
 
-      {/* English hero. No inline speaker here — the CardToolbar's
+      {/* English hero. No inline speaker here, the CardToolbar's
           speaker at the top-left of the card already covers audio for
           this view, and doubling up read as clutter per Mert's
           feedback. */}

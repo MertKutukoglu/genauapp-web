@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { SkillBadgeArt } from "./SkillBadgeArt";
 
 /**
- * SkillRing — the signature badge of GenauApp.
+ * SkillRing, the signature badge of GenauApp.
  *
  * Geometry ported verbatim from the iOS `SegmentedSkillRing.swift`:
  *   - 86×86 viewBox
@@ -79,9 +79,9 @@ function segmentsFor(progress: number) {
 
 /**
  * Visual packaging of the ring.
- *   "bare"  — ring + text label beneath. No background around it.
+ *   "bare" , ring + text label beneath. No background around it.
  *             Used when the parent already provides its own surface.
- *   "boxed" — label on TOP in Fraunces; ring sits inside a soft tinted
+ *   "boxed", label on TOP in Fraunces; ring sits inside a soft tinted
  *             dark card below. The showcase treatment from the live
  *             landing's "boxed" rings row.
  */
@@ -89,7 +89,7 @@ export type SkillRingVariant = "bare" | "boxed";
 
 export interface SkillRingProps {
   skill: Skill;
-  /** 0..1 — spread across 4 segments sequentially (0.25/0.5/0.75/1 fill 1/2/3/4). */
+  /** 0..1, spread across 4 segments sequentially (0.25/0.5/0.75/1 fill 1/2/3/4). */
   progress?: number;
   size?: SkillRingSize;
   label?: string;
@@ -162,7 +162,7 @@ export function SkillRing({
             fill="var(--ring-color)"
             fillOpacity="0.1"
           />
-          {/* Ghost rails — all four arcs at low alpha so the frame reads even at 0% */}
+          {/* Ghost rails, all four arcs at low alpha so the frame reads even at 0% */}
           {segments.map((s, i) => (
             <path
               key={`g-${i}`}
@@ -173,7 +173,7 @@ export function SkillRing({
               fill="none"
             />
           ))}
-          {/* Fill — same arcs, tinted + dash-offset by ratio */}
+          {/* Fill, same arcs, tinted + dash-offset by ratio */}
           {segments.map((s, i) => (
             <path
               key={`f-${i}`}

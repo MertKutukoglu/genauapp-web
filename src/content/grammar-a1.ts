@@ -1,29 +1,29 @@
 /**
- * Grammar — A1 deck (20 items). Verbatim port of
+ * Grammar, A1 deck (20 items). Verbatim port of
  * claude/GenauApp_Web_Try_Grammar_Content_A1.md §2, with `tr`
  * overlays carrying the Turkish copy per the same localization
  * pattern used by WORDS_A1.
  *
- * Shape (summary — full spec in the content doc):
+ * Shape (summary, full spec in the content doc):
  *   - 5 anchor questions (one per topic) carry a `learn` block and
  *     drive the Learn deck. The remaining 15 are exercise-only drills
  *     that share the anchor's `topic`.
  *   - `exerciseType` is `multipleChoice` (12 items) or `fillBlank`
  *     (8 items).
  *   - `learn.layout` dispatches to one of four Learn-card layouts:
- *     verbParadigm, pronounChart, articleSingle (one per article —
+ *     verbParadigm, pronounChart, articleSingle (one per article,
  *     der / die / das get their own card each), verbConjugation.
  *   - `sample.highlight` is a substring of `sample.de`; the renderer
  *     wraps it in grammar-purple bold inside the sunk sample card.
  *
  * Localization:
- *   German data — the verb, pronoun forms, article strings,
- *   sample.de, highlight substring, prompt, option tokens, answer —
+ *   German data, the verb, pronoun forms, article strings,
+ *   sample.de, highlight substring, prompt, option tokens, answer,
  *   is locale-agnostic. The TR overlay translates only the
  *   learner-facing English copy: the English gloss above a paradigm,
  *   the role labels on article cards, the English column of the
  *   pronoun chart, sample.en, hint, options text for translation-style
- *   MCs (none here — Grammar MCs pick German tokens, no translation),
+ *   MCs (none here, Grammar MCs pick German tokens, no translation),
  *   and the explanation shown in the Incorrect banner.
  */
 
@@ -36,11 +36,11 @@ export type GrammarLearnLayout =
   | "pronounChart"
   | "articleSingle"
   | "verbConjugation"
-  // A2 layouts — see GenauApp_Web_Try_Grammar_Content_A2.md §2:
+  // A2 layouts, see GenauApp_Web_Try_Grammar_Content_A2.md §2:
   | "participleParadigm"
   | "verbCards"
   | "articleCards"
-  // B1 layouts — see GenauApp_Web_Try_Grammar_Content_B1.md §2:
+  // B1 layouts, see GenauApp_Web_Try_Grammar_Content_B1.md §2:
   | "activePassiveComparison"
   | "relativePronounGrid"
   | "connectorCards"
@@ -55,7 +55,7 @@ export type GrammarLearnLayout =
   // so the pattern ("Hauptsatz, Konnektor Subjekt ... Verb am
   // Ende") lands with each step.
   | "connectorCarousel"
-  // B2 layout — see GenauApp_Web_Try_Grammar_Content_B2.md §3.1:
+  // B2 layout, see GenauApp_Web_Try_Grammar_Content_B2.md §3.1:
   // generalised `activePassiveComparison`. Same 2-column visual,
   // but column labels (`Verbalstil` / `Nominalstil` for the B2
   // Nominalstil anchor) and pair keys (`left` / `right`) come
@@ -79,7 +79,7 @@ export interface PronounForm {
  * ending (e.g. "-ung"); `example` is the German noun that shows the
  * pattern in action (e.g. "Zeitung"); `gloss` carries both locale
  * translations so the card can show the English or Turkish meaning
- * in italic next to the example — vocab reinforcement folded into
+ * in italic next to the example, vocab reinforcement folded into
  * the grammar lesson, since the learner otherwise has to guess what
  * "Honig" or "Freundschaft" means.
  *
@@ -140,7 +140,7 @@ export interface SeparableVerb {
  * a handful of sample verbs that use it and a one-line rule. The
  * renderer walks the twelve prefixes (ab-, an-, auf-, aus-, bei-,
  * ein-, los-, mit-, nach-, vor-, weg-, zu-) with chevron taps or
- * ← → — same pattern as the Modalverben carousel, so the learner
+ * ← →, same pattern as the Modalverben carousel, so the learner
  * learns the interaction once per chip.
  */
 export interface SeparablePrefix {
@@ -150,7 +150,7 @@ export interface SeparablePrefix {
   samples: string[];
   /** One-line rule: what the prefix roughly means. Shown in the
    *  purple RuleCard below the sample-words tile. Supports
-   *  `**bold**` markdown. Keep it to the meaning — the separated
+   *  `**bold**` markdown. Keep it to the meaning, the separated
    *  main-clause example belongs in `sample`, not here. */
   rule: string;
   /** The "it in a real sentence" line, rendered under the RuleCard
@@ -169,7 +169,7 @@ export interface SeparablePrefix {
  * The outer `GrammarLearnBlock.variants[]` holds all of these; the
  * card renders the active index and the shared `note` beneath. The
  * top-level `verb` / `english` / `forms` / `sample` fields stay as
- * single-paradigm anchors' source of truth — when `variants` is
+ * single-paradigm anchors' source of truth, when `variants` is
  * present the card ignores them.
  */
 export interface VerbParadigmVariant {
@@ -221,8 +221,8 @@ export interface PassiveComparisonPair {
 
 /**
  * B2 `styleComparison` row: one plain → formal rewrite pair. Same
- * visual as PassiveComparisonPair — the renderer tints the right
- * column — but the keys are intentionally generic (`left` / `right`)
+ * visual as PassiveComparisonPair, the renderer tints the right
+ * column, but the keys are intentionally generic (`left` / `right`)
  * so the layout doesn't read as "aktiv/passiv" when it really
  * teaches something else. Paired with the `labels` field on
  * GrammarLearnBlock, which decides the two column headers.
@@ -282,7 +282,7 @@ export interface RelativePronounExample {
 }
 
 /**
- * B1 `connectorCards` row — also used for anchor 5 (prep-verbs).
+ * B1 `connectorCards` row, also used for anchor 5 (prep-verbs).
  * The layout is a flat 3–4 cards side by side; each card shows a
  * word (connector or verb-with-prep infinitive) in bold purple,
  * an English gloss in muted 12, and one example sentence with the
@@ -293,7 +293,7 @@ export interface ConnectorCard {
   example: string;
   english: string;
   /** Optional explicit substring to colour in the example. Falls
-   *  back to the first `word` token if absent — most A2-style
+   *  back to the first `word` token if absent, most A2-style
    *  separable-prefix content leans on this default. */
   highlight?: string;
   /** Carousel-only: the verb at the end of the subclause in the
@@ -305,7 +305,7 @@ export interface ConnectorCard {
   /** Carousel-only: per-connector rule shown in the purple
    *  RuleCard below the formula strip. Replaces the anchor's
    *  shared `note` for the active card. Supports `**bold**`.
-   *  Keep it to the CORE PRINCIPLE only — one short line. The
+   *  Keep it to the CORE PRINCIPLE only, one short line. The
    *  example on the card already shows the worked form, and the
    *  bottom sample reinforces it; the rule mustn't restate either. */
   rule?: string;
@@ -409,11 +409,11 @@ export interface GrammarLearnBlock {
    *  pairs for the Vorgangspassiv anchor. */
   pairs?: PassiveComparisonPair[];
   /** B2 `styleComparison`: 3 left ↔ right pairs with generic keys.
-   *  Mutually exclusive with `pairs` on a single card — the layout
+   *  Mutually exclusive with `pairs` on a single card, the layout
    *  decides which one it reads. */
   stylePairs?: StyleComparisonPair[];
   /** B2 `styleComparison`: the two column headers, left first. Also
-   *  honoured by `activePassiveComparison` when present — leave
+   *  honoured by `activePassiveComparison` when present, leave
    *  unset there so the card falls back to "Aktiv" / "Passiv". */
   labels?: [string, string];
   /** B2 `connectorCarousel`: hide the Nebensatz formula strip when
@@ -432,7 +432,7 @@ export interface GrammarLearnBlock {
   /** B1 `comparisonTable`: adjective × 3-degree rows. */
   comparisons?: ComparisonForm[];
   /**
-   * articleSingle "by meaning" rule paragraph — the semantic
+   * articleSingle "by meaning" rule paragraph, the semantic
    * categories that take this article (Days/months → der,
    * Trees/flowers → die, Diminutives → das, etc.). Rendered in the
    * shared RuleCard with the article's own tint.
@@ -458,7 +458,7 @@ export interface GrammarLocaleOverlay {
     /** articleSingle localized role label (masculine → eril). */
     role?: string;
     /** activePassiveComparison / styleComparison column labels.
-     *  Same shape as the German-side `labels` on GrammarLearnBlock —
+     *  Same shape as the German-side `labels` on GrammarLearnBlock,
      *  leave unset to keep the German headers. */
     labels?: [string, string];
     /** Pronoun-chart English column translations (same order as forms). */
@@ -474,7 +474,7 @@ export interface GrammarLocaleOverlay {
       english?: string;
       sample?: { en?: string };
       /** Per-variant rule translation. Same fallback shape as
-       *  `note` — when present it takes the place of the shared
+       *  `note`, when present it takes the place of the shared
        *  `note` translation for that variant. */
       rule?: string;
     }>;
@@ -515,7 +515,7 @@ export interface GrammarQuestion {
   answer?: string;
   /** Only on the 5 anchor questions. */
   learn?: GrammarLearnBlock;
-  /** Turkish overlay — same shape as the EN learner copy. */
+  /** Turkish overlay, same shape as the EN learner copy. */
   tr?: GrammarLocaleOverlay;
 }
 
@@ -542,7 +542,7 @@ export function normalizeDE(s: string): string {
 }
 
 export const GRAMMAR_A1: GrammarQuestion[] = [
-  // 1 — Anchor: Verb sein
+  // 1, Anchor: Verb sein
   {
     topic: "Verb sein",
     exerciseType: "multipleChoice",
@@ -574,7 +574,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 2 — Anchor: Verb haben
+  // 2, Anchor: Verb haben
   {
     topic: "Verb haben",
     exerciseType: "multipleChoice",
@@ -606,7 +606,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 3 — Anchor: Pronouns
+  // 3, Anchor: Pronouns
   {
     topic: "Pronouns",
     exerciseType: "multipleChoice",
@@ -651,7 +651,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 4 — Anchor: Articles — der
+  // 4, Anchor: Articles, der
   //
   // Three per-article anchors in authored order (der → die → das).
   // Each one teaches that article's reliable suffix set in the sunk
@@ -697,7 +697,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 5 — Anchor: Articles — die
+  // 5, Anchor: Articles, die
   {
     topic: "Articles (die)",
     exerciseType: "multipleChoice",
@@ -740,7 +740,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 6 — Anchor: Articles — das
+  // 6, Anchor: Articles, das
   {
     topic: "Articles (das)",
     exerciseType: "multipleChoice",
@@ -777,7 +777,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
       },
     },
   },
-  // 5 — Anchor: Regular verbs
+  // 5, Anchor: Regular verbs
   {
     topic: "Regular verbs",
     exerciseType: "multipleChoice",
@@ -812,7 +812,7 @@ export const GRAMMAR_A1: GrammarQuestion[] = [
     },
   },
 
-  // 6–20 — drill-only (no learn block). Translations cover hint + explanation.
+  // 6–20, drill-only (no learn block). Translations cover hint + explanation.
   {
     topic: "Verb sein",
     exerciseType: "fillBlank",

@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 
 /**
- * iOS Beta pill — Apple icon + pulsing cherry dot + "iOS BETA · Q1 2027".
+ * iOS Beta pill, Apple icon + pulsing cherry dot + "iOS BETA · Q1 2027".
  * Ported from the live topnav. On narrow widths (<= 640px) the text slot
  * swaps to a rotator that cycles "iOS Beta → Q1 2027 → Soon" in a
  * 72px-wide window (handoff source §4). The rotator respects

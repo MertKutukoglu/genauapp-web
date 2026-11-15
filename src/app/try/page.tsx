@@ -10,7 +10,7 @@ import { LeftCard } from "@/components/templates/LeftCard/LeftCard";
 import { RightCardRouter } from "@/components/organisms/RightCardRouter/RightCardRouter";
 
 /**
- * /try/ — the interactive taste demo.
+ * /try/, the interactive taste demo.
  *
  * Two shapes, driven by the chip store:
  *   1. No level picked  → LevelPicker gateway (A1 / A2 / B1 / B2).
@@ -25,7 +25,7 @@ import { RightCardRouter } from "@/components/organisms/RightCardRouter/RightCar
  *
  * SSR note: the store is persist()-hydrated on the client. On the
  * very first paint, selectedLevel is null even for a returning
- * visitor — the useEffect in Zustand's persist middleware re-hydrates
+ * visitor, the useEffect in Zustand's persist middleware re-hydrates
  * on mount, after which the picker vanishes. The flicker is one
  * frame; a persist-aware skeleton is overkill for a gateway.
  */
@@ -51,7 +51,7 @@ function TryPageInner() {
   const resetAll = useChipStore((s) => s.resetAll);
   const resetSkills = useSkillStore((s) => s.resetAll);
 
-  // Honor query params — handled once on mount, then stripped from the
+  // Honor query params, handled once on mount, then stripped from the
   // URL so a refresh doesn't re-fire them.
   //   ?reset  → full wipe (level + progress + selected)
   //   ?level  → clear only selectedLevel, keeping progress (used by the
@@ -74,7 +74,7 @@ function TryPageInner() {
     } else if (hasLevel) {
       clearLevel();
     }
-    // Strip the ?reset / ?level query without hardcoding the path —
+    // Strip the ?reset / ?level query without hardcoding the path,
     // we're shared between /try (EN) and /tr/try (TR) and must not
     // push the user to the other locale on reset.
     router.replace(pathname, { scroll: false });

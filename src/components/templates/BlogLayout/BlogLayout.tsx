@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { BlogTOC, type BlogTOCItem } from "@/components/molecules/BlogTOC/BlogTOC";
 
 /**
- * BlogLayout — article shell for `/blog/*` posts.
+ * BlogLayout, article shell for `/blog/*` posts.
  *
  * Shape: [sticky TOC | article column] on lg+, article-only on < lg.
  * The article column uses `.blog-article` typography (serif body +

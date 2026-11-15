@@ -19,7 +19,7 @@ import {
 } from "@/content/sentence-a1";
 
 /**
- * SentenceChip — the right-card experience for the Sentence chip.
+ * SentenceChip, the right-card experience for the Sentence chip.
  * Sibling of WordsChip + GrammarChip. Owns:
  *   - mode (learn / exercise) via the shared ModeToggle
  *   - Learn deck: the 6 formula anchors, walked through the single
@@ -165,7 +165,7 @@ function LearnDeck({
 }
 
 /**
- * ExerciseDeck — walks all 12 Sentence scenes in authored order and
+ * ExerciseDeck, walks all 12 Sentence scenes in authored order and
  * routes each one to the sentence builder.
  *
  * Deck mechanic matches Words / Grammar:
@@ -229,7 +229,7 @@ function ExerciseDeck({ items }: { items: SentenceQuestion[] }) {
         setRemaining((r) => {
           // Last-item wrong: advance anyway. Keeping the same item
           // at head leaves the ExerciseCard stuck on its Incorrect
-          // banner — Next has nowhere to go. User already saw the
+          // banner, Next has nowhere to go. User already saw the
           // correct answer; rolling into the completion screen is
           // the honest finish.
           if (r.length <= 1) return r.slice(1);

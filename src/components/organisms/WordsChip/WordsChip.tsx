@@ -28,7 +28,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { workoutCopy } from "@/lib/workout/strings";
 
 /**
- * WordsChip — the right-card experience when the user picks the Words
+ * WordsChip, the right-card experience when the user picks the Words
  * chip. Owns:
  *   - mode (learn / exercise) via the ModeToggle at the top
  *   - the Learn deck's remaining-items state + Repeat/I-know mechanics
@@ -49,7 +49,7 @@ import { workoutCopy } from "@/lib/workout/strings";
  * word's chunks have ≥ 2 elements; single-chunk words fall back to
  * [normal, scrambled].
  *
- * Exercise mode in this round is a placeholder — the Exercise cards
+ * Exercise mode in this round is a placeholder, the Exercise cards
  * land in their own spec'd round.
  */
 
@@ -264,7 +264,7 @@ function EmptyDeck() {
 }
 
 /**
- * ExerciseDeck — owns the Exercise-mode deck state and routes each
+ * ExerciseDeck, owns the Exercise-mode deck state and routes each
  * current word to the variant its `exerciseType` asks for.
  *
  * Deck mechanic matches Learn (per Mert):
@@ -276,7 +276,7 @@ function EmptyDeck() {
  * ExerciseCompletion summary. "First-try correct" means the word was
  * answered correctly on its first appearance; a word that came back
  * after a miss and got the right answer the second time still counts
- * toward incorrect (the original miss) only — the second attempt is
+ * toward incorrect (the original miss) only, the second attempt is
  * not re-tallied, so the two counts always sum to `words.length`.
  */
 interface ExerciseDeckProps {
@@ -296,7 +296,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     [words],
   );
   React.useEffect(() => {
-    // Reset on deck content change — new words array → fresh run.
+    // Reset on deck content change, new words array → fresh run.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setRemaining(words);
     setCorrectCount(0);
@@ -362,7 +362,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
         setRemaining((r) => {
           // Last-item wrong: advance anyway. Keeping the same item
           // at head leaves the ExerciseCard stuck on its Incorrect
-          // banner — Next has nowhere to go. User already saw the
+          // banner, Next has nowhere to go. User already saw the
           // correct answer; rolling into the completion screen is
           // the honest finish.
           if (r.length <= 1) return r.slice(1);
@@ -414,7 +414,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
 
   // Compute deltas once, the moment the deck empties. We stash them
   // in local state so the ExerciseCompletion screen always shows the
-  // same numbers that got staged — recomputing on each render could
+  // same numbers that got staged, recomputing on each render could
   // drift if the deck is reset mid-session.
   const [sessionDeltas, setSessionDeltas] = React.useState<ReturnType<
     typeof computeSkillDeltas
@@ -444,7 +444,7 @@ function ExerciseDeck({ words }: ExerciseDeckProps) {
     addStats({ correct: correctCount, total: deckSize });
     // Mark the Words chip done so the LeftCard's WorkoutCounter
     // ticks up and the chip visual flips to its done state.
-    // Idempotent in the store — re-runs are safe.
+    // Idempotent in the store, re-runs are safe.
     completeChip("words");
 
     try {

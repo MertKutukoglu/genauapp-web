@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * Slide 2 — Practice: nine snippet components.
+ * Slide 2, Practice: nine snippet components.
  *
  * Verbatim port of the production markup per
  * claude/GenauApp_Web_Landing_Slide2_Practice.md §1. Each snippet is a
@@ -63,7 +63,7 @@ const cardCls =
   "flex w-[min(360px,92%)] flex-col gap-3 rounded-[22px] border border-border bg-surface-card px-5 py-5 shadow-[0_16px_40px_-22px_rgba(26,19,18,0.22)]";
 
 /* ============================================================================
- * Snippet 1 — Words translation MC
+ * Snippet 1, Words translation MC
  * ========================================================================== */
 export function WordsSnippet() {
   const opts = ["to drive", "to go", "to stay", "to run"];
@@ -96,7 +96,7 @@ export function WordsSnippet() {
 }
 
 /* ============================================================================
- * Snippet 2 — Reading passage
+ * Snippet 2, Reading passage
  * ========================================================================== */
 export function ReadingSnippet() {
   return (
@@ -127,7 +127,7 @@ function Mark({ children }: { children: React.ReactNode }) {
 }
 
 /* ============================================================================
- * Snippet 3 — Grammar fill-blank (Präsens du-form)
+ * Snippet 3, Grammar fill-blank (Präsens du-form)
  * ========================================================================== */
 export function GrammarPresentSnippet() {
   return <GrammarFillSnippet eyebrow="Präsens · du-form" answer="gehst" prompt={PromptDu} options={["geht", "gehst", "gehen", "ging"]} />;
@@ -141,7 +141,7 @@ function PromptDu({ blank }: { blank: React.ReactNode }) {
 }
 
 /* ============================================================================
- * Snippet 7 — Grammar fill-blank (Perfekt)
+ * Snippet 7, Grammar fill-blank (Perfekt)
  * ========================================================================== */
 export function GrammarPerfektSnippet() {
   return (
@@ -212,7 +212,7 @@ function GrammarFillSnippet({
 }
 
 /* ============================================================================
- * Snippet 4 — Story chat
+ * Snippet 4, Story chat
  * ========================================================================== */
 export function StorySnippet() {
   return (
@@ -270,7 +270,7 @@ function Row({
 }
 
 /* ============================================================================
- * Snippet 5 — Scrambled letters
+ * Snippet 5, Scrambled letters
  * ========================================================================== */
 export function ScrambledSnippet() {
   const slots = ["G", "E", "H", "S", ""];
@@ -322,7 +322,7 @@ export function ScrambledSnippet() {
 }
 
 /* ============================================================================
- * Snippet 6 — Sentence Builder
+ * Snippet 6, Sentence Builder
  * ========================================================================== */
 export function SentenceBuilderSnippet() {
   const tiles = [
@@ -356,7 +356,7 @@ export function SentenceBuilderSnippet() {
 }
 
 /* ============================================================================
- * Snippet 8 — Word Details anatomy
+ * Snippet 8, Word Details anatomy
  * ========================================================================== */
 export function WordDetailsSnippet() {
   const rows: Array<[string, React.ReactNode]> = [
@@ -392,7 +392,7 @@ export function WordDetailsSnippet() {
 }
 
 /* ============================================================================
- * Snippet 9 — Pronunciation
+ * Snippet 9, Pronunciation
  * ========================================================================== */
 export function PronunciationSnippet() {
   return (
@@ -434,7 +434,7 @@ export function PronunciationSnippet() {
 }
 
 /* ============================================================================
- * Snippet registry — cycled in order by the parent.
+ * Snippet registry, cycled in order by the parent.
  * ========================================================================== */
 export interface SnippetSpec {
   caption: string;

@@ -1,9 +1,9 @@
 /**
- * Reading — A1 content (1 passage + 5 MC questions). Verbatim port
+ * Reading, A1 content (1 passage + 5 MC questions). Verbatim port
  * of claude/GenauApp_Web_Try_Reading_Content_A1.md §2, with locale
  * overlays translating only the learner-facing English strings
  * (subtitle, topic eyebrows, explanations). The passage itself,
- * the prompts, and the option tokens stay German across locales —
+ * the prompts, and the option tokens stay German across locales,
  * the German text IS the content.
  *
  * Shape differs from the other three chips: Reading ships a single
@@ -17,7 +17,7 @@ import type { Locale } from "@/lib/i18n/config";
 
 /**
  * Analytics / routing enum. Title-case per the Swift source + the
- * analytics payloads. Deliberately NOT rendered on the card —
+ * analytics payloads. Deliberately NOT rendered on the card,
  * `topic` carries the visible signal.
  */
 export type ReadingQType =
@@ -33,12 +33,12 @@ export interface ReadingQuestion {
   topic: string;
   /** Full German question. No `___` blanks (not cloze). */
   prompt: string;
-  /** 4 options — complete sentences or short noun phrases. */
+  /** 4 options, complete sentences or short noun phrases. */
   options: string[];
   correctIndex: number;
   /**
    * One-sentence explanation shown in the Incorrect banner. May
-   * contain double-quoted passage excerpts — preserve the quotes.
+   * contain double-quoted passage excerpts, preserve the quotes.
    */
   explanation: string;
   tr?: {
@@ -54,7 +54,7 @@ export interface ReadingQuestion {
 }
 
 /**
- * ReadingHighlight — inline tap-to-translate hint for a single word
+ * ReadingHighlight, inline tap-to-translate hint for a single word
  * (or a separable-verb pair) inside the passage. When a highlight is
  * present, ReadingPassageCard underlines the matching word in the
  * prose and opens a sticky chip at the top of the card on tap, with
@@ -106,7 +106,7 @@ export interface ReadingContent {
     /** Translated subtitle (keeps the "A1 · ~X" shape). */
     subtitle?: string;
     /**
-     * Passage itself is German-only — it IS the material we're
+     * Passage itself is German-only, it IS the material we're
      * teaching to read. The overlay has no slot for it.
      */
   };
@@ -119,7 +119,7 @@ export const READING_A1: ReadingContent = {
     "Max ist achtundzwanzig Jahre alt und wohnt in Berlin. Am Samstag bleibt er zu Hause. Morgens trinkt er einen Kaffee und liest ein Buch. Heute ist das Wetter schlecht, es regnet den ganzen Tag. Um zwölf Uhr isst Max ein Brot mit Käse. Dazu trinkt er ein Glas Wasser. Am Nachmittag telefoniert er mit seiner Schwester Anna. Anna ist zehn Jahre alt und geht in die Schule. Später kocht Max eine Suppe und sieht einen Film. Es ist ein ruhiger Tag.",
   // Tap-to-translate hints: 5 verbs (2 strong w/ vowel change,
   // 1 impersonal, 1 Latin loan, 1 regular) + 2 nouns (der + die).
-  // All are A1-common but easy to misread — worth the tap even for
+  // All are A1-common but easy to misread, worth the tap even for
   // a learner who's seen them once.
   highlights: [
     {
@@ -209,7 +209,7 @@ export const READING_A1: ReadingContent = {
       tr: {
         topic: "Detay",
         prompt: "Anna kaç yaşında?",
-        // Options are German number words; leave them untranslated —
+        // Options are German number words; leave them untranslated,
         // the question tests whether the learner recognizes the
         // German number in the passage.
         explanation:

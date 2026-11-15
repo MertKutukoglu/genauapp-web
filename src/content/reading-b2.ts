@@ -1,5 +1,5 @@
 /**
- * Reading — B2 content. Verbatim port of
+ * Reading, B2 content. Verbatim port of
  * claude/GenauApp_Web_Try_Reading_Content_B2.md §3.
  *
  * Lifts from B1:
@@ -34,13 +34,13 @@ export const READING_B2: ReadingContent = {
     title: "Wesselbach'ta arabasız cumartesiler",
   },
   // Tap-to-translate hints: 10 B2 flagship items, one per ~42 words
-  // (looser than A1's 1-per-12 — a B2 reader expects less hand-
+  // (looser than A1's 1-per-12, a B2 reader expects less hand-
   // holding). Article balance 4 die · 3 der · 2 das + 1 verb.
   // Picks recall every new B2 gender rule: -keit (Nachhaltigkeit),
   // -ment (Engagement, with the engagement-to-marry false-friend
   // warning), -schaft (Gesellschaft), compound-last-part
   // (Bewusstsein ← das Sein), plus -ung × 2 (Maßnahme / Voraussetzung
-  // via abstract -e / -ung). No Konjunktiv I highlight — the reading
+  // via abstract -e / -ung). No Konjunktiv I highlight, the reading
   // questions already teach reported speech, and marking only one
   // Konj-I form would leave the rest unexplained.
   highlights: [
@@ -62,8 +62,8 @@ export const READING_B2: ReadingContent = {
       surface: "Engagement",
       article: "das",
       kind: "noun",
-      en: "commitment, involvement (NOT engagement-to-marry — that's die Verlobung)",
-      tr: "bağlılık, aktif katılım (nişan DEĞİL — nişan die Verlobung)",
+      en: "commitment, involvement (NOT engagement-to-marry, that's die Verlobung)",
+      tr: "bağlılık, aktif katılım (nişan DEĞİL, nişan die Verlobung)",
     },
     {
       surface: "Bewusstsein",
@@ -115,7 +115,7 @@ export const READING_B2: ReadingContent = {
     },
   ],
   questions: [
-    // 1 — Main Idea
+    // 1, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -143,7 +143,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 2 — Main Idea
+    // 2, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -171,7 +171,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 3 — Main Idea
+    // 3, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -199,7 +199,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 4 — Detail
+    // 4, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -217,7 +217,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 5 — Detail
+    // 5, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -245,7 +245,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 6 — Vocabulary
+    // 6, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -265,7 +265,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 7 — Vocabulary
+    // 7, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -295,7 +295,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 8 — Inference
+    // 8, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -325,7 +325,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 9 — Inference
+    // 9, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -354,7 +354,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 10 — Inference
+    // 10, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -382,7 +382,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 11 — Sequence
+    // 11, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",
@@ -410,7 +410,7 @@ export const READING_B2: ReadingContent = {
       },
     },
 
-    // 12 — Sequence
+    // 12, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",

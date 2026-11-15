@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { PagerStrip } from "@/components/molecules/PagerStrip/PagerStrip";
 
 /**
- * CarouselShell — the right-column carousel container.
+ * CarouselShell, the right-column carousel container.
  *
  * Owns `activeIndex` + `paused` + pause-on-hover + pause-on-interaction.
  * Every slide stays mounted but only the active one is visible
@@ -14,7 +14,7 @@ import { PagerStrip } from "@/components/molecules/PagerStrip/PagerStrip";
  *
  * Each slide's `render` receives `isActive` so it can pause its own
  * inner cycler when the carousel moves to another slide (per the
- * production spec — the Workout chip cycler resets to Grammar on
+ * production spec, the Workout chip cycler resets to Grammar on
  * re-activation).
  */
 
@@ -37,7 +37,7 @@ export function CarouselShell({ slides, className }: CarouselShellProps) {
 
   // Fire slide_viewed every time the active slide changes, including
   // the first slide on mount. Trigger split (auto vs manual) is not
-  // tracked yet — PagerStrip's timer-advance and click both flow
+  // tracked yet, PagerStrip's timer-advance and click both flow
   // through the same onChange, so distinguishing them would need a
   // PagerStrip API change. Launch with slide + position only; split
   // later if dashboards want it.

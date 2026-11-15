@@ -7,7 +7,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { workoutCopy } from "@/lib/workout/strings";
 
 /**
- * WorkoutDoneCard — confirmation shown after a successful email
+ * WorkoutDoneCard, confirmation shown after a successful email
  * submit on the Summary card.
  *
  * Per Mert's call: a primary cherry CTA offering to look at the

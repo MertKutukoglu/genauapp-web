@@ -2,9 +2,9 @@ import Link from "next/link";
 import { LegalLayout } from "@/components/templates/LegalLayout/LegalLayout";
 
 /**
- * /tr/kunye — Impressum (Turkish).
+ * /tr/kunye, Impressum (Turkish).
  *
- * Alman TMG §5 Impressum zorunluluğu — yasal metin Almanca tutulmalı.
+ * Alman TMG §5 Impressum zorunluluğu, yasal metin Almanca tutulmalı.
  * Bu sayfa TR başlık + kısa TR özet + aşağıda birebir Almanca yasal
  * metin. İçerik EN /impressum ile tam olarak aynı (Alman yasal
  * sorumluluk), sadece çerçeveleme Türkçe.
@@ -41,7 +41,7 @@ export default function KunyePage() {
 
       <p>
         Alman TMG §5 ve RStV §55 uyarınca resmi Impressum metni Almanca
-        tutulmak zorunda — bu TR sayfa yalnızca bilgilendirme amaçlı
+        tutulmak zorunda, bu TR sayfa yalnızca bilgilendirme amaçlı
         bir özet taşır, bağlayıcı metin aşağıdaki Almanca bloktur.
       </p>
 

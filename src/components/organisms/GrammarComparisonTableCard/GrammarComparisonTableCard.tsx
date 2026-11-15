@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ComparisonForm } from "@/content/grammar-a1";
 
 /**
- * GrammarComparisonTableCard — the B1 `comparisonTable` layout.
+ * GrammarComparisonTableCard, the B1 `comparisonTable` layout.
  *
  * Direct sibling of GrammarParticipleParadigmCard: a 3-column
  * lookup table where the middle column carries the pedagogical
@@ -22,10 +22,10 @@ import type { ComparisonForm } from "@/content/grammar-a1";
  *   jung           jünger ★          am jüngsten ★   (umlaut)
  *   gut            besser ★          am besten ★     (irregular)
  *
- * The Positiv column is `fg-muted` — the thing the learner
+ * The Positiv column is `fg-muted`, the thing the learner
  * already knows. The Komparativ column is **chip-grammar purple
- * + bold** — the first transformation and the primary lesson.
- * The Superlativ column is **fg + semi-bold 17** — the destination
+ * + bold**, the first transformation and the primary lesson.
+ * The Superlativ column is **fg + semi-bold 17**, the destination
  * form. Irregular rows ship a small ★ next to the transformed
  * forms so the eye catches them while scanning.
  *

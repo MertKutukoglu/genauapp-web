@@ -7,7 +7,7 @@ import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/ExerciseFeedback";
 
 /**
- * ReadingExerciseMC — the Reading chip's multiple-choice exercise
+ * ReadingExerciseMC, the Reading chip's multiple-choice exercise
  * card. Looks like Grammar's MC card at a glance, with three tunings
  * for Reading comprehension:
  *
@@ -17,12 +17,12 @@ import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/Exerci
  *      auto with a 52 minimum; padding 14 vertical so wrapped lines
  *      breathe; font is semi-bold 15 (one step smaller than Grammar's
  *      16) so two-line options stay readable inside the card.
- *   3. No article-color highlighting on explanations — Reading
+ *   3. No article-color highlighting on explanations, Reading
  *      doesn't lean on der/die/das in its explanations, so the
  *      explanation renders as plain text (double-quoted passage
  *      excerpts are preserved as-is).
  *
- * Topic eyebrow is plain text ("Main idea", "Detail", …) — the brief
+ * Topic eyebrow is plain text ("Main idea", "Detail", …), the brief
  * explicitly rejects a badged pill here (brief §8). The `qType`
  * routing/analytics value is passed separately so the parent can
  * emit it in the PostHog payload without surfacing it on-card.
@@ -34,7 +34,7 @@ export interface ReadingExerciseMCProps {
   options: string[];
   correctIndex: number;
   explanation?: string;
-  /** Analytics qType — not rendered; passed through to onNext. */
+  /** Analytics qType, not rendered; passed through to onNext. */
   qType?: string;
   current: number;
   total: number;
@@ -83,7 +83,7 @@ export function ReadingExerciseMC({
     return () => window.clearTimeout(t);
   }, [committed, isCorrect, onNext, qType]);
 
-  // Keyboard shortcuts — same A/S/D/F home row as Grammar MC. Long
+  // Keyboard shortcuts, same A/S/D/F home row as Grammar MC. Long
   // sentence options still get the same shortcut; the kbd pin sits
   // on the left and leaves the center for the label.
   React.useEffect(() => {
@@ -132,7 +132,7 @@ export function ReadingExerciseMC({
         />
       ) : null}
 
-      {/* Topic eyebrow — plain text, no badge. */}
+      {/* Topic eyebrow, plain text, no badge. */}
       <div
         className="font-sans font-normal text-[13px] text-fg-muted uppercase"
         style={{ letterSpacing: "0.3px" }}
@@ -140,7 +140,7 @@ export function ReadingExerciseMC({
         {topic}
       </div>
 
-      {/* Prompt — centered, flex-1 spacer so the options sit toward
+      {/* Prompt, centered, flex-1 spacer so the options sit toward
           the bottom and the prompt stays visually in the card's
           middle. */}
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-1">
@@ -154,7 +154,7 @@ export function ReadingExerciseMC({
         </div>
       </div>
 
-      {/* Options — vertical stack, auto-height min 52, wrap-friendly. */}
+      {/* Options, vertical stack, auto-height min 52, wrap-friendly. */}
       <div className="flex flex-col gap-2.5">
         {options.map((opt, i) => {
           const picked = pickedIdx === i;

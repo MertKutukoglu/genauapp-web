@@ -1,5 +1,5 @@
 /**
- * Reading — A2 content (1 passage + 10 MC questions). Verbatim port
+ * Reading, A2 content (1 passage + 10 MC questions). Verbatim port
  * of claude/GenauApp_Web_Try_Reading_Content_A2.md §3.
  *
  * Differences from A1:
@@ -31,7 +31,7 @@ export const READING_A2: ReadingContent = {
   // anrufen, einladen) + 1 reflexive (sich beeilen) + 3 nouns
   // (2 der · 1 die -in suffix). Separable verbs use the companion
   // field to bind the stem (surface) and the detached prefix in the
-  // same sentence — both tokens open the same chip, showing the
+  // same sentence, both tokens open the same chip, showing the
   // full infinitive.
   highlights: [
     {
@@ -103,7 +103,7 @@ export const READING_A2: ReadingContent = {
     },
   ],
   questions: [
-    // 1 — Main Idea
+    // 1, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -130,7 +130,7 @@ export const READING_A2: ReadingContent = {
           'Hikâye Max\'ın uyuyakalmasıyla ("Er wacht erst um halb neun auf") başlar ve önemli bir randevuya acele etmesi gerekir.',
       },
     },
-    // 2 — Main Idea
+    // 2, Main Idea
     {
       qType: "Main Idea",
       topic: "Main idea",
@@ -157,7 +157,7 @@ export const READING_A2: ReadingContent = {
           "Sonunda Tom, Max'ı hafta sonu yemeğe davet eder. Stresli sabah güzel bir ana dönüşür.",
       },
     },
-    // 3 — Detail
+    // 3, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -179,7 +179,7 @@ export const READING_A2: ReadingContent = {
           '"Er wacht erst um halb neun auf." Alarm yedide çaldı ama uyuyakaldı.',
       },
     },
-    // 4 — Detail
+    // 4, Detail
     {
       qType: "Detail",
       topic: "Detail",
@@ -206,7 +206,7 @@ export const READING_A2: ReadingContent = {
           '"Zum Glück klingelt in diesem Moment seine Nachbarin. Sie hat den Schlüssel im Flur gefunden."',
       },
     },
-    // 5 — Vocabulary
+    // 5, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -214,7 +214,7 @@ export const READING_A2: ReadingContent = {
       options: ["to hurry", "to relax", "to sleep", "to shower"],
       correctIndex: 0,
       explanation:
-        '"Er muss sich beeilen" — the verb means to hurry, used reflexively.',
+        '"Er muss sich beeilen", the verb means to hurry, used reflexively.',
       tr: {
         topic: "Kelime",
         prompt: 'Metindeki "sich beeilen" ne demek?',
@@ -223,7 +223,7 @@ export const READING_A2: ReadingContent = {
           "\"Er muss sich beeilen\", bu fiil dönüşlü hâliyle 'acele etmek' demektir.",
       },
     },
-    // 6 — Vocabulary
+    // 6, Vocabulary
     {
       qType: "Vocabulary",
       topic: "Vocabulary",
@@ -231,7 +231,7 @@ export const READING_A2: ReadingContent = {
       options: ["to invite", "to visit", "to cancel", "to forget"],
       correctIndex: 0,
       explanation:
-        '"Tom lädt ihn zum Essen ein" — einladen is a separable verb meaning to invite.',
+        '"Tom lädt ihn zum Essen ein", einladen is a separable verb meaning to invite.',
       tr: {
         topic: "Kelime",
         prompt: 'Burada "lädt ... ein" (einladen) ne demek?',
@@ -240,7 +240,7 @@ export const READING_A2: ReadingContent = {
           "\"Tom lädt ihn zum Essen ein\", einladen ayrılabilir bir fiildir ve 'davet etmek' demektir.",
       },
     },
-    // 7 — Inference
+    // 7, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -253,7 +253,7 @@ export const READING_A2: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        'The text says "Tom ruft Max an, weil der Termin bald beginnt" — Tom calls because he\'s worried Max won\'t make it on time. The \'worry\' part is inferred from the friendly context.',
+        'The text says "Tom ruft Max an, weil der Termin bald beginnt", Tom calls because he\'s worried Max won\'t make it on time. The \'worry\' part is inferred from the friendly context.',
       tr: {
         topic: "Çıkarım",
         prompt: "Tom neden Max'ı arıyor?",
@@ -267,7 +267,7 @@ export const READING_A2: ReadingContent = {
           "Metinde \"Tom ruft Max an, weil der Termin bald beginnt\" diyor; Tom, Max zamanında yetişemez diye endişelendiği için arıyor. 'Endişelenme' kısmı dostça bağlamdan çıkarılıyor.",
       },
     },
-    // 8 — Inference
+    // 8, Inference
     {
       qType: "Inference",
       topic: "Inference",
@@ -280,7 +280,7 @@ export const READING_A2: ReadingContent = {
       ],
       correctIndex: 0,
       explanation:
-        "Tom tells Max the appointment starts in ten minutes, not now — plus a nice colleague makes the stressful morning worth it.",
+        "Tom tells Max the appointment starts in ten minutes, not now, plus a nice colleague makes the stressful morning worth it.",
       tr: {
         topic: "Çıkarım",
         prompt: "Max sonunda neden sevinç hissediyor?",
@@ -294,7 +294,7 @@ export const READING_A2: ReadingContent = {
           "Tom, Max'a randevunun on dakika sonra başlayacağını söyler; ayrıca iyi bir meslektaş stresli sabahı değerli kılar.",
       },
     },
-    // 9 — Sequence
+    // 9, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",
@@ -321,7 +321,7 @@ export const READING_A2: ReadingContent = {
           '"Er steht schnell auf, wäscht sich und zieht sich an." Yıkanma ve giyinme, anahtar aramasından önce gelir.',
       },
     },
-    // 10 — Sequence
+    // 10, Sequence
     {
       qType: "Sequence",
       topic: "Sequence",
@@ -334,7 +334,7 @@ export const READING_A2: ReadingContent = {
       ],
       correctIndex: 2,
       explanation:
-        '"Am Abend lädt Tom ihn zum Essen am Wochenende ein" — the invitation happens in the evening, after the work day.',
+        '"Am Abend lädt Tom ihn zum Essen am Wochenende ein", the invitation happens in the evening, after the work day.',
       tr: {
         topic: "Sıra",
         prompt: "Yemek daveti ne zaman oluyor?",

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 /**
- * highlightArticles — wrap any stand-alone der / die / das / Der /
+ * highlightArticles, wrap any stand-alone der / die / das / Der /
  * Die / Das token in the sentence with the article's color.
  *
  * Used inside Grammar chip Exercise feedback bodies: an explanation
@@ -12,7 +12,7 @@ import * as React from "react";
  * Match boundary: strict stand-alone tokens only. The regex uses
  * \\b so prefixes like "Der" in "Derivative" never match, and the
  * final "-s" check lets possessives stay plain (we don't try to
- * color "das" inside "dass" either — the \\b handles that).
+ * color "das" inside "dass" either, the \\b handles that).
  *
  * Returns a ReactNode (array of strings + spans) ready to drop into
  * JSX. Pass a string body in; the caller inlines the result.

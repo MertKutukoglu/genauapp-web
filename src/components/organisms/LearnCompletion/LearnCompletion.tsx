@@ -5,12 +5,12 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * LearnCompletion — the "that's the deck" transition, shown after
+ * LearnCompletion, the "that's the deck" transition, shown after
  * every card has left a chip's Learn deck.
  *
  * The earlier version carried a two-stat grid (Words · Repeats) that
- * read as a scoreboard. Problem: Learn doesn't score — no deltas, no
- * skill ring movement — and the "20 / 0" tile was convincing enough
+ * read as a scoreboard. Problem: Learn doesn't score, no deltas, no
+ * skill ring movement, and the "20 / 0" tile was convincing enough
  * that users were taking it as the end-of-session summary, closing
  * the tab, and never seeing Exercise (where the real retention
  * happens). A user feedback round made the cost of that framing
@@ -23,7 +23,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   - Primary CTA is Exercise, visually dominant (52 tall, accent
  *     bg). Start Over sits as a ghost beside it.
  *
- * Both chips (Words, Grammar, Sentence) use this same shell — the
+ * Both chips (Words, Grammar, Sentence) use this same shell, the
  * copy is generic enough to hold across all three.
  */
 
@@ -59,7 +59,7 @@ export function LearnCompletion({
         </p>
       </div>
 
-      {/* Actions — Start Over sits as a ghost tag so Exercise stays
+      {/* Actions, Start Over sits as a ghost tag so Exercise stays
           the visually dominant next step. Stack on narrow widths. */}
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
         <button

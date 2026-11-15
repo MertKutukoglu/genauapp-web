@@ -2,17 +2,17 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * SampleSentence — the sunk-gray "Sample Sentence" block.
+ * SampleSentence, the sunk-gray "Sample Sentence" block.
  *
  * Spec §6.2:
  *   - Container: var(--surface-sunk) bg, 16 padding, 16 radius
  *   - Eyebrow: "Sample Sentence", Open Sans regular 14, fg-faint
  *   - Body: Open Sans semi-bold 16, var(--fg)
  *   - Translation (optional): Open Sans regular 14, fg-muted,
- *     sits right under the German line — gives the learner the gist
+ *     sits right under the German line, gives the learner the gist
  *     without pulling focus away from the German it's teaching.
  *
- * No article coloring on the sample — the sentence reads as prose
+ * No article coloring on the sample, the sentence reads as prose
  * context, not a drill. Shared across Words / Sentence / Reading.
  */
 

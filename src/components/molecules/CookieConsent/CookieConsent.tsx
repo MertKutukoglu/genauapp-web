@@ -11,7 +11,7 @@ import {
 } from "@/lib/consent/consent";
 
 /**
- * CookieConsent — the GDPR consent banner.
+ * CookieConsent, the GDPR consent banner.
  *
  * Renders bottom-fixed on first visit (and whenever consent has been
  * reset from the Cookie Policy page). Accept / Reject are both
@@ -24,7 +24,7 @@ import {
  * accept-click turns on analytics in the same session without a
  * reload.
  *
- * The banner itself sets no cookie — only localStorage, which is
+ * The banner itself sets no cookie, only localStorage, which is
  * strictly necessary ("remember you already answered this prompt")
  * and doesn't need consent under ePrivacy.
  */
@@ -64,7 +64,7 @@ export function CookieConsent({ className }: CookieConsentProps) {
   };
   const reject = () => {
     writeConsent("rejected");
-    // Don't call __track here — rejecting means no PostHog.
+    // Don't call __track here, rejecting means no PostHog.
   };
 
   return (

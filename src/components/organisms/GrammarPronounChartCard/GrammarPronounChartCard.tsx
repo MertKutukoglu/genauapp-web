@@ -10,7 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { PronounForm, PronounCaseForm } from "@/content/grammar-a1";
 
 /**
- * GrammarPronounChartCard — the Grammar chip's `pronounChart` Learn
+ * GrammarPronounChartCard, the Grammar chip's `pronounChart` Learn
  * layout. Dispatches on the shape of `forms`:
  *
  * - A1 (PronounForm[]): 2-column pronoun → English gloss via

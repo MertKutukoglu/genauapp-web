@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * Button — the primary tappable atom.
+ * Button, the primary tappable atom.
  *
  * Rules the handoff bakes in:
  *   - Mobile-first: comfortable 44x44 hit target on touch; size variants
@@ -32,7 +32,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   tone?: Tone;
   size?: Size;
-  /** Render as a full-width block — the default on mobile for CTAs. */
+  /** Render as a full-width block, the default on mobile for CTAs. */
   block?: boolean;
 }
 

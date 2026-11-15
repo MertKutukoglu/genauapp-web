@@ -7,7 +7,7 @@ import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/ExerciseFeedback";
 
 /**
- * ExerciseArticlePicker — der / die / das round of the Exercise mode.
+ * ExerciseArticlePicker, der / die / das round of the Exercise mode.
  *
  * Shape (per Mert's iOS reference):
  *   1. CardToolbar (speaker + counter). No bookmark on web.
@@ -21,7 +21,7 @@ import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/Exerci
  *      wrong pick becomes solid red, correct answer becomes solid
  *      green. All three lock after commit.
  *
- * Correctness: the parent passes `correctArticle` straight — we
+ * Correctness: the parent passes `correctArticle` straight, we
  * don't infer it from a text match. Variant is strictly 3-way
  * (der/die/das); no other options are supported.
  */
@@ -101,7 +101,7 @@ export function ExerciseArticlePicker({
   );
 
   // Desktop keyboard shortcuts: A/S/D → der/die/das. Only active
-  // while the user hasn't committed — once a button is picked, the
+  // while the user hasn't committed, once a button is picked, the
   // Next button takes over and fires on Enter via autoFocus.
   React.useEffect(() => {
     if (committed) return;
@@ -159,13 +159,13 @@ export function ExerciseArticlePicker({
         />
       ) : null}
 
-      {/* Hero stack — dash + noun (with article inline once revealed)
+      {/* Hero stack, dash + noun (with article inline once revealed)
           sits center, with the English translation tucked right
           underneath. `flex-1` lets the group grow so the buttons sit
           at the bottom of the card while the hero vertically centers. */}
       <div className="flex-1 flex flex-col items-center justify-center gap-3 py-4">
         <div className="flex items-center justify-center gap-3">
-          {/* Article slot — dash placeholder while idle; the correct
+          {/* Article slot, dash placeholder while idle; the correct
               article drops in on commit (regardless of right/wrong
               pick) so the user always walks away seeing the full
               "der Noun" form. The dash disappears once filled so the
@@ -192,7 +192,7 @@ export function ExerciseArticlePicker({
         </div>
       </div>
 
-      {/* Article buttons — bottom-aligned by the flex-1 group above.
+      {/* Article buttons, bottom-aligned by the flex-1 group above.
           Soft tint idle; on commit wrong pick fills solid red,
           correct option fills solid green. Small kbd hint underneath
           each on sm+ screens for desktop keyboard flow. */}
@@ -241,7 +241,7 @@ export function ExerciseArticlePicker({
               >
                 {ARTICLE_LABEL[a]}
               </button>
-              {/* Keyboard hint — hidden on touch-only widths. Monospace
+              {/* Keyboard hint, hidden on touch-only widths. Monospace
                   single-letter kbd pill so it reads as a shortcut, not
                   decoration. Uses the fg-faint token so it stays
                   quiet. */}

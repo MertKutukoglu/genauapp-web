@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { useWaitlistSubmit } from "@/lib/waitlist/useWaitlistSubmit";
 
 /**
- * BlogCTA — the end-of-post waitlist invite from /blog/*.
+ * BlogCTA, the end-of-post waitlist invite from /blog/*.
  *
  * "Dein Deutsch, dein Workout." + a one-line body + email form.
  * Submit writes to public.waitlist_emails in Supabase through

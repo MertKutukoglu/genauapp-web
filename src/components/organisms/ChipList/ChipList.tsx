@@ -7,7 +7,7 @@ import { useChipStore } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * ChipList — the /try/ left card's picker body: four chips stacked
+ * ChipList, the /try/ left card's picker body: four chips stacked
  * vertically. Reads state straight from chipStore, dispatches openChip
  * on tap.
  *

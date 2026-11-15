@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import type { ArticleColor } from "@/components/molecules/WordSection/WordSection";
 
 /**
- * RuleCard — the article-tinted explanation block with the lightbulb
+ * RuleCard, the article-tinted explanation block with the lightbulb
  * icon. Shared across Words / Sentence / Grammar chips (every chip
  * that teaches a rule drops one of these in).
  *
@@ -15,7 +15,7 @@ import type { ArticleColor } from "@/components/molecules/WordSection/WordSectio
  *   - For verbs/adj/adv (no article), everything tints var(--accent)
  *     cherry instead
  *
- * The entire element lives in article color — the rule's identity
+ * The entire element lives in article color, the rule's identity
  * stays linked to the word's grammatical identity. Don't break this.
  */
 
@@ -76,7 +76,7 @@ export function RuleCard({
           {renderBold(body)}
         </div>
       </div>
-      {/* Lightbulb — stroke uses currentColor so the icon tints with the
+      {/* Lightbulb, stroke uses currentColor so the icon tints with the
           parent text color automatically. */}
       <svg
         viewBox="0 0 24 24"
@@ -97,7 +97,7 @@ export function RuleCard({
 }
 
 /**
- * Tiny `**bold**` parser used by every Grammar RuleCard call site —
+ * Tiny `**bold**` parser used by every Grammar RuleCard call site,
  * the content convention in the Try/Grammar briefs is that `note`
  * and `rule` strings carry the familiar markdown-style asterisks
  * around the terms the learner should memorise. Splits on `**` and

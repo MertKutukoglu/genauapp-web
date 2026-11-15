@@ -5,7 +5,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * ModeToggle — the segmented Learn / Exercise pill that sits above
+ * ModeToggle, the segmented Learn / Exercise pill that sits above
  * every Words chip card (and the other chips as they land).
  *
  * Spec §2.1 of the Words chip brief:
@@ -16,7 +16,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   - Unselected: transparent + var(--fg-muted)
  *   - Transition: 200ms ease-in-out between states
  *
- * Presentational — the parent organism (WordsChip) owns which mode
+ * Presentational, the parent organism (WordsChip) owns which mode
  * is active and what tapping one does.
  */
 
@@ -51,7 +51,7 @@ export function ModeToggle({
       aria-label="Card mode"
       className={clsx(
         "flex items-center p-1.5 rounded-full",
-        // Sunken surface token — the lighter gray used elsewhere for
+        // Sunken surface token, the lighter gray used elsewhere for
         // nested/pressed-looking backgrounds. Keeps the active pill
         // (--surface-card) distinct against the track.
         "bg-surface-sunk",

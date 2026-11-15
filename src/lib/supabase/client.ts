@@ -3,10 +3,10 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 /**
  * Browser-side Supabase client, singleton per tab.
  *
- * - `persistSession: false` — the waitlist writes are anonymous POSTs
+ * - `persistSession: false`, the waitlist writes are anonymous POSTs
  *   under RLS; we don't use Supabase Auth from the web and don't
  *   want it caching an auth token in localStorage.
- * - `autoRefreshToken: false` — same reason.
+ * - `autoRefreshToken: false`, same reason.
  *
  * This client never carries the service-role key. Only the publishable
  * anon key, which is safe to ship to the browser.

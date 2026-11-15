@@ -9,27 +9,27 @@ import { parseBold } from "@/lib/sentence/parseBold";
 import type { FormulaExample, FormulaPart } from "@/content/sentence-a1";
 
 /**
- * SentenceFormulaCard — the one Learn-card layout for the Sentence
+ * SentenceFormulaCard, the one Learn-card layout for the Sentence
  * chip. All 6 anchors use it.
  *
  * Shape, top to bottom (brief §4.2):
  *   1. CardToolbar
  *   2. Centered headline (German, bold 32 → 26 if long) + English
  *      subtitle
- *   3. Parts strip — 3–4 role-colored RolePills in a flex row
- *   4. Example sentences — inline RoleSegments (semi-bold 17) with a
+ *   3. Parts strip, 3–4 role-colored RolePills in a flex row
+ *   4. Example sentences, inline RoleSegments (semi-bold 17) with a
  *      space between each, EN gloss below in muted regular 14
- *   5. Body prose — regular 14, supports `**bold**` via parseBold
+ *   5. Body prose, regular 14, supports `**bold**` via parseBold
  *   6. LearnActions (Repeat / I know), bottom-pinned so successive
  *      cards don't jump when a formula has 3 vs 4 parts
  *
- * No sunk container around the pill strip or the examples — the
+ * No sunk container around the pill strip or the examples, the
  * examples live directly on the card surface, matching the "examples,
  * not rules" design principle: the pattern becomes visible through
  * two colored sentences before any prose.
  *
  * Speaker on the toolbar reads the first example's German sentence
- * (joined by spaces) — nothing useful to pronounce on a paradigm
+ * (joined by spaces), nothing useful to pronounce on a paradigm
  * headline, but the sample sentence itself is a sensible TTS target.
  */
 
@@ -94,7 +94,7 @@ export function SentenceFormulaCard({
         </div>
       </div>
 
-      {/* Parts strip — 3–4 equal-flex role pills. Wraps only on very
+      {/* Parts strip, 3–4 equal-flex role pills. Wraps only on very
           narrow viewports; the min-width on each pill keeps the
           layout from collapsing to single-column. */}
       <div className="flex flex-wrap gap-2.5">
@@ -109,7 +109,7 @@ export function SentenceFormulaCard({
         ))}
       </div>
 
-      {/* Examples — role-colored inline segments with a space
+      {/* Examples, role-colored inline segments with a space
           between each. Multiple examples stack with a 10px vertical
           gap (gap-2.5). No sunk container; the examples live directly
           on the card surface as prose. */}
@@ -132,7 +132,7 @@ export function SentenceFormulaCard({
         ))}
       </div>
 
-      {/* Body prose — supports **bold** inline. Line-height loose
+      {/* Body prose, supports **bold** inline. Line-height loose
           enough that the bold spans don't crowd their neighbors. */}
       <p className="font-sans font-normal text-sm text-fg leading-relaxed m-0">
         {parseBold(body)}

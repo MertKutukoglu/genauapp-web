@@ -10,7 +10,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ConjugationForm } from "@/content/grammar-a1";
 
 /**
- * GrammarVerbConjugationCard — the Grammar chip's `verbConjugation`
+ * GrammarVerbConjugationCard, the Grammar chip's `verbConjugation`
  * Learn layout. Drives the single Regular verbs anchor (gehen).
  *
  * Shape: toolbar → centered verb (bold 32) + English gloss → 6-row
@@ -28,7 +28,7 @@ import type { ConjugationForm } from "@/content/grammar-a1";
 export interface GrammarVerbConjugationCardProps {
   verb: string;
   english: string;
-  /** Chip-identity label shown in the top-left toolbar slot — the
+  /** Chip-identity label shown in the top-left toolbar slot, the
    *  anchor topic (e.g. "Verb haben"), so the learner always sees
    *  which grammar topic they're on. */
   chipLabel?: string;

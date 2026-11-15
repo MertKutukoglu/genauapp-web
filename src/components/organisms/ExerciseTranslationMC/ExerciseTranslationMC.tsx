@@ -7,7 +7,7 @@ import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/ExerciseFeedback";
 
 /**
- * ExerciseTranslationMC — pick-the-right-English round. German word
+ * ExerciseTranslationMC, pick-the-right-English round. German word
  * at the top, 4 outlined option buttons stacked vertically.
  *
  * On commit:
@@ -22,7 +22,7 @@ import { ExerciseFeedback } from "@/components/molecules/ExerciseFeedback/Exerci
 export interface ExerciseTranslationMCProps {
   /** German prompt word / phrase at the hero. */
   prompt: string;
-  /** TTS target — defaults to `prompt`. */
+  /** TTS target, defaults to `prompt`. */
   speakText?: string;
   /** English option labels (usually 4). Order is preserved. */
   options: string[];
@@ -68,7 +68,7 @@ export function ExerciseTranslationMC({
   );
 
   // Desktop keyboard shortcuts: A/S/D/F → options 0..3. Mirrors the
-  // ArticlePicker's home-row pattern — fast flow for keyboard users.
+  // ArticlePicker's home-row pattern, fast flow for keyboard users.
   // Only live until commit; Next button takes over on Enter via its
   // autoFocus thereafter.
   React.useEffect(() => {
@@ -177,7 +177,7 @@ export function ExerciseTranslationMC({
               )}
               style={{ ...bgStyle, color }}
             >
-              {/* Inline kbd hint on the left — hidden on touch-only
+              {/* Inline kbd hint on the left, hidden on touch-only
                   widths, kept quiet with fg-faint so it never fights
                   the option label for attention. */}
               {shortcut ? (

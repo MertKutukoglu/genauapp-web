@@ -2,7 +2,7 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * EmailInput — pill-shaped text input for the waitlist form.
+ * EmailInput, pill-shaped text input for the waitlist form.
  *
  * Styled to match the live landing: rounded-full, surface-card bg,
  * low-contrast muted placeholder, no visible border until focus.

@@ -2,12 +2,12 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * Slide 3 — Your progress: four bottomsheet-section replicas.
+ * Slide 3, Your progress: four bottomsheet-section replicas.
  *
  * Verbatim port of `claude/GenauApp_Web_Landing_Slide3_Progress.md`.
  * Each card is a faithful mini-replica of a section from the app's
  * SkillDetailSheet.swift. Honest content: Grammar Topics shows one
- * ↑, one ↓, one → — the "things go down too" moment is intentional.
+ * ↑, one ↓, one →, the "things go down too" moment is intentional.
  */
 
 const sectionCls =
@@ -27,7 +27,7 @@ function DpHead({ eyebrow, meta }: { eyebrow: string; meta?: string }) {
 }
 
 /* ============================================================================
- * Card 1 — Vocabulary · Word Mastery grid
+ * Card 1, Vocabulary · Word Mastery grid
  * ========================================================================== */
 export function WordMasteryCard() {
   const tiers = [
@@ -102,7 +102,7 @@ function ReloadIcon() {
 }
 
 /* ============================================================================
- * Card 2 — Vocabulary · Article Performance (der / die / das)
+ * Card 2, Vocabulary · Article Performance (der / die / das)
  * ========================================================================== */
 export function ArticlePerformanceCard() {
   const articles = [
@@ -138,7 +138,7 @@ export function ArticlePerformanceCard() {
 }
 
 /* ============================================================================
- * Card 3 — Grammar · Topic list (mixed momentum)
+ * Card 3, Grammar · Topic list (mixed momentum)
  * ========================================================================== */
 type Momentum = "up" | "down" | "flat";
 
@@ -150,9 +150,9 @@ export function GrammarTopicsCard() {
     tagline: string;
     statusLabel: string;
   }> = [
-    { mom: "up",   name: "Modal verbs",         level: "A1", tagline: "wollen, können, müssen — the \"I want / can / must\" trio.", statusLabel: "In progress" },
-    { mom: "down", name: "Dative prepositions", level: "A1", tagline: "mit, nach, bei, von, zu — always take dative.",               statusLabel: "Needs work" },
-    { mom: "flat", name: "Separable verbs",     level: "A1", tagline: "aufstehen, einkaufen — the prefix flies to the end.",         statusLabel: "Learning" },
+    { mom: "up",   name: "Modal verbs",         level: "A1", tagline: "wollen, können, müssen, the \"I want / can / must\" trio.", statusLabel: "In progress" },
+    { mom: "down", name: "Dative prepositions", level: "A1", tagline: "mit, nach, bei, von, zu, always take dative.",               statusLabel: "Needs work" },
+    { mom: "flat", name: "Separable verbs",     level: "A1", tagline: "aufstehen, einkaufen, the prefix flies to the end.",         statusLabel: "Learning" },
   ];
   return (
     <div className={sectionCls}>
@@ -180,7 +180,7 @@ export function GrammarTopicsCard() {
 }
 
 /* ============================================================================
- * Card 4 — Grammar · single topic deep view (focus)
+ * Card 4, Grammar · single topic deep view (focus)
  * ========================================================================== */
 export function GrammarFocusCard() {
   // Last 7 attempts per spec: 5 wrong, 2 right (positions matter).
@@ -199,7 +199,7 @@ export function GrammarFocusCard() {
           </div>
         </div>
         <p className="text-[12.5px] leading-[1.4] text-fg-muted">
-          mit, nach, bei, von, zu — always take dative.
+          mit, nach, bei, von, zu, always take dative.
         </p>
         <div aria-hidden className="mt-0.5 flex h-[18px] items-stretch gap-1">
           {bars.map((b, i) => (
@@ -289,7 +289,7 @@ function StatusDot({
 }
 
 /* ============================================================================
- * Card registry — cycled in order by the parent slide.
+ * Card registry, cycled in order by the parent slide.
  * ========================================================================== */
 
 export interface ProgressCardSpec {

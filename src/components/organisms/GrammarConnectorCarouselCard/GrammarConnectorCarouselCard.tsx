@@ -10,7 +10,7 @@ import { ROLE_COLORS } from "@/lib/sentence/roleColors";
 import type { ConnectorCard } from "@/content/grammar-a1";
 
 /**
- * GrammarConnectorCarouselCard — the B1 `connectorCarousel`
+ * GrammarConnectorCarouselCard, the B1 `connectorCarousel`
  * layout. Direct sibling of the Modalverben / Konjunktiv II /
  * Trennbare Verben carousels: chevron through the family, one
  * connector at a time, with ← → keyboard support and a progress
@@ -20,7 +20,7 @@ import type { ConnectorCard } from "@/content/grammar-a1";
  * the Sentence chip's formula-strip language (role-coloured
  * tokens separated by a thin divider) to teach the Nebensatz
  * word order on *every* card. The strip shape never changes
- * across connectors — that IS the lesson ("all of these push
+ * across connectors, that IS the lesson ("all of these push
  * the finite verb to the end"), and seeing it repeat with each
  * chevron tap makes the pattern land without a paragraph
  * explaining it.
@@ -35,7 +35,7 @@ import type { ConnectorCard } from "@/content/grammar-a1";
  * verb" promise gets confirmed in the real sentence.
  *
  * The per-connector rule in the purple RuleCard carries the
- * meaning (although / purpose / after / since / …) — short, one
+ * meaning (although / purpose / after / since / …), short, one
  * line, so the user leaves each card with: "I know what this
  * word means, I've seen the structure, I've seen an example."
  */
@@ -108,7 +108,7 @@ function renderWithHighlights(
 /** Map a ConnectorCard.case value to its CSS colour var. Returns
  *  undefined when the variant has no case set, so callers can fall
  *  back to the default chip-grammar purple. Kept co-located with
- *  the component because it's purely a render-time decision — the
+ *  the component because it's purely a render-time decision, the
  *  content type just carries the enum, not a colour string. */
 function caseToColor(
   caseKey: "dativ" | "akkusativ" | undefined,
@@ -246,7 +246,7 @@ export function GrammarConnectorCarouselCard({
 
   if (!active) return null;
 
-  // Formula strip tokens — identical across every connector step.
+  // Formula strip tokens, identical across every connector step.
   // The active connector drops into the Konnektor slot verbatim.
   const formulaParts: Array<{
     text: string;
@@ -335,21 +335,21 @@ export function GrammarConnectorCarouselCard({
         </div>
       </div>
 
-      {/* Example sentence first — connector + verb-final both
+      {/* Example sentence first, connector + verb-final both
           bold-purple so the pattern lands in a real sentence
           before the formula strip abstracts it. */}
       <div className="font-sans font-semibold text-[17px] text-fg text-center leading-snug">
         {renderWithHighlights(active.example, highlights, caseColor)}
       </div>
 
-      {/* Formula strip under the example — no sunk background,
+      {/* Formula strip under the example, no sunk background,
           just the role-coloured pills in-flow so it reads as
           "here's what you just saw, abstracted". Same shape for
           every connector; THAT is the lesson. Role colours lifted
           from the Sentence chip so the two chips speak one
           dialect for Nebensatz word-order. Hidden when the carousel
           isn't teaching a Konnektor family (wo-/da-Wörter and
-          Modalverben Vermutung at B2) — the strip would mislead. */}
+          Modalverben Vermutung at B2), the strip would mislead. */}
       {showFormula ? <FormulaStrip parts={formulaParts} /> : null}
 
       {/* Per-connector rule beats the shared note, same policy as
@@ -394,7 +394,7 @@ export function GrammarConnectorCarouselCard({
           connector's own sample so the sunk tile rotates with the
           chevron (B2 anchors ship one per variant). Falls back to
           the anchor-level sample when the variant hasn't got one
-          — the B1 Konnektoren anchor still ships a single shared
+         , the B1 Konnektoren anchor still ships a single shared
           sample, that path keeps working. */}
       <GrammarSampleSentence
         sentence={(active.sample ?? sample).de}

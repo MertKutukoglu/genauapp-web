@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ArticleCaseForm } from "@/content/grammar-a1";
 
 /**
- * GrammarArticleCasesCard — the A2 `articleCards` layout. Three
+ * GrammarArticleCasesCard, the A2 `articleCards` layout. Three
  * cards side by side (der · die · das), each showing Nominativ +
  * Akkusativ forms. The masculine card is flagged `change: true`
  * and gets a visible "changes" cue, since `der → den` is the only
@@ -28,7 +28,7 @@ const ARTICLE_COLORS: Record<ArticleCaseForm["article"], string> = {
 
 /**
  * Colour the plural card uses for its hero. `die` on a plural
- * card reads as feminine without this — plural pronouns are
+ * card reads as feminine without this, plural pronouns are
  * taught as a distinct bucket, so the card gets the neutral
  * chip-grammar purple instead of one of the three gender tints.
  */

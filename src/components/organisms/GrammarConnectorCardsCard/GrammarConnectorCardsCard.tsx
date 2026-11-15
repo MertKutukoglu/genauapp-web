@@ -9,7 +9,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ConnectorCard } from "@/content/grammar-a1";
 
 /**
- * GrammarConnectorCardsCard — the B1 `connectorCards` layout.
+ * GrammarConnectorCardsCard, the B1 `connectorCards` layout.
  * Shows 3–4 side-by-side cards in a responsive grid; each card
  * holds a big word (connector or verb-with-prep infinitive), an
  * English gloss, and one example sentence with the connector /

@@ -6,7 +6,7 @@ import type { ReadingHighlight } from "@/content/reading-a1";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 /**
- * HighlightChip — the tap-to-translate overlay that ReadingPassageCard
+ * HighlightChip, the tap-to-translate overlay that ReadingPassageCard
  * pins to the top of its scroll area when a learner taps an
  * underlined word in the passage.
  *
@@ -15,7 +15,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *   │  [🔊] [🔖·App only]   die Lehrerin  ·  teacher [×] │
  *   └──────────────────────────────────────────────────┘
  *
- *   - Left group: two round icon buttons — audio (speak the lemma)
+ *   - Left group: two round icon buttons, audio (speak the lemma)
  *     and bookmark (feature lives in the app; a small pill badge
  *     says so). The buttons sit together on their own chip surface.
  *   - Right group: a separate chip surface holding the German
@@ -23,7 +23,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *     then the EN or TR translation. On the far right, a close
  *     button.
  *
- * The chip is uncontrolled visually — the parent manages which
+ * The chip is uncontrolled visually, the parent manages which
  * highlight is active via the `highlight` prop. `null` renders
  * nothing. Switching from one highlight to another is a simple
  * prop swap: no enter/exit animation needed, just a quick fade on
@@ -31,7 +31,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
  *
  * Bookmark is purely a teaser here. Tapping it shows the "App only"
  * pill as a brief tooltip (not a modal), so we don't pretend the
- * action completed. Audio uses the Web Speech API in German —
+ * action completed. Audio uses the Web Speech API in German,
  * same approach as SpeakerButton, but spoken locally since the
  * chip doesn't own a full toolbar.
  */
@@ -91,7 +91,7 @@ export function HighlightChip({
       u.rate = 0.95;
       synth.speak(u);
     } catch {
-      /* no-op — speech synthesis unavailable */
+      /* no-op, speech synthesis unavailable */
     }
   };
 
@@ -109,7 +109,7 @@ export function HighlightChip({
       role="region"
       aria-label={header}
     >
-      {/* Left chip — audio + bookmark */}
+      {/* Left chip, audio + bookmark */}
       <div
         className={clsx(
           "flex items-center gap-1 shrink-0 rounded-full",
@@ -166,7 +166,7 @@ export function HighlightChip({
         </button>
       </div>
 
-      {/* Right chip — lemma + translation + close */}
+      {/* Right chip, lemma + translation + close */}
       <div
         className={clsx(
           "flex items-center gap-2 flex-1 min-w-0 rounded-full",

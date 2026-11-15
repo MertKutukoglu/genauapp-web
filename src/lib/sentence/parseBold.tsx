@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * parseBold — turn `"a **b** c"` into `[a, <strong>b</strong>, c]`.
+ * parseBold, turn `"a **b** c"` into `[a, <strong>b</strong>, c]`.
  *
  * Only `**bold**` is supported per the Sentence brief §4.6. Anything
  * else (italics, lists, links, nested bold) renders as plain text.
- * Kept small on purpose — a real markdown parser would be overkill
+ * Kept small on purpose, a real markdown parser would be overkill
  * for a one-paragraph body field.
  *
  * Splitting on `**` and alternating plain / strong is the trick: odd

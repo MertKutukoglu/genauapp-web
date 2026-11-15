@@ -4,12 +4,12 @@ import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 
 /**
- * LevelButton — a single CEFR card on the /try/ level-picker gateway.
+ * LevelButton, a single CEFR card on the /try/ level-picker gateway.
  *
  * Shape (top → bottom): CEFR code (Fraunces italic), short label
  * (Open Sans bold), description (Open Sans regular). A `soon` flag
  * flips the card to a muted, non-interactive state with a pill in
- * the top-right — kept in the API for future levels or locked
+ * the top-right, kept in the API for future levels or locked
  * states, though the current picker ships only four active cards.
  *
  * Selection isn't enforced here: pass `selected` to mark one, pass
