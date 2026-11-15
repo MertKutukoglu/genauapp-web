@@ -251,36 +251,46 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── 3 ─ Anchor: Konjunktiv II Vergangenheit (verbCards, 4 verbs) ──
+  // ── 3 ─ Anchor: Konjunktiv II Vergangenheit (connectorCards, 4 verbs) ──
+  // Doc specifies `verbCards`, but that organism was rewritten at B1
+  // to render a prefix carousel only. The side-by-side 4-cards-with-
+  // examples visual is what `connectorCards` does, and the
+  // ConnectorCard { word, example, english, highlight } shape maps
+  // 1:1 onto the data the doc provides for this anchor (infinitive →
+  // word). Same pedagogical outcome, no renderer change needed.
   {
     topic: "Konjunktiv II Vergangenheit",
     exerciseType: "fillBlank",
     learn: {
-      layout: "verbCards",
+      layout: "connectorCards",
       headline: "Konjunktiv II Vergangenheit",
       english: "Past hypotheticals: hätte / wäre + Partizip II",
       note:
         "Pick **hätte** or **wäre** exactly like haben/sein in the Perfekt: movement and change of state take **wäre** (gekommen, gefahren, aufgestanden), almost everything else takes **hätte**. With a modal you get a double infinitive: Du **hättest** das sagen **sollen**.",
-      verbs: [
+      connectors: [
         {
-          infinitive: "hätte ... gewusst",
-          example: "Hätte ich das gewusst, ...",
+          word: "hätte ... gewusst",
           english: "would have known",
+          example: "Hätte ich das gewusst, ...",
+          highlight: "Hätte",
         },
         {
-          infinitive: "hätte ... geholfen",
-          example: "Ich hätte dir gern geholfen.",
+          word: "hätte ... geholfen",
           english: "would have helped",
+          example: "Ich hätte dir gern geholfen.",
+          highlight: "hätte",
         },
         {
-          infinitive: "wäre ... gekommen",
-          example: "Ich wäre gern gekommen.",
+          word: "wäre ... gekommen",
           english: "would have come",
+          example: "Ich wäre gern gekommen.",
+          highlight: "wäre",
         },
         {
-          infinitive: "wäre ... geblieben",
-          example: "Wir wären länger geblieben.",
+          word: "wäre ... geblieben",
           english: "would have stayed",
+          example: "Wir wären länger geblieben.",
+          highlight: "wären",
         },
       ],
       sample: {
@@ -412,36 +422,43 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── 6 ─ Anchor: Modalverben Vermutung (verbCards, 4 modals) ──
+  // ── 6 ─ Anchor: Modalverben Vermutung (connectorCards, 4 modals) ──
+  // Same layout swap as anchor 3 for the same reason — doc says
+  // verbCards, but we render the side-by-side cards via
+  // connectorCards (the ConnectorCard shape maps 1:1).
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "verbCards",
+      layout: "connectorCards",
       headline: "Modalverben: Vermutung",
       english: "Modal verbs for guesses and hearsay",
       note:
         "Modal verbs can also show **how sure** you are. From sure to unsure: **muss** → **dürfte** → **kann / könnte**. **soll** = I heard it, people say so. **will** = he claims it himself: Er **will** Arzt sein. In this use the modal is followed by **sein** or another infinitive at the end.",
-      verbs: [
+      connectors: [
         {
-          infinitive: "müssen",
-          example: "Sie muss krank sein.",
+          word: "müssen",
           english: "must be (I'm almost sure)",
+          example: "Sie muss krank sein.",
+          highlight: "muss",
         },
         {
-          infinitive: "dürfte",
-          example: "Er dürfte zu Hause sein.",
+          word: "dürfte",
           english: "is probably",
+          example: "Er dürfte zu Hause sein.",
+          highlight: "dürfte",
         },
         {
-          infinitive: "können",
-          example: "Das kann stimmen.",
+          word: "können",
           english: "could be (possible)",
+          example: "Das kann stimmen.",
+          highlight: "kann",
         },
         {
-          infinitive: "sollen",
-          example: "Er soll sehr reich sein.",
+          word: "sollen",
           english: "is said to be (hearsay)",
+          example: "Er soll sehr reich sein.",
+          highlight: "soll",
         },
       ],
       sample: {
