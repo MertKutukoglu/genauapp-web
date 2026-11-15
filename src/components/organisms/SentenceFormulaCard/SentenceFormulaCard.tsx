@@ -132,11 +132,21 @@ export function SentenceFormulaCard({
         ))}
       </div>
 
-      {/* Body prose, supports **bold** inline. Line-height loose
-          enough that the bold spans don't crowd their neighbors. */}
-      <p className="font-sans font-normal text-sm text-fg leading-relaxed m-0">
-        {parseBold(body)}
-      </p>
+      {/* Body prose is intentionally hidden as of 2026-11-15. The old
+          3-5-sentence bodies restated what the pills + examples
+          already teach visually (see CDP §3.10). The new ≤1-sentence
+          bodies read as throwaway without a design frame around them
+          ("I'm reading this but it doesn't say much"). Rather than
+          ship weak-signal text, we hide the slot entirely until the
+          §3.10 pass lands with its eyebrow label + restated short
+          bodies worth their space. Content stays authored on the
+          data side so restoring is a one-line uncomment.
+          See softlaunch-backlog 2026-11-15 for the restore plan. */}
+      {false && body ? (
+        <p className="font-sans font-normal text-sm text-fg leading-relaxed m-0">
+          {parseBold(body)}
+        </p>
+      ) : null}
 
       <LearnActions
         onRepeat={onRepeat}
