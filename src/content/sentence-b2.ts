@@ -1,19 +1,24 @@
 /**
- * Sentence — B2 deck (16 items). Verbatim port of
- * claude/GenauApp_Web_Try_Sentence_Content_B2.md §4.
+ * Sentence — B2 deck (17 items). Based on
+ * claude/GenauApp_Web_Try_Sentence_Content_B2.md §4, with one
+ * deviation: the doc's single "Zweiteilige Konnektoren" anchor is
+ * split here into two separate anchors (zwar ... aber and
+ * nicht nur ... sondern auch), one pattern per card. One card
+ * teaching both patterns was too much at once.
  *
  * Deck composition:
- *   1-8   Formula anchors (with `learn`): Indirekte Rede,
- *         Passiv mit Modalverb, Doppelter Infinitiv, je ... desto,
- *         Korrelat + Nebensatz, Konditional ohne wenn, als ob / als,
- *         Zweiteilige Konnektoren.
- *   9-16  Pack-themed scenes (Exercise only): Phone message,
- *         Apartment repairs, Leaving early, Practice makes progress,
- *         Weekend plans, One phone call, Tired neighbor, Hard worker.
+ *   1-9    Formula anchors (with `learn`): Indirekte Rede,
+ *          Passiv mit Modalverb, Doppelter Infinitiv, je ... desto,
+ *          Korrelat + Nebensatz, Konditional ohne wenn, als ob / als,
+ *          zwar ... aber, nicht nur ... sondern auch.
+ *   10-17  Pack-themed scenes (Exercise only): Phone message,
+ *          Apartment repairs, Leaving early, Practice makes progress,
+ *          Weekend plans, One phone call, Tired neighbor, Hard worker.
  *
- * Anchors 7 + 8 and their scenes (15, 16) are the reserve pair per
- * the brief — drop all four to get back to a 12-item deck if the
- * session feels long. Nothing else in the demo depends on them.
+ * Reserve pair for shortening the session back to 12 items: anchors
+ * 7, 8, 9 and scenes 15, 16 — drop all five. Scene 16 ("Hard worker")
+ * drills the new anchor 9 (nicht nur ... sondern auch) with
+ * different content.
  *
  * No schema changes vs A2 / B1 — same SentenceQuestion shape, same
  * role palette. Anchor-2 / 3 / 6 all stack cherry pills at the end
@@ -499,21 +504,25 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     },
   },
 
-  // 8 — Anchor: Zweiteilige Konnektoren (reserve)
+  // 8 — Anchor: zwar ... aber (reserve).
+  // Split from the original "Zweiteilige Konnektoren" mixed anchor —
+  // one paired connector per card reads cleaner, so this card only
+  // teaches the contrast pattern. The addition pattern (nicht nur …
+  // sondern auch) is now the next anchor.
   {
-    topic: "Zweiteilige Konnektoren",
+    topic: "zwar ... aber",
     words: ["Die", "Wohnung", "ist", "zwar", "klein,", "aber", "sie", "ist", "günstig."],
     correctOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8],
     learn: {
       layout: "sentenceFormula",
-      headline: "Zweiteilige Konnektoren",
-      english:
-        "Paired connectors: zwar ... aber (contrast), nicht nur ... sondern auch (addition)",
+      headline: "zwar ... aber",
+      english: "Paired contrast: adverb zwar in the Mittelfeld, aber at position 0",
       parts: [
-        { text: "zwar", translation: "zwar", caption: "Mittelfeld", role: "verb" },
-        { text: "aber", translation: "aber", caption: "Position 0", role: "verb" },
-        { text: "nicht nur", translation: "nicht nur", caption: "before part 1", role: "verb" },
-        { text: "sondern auch", translation: "sondern auch", caption: "before part 2", role: "verb" },
+        { text: "Subjekt", translation: "Subject", caption: "Position 1", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "zwar", translation: "zwar", caption: "Mittelfeld adverb", role: "verb" },
+        { text: "aber", translation: "aber", caption: "Position 0 of clause 2", role: "verb" },
+        { text: "Hauptsatz", translation: "Main clause", caption: "normal order", role: "neutral" },
       ],
       examples: [
         {
@@ -531,6 +540,63 @@ export const SENTENCE_B2: SentenceQuestion[] = [
         },
         {
           segments: [
+            { text: "Zwar", role: "verb" },
+            { text: "ist", role: "verb" },
+            { text: "die Wohnung", role: "subject" },
+            { text: "klein,", role: "neutral" },
+            { text: "aber", role: "verb" },
+            { text: "günstig.", role: "neutral" },
+          ],
+          en: "True, the apartment is small, but it's affordable.",
+        },
+      ],
+      body:
+        "**zwar** is an adverb that frames the first half as a concession: \"true, …\". It usually sits in the **Mittelfeld** (die Wohnung ist **zwar** klein), but can also take **position 1** with inversion (**Zwar ist** die Wohnung klein, ...). **aber** then opens the second main clause at **position 0**, and the rest of that clause reads in normal word order: aber sie ist günstig. The whole pattern says \"yes this, but also that\" — same job as \"true, but ...\" in English.",
+    },
+    tr: {
+      topic: "zwar ... aber",
+      learn: {
+        english: "Karşıtlık: Mittelfeld'de zwar zarfı, 0. pozisyonda aber",
+        partCaptions: [
+          "1. pozisyon",
+          "2. pozisyon",
+          "Mittelfeld zarfı",
+          "2. cümlenin 0. pozisyonu",
+          "normal dizilim",
+        ],
+        partTranslations: ["Özne", "Fiil", "zwar", "aber", "Ana cümle"],
+        exampleEns: [
+          "Daire küçük ama uygun fiyatlı.",
+          "Doğru, daire küçük ama uygun fiyatlı.",
+        ],
+        body:
+          "**zwar** bir zarftır ve ilk yarıyı bir kabulleniş gibi çerçeveler: \"evet, …\". Genellikle **Mittelfeld**'de durur (die Wohnung ist **zwar** klein), ama devrik yapıyla **1. pozisyona** da geçebilir (**Zwar ist** die Wohnung klein, ...). **aber** sonra ikinci ana cümleyi **0. pozisyonda** açar ve o cümlenin geri kalanı normal dizilimle okunur: aber sie ist günstig. Bütün kalıp \"evet bu, ama şu da\" der.",
+      },
+    },
+  },
+
+  // 9 — Anchor: nicht nur ... sondern auch (reserve).
+  // Split from the original mixed anchor. This one is simpler than
+  // 8 — no inversion games — but it belongs with the paired
+  // connectors family and deserves its own card so the learner
+  // doesn't read two patterns at once.
+  {
+    topic: "nicht nur ... sondern auch",
+    words: ["Sie", "spricht", "nicht", "nur", "Deutsch,", "sondern", "auch", "Türkisch."],
+    correctOrder: [0, 1, 2, 3, 4, 5, 6, 7],
+    learn: {
+      layout: "sentenceFormula",
+      headline: "nicht nur ... sondern auch",
+      english: "Paired addition: nicht nur before part 1, sondern auch before part 2",
+      parts: [
+        { text: "Subjekt", translation: "Subject", caption: "Position 1", role: "subject" },
+        { text: "Verb", translation: "Verb", caption: "Position 2", role: "verb" },
+        { text: "nicht nur", translation: "nicht nur", caption: "before part 1", role: "verb" },
+        { text: "sondern auch", translation: "sondern auch", caption: "before part 2", role: "verb" },
+      ],
+      examples: [
+        {
+          segments: [
             { text: "Sie", role: "subject" },
             { text: "spricht", role: "verb" },
             { text: "nicht nur", role: "verb" },
@@ -540,33 +606,43 @@ export const SENTENCE_B2: SentenceQuestion[] = [
           ],
           en: "She speaks not only German but also Turkish.",
         },
+        {
+          segments: [
+            { text: "Der Kurs", role: "subject" },
+            { text: "ist", role: "verb" },
+            { text: "nicht nur", role: "verb" },
+            { text: "günstig,", role: "neutral" },
+            { text: "sondern auch", role: "verb" },
+            { text: "gut.", role: "neutral" },
+          ],
+          en: "The course is not only affordable but also good.",
+        },
       ],
       body:
-        "Paired connectors frame a contrast or an addition. **zwar** is an adverb: it sits in the **Mittelfeld**, or in position 1 with inversion (Zwar **ist** die Wohnung klein, ...). **aber** opens the second main clause at **position 0**, so normal word order follows. **nicht nur ... sondern auch** link two parts of one sentence and don't change word order at all. Same family: sowohl ... als auch, weder ... noch, entweder ... oder.",
+        "**nicht nur ... sondern auch** is paired addition: two parts of the same sentence held together as \"not just A, but also B\". Unlike zwar ... aber, this pair **doesn't change word order at all** — it drops into whatever slot the two parts share. **sondern** (not aber) is the right word here, because it follows a **negative** (nicht nur). Same family: **sowohl ... als auch**, **weder ... noch**, **entweder ... oder**.",
     },
     tr: {
-      topic: "İki parçalı bağlaçlar",
+      topic: "nicht nur ... sondern auch",
       learn: {
-        english:
-          "İki parçalı bağlaçlar: zwar ... aber (karşıtlık), nicht nur ... sondern auch (ekleme)",
+        english: "Ekleme: 1. parçadan önce nicht nur, 2. parçadan önce sondern auch",
         partCaptions: [
-          "Mittelfeld",
-          "0. pozisyon",
+          "1. pozisyon",
+          "2. pozisyon",
           "1. parçadan önce",
           "2. parçadan önce",
         ],
-        partTranslations: ["zwar", "aber", "nicht nur", "sondern auch"],
+        partTranslations: ["Özne", "Fiil", "nicht nur", "sondern auch"],
         exampleEns: [
-          "Daire küçük ama uygun fiyatlı.",
           "Sadece Almanca değil, Türkçe de konuşuyor.",
+          "Kurs sadece uygun fiyatlı değil, aynı zamanda iyi.",
         ],
         body:
-          "İki parçalı bağlaçlar bir karşıtlığı ya da eklemeyi çerçeveler. **zwar** bir zarftır: **Mittelfeld**'de durur ya da devrik yapıyla 1. pozisyona geçer (Zwar **ist** die Wohnung klein, ...). **aber** ikinci ana cümleyi **0. pozisyonda** açar, ardından normal dizilim gelir. **nicht nur ... sondern auch** aynı cümlenin iki parçasını bağlar ve dizilimi hiç değiştirmez. Aynı aileden: sowohl ... als auch, weder ... noch, entweder ... oder.",
+          "**nicht nur ... sondern auch** ekleme çiftidir: aynı cümlenin iki parçasını \"sadece A değil, B de\" olarak bir arada tutar. zwar ... aber'in aksine bu çift **kelime sırasını hiç değiştirmez** — iki parçanın paylaştığı slota girer. Burada **sondern** doğru bağlaçtır (aber değil), çünkü bir **olumsuzluğun** (nicht nur) ardından gelir. Aynı aileden: **sowohl ... als auch**, **weder ... noch**, **entweder ... oder**.",
       },
     },
   },
 
-  // 9 — Scene: Phone message
+  // 10 — Scene: Phone message
   {
     topic: "Phone message",
     words: ["Der", "Chef", "sagt,", "er", "komme", "später."],
@@ -574,7 +650,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Telefon mesajı" },
   },
 
-  // 10 — Scene: Apartment repairs (modal passive in Nebensatz)
+  // 11 — Scene: Apartment repairs (modal passive in Nebensatz)
   {
     topic: "Apartment repairs",
     words: ["Ich", "glaube,", "dass", "die", "Heizung", "repariert", "werden", "muss."],
@@ -582,7 +658,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Daire tamiri" },
   },
 
-  // 11 — Scene: Leaving early (double infinitive after dass)
+  // 12 — Scene: Leaving early (double infinitive after dass)
   {
     topic: "Leaving early",
     words: ["Schade,", "dass", "er", "hat", "gehen", "müssen."],
@@ -590,7 +666,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Erken ayrılış" },
   },
 
-  // 12 — Scene: Practice makes progress
+  // 13 — Scene: Practice makes progress
   {
     topic: "Practice makes progress",
     words: ["Je", "mehr", "du", "übst,", "desto", "leichter", "wird", "es."],
@@ -598,7 +674,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Pratik ilerletir" },
   },
 
-  // 13 — Scene: Weekend plans
+  // 14 — Scene: Weekend plans
   {
     topic: "Weekend plans",
     words: ["Es", "kommt", "darauf", "an,", "ob", "es", "regnet."],
@@ -606,7 +682,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Hafta sonu planları" },
   },
 
-  // 14 — Scene: One phone call (mixed-time wenn-less conditional)
+  // 15 — Scene: One phone call (mixed-time wenn-less conditional)
   {
     topic: "One phone call",
     words: ["Hätte", "er", "angerufen,", "wäre", "alles", "gut."],
@@ -614,7 +690,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Tek bir telefon" },
   },
 
-  // 15 — Scene: Tired neighbor (reserve, als + K-II past)
+  // 16 — Scene: Tired neighbor (reserve, als + K-II past)
   {
     topic: "Tired neighbor",
     words: ["Sie", "sieht", "aus,", "als", "hätte", "sie", "nicht", "geschlafen."],
@@ -622,7 +698,7 @@ export const SENTENCE_B2: SentenceQuestion[] = [
     tr: { topic: "Uykusuz komşu" },
   },
 
-  // 16 — Scene: Hard worker (reserve, nicht nur ... sondern auch)
+  // 17 — Scene: Hard worker (reserve, drills anchor 9)
   {
     topic: "Hard worker",
     words: ["Er", "arbeitet", "nicht", "nur", "viel,", "sondern", "auch", "gern."],
