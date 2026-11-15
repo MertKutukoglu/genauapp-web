@@ -27,6 +27,81 @@ export const READING_A2: ReadingContent = {
   tr: {
     title: "Max'ın kötü bir sabahı",
   },
+  // Tap-to-translate hints: 4 separable verbs (aufwachen, aufstehen,
+  // anrufen, einladen) + 1 reflexive (sich beeilen) + 3 nouns
+  // (2 der · 1 die -in suffix). Separable verbs use the companion
+  // field to bind the stem (surface) and the detached prefix in the
+  // same sentence — both tokens open the same chip, showing the
+  // full infinitive.
+  highlights: [
+    {
+      surface: "Wecker",
+      article: "der",
+      kind: "noun",
+      en: "alarm clock",
+      tr: "çalar saat",
+    },
+    {
+      surface: "wacht",
+      companion: "auf",
+      lemma: "aufwachen",
+      kind: "verb-separable",
+      en: "to wake up (separable: wacht … auf)",
+      tr: "uyanmak (ayrılabilir: wacht … auf)",
+    },
+    {
+      surface: "Termin",
+      article: "der",
+      kind: "noun",
+      en: "appointment",
+      tr: "randevu",
+    },
+    {
+      surface: "beeilen",
+      lemma: "sich beeilen",
+      kind: "verb",
+      en: "to hurry (reflexive: sich beeilen)",
+      tr: "acele etmek (dönüşlü: sich beeilen)",
+    },
+    {
+      surface: "steht",
+      companion: "auf",
+      lemma: "aufstehen",
+      kind: "verb-separable",
+      en: "to get up (separable: steht … auf)",
+      tr: "kalkmak (ayrılabilir: steht … auf)",
+    },
+    {
+      surface: "Schlüssel",
+      article: "der",
+      kind: "noun",
+      en: "key",
+      tr: "anahtar",
+    },
+    {
+      surface: "Nachbarin",
+      article: "die",
+      kind: "noun",
+      en: "neighbor (female: -in suffix on der Nachbar)",
+      tr: "komşu (kadın: der Nachbar'a -in eki)",
+    },
+    {
+      surface: "ruft",
+      companion: "an",
+      lemma: "anrufen",
+      kind: "verb-separable",
+      en: "to call (phone) (separable: ruft … an)",
+      tr: "aramak (telefon) (ayrılabilir: ruft … an)",
+    },
+    {
+      surface: "lädt",
+      companion: "ein",
+      lemma: "einladen",
+      kind: "verb-separable",
+      en: "to invite (separable: lädt … ein)",
+      tr: "davet etmek (ayrılabilir: lädt … ein)",
+    },
+  ],
   questions: [
     // 1 — Main Idea
     {

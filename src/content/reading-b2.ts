@@ -33,6 +33,87 @@ export const READING_B2: ReadingContent = {
   tr: {
     title: "Wesselbach'ta arabasız cumartesiler",
   },
+  // Tap-to-translate hints: 10 B2 flagship items, one per ~42 words
+  // (looser than A1's 1-per-12 — a B2 reader expects less hand-
+  // holding). Article balance 4 die · 3 der · 2 das + 1 verb.
+  // Picks recall every new B2 gender rule: -keit (Nachhaltigkeit),
+  // -ment (Engagement, with the engagement-to-marry false-friend
+  // warning), -schaft (Gesellschaft), compound-last-part
+  // (Bewusstsein ← das Sein), plus -ung × 2 (Maßnahme / Voraussetzung
+  // via abstract -e / -ung). No Konjunktiv I highlight — the reading
+  // questions already teach reported speech, and marking only one
+  // Konj-I form would leave the rest unexplained.
+  highlights: [
+    {
+      surface: "Maßnahme",
+      article: "die",
+      kind: "noun",
+      en: "measure, step (action taken)",
+      tr: "önlem, tedbir",
+    },
+    {
+      surface: "Nachhaltigkeit",
+      article: "die",
+      kind: "noun",
+      en: "sustainability (-keit → die)",
+      tr: "sürdürülebilirlik (-keit → die)",
+    },
+    {
+      surface: "Engagement",
+      article: "das",
+      kind: "noun",
+      en: "commitment, involvement (NOT engagement-to-marry — that's die Verlobung)",
+      tr: "bağlılık, aktif katılım (nişan DEĞİL — nişan die Verlobung)",
+    },
+    {
+      surface: "Bewusstsein",
+      article: "das",
+      kind: "noun",
+      en: "awareness (compound: das Sein → das Bewusstsein)",
+      tr: "farkındalık, bilinç (bileşik: das Sein → das Bewusstsein)",
+    },
+    {
+      surface: "Zusammenhang",
+      article: "der",
+      kind: "noun",
+      en: "connection, context (im Zusammenhang mit + Dat)",
+      tr: "bağlantı, bağlam (im Zusammenhang mit + Dat)",
+    },
+    {
+      surface: "Widerspruch",
+      article: "der",
+      kind: "noun",
+      en: "contradiction, objection (im Widerspruch stehen zu)",
+      tr: "çelişki, itiraz (im Widerspruch stehen zu)",
+    },
+    {
+      surface: "verzichten",
+      kind: "verb",
+      en: "to do without, to give up (auf + Akk)",
+      tr: "vazgeçmek (auf + Akk)",
+    },
+    {
+      surface: "Kompromiss",
+      article: "der",
+      kind: "noun",
+      en: "compromise (einen Kompromiss schließen)",
+      tr: "uzlaşma (einen Kompromiss schließen)",
+    },
+    {
+      surface: "Voraussetzung",
+      article: "die",
+      kind: "noun",
+      en: "prerequisite (Voraussetzung für + Akk)",
+      tr: "ön koşul (Voraussetzung für + Akk)",
+    },
+    {
+      surface: "Gesellschaft",
+      article: "die",
+      kind: "noun",
+      en: "society (-schaft → die)",
+      tr: "toplum (-schaft → die)",
+    },
+  ],
   questions: [
     // 1 — Main Idea
     {

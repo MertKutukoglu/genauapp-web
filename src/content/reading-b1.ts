@@ -34,6 +34,78 @@ export const READING_B1: ReadingContent = {
   tr: {
     title: "Lena'nın zor kararı",
   },
+  // Tap-to-translate hints: 6 nouns (article balance 4 die · 4 der ·
+  // 1 das) + 1 reflexive verb (sich bewerben um + Akk — the B1
+  // Grammar anchor for reflexive + fixed preposition + case). Nouns
+  // chosen to recall the B1 gender canon: three -ung → die, one
+  // -nis → das. No visibly-split separable verb in this passage.
+  highlights: [
+    {
+      surface: "Verantwortung",
+      article: "die",
+      kind: "noun",
+      en: "responsibility (-ung → die)",
+      tr: "sorumluluk (-ung → die)",
+    },
+    {
+      surface: "Beruf",
+      article: "der",
+      kind: "noun",
+      en: "profession",
+      tr: "meslek",
+    },
+    {
+      surface: "bewerben",
+      lemma: "sich bewerben",
+      kind: "verb",
+      en: "to apply (reflexive + um + Akk: sich bewerben um die Stelle)",
+      tr: "başvurmak (dönüşlü + um + Akk: sich bewerben um die Stelle)",
+    },
+    {
+      surface: "Vorteile",
+      lemma: "Vorteil",
+      article: "der",
+      kind: "noun",
+      en: "advantage, pro",
+      tr: "avantaj, artı",
+    },
+    {
+      surface: "Nachteile",
+      lemma: "Nachteil",
+      article: "der",
+      kind: "noun",
+      en: "disadvantage, con",
+      tr: "dezavantaj, eksi",
+    },
+    {
+      surface: "Erfahrung",
+      article: "die",
+      kind: "noun",
+      en: "experience (-ung → die)",
+      tr: "deneyim, tecrübe (-ung → die)",
+    },
+    {
+      surface: "Unterschied",
+      article: "der",
+      kind: "noun",
+      en: "difference",
+      tr: "fark",
+    },
+    {
+      surface: "Ergebnis",
+      article: "das",
+      kind: "noun",
+      en: "result (-nis → das)",
+      tr: "sonuç (-nis → das)",
+    },
+    {
+      surface: "Entscheidung",
+      article: "die",
+      kind: "noun",
+      en: "decision (-ung → die)",
+      tr: "karar (-ung → die)",
+    },
+  ],
   questions: [
     // 1 — Main Idea
     {
