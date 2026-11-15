@@ -54,6 +54,52 @@ const OPTION_KEYS = ["A", "S", "D", "F"] as const;
 /** Auto-advance window on correct, matching the Grammar brief. */
 const CORRECT_ADVANCE_MS = 1400;
 
+/**
+ * Render a cloze prompt with the picked option dropped into the
+ * `___` slot. Before commit (`filled == null`), the triple-
+ * underscore is shown muted. After commit it swaps for the picked
+ * value with a colored pill — green for correct, cherry for wrong.
+ * Matches more than one blank on the same prompt (replaces each),
+ * though today's content only ever uses one.
+ */
+function renderClozePrompt(
+  prompt: string,
+  filled: string | null,
+  isCorrect: boolean,
+): React.ReactNode {
+  const parts = prompt.split("___");
+  if (parts.length === 1) return prompt;
+  const slot = (key: number) =>
+    filled == null ? (
+      <span
+        key={key}
+        className="inline-block align-baseline mx-0.5 font-sans font-bold"
+        style={{ color: "var(--fg-faint)", letterSpacing: "0.04em" }}
+      >
+        ___
+      </span>
+    ) : (
+      <span
+        key={key}
+        className="inline-block align-baseline mx-0.5 px-2 py-0.5 rounded-md font-sans font-bold"
+        style={{
+          background: isCorrect
+            ? "color-mix(in srgb, var(--ok) 14%, transparent)"
+            : "color-mix(in srgb, var(--accent) 14%, transparent)",
+          color: isCorrect ? "var(--ok)" : "var(--accent)",
+        }}
+      >
+        {filled}
+      </span>
+    );
+  const out: React.ReactNode[] = [];
+  parts.forEach((p, i) => {
+    out.push(<React.Fragment key={`t-${i}`}>{p}</React.Fragment>);
+    if (i < parts.length - 1) out.push(slot(i));
+  });
+  return out;
+}
+
 export function GrammarExerciseMC({
   topic,
   prompt,
@@ -154,7 +200,9 @@ export function GrammarExerciseMC({
 
       {/* Prompt + hint, center-stacked with a flex spacer so the two
           sit visually in the card's middle regardless of the option
-          count below. */}
+          count below. The literal `___` in the cloze gets filled
+          with the picked option after commit so the sentence reads
+          as a whole; green if correct, cherry if wrong. */}
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-1">
         <div
           className={clsx(
@@ -163,7 +211,7 @@ export function GrammarExerciseMC({
             prompt.length > 30 ? "text-[20px]" : "text-[24px]",
           )}
         >
-          {prompt}
+          {renderClozePrompt(prompt, committed ? options[pickedIdx!] : null, isCorrect)}
         </div>
         <div className="font-sans font-normal text-[15px] text-fg-muted leading-snug">
           {hint}
