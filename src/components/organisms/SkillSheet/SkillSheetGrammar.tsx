@@ -2,21 +2,22 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
-import { useRouter, usePathname } from "next/navigation";
 import {
   useGrammarAnswersStore,
   computeTopicStats,
   momentum,
-  progressFill,
   weakestTopic,
-  orderTopicsForList,
+  grammarTier,
+  countByTier,
   type TopicStat,
   type Momentum,
+  type GrammarTier,
 } from "@/stores/grammarAnswersStore";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore } from "@/stores/chipStore";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { tierLabel } from "@/stores/wordAnswersStore";
+import { describeGrammarTopic } from "@/content/grammar-topic-descriptions";
 import { SkillSheet, SkillSheetSection } from "./SkillSheet";
 
 /**
@@ -54,23 +55,43 @@ export function SkillSheetGrammar({
   open,
   onOpenChange,
 }: SkillSheetGrammarProps) {
-  const { strings } = useLocale();
+  const { strings, locale } = useLocale();
   const t = strings.try.skillSheet.grammar;
   const closeLabel = strings.try.skillSheet.close;
   const answers = useGrammarAnswersStore((s) => s.answers);
   const progress = useSkillStore((s) => s.progress.grammar ?? 0);
   const openChip = useChipStore((s) => s.openChip);
-  const router = useRouter();
-  const pathname = usePathname() ?? "/try";
-
   const focusRef = React.useRef<HTMLDivElement | null>(null);
 
   const stats = React.useMemo(() => computeTopicStats(answers), [answers]);
-  const orderedForList = React.useMemo(
-    () => orderTopicsForList(stats),
-    [stats],
-  );
+  const counts = React.useMemo(() => countByTier(stats), [stats]);
   const defaultFocus = React.useMemo(() => weakestTopic(stats), [stats]);
+
+  // iOS parity: tier filter defaults to Practicing (the biggest
+  // bucket, and the one the user usually came to the sheet for —
+  // "what should I keep working on?"). Falls through to whichever
+  // bucket has rows if Practicing is empty.
+  const [tierFilter, setTierFilter] = React.useState<GrammarTier>("practicing");
+  React.useEffect(() => {
+    if (!open) return;
+    if (counts.practicing > 0) setTierFilter("practicing");
+    else if (counts.needsWork > 0) setTierFilter("needsWork");
+    else if (counts.strong > 0) setTierFilter("strong");
+  }, [open, counts.practicing, counts.needsWork, counts.strong]);
+
+  const filteredStats = React.useMemo(
+    () =>
+      stats
+        .filter((s) => grammarTier(s) === tierFilter)
+        .sort((a, b) => {
+          // Within a tier: lowest accuracy first (so "needs work"
+          // and "practicing" surface the ugliest numbers up top), but
+          // Strong sorts highest-first (victory lap).
+          const dir = tierFilter === "strong" ? -1 : 1;
+          return dir * (a.accuracy - b.accuracy);
+        }),
+    [stats, tierFilter],
+  );
 
   // Selected topic for Section 2; resets to the default whenever
   // the store updates (new attempts can change who the weakest is).
@@ -95,12 +116,6 @@ export function SkillSheetGrammar({
     onOpenChange(false);
     openChip("grammar");
   };
-  const handleTryApp = () => {
-    onOpenChange(false);
-    const prefix = pathname.startsWith("/tr") ? "/tr" : "";
-    router.push(`${prefix}/#waitlist`);
-  };
-
   const handleRowClick = (topic: string) => {
     setFocusTopic(topic);
     // Smooth-scroll the Topic Focus into view so the user sees the
@@ -131,25 +146,42 @@ export function SkillSheetGrammar({
         />
       ) : (
         <>
-          {/* Section 1 — Grammar topics list */}
-          <SkillSheetSection
-            label={t.topicsLabel}
-            meta={t.topicsMeta.replace(
-              "{count}",
-              String(orderedForList.length),
+          {/* Section 1 — Topic performance (iOS parity) */}
+          <SkillSheetSection label={t.topicsLabel}>
+            <TierFilterRow
+              active={tierFilter}
+              onChange={setTierFilter}
+              counts={counts}
+              labels={{
+                strong: t.tierStrong,
+                practicing: t.tierPracticing,
+                needsWork: t.tierNeedsWork,
+              }}
+            />
+            {filteredStats.length === 0 ? (
+              <p className="mt-4 font-sans text-[13px] text-fg-muted text-center m-0">
+                {t.tierEmpty}
+              </p>
+            ) : (
+              <div className="mt-3 flex flex-col gap-2.5">
+                {filteredStats.map((s) => (
+                  <TopicCard
+                    key={s.topic}
+                    stat={s}
+                    description={describeGrammarTopic(s.topic, locale)}
+                    selected={s.topic === focusTopic}
+                    tierPillLabel={
+                      {
+                        strong: t.tierStrong,
+                        practicing: t.tierPracticing,
+                        needsWork: t.tierNeedsWork,
+                      }[grammarTier(s)]
+                    }
+                    onClick={() => handleRowClick(s.topic)}
+                  />
+                ))}
+              </div>
             )}
-          >
-            <div className="flex flex-col">
-              {orderedForList.map((s, i) => (
-                <TopicRow
-                  key={s.topic}
-                  stat={s}
-                  isLast={i === orderedForList.length - 1}
-                  selected={s.topic === focusTopic}
-                  onClick={() => handleRowClick(s.topic)}
-                />
-              ))}
-            </div>
           </SkillSheetSection>
 
           {/* Section 2 — Topic Focus */}
@@ -205,41 +237,112 @@ export function SkillSheetGrammar({
               pill={t.mockPill}
             />
           </div>
-          <button
-            type="button"
-            onClick={handleTryApp}
-            className={clsx(
-              "mt-1 h-11 rounded-xl",
-              "font-sans font-bold text-[14px] text-white",
-              "bg-accent hover:brightness-110 active:scale-[0.99]",
-              "transition-[filter,transform] duration-150",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-            )}
-          >
-            {t.teaserCta}
-          </button>
         </div>
       </SkillSheetSection>
     </SkillSheet>
   );
 }
 
-/* ---------- Section 1: Topic row -------------------------------- */
+/* ---------- Section 1: Tier filter + Topic cards ---------------- */
 
-function TopicRow({
+/**
+ * Tier filter chips — Strong / Practicing / Needs work, each with
+ * its count. iOS parity: active chip is purple (chip-grammar), the
+ * rest are neutral. Horizontally scrollable on narrow mobile so the
+ * three never wrap.
+ */
+function TierFilterRow({
+  active,
+  onChange,
+  counts,
+  labels,
+}: {
+  active: GrammarTier;
+  onChange: (tier: GrammarTier) => void;
+  counts: Record<GrammarTier, number>;
+  labels: Record<GrammarTier, string>;
+}) {
+  const order: GrammarTier[] = ["strong", "practicing", "needsWork"];
+  return (
+    <div
+      role="tablist"
+      aria-label="Topic performance tier"
+      className="flex items-center gap-2 overflow-x-auto scrollbar-none -mx-1 px-1"
+    >
+      {order.map((tier) => {
+        const isActive = tier === active;
+        return (
+          <button
+            key={tier}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onChange(tier)}
+            className={clsx(
+              "shrink-0 inline-flex items-center gap-1.5 h-8 px-3 rounded-full",
+              "font-sans font-semibold text-[13px]",
+              "transition-[background-color,color] duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+            )}
+            style={
+              isActive
+                ? {
+                    background:
+                      "color-mix(in srgb, var(--chip-grammar-color) 14%, transparent)",
+                    color: "var(--chip-grammar-color)",
+                  }
+                : {
+                    background:
+                      "color-mix(in srgb, var(--fg) 5%, transparent)",
+                    color: "var(--fg)",
+                  }
+            }
+          >
+            <span>{labels[tier]}</span>
+            <span
+              className="font-sans font-semibold text-[12px] tabular-nums"
+              style={{
+                color: isActive ? "var(--chip-grammar-color)" : "var(--fg-faint)",
+              }}
+            >
+              {counts[tier]}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * TopicCard — iOS parity. Momentum badge in a tinted circle on the
+ * left, topic name + description in the middle, CEFR level pill on
+ * the right, status pill at the bottom.
+ */
+function TopicCard({
   stat,
-  isLast,
+  description,
   selected,
+  tierPillLabel,
   onClick,
 }: {
   stat: TopicStat;
-  isLast: boolean;
+  description: string;
   selected: boolean;
+  tierPillLabel: string;
   onClick: () => void;
 }) {
-  const fill = progressFill(stat);
-  const pct = Math.round(stat.accuracy * 100);
   const m = momentum(stat);
+  const tier = grammarTier(stat);
+  // Status pill color — green for Strong, amber for Practicing,
+  // cherry for Needs work. Matches the Practice-words tier colors
+  // in the Vocab sheet so the two sheets stay visually aligned.
+  const pillColor =
+    tier === "strong"
+      ? "var(--ok)"
+      : tier === "needsWork"
+        ? "var(--accent)"
+        : "#D97706"; // amber-ish for practicing
 
   return (
     <button
@@ -247,89 +350,118 @@ function TopicRow({
       onClick={onClick}
       aria-pressed={selected}
       className={clsx(
-        "flex items-center gap-3 py-2.5 text-left w-full bg-transparent border-0 cursor-pointer",
-        "transition-colors duration-150",
-        selected
-          ? "bg-[color-mix(in_srgb,var(--chip-grammar-color)_6%,transparent)] rounded-md px-2 -mx-2"
-          : "hover:bg-[color-mix(in_srgb,var(--fg)_3%,transparent)] rounded-md px-2 -mx-2",
+        "w-full text-left rounded-2xl p-4 cursor-pointer",
+        "bg-surface-card",
+        "transition-[border-color,box-shadow] duration-150",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
       )}
-      style={
-        !isLast
-          ? {
-              borderBottom:
-                "1px solid color-mix(in srgb, var(--fg) 8%, transparent)",
-            }
-          : undefined
-      }
+      style={{
+        border: selected
+          ? "1px solid color-mix(in srgb, var(--chip-grammar-color) 40%, transparent)"
+          : "1px solid color-mix(in srgb, var(--fg) 10%, transparent)",
+        boxShadow: selected
+          ? "0 0 0 3px color-mix(in srgb, var(--chip-grammar-color) 10%, transparent)"
+          : undefined,
+      }}
     >
-      {/* Topic name */}
-      <span className="font-sans font-semibold text-[14px] text-fg min-w-0 truncate max-w-[40%]">
-        {stat.topic}
-      </span>
-      {/* Progress bar — grows into the remaining space */}
-      <div
-        className="flex-1 h-1.5 rounded-full overflow-hidden"
-        style={{
-          background:
-            "color-mix(in srgb, var(--fg) 6%, transparent)",
-        }}
-        aria-hidden
-      >
-        <div
-          className="h-full rounded-full transition-[width] duration-[400ms] ease-out"
-          style={{
-            width: `${fill * 100}%`,
-            background: "var(--chip-grammar-color)",
-          }}
-        />
+      {/* Row 1 — momentum badge + topic + CEFR */}
+      <div className="flex items-start gap-3">
+        <MomentumBadge m={m} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <h4 className="font-sans font-bold text-[16px] text-fg m-0 leading-tight">
+              {stat.topic}
+            </h4>
+            <span
+              className="shrink-0 inline-flex items-center h-6 px-2 rounded-full font-sans font-semibold text-[11px]"
+              style={{
+                background: "color-mix(in srgb, var(--fg) 5%, transparent)",
+                color: "var(--fg-muted)",
+              }}
+            >
+              {stat.latestLevel}
+            </span>
+          </div>
+          {description ? (
+            <p className="mt-1 font-sans text-[13px] text-fg-muted leading-snug m-0">
+              {description}
+            </p>
+          ) : null}
+        </div>
       </div>
-      {/* Percent */}
-      <span className="font-sans font-semibold text-[13px] text-fg min-w-[32px] text-right">
-        {pct}%
-      </span>
-      {/* Momentum arrow */}
-      <MomentumGlyph m={m} />
+
+      {/* Row 2 — status pill (colored dot + tier label) */}
+      <div className="mt-3 flex items-center gap-1.5">
+        <span
+          className="w-2 h-2 rounded-full"
+          style={{ background: pillColor }}
+          aria-hidden
+        />
+        <span
+          className="font-sans font-semibold text-[13px]"
+          style={{ color: pillColor }}
+        >
+          {tierPillLabel}
+        </span>
+      </div>
     </button>
   );
 }
 
-function MomentumGlyph({ m }: { m: Momentum }) {
-  if (m === null) {
-    return (
-      <span
-        className="font-sans text-[14px] w-4 text-center shrink-0"
-        style={{ color: "var(--fg-faint)" }}
-        aria-label="not enough data"
-      >
-        —
-      </span>
-    );
-  }
+/**
+ * MomentumBadge — circle wrapper with a diagonal arrow for up/down,
+ * a horizontal right-arrow for stable, and a muted dash when there
+ * isn't enough data yet. iOS parity, same color coding as the
+ * MomentumGlyph we had on the old row.
+ */
+function MomentumBadge({ m }: { m: Momentum }) {
   const color =
     m === "up"
       ? "var(--ok)"
       : m === "down"
         ? "var(--accent)"
         : "var(--fg-faint)";
-  const path =
-    m === "up"
-      ? "M12 5v14M5 12l7-7 7 7"
-      : m === "down"
-        ? "M12 19V5M5 12l7 7 7-7"
-        : "M5 12h14M13 6l6 6-6 6";
+  const tint = m === null ? "var(--fg)" : color;
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="w-4 h-4 shrink-0"
+    <span
+      className="shrink-0 w-8 h-8 rounded-full inline-flex items-center justify-center"
+      style={{
+        background: `color-mix(in srgb, ${tint} 12%, transparent)`,
+      }}
       aria-hidden
     >
-      <path d={path} />
-    </svg>
+      {m === null ? (
+        <span
+          className="font-sans font-bold text-[14px]"
+          style={{ color: "var(--fg-faint)" }}
+        >
+          —
+        </span>
+      ) : (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={color}
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-4 h-4"
+        >
+          <path
+            d={
+              m === "up"
+                ? // diagonal up-right
+                  "M7 17L17 7M9 7h8v8"
+                : m === "down"
+                  ? // diagonal down-right
+                    "M7 7l10 10M17 9v8H9"
+                  : // horizontal right
+                    "M5 12h14M13 6l6 6-6 6"
+            }
+          />
+        </svg>
+      )}
+    </span>
   );
 }
 

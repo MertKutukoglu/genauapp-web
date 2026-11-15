@@ -48,9 +48,41 @@ export interface TopicStat {
   recent3: boolean[];
   /** All answers BEFORE the last 3, for baseline. */
   prior: boolean[];
+  /** CEFR label of the most recent answer for this topic. */
+  latestLevel: CEFRLabel;
 }
 
 export type Momentum = "up" | "down" | "stable" | null;
+
+/**
+ * Grammar mastery tier — mirrors the iOS app's three-way split in
+ * TOPIC PERFORMANCE: Strong / Practicing / Needs work. Bucketed on
+ * accuracy with a small attempts gate so one lucky run doesn't
+ * promote a topic to Strong.
+ */
+export type GrammarTier = "strong" | "practicing" | "needsWork";
+
+export function grammarTier(stat: TopicStat): GrammarTier {
+  // Under 3 attempts: not enough signal to flag, but we still have
+  // to bucket it — Practicing is the honest middle.
+  if (stat.attempts < 3) return "practicing";
+  if (stat.accuracy >= 0.85 && stat.attempts >= 5) return "strong";
+  if (stat.accuracy < 0.6) return "needsWork";
+  return "practicing";
+}
+
+/** Count topics in each tier — for the filter chips. */
+export function countByTier(
+  stats: TopicStat[],
+): Record<GrammarTier, number> {
+  const out: Record<GrammarTier, number> = {
+    strong: 0,
+    practicing: 0,
+    needsWork: 0,
+  };
+  for (const s of stats) out[grammarTier(s)] += 1;
+  return out;
+}
 
 interface GrammarAnswersStore {
   answers: GrammarAnswer[];
@@ -101,6 +133,7 @@ export function computeTopicStats(answers: GrammarAnswer[]): TopicStat[] {
     const lastN = sorted.slice(-10).map((a) => a.correct).reverse();
     const recent3 = sorted.slice(-3).map((a) => a.correct);
     const prior = sorted.slice(0, -3).map((a) => a.correct);
+    const latestLevel = sorted[sorted.length - 1].level;
     out.push({
       topic,
       attempts,
@@ -109,6 +142,7 @@ export function computeTopicStats(answers: GrammarAnswer[]): TopicStat[] {
       lastN,
       recent3,
       prior,
+      latestLevel,
     });
   }
   return out;
