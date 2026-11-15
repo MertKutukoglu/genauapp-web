@@ -88,13 +88,16 @@
   /* Light-mode page bg: neutral #FAFAFA. Picked over the old
      warm-50 cream so cards (opaque white) read as clearly white
      across every surface. Brand warmth still lives in --fg,
-     --surface-sunk and the chip accents, just not on the page. */
+     --surface-sunk and the chip accents, just not on the page.
+     --surface-sunk is a neutral gray (one notch darker than --bg)
+     so sunk tiles read as "recessed" against white cards without
+     the cream tint we had with warm-100. */
   --bg:               #FAFAFA;
   --fg:               var(--color-warm-900);
   --fg-muted:         var(--color-warm-600);
   --fg-faint:         var(--color-warm-500);
   --surface-card:     #FFFFFF;
-  --surface-sunk:     var(--color-warm-100);
+  --surface-sunk:     #F0F0F0;
   --accent:           var(--color-rose-500);
   --accent-ink:       var(--color-rose-600);
   --border:           var(--color-warm-200);
@@ -221,8 +224,8 @@ body {
   to   { transform: translateY(0);    opacity: 1; }
 }
 @keyframes sheet-drop-in {
-  from { transform: translate(-50%, calc(-50% + 16px)); opacity: 0; }
-  to   { transform: translate(-50%, -50%);              opacity: 1; }
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 /*

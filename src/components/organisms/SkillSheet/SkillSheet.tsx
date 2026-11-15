@@ -114,11 +114,13 @@ export function SkillSheet({
             "flex flex-col overflow-hidden",
             "bg-surface-card",
             "shadow-[0_-12px_32px_-12px_rgba(0,0,0,0.25)]",
-            // Desktop — centered modal
-            "md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2",
-            "md:-translate-x-1/2 md:-translate-y-1/2",
+            // Desktop — centered modal via inset:0 + margin:auto.
+            // Avoids the translate(-50%,-50%) centering trick so it
+            // doesn't fight the animation's own transform (that was
+            // the top-left flash on first open).
+            "md:inset-0 md:m-auto",
             "md:w-full md:max-w-[640px]",
-            "md:h-auto md:max-h-[85vh]",
+            "md:h-fit md:max-h-[85vh]",
             "md:rounded-[24px]",
             "md:shadow-[0_24px_64px_-16px_rgba(0,0,0,0.3)]",
             // Animations — mobile slides up from the bottom edge,

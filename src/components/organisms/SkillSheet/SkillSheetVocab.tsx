@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
-import { useRouter, usePathname } from "next/navigation";
 import {
   useWordAnswersStore,
   computeWordStats,
@@ -68,8 +67,6 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
   const answers = useWordAnswersStore((s) => s.answers);
   const progress = useSkillStore((s) => s.progress.vocab ?? 0);
   const openChip = useChipStore((s) => s.openChip);
-  const router = useRouter();
-  const pathname = usePathname() ?? "/try";
 
   const articleSectionRef = React.useRef<HTMLDivElement | null>(null);
   const teaserSectionRef = React.useRef<HTMLDivElement | null>(null);
@@ -105,15 +102,6 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
   const handleStartWords = () => {
     onOpenChange(false);
     openChip("words");
-  };
-
-  const handleTryApp = () => {
-    onOpenChange(false);
-    // The /try/ demo lives alongside the landing page; scroll the
-    // waitlist section into view on the root. Works from /tr/try
-    // too by detecting the locale from pathname.
-    const prefix = pathname.startsWith("/tr") ? "/tr" : "";
-    router.push(`${prefix}/#waitlist`);
   };
 
   const isEmpty = answers.length === 0;
@@ -207,22 +195,16 @@ export function SkillSheetVocab({ open, onOpenChange }: SkillSheetVocabProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <MockWeakWords label={t.mockWeakTitle} pill={t.mockPill} />
               <MockBookmarks label={t.mockBookmarksTitle} pill={t.mockPill} />
-              <MockRecentHistory label={t.mockHistoryTitle} pill={t.mockPill} />
+              <MockPracticeWords
+                label={t.mockPracticeTitle}
+                pill={t.mockPill}
+                weakLabel={t.mockPracticeWeak}
+                averageLabel={t.mockPracticeAverage}
+                strongLabel={t.mockPracticeStrong}
+                byTier={byTier}
+              />
               <MockPackMastery label={t.mockPacksTitle} pill={t.mockPill} />
             </div>
-            <button
-              type="button"
-              onClick={handleTryApp}
-              className={clsx(
-                "mt-1 h-11 rounded-xl",
-                "font-sans font-bold text-[14px] text-white",
-                "bg-accent hover:brightness-110 active:scale-[0.99]",
-                "transition-[filter,transform] duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-              )}
-            >
-              {t.teaserCta}
-            </button>
           </div>
         </SkillSheetSection>
       </div>
@@ -496,17 +478,39 @@ function MockBookmarks({ label, pill }: { label: string; pill: string }) {
   );
 }
 
-function MockRecentHistory({
+/**
+ * MockPracticeWords — teaser for the "Practice words" mix. The app's
+ * Practice workout seeds a session with the words the user is
+ * currently struggling with, rounded out with a few average and
+ * strong ones. We show that composition rather than a duration,
+ * so the pitch isn't "5 minutes" (every language app says that) —
+ * it's "built from your weak ones first", which is the actual
+ * differentiator. Numbers come from live stats when available,
+ * fall back to a 10 / 5 / 5 teaser when the log is empty.
+ */
+function MockPracticeWords({
   label,
   pill,
+  weakLabel,
+  averageLabel,
+  strongLabel,
+  byTier,
 }: {
   label: string;
   pill: string;
+  weakLabel: string;
+  averageLabel: string;
+  strongLabel: string;
+  byTier: Record<MasteryTier, number>;
 }) {
-  const rows: Array<[string, string]> = [
-    ["5 min", "20 Words"],
-    ["3 min", "12 Grammar"],
-    ["7 min", "1 Story"],
+  const hasData = byTier.weak + byTier.average + byTier.strong > 0;
+  const weak = hasData ? Math.min(byTier.weak, 10) : 10;
+  const average = hasData ? Math.min(byTier.average, 10) : 5;
+  const strong = hasData ? Math.min(byTier.strong, 10) : 5;
+  const rows: Array<[number, string, string]> = [
+    [weak, weakLabel, "var(--accent)"],
+    [average, averageLabel, "var(--amber-500, #D97706)"],
+    [strong, strongLabel, "var(--ok)"],
   ];
   return (
     <MockCardFrame
@@ -523,19 +527,25 @@ function MockRecentHistory({
           className="w-3.5 h-3.5"
           aria-hidden
         >
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 2" />
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
         </svg>
       }
     >
-      {rows.map(([time, what]) => (
+      {rows.map(([count, name, color]) => (
         <div
-          key={what}
-          className="flex items-center justify-between gap-2 text-[13px]"
+          key={name}
+          className="flex items-center gap-2 text-[13px]"
         >
-          <span className="font-sans font-semibold text-fg">{time}</span>
+          <span
+            className="w-2 h-2 rounded-full shrink-0"
+            style={{ background: color }}
+            aria-hidden
+          />
+          <span className="font-sans font-semibold text-fg tabular-nums min-w-[18px]">
+            {count}
+          </span>
           <span className="font-sans font-normal text-fg-muted truncate">
-            {what}
+            {name}
           </span>
         </div>
       ))}
