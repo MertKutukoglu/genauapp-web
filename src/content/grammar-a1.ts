@@ -390,6 +390,11 @@ export interface GrammarLearnBlock {
    *  honoured by `activePassiveComparison` when present — leave
    *  unset there so the card falls back to "Aktiv" / "Passiv". */
   labels?: [string, string];
+  /** B2 `connectorCarousel`: hide the Nebensatz formula strip when
+   *  the family being taught isn't about Konnektor word order
+   *  (wo-/da-Wörter, Modalverben Vermutung). Defaults to true so
+   *  the B1 Konnektoren anchor keeps its formula strip unchanged. */
+  showFormula?: boolean;
   /** B1 `relativePronounGrid`: 4 gender rows × 3 case columns. */
   rows?: RelativePronounRow[];
   /** B1 `relativePronounGrid`: 2 inline-coloured example sentences

@@ -431,6 +431,7 @@ function LearnCardSwitch({
           note={learn.note}
           connectors={learn.connectors}
           sample={learn.sample}
+          showFormula={learn.showFormula}
           current={current}
           total={total}
           onRepeat={onRepeat}

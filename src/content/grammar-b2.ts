@@ -251,46 +251,54 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── 3 ─ Anchor: Konjunktiv II Vergangenheit (connectorCards, 4 verbs) ──
-  // Doc specifies `verbCards`, but that organism was rewritten at B1
-  // to render a prefix carousel only. The side-by-side 4-cards-with-
-  // examples visual is what `connectorCards` does, and the
-  // ConnectorCard { word, example, english, highlight } shape maps
-  // 1:1 onto the data the doc provides for this anchor (infinitive →
-  // word). Same pedagogical outcome, no renderer change needed.
+  // ── 3 ─ Anchor: Konjunktiv II Vergangenheit (chevron carousel) ──
+  // Was side-by-side `connectorCards` — too much on one card. Same
+  // feedback Mert gave for anchors 4 and 6: four items at once
+  // overwhelms, chevron through them one at a time instead.
+  // showFormula is false because this isn't a Konnektor family,
+  // so the Nebensatz formula strip would mislead.
   {
     topic: "Konjunktiv II Vergangenheit",
     exerciseType: "fillBlank",
     learn: {
-      layout: "connectorCards",
+      layout: "connectorCarousel",
       headline: "Konjunktiv II Vergangenheit",
       english: "Past hypotheticals: hätte / wäre + Partizip II",
       note:
         "Pick **hätte** or **wäre** exactly like haben/sein in the Perfekt: movement and change of state take **wäre** (gekommen, gefahren, aufgestanden), almost everything else takes **hätte**. With a modal you get a double infinitive: Du **hättest** das sagen **sollen**.",
+      showFormula: false,
       connectors: [
         {
           word: "hätte ... gewusst",
           english: "would have known",
           example: "Hätte ich das gewusst, ...",
           highlight: "Hätte",
+          rule:
+            "**haben + Partizip II**. Mental verbs (wissen, denken, glauben) take **haben** → ich hätte gewusst. Drop wenn and the verb jumps to position 1: **Hätte** ich das gewusst, ...",
         },
         {
           word: "hätte ... geholfen",
           english: "would have helped",
           example: "Ich hätte dir gern geholfen.",
           highlight: "hätte",
+          rule:
+            "**haben + Partizip II**. Transitive verbs with an object (dir, mir) take **haben**. Classic polite regret: Ich hätte dir gern geholfen, aber ...",
         },
         {
           word: "wäre ... gekommen",
           english: "would have come",
           example: "Ich wäre gern gekommen.",
           highlight: "wäre",
+          rule:
+            "**sein + Partizip II**. Movement (kommen, gehen, fahren) takes **sein** → ich wäre gekommen. The 'I would have joined you' line at the party you missed.",
         },
         {
           word: "wäre ... geblieben",
           english: "would have stayed",
           example: "Wir wären länger geblieben.",
           highlight: "wären",
+          rule:
+            "**sein + Partizip II**. Staying in place and change of state (bleiben, werden, aufstehen) take **sein** → wir wären geblieben. Also: wir wären länger geblieben.",
         },
       ],
       sample: {
@@ -314,44 +322,77 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         note:
           "**hätte** mi **wäre** mi, tam olarak Perfekt'teki haben/sein gibi seçilir: hareket ve durum değişikliği **wäre** alır (gekommen, gefahren, aufgestanden), neredeyse geri kalan her şey **hätte** alır. Modal fiille çift mastar oluşur: Du **hättest** das sagen **sollen**.",
         sample: { en: "Bunu bilseydim gelirdim." },
+        connectors: [
+          {
+            english: "bilirdim",
+            rule:
+              "**haben + Partizip II**. Zihinsel fiiller (wissen, denken, glauben) **haben** alır → ich hätte gewusst. wenn düşerse fiil 1. pozisyona atlar: **Hätte** ich das gewusst, ...",
+          },
+          {
+            english: "yardım ederdim",
+            rule:
+              "**haben + Partizip II**. Nesne alan geçişli fiiller (dir, mir) **haben** alır. Klasik kibar pişmanlık: Ich hätte dir gern geholfen, aber ...",
+          },
+          {
+            english: "gelirdim",
+            rule:
+              "**sein + Partizip II**. Hareket (kommen, gehen, fahren) **sein** alır → ich wäre gekommen. Kaçırdığın partideki 'gelmek isterdim'.",
+          },
+          {
+            english: "kalırdım",
+            rule:
+              "**sein + Partizip II**. Yerinde kalma ve durum değişikliği (bleiben, werden, aufstehen) **sein** alır → wir wären geblieben. Ayrıca: wir wären länger geblieben.",
+          },
+        ],
       },
     },
   },
 
-  // ── 4 ─ Anchor: wo- und da-Wörter (connectorCards, 4 pairs) ──
+  // ── 4 ─ Anchor: wo- und da-Wörter (chevron carousel) ──
+  // One pair per card, chevron through all four. Four side-by-side
+  // cards was too much on a single page.
   {
     topic: "wo- und da-Wörter",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "connectorCards",
+      layout: "connectorCarousel",
       headline: "wo- und da-Wörter",
       english: "Prepositional pronouns: da(r)- refers back, wo(r)- asks",
       note:
         "**da(r)- + Präposition** replaces a thing or idea that's already known; **wo(r)- + Präposition** asks about it. An **r** is added when the preposition starts with a vowel: dar**auf**, wor**an**. Only for **things**: for **people** use preposition + pronoun. Ich warte **auf ihn**. **Auf wen** wartest du?",
+      showFormula: false,
       connectors: [
         {
           word: "davon / wovon",
           english: "von + thing",
           example: "Das hängt davon ab. Wovon?",
           highlight: "davon",
+          rule:
+            "**von + thing** → **davon**. Classic use: **abhängen von** → Das hängt davon ab (that depends on it). Ask with **Wovon**?",
         },
         {
           word: "darauf / worauf",
           english: "auf + thing",
           example: "Ich freue mich darauf. Worauf?",
           highlight: "darauf",
+          rule:
+            "**auf + thing** → **darauf**. The **r** is inserted because auf starts with a vowel. **sich freuen auf** → freue mich darauf (looking forward to it).",
         },
         {
           word: "damit / womit",
           english: "mit + thing",
           example: "Ich bin damit zufrieden. Womit?",
           highlight: "damit",
+          rule:
+            "**mit + thing** → **damit**. zufrieden **mit**, einverstanden **mit** — anything 'with' an idea or thing. **Womit** asks.",
         },
         {
           word: "dafür / wofür",
           english: "für + thing",
           example: "Ich interessiere mich dafür. Wofür?",
           highlight: "dafür",
+          rule:
+            "**für + thing** → **dafür**. **sich interessieren für**, **sich entscheiden für**. **Wofür** interessierst du dich?",
         },
       ],
       sample: {
@@ -376,6 +417,28 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         note:
           "**da(r)- + edat** zaten bilinen bir şeyin ya da fikrin yerini tutar; **wo(r)- + edat** onu sorar. Edat ünlüyle başlıyorsa araya **r** girer: dar**auf**, wor**an**. Sadece **şeyler** için: **insanlar** için edat + zamir kullanılır. Ich warte **auf ihn**. **Auf wen** wartest du?",
         sample: { en: "Havaya mı bağlı? Evet, ona bağlı." },
+        connectors: [
+          {
+            english: "von + şey",
+            rule:
+              "**von + şey** → **davon**. Klasik kullanım: **abhängen von** → Das hängt davon ab (ona bağlı). Soru: **Wovon**?",
+          },
+          {
+            english: "auf + şey",
+            rule:
+              "**auf + şey** → **darauf**. Araya **r** girer çünkü auf ünlüyle başlar. **sich freuen auf** → freue mich darauf (sabırsızlanıyorum).",
+          },
+          {
+            english: "mit + şey",
+            rule:
+              "**mit + şey** → **damit**. zufrieden **mit**, einverstanden **mit** — bir fikir ya da şeyle ilgili her şey. Soru: **Womit**?",
+          },
+          {
+            english: "für + şey",
+            rule:
+              "**für + şey** → **dafür**. **sich interessieren für**, **sich entscheiden für**. **Wofür** interessierst du dich?",
+          },
+        ],
       },
     },
   },
@@ -422,43 +485,50 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
     },
   },
 
-  // ── 6 ─ Anchor: Modalverben Vermutung (connectorCards, 4 modals) ──
-  // Same layout swap as anchor 3 for the same reason — doc says
-  // verbCards, but we render the side-by-side cards via
-  // connectorCards (the ConnectorCard shape maps 1:1).
+  // ── 6 ─ Anchor: Modalverben Vermutung (chevron carousel) ──
+  // One modal per card, chevron through the certainty scale.
   {
     topic: "Modalverben: Vermutung",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "connectorCards",
+      layout: "connectorCarousel",
       headline: "Modalverben: Vermutung",
       english: "Modal verbs for guesses and hearsay",
       note:
         "Modal verbs can also show **how sure** you are. From sure to unsure: **muss** → **dürfte** → **kann / könnte**. **soll** = I heard it, people say so. **will** = he claims it himself: Er **will** Arzt sein. In this use the modal is followed by **sein** or another infinitive at the end.",
+      showFormula: false,
       connectors: [
         {
           word: "müssen",
           english: "must be (I'm almost sure)",
           example: "Sie muss krank sein.",
           highlight: "muss",
+          rule:
+            "Strongest certainty: **almost sure**. Use when the evidence is clear. Das Licht ist an, ihr Auto steht vor der Tür → sie **muss** zu Hause sein.",
         },
         {
           word: "dürfte",
           english: "is probably",
           example: "Er dürfte zu Hause sein.",
           highlight: "dürfte",
+          rule:
+            "Educated guess: **probably**. Softer than muss, more confident than kann. Es ist 7 Uhr → er **dürfte** schon zu Hause sein.",
         },
         {
           word: "können",
           english: "could be (possible)",
           example: "Das kann stimmen.",
           highlight: "kann",
+          rule:
+            "Open possibility: **might**. The weakest guess on the scale — leaves room for it being false. Das **kann** stimmen, es **könnte** aber auch falsch sein.",
         },
         {
           word: "sollen",
           english: "is said to be (hearsay)",
           example: "Er soll sehr reich sein.",
           highlight: "soll",
+          rule:
+            "Hearsay: **I heard**, like Turkish **-mış**. Marks something as reported, not claimed by you. Er **soll** reich sein = people say he's rich (I'm not vouching).",
         },
       ],
       sample: {
@@ -483,6 +553,28 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         note:
           "Modal fiiller ne kadar **emin** olduğunu da gösterebilir. Eminden emin olmayana: **muss** → **dürfte** → **kann / könnte**. **soll** = duydum, öyle diyorlar, Türkçedeki '-mış' gibi. **will** = kendisi öyle iddia ediyor: Er **will** Arzt sein. Bu kullanımda modal fiilden sonra sonda **sein** ya da başka bir mastar gelir.",
         sample: { en: "Çok zenginmiş." },
+        connectors: [
+          {
+            english: "...-malı (neredeyse eminim)",
+            rule:
+              "En güçlü kesinlik: **neredeyse eminim**. Kanıt netken kullan. Işık açık, arabası kapıda → **muss** zu Hause sein.",
+          },
+          {
+            english: "muhtemelen",
+            rule:
+              "Mantıklı tahmin: **muhtemelen**. muss'tan yumuşak, kann'dan daha emin. Es ist 7 Uhr → er **dürfte** schon zu Hause sein.",
+          },
+          {
+            english: "olabilir",
+            rule:
+              "Açık ihtimal: **olabilir**. Ölçekteki en zayıf tahmin — yanlış olma ihtimalini de bırakır. Das **kann** stimmen, aber es **könnte** auch falsch sein.",
+          },
+          {
+            english: "...-mış (duyum)",
+            rule:
+              "Duyum: **duydum**, Türkçedeki **-mış** gibi. Bir şeyi kendi iddian değil, aktarım olarak işaretler. Er **soll** reich sein = zenginmiş diyorlar (ben garanti vermiyorum).",
+          },
+        ],
       },
     },
   },

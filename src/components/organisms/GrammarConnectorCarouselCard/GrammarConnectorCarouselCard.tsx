@@ -48,6 +48,13 @@ export interface GrammarConnectorCarouselCardProps {
   sample: { de: string; en: string; highlight: string };
   current: number;
   total: number;
+  /** Show the Nebensatz formula strip ("Hauptsatz, Konnektor Subjekt
+   *  ... Verb am Ende") under the example. True by default, because
+   *  B1 Konnektoren's whole point is that repeated strip. Set to
+   *  false when the carousel is teaching a non-connector family
+   *  (wo-/da-Wörter, Modalverben Vermutung) where the Konnektor
+   *  word order isn't the lesson and the strip would mislead. */
+  showFormula?: boolean;
   onRepeat?: () => void;
   onIKnow?: () => void;
   className?: string;
@@ -175,6 +182,7 @@ export function GrammarConnectorCarouselCard({
   sample,
   current,
   total,
+  showFormula = true,
   onRepeat,
   onIKnow,
   className,
@@ -315,8 +323,10 @@ export function GrammarConnectorCarouselCard({
           "here's what you just saw, abstracted". Same shape for
           every connector; THAT is the lesson. Role colours lifted
           from the Sentence chip so the two chips speak one
-          dialect for Nebensatz word-order. */}
-      <FormulaStrip parts={formulaParts} />
+          dialect for Nebensatz word-order. Hidden when the carousel
+          isn't teaching a Konnektor family (wo-/da-Wörter and
+          Modalverben Vermutung at B2) — the strip would mislead. */}
+      {showFormula ? <FormulaStrip parts={formulaParts} /> : null}
 
       {/* Per-connector rule beats the shared note, same policy as
           the Konjunktiv II card. Falls back to the anchor note
