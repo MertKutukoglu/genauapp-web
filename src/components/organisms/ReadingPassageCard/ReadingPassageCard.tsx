@@ -107,19 +107,6 @@ export function ReadingPassageCard({
           lang='de-DE' inside SpeakerButton). */}
       <CardToolbar speakText={passage} />
 
-      {/* Sticky highlight chip: lives at the top of the card body so
-          mobile users can keep the translation visible while they
-          scroll the passage. Height collapses to 0 when nothing's
-          active, so no layout jump. */}
-      {active ? (
-        <div className="-mt-1">
-          <HighlightChip
-            highlight={active}
-            onClose={() => setActive(null)}
-          />
-        </div>
-      ) : null}
-
       {/* Header — title + subtitle, centered. */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
         <div className="font-sans font-bold text-[24px] text-fg leading-tight">
@@ -162,20 +149,46 @@ export function ReadingPassageCard({
         ))}
       </div>
 
-      {/* CTA — cherry primary, bottom-pinned via the `flex-1` on the
-          passage block above. */}
-      <button
-        type="button"
-        onClick={onStartExercise}
+      {/* Bottom-pinned stack: the optional HighlightChip sits
+          immediately above the CTA, and the whole stack is
+          sticky-to-viewport-bottom so a learner scrolling through
+          a long passage (B1 / B2) always has the translation of
+          whichever word they just tapped within reach, not
+          buried at the top. A subtle bg-blur strip underneath
+          keeps text from showing through the chip. When nothing's
+          active, only the CTA stickies. */}
+      <div
         className={clsx(
-          "h-[52px] rounded-2xl w-full",
-          "font-sans font-bold text-base text-white",
-          "transition-colors cursor-pointer hover:brightness-105",
+          "sticky bottom-0 -mx-5 -mb-5 px-5 pt-3 pb-5 z-10",
+          "flex flex-col gap-3",
+          // Fade the card surface in behind so the sticky stack
+          // reads as its own layer over the scrolling passage.
+          "backdrop-blur-sm",
         )}
-        style={{ background: "var(--accent)" }}
+        style={{
+          background:
+            "linear-gradient(to top, var(--surface-card) 70%, color-mix(in srgb, var(--surface-card) 0%, transparent))",
+        }}
       >
-        {ctaLabel}
-      </button>
+        {active ? (
+          <HighlightChip
+            highlight={active}
+            onClose={() => setActive(null)}
+          />
+        ) : null}
+        <button
+          type="button"
+          onClick={onStartExercise}
+          className={clsx(
+            "h-[52px] rounded-2xl w-full",
+            "font-sans font-bold text-base text-white",
+            "transition-colors cursor-pointer hover:brightness-105",
+          )}
+          style={{ background: "var(--accent)" }}
+        >
+          {ctaLabel}
+        </button>
+      </div>
     </div>
   );
 }
