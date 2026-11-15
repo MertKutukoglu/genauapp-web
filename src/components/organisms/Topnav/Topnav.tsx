@@ -5,18 +5,24 @@ import { IOSBetaPill } from "@/components/atoms/IOSBetaPill/IOSBetaPill";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle/ThemeToggle";
 import { NavOriginsLink } from "@/components/atoms/NavOriginsLink/NavOriginsLink";
 import { LanguagePicker } from "@/components/atoms/LanguagePicker/LanguagePicker";
+import { TryItButton } from "@/components/atoms/TryItButton/TryItButton";
+import { NavMenuSheet } from "@/components/organisms/NavMenuSheet/NavMenuSheet";
 
 /**
  * Topnav, site header shared by landing and /try.
  *
  * Desktop (≥ 641px): Wordmark on the left; a RIGHT CLUSTER holding
- * NavOriginsLink + IOSBetaPill + ThemeToggle together in a 10px flex
- * row. They read as one group pulled to the right, not as three items
- * sprayed across the nav by space-between.
+ * NavOriginsLink + IOSBetaPill + TryItButton + LanguagePicker +
+ * ThemeToggle in a 10px flex row. TryItButton sits between the info
+ * items and the utility controls so it reads as the primary action
+ * without being isolated at either edge, matching the standard SaaS
+ * right-cluster pattern.
  *
- * Mobile (≤ 640px): compact "glass pill" surface, accent-tinted
- * gradient, backdrop blur, rounded-full. Wordmark + rotator pill +
- * theme toggle in a tight row.
+ * Mobile (≤ 640px): compact "glass pill" surface. Only three items
+ * fit: Wordmark on the left, compact TryItButton as the primary CTA,
+ * and a hamburger NavMenuSheet trigger on the right. The utility
+ * items (Origins, iOS Beta, LanguagePicker, ThemeToggle) move into a
+ * bottom-sheet menu so the primary CTA stays prominent.
  */
 
 export interface TopnavProps {
@@ -44,14 +50,26 @@ export function Topnav({ className }: TopnavProps) {
     >
       <Wordmark variant="topnav" />
 
-      {/* Right cluster, one flex group, right-aligned, tight gap.
-          LanguagePicker sits just before ThemeToggle so the two
-          user-preference controls read as a pair. */}
-      <div className="flex items-center gap-2.5 max-md:ml-auto">
+      {/* Desktop right cluster. Hidden on mobile (`max-md:hidden`)
+          so the mobile pill can run its own compact layout below.
+          Order: info items → primary CTA → user prefs. TryItButton
+          sits between IOSBetaPill and LanguagePicker so it's the
+          visual anchor of the cluster without floating at an edge. */}
+      <div className="hidden md:flex items-center gap-2.5">
         <NavOriginsLink />
         <IOSBetaPill />
+        <TryItButton />
         <LanguagePicker />
         <ThemeToggle />
+      </div>
+
+      {/* Mobile cluster, only shown on narrow viewports. Three items:
+          Try it CTA (compact), then the hamburger menu which opens a
+          bottom sheet with the hidden utility items. ml-auto pulls
+          the cluster to the right of the Wordmark. */}
+      <div className="flex items-center gap-2 ml-auto md:hidden">
+        <TryItButton size="compact" />
+        <NavMenuSheet />
       </div>
     </nav>
   );
