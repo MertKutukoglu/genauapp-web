@@ -29,24 +29,29 @@ import type {
  *   → sample sentence + Repeat/I know, bottom-pinned.
  */
 
-/** Which cells the renderer tints purple as "watch this form"
- *  cues. Masculine Akk (`den`) is already covered by the A2
- *  Akkusativ anchor; here we lean into the Dativ surprises. */
-function shouldHighlight(
-  row: RelativePronounRow,
-  col: "nom" | "akk" | "dat",
-): boolean {
-  if (col !== "dat") return false;
-  // Every Dativ pronoun is pedagogically new at B1, so tint them
-  // all — the plural `denen` is the one that most reliably trips
-  // learners, but masc/neut `dem` and fem `der` also need the
-  // signal.
-  return (
-    row.gender === "masc" ||
-    row.gender === "fem" ||
-    row.gender === "neut" ||
-    row.gender === "plural"
-  );
+/** Per-cell colour: Dativ column → green, Akkusativ column → red,
+ *  Nominativ column → default foreground (no tint). Grammar-purple
+ *  is deliberately NOT the catch-all here — case colours carry the
+ *  pedagogical signal, matching the Dat-/Akk-Präp anchor convention
+ *  (Dativ → --article-das, Akkusativ → --article-die). The learner
+ *  reads a Dativ row and an Akk row as different cases by colour,
+ *  not by column header alone. */
+function cellColor(col: "nom" | "akk" | "dat"): string | undefined {
+  if (col === "dat") return "var(--article-das)";
+  if (col === "akk") return "var(--article-die)";
+  return undefined;
+}
+
+/** Map a RelativePronounExample.caseKey to its CSS colour var.
+ *  nom → undefined (default); akk → red; dat → green. Lets the
+ *  inline example sentences render their highlighted pronoun in
+ *  the case's own colour, matching the grid above. */
+function exampleColor(
+  caseKey: "nom" | "akk" | "dat" | undefined,
+): string | undefined {
+  if (caseKey === "dat") return "var(--article-das)";
+  if (caseKey === "akk") return "var(--article-die)";
+  return undefined;
 }
 
 export interface GrammarRelativePronounCardProps {
@@ -69,7 +74,11 @@ export interface GrammarRelativePronounCardProps {
  * `highlight` in the text with a purple strong span. Keeps the
  * example sentences inline (no ReactNode arrays in content).
  */
-function renderHighlighted(text: string, highlight: string): React.ReactNode {
+function renderHighlighted(
+  text: string,
+  highlight: string,
+  color?: string,
+): React.ReactNode {
   const idx = text.indexOf(highlight);
   if (idx < 0) return text;
   const before = text.slice(0, idx);
@@ -79,7 +88,7 @@ function renderHighlighted(text: string, highlight: string): React.ReactNode {
       {before}
       <strong
         className="font-bold"
-        style={{ color: "var(--chip-grammar-color)" }}
+        style={{ color: color ?? "var(--chip-grammar-color)" }}
       >
         {highlight}
       </strong>
@@ -151,16 +160,12 @@ export function GrammarRelativePronounCard({
                 {row.label}
               </div>
               {(["nom", "akk", "dat"] as const).map((col) => {
-                const tinted = shouldHighlight(row, col);
+                const color = cellColor(col);
                 return (
                   <div
                     key={col}
                     className="font-sans font-semibold text-[17px] leading-tight"
-                    style={{
-                      color: tinted
-                        ? "var(--chip-grammar-color)"
-                        : "var(--fg)",
-                    }}
+                    style={{ color: color ?? "var(--fg)" }}
                   >
                     {row.forms[col]}
                   </div>
@@ -179,7 +184,7 @@ export function GrammarRelativePronounCard({
           {examples.map((ex, i) => (
             <div key={i} className="flex flex-col gap-0.5 text-center">
               <div className="font-sans font-semibold text-[16px] text-fg leading-snug">
-                {renderHighlighted(ex.de, ex.highlight)}
+                {renderHighlighted(ex.de, ex.highlight, exampleColor(ex.caseKey))}
               </div>
               <div className="font-sans font-normal text-[12px] text-fg-faint leading-snug">
                 {ex.role} · {ex.en}

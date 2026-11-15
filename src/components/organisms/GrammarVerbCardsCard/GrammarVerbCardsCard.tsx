@@ -261,6 +261,7 @@ export function GrammarVerbCardsCard({
         sentence={active.sample.de}
         highlight={active.sample.highlight}
         translation={active.sample.en}
+        highlightColor={tint}
       />
 
       <LearnActions

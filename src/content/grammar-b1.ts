@@ -1,12 +1,13 @@
 /**
- * Grammar — B1 deck (36 items).
+ * Grammar — B1 deck (40 items).
  *
  * Deck composition:
- *   1-9   Anchors (with `learn`): Konjunktiv II, Vorgangspassiv,
+ *   1-10  Anchors (with `learn`): Konjunktiv II, Vorgangspassiv,
  *         Komparativ/Superlativ, Relativsätze, Dativ-Präpositionen,
  *         Akkusativ-Präpositionen, Wechselpräpositionen,
- *         Positions-/Direktionsverben, Konnektoren.
- *   10-36 27 topic-grouped drills (3 per anchor).
+ *         Positionsverben (Wo?), Direktionsverben (Wohin?),
+ *         Konnektoren.
+ *   11-40 30 topic-grouped drills (3 per anchor).
  *
  * Mix: 14 multipleChoice + 10 fillBlank (close to A1/A2 ratio).
  *
@@ -102,7 +103,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             highlight: "würde",
           },
           rule:
-            "**würde + Infinitiv** is the all-purpose Konjunktiv II: pair it with any main verb and you've got the hypothetical. Ich würde reisen, du würdest kochen, wir würden bleiben.",
+            "**würde + Infinitiv** is the all-purpose Konjunktiv II: pair it with any main verb and you've got the hypothetical.",
         },
         {
           verb: "haben → hätte",
@@ -163,7 +164,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             english: "-rdim (herhangi bir fiille)",
             sample: { en: "Daha fazla zamanım olsun isterim." },
             rule:
-              "**würde + mastar** her amaca uyan Konjunktiv II: herhangi bir ana fiille birleştir, hipotetik hazır. Ich würde reisen, du würdest kochen, wir würden bleiben.",
+              "**würde + mastar** her amaca uyan Konjunktiv II: herhangi bir ana fiille birleştir, hipotetik hazır.",
           },
           {
             english: "sahip olurdum / ... isterim",
@@ -333,12 +334,14 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           en: "That's the man who helped me.",
           highlight: "der",
           role: "Nominativ (he is the subject of 'helped')",
+          caseKey: "nom",
         },
         {
           de: "Das ist das Buch, das ich gelesen habe.",
           en: "That's the book I read.",
           highlight: "das",
           role: "Akkusativ (I read it)",
+          caseKey: "akk",
         },
       ],
       sample: {
@@ -754,6 +757,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "I'm going into the kitchen.",
             highlight: "die",
           },
+          case: "akkusativ",
         },
         {
           word: "an",
@@ -766,6 +770,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The picture hangs on the wall.",
             highlight: "der",
           },
+          case: "dativ",
         },
         {
           word: "auf",
@@ -777,6 +782,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The book is lying on the table.",
             highlight: "dem",
           },
+          case: "dativ",
         },
         {
           word: "über",
@@ -788,6 +794,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The plane is flying over the city.",
             highlight: "die",
           },
+          case: "akkusativ",
         },
         {
           word: "unter",
@@ -799,6 +806,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The cat sleeps under the bed.",
             highlight: "dem",
           },
+          case: "dativ",
         },
         {
           word: "vor",
@@ -810,6 +818,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "He parks the car in front of the house.",
             highlight: "das",
           },
+          case: "akkusativ",
         },
         {
           word: "hinter",
@@ -821,6 +830,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The garden is behind the house.",
             highlight: "dem",
           },
+          case: "dativ",
         },
         {
           word: "neben",
@@ -832,6 +842,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The sofa stands next to the window.",
             highlight: "dem",
           },
+          case: "dativ",
         },
         {
           word: "zwischen",
@@ -844,6 +855,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             en: "The vase stands between the books.",
             highlight: "den",
           },
+          case: "dativ",
         },
       ],
       sample: {
@@ -922,44 +934,208 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 8 ─ Anchor: Positions-/Direktionsverben (styleComparison, 4) ─
+  // ── 8 ─ Anchor: Positionsverben (Wo? → Dativ, green carousel, 4) ─
   //
-  // The natural companion to Wechselpräp: four verb pairs where
-  // the LEFT verb answers Wo? (state / Dativ) and the RIGHT verb
-  // answers Wohin? (direction / Akk + takes an object). Rendered
-  // via styleComparison — stacked left/right pairs so the learner
-  // sees the case flip in context (auf dem Tisch → auf den Tisch).
-  // The irregular / regular split + Akk-object rule lives in the
-  // `note`; per-pair sentences keep the pattern visible without
-  // restating theory. Labels: "Wo? · Dativ" / "Wohin? · Akk".
+  // Split from the earlier single Pos/Dir anchor — the "mor =
+  // grammar" convention was swallowing the case signal. One anchor
+  // per case now: this one teaches the Wo? → Dativ family
+  // (stehen, sitzen, liegen, hängen), all irregular, intransitive,
+  // no object. Chevron carousel, 4 variants, each with its
+  // Präteritum/Partizip in the rule and a Wo? sample. Tint
+  // --article-das (green) so chevron word + sample highlight read
+  // as "this is a Dativ family". The companion Direktionsverben
+  // anchor sits next (red).
   {
-    topic: "Positions-/Direktionsverben",
+    topic: "Positionsverben",
     exerciseType: "multipleChoice",
     learn: {
-      layout: "styleComparison",
-      headline: "Positions- & Direktionsverben",
+      layout: "connectorCarousel",
+      headline: "Positionsverben",
       english:
-        "4 verb pairs: position (Wo? → Dativ) vs direction (Wohin? → Akk)",
-      tint: "var(--article-der)",
-      labels: ["Wo? · Dativ", "Wohin? · Akk"],
+        "4 Wo? verbs — state / location, Dativ, all irregular, no object",
+      tint: "var(--article-das)",
+      showFormula: false,
       note:
-        "**Wo? → Dativ:** stehen · sitzen · liegen · hängen (irregular). **Wohin? → Akk:** stellen · setzen · legen · hängen (regular + Akk object).",
-      stylePairs: [
+        "**Wo? → Dativ.** These 4 are irregular and intransitive (no Akk object). Pair with **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Dativ.",
+      connectors: [
         {
-          left: "Die Vase steht auf dem Tisch.",
-          right: "Er stellt die Vase auf den Tisch.",
+          word: "stehen",
+          example: "Die Vase steht auf dem Tisch.",
+          english: "to stand · stand, gestanden",
+          rule:
+            "**stehen** = to be in an upright position. Präteritum: **stand**. Partizip II: **gestanden**.",
+          sample: {
+            de: "Die Vase steht auf dem Tisch.",
+            en: "The vase is standing on the table.",
+            highlight: "steht",
+          },
+          case: "dativ",
         },
         {
-          left: "Das Kind sitzt auf dem Stuhl.",
-          right: "Sie setzt das Kind auf den Stuhl.",
+          word: "sitzen",
+          example: "Das Kind sitzt auf dem Stuhl.",
+          english: "to sit · saß, gesessen",
+          rule:
+            "**sitzen** = to be in a seated position. Präteritum: **saß**. Partizip II: **gesessen**.",
+          sample: {
+            de: "Das Kind sitzt auf dem Stuhl.",
+            en: "The child is sitting on the chair.",
+            highlight: "sitzt",
+          },
+          case: "dativ",
         },
         {
-          left: "Das Buch liegt auf dem Tisch.",
-          right: "Er legt das Buch auf den Tisch.",
+          word: "liegen",
+          example: "Das Buch liegt auf dem Tisch.",
+          english: "to lie · lag, gelegen",
+          rule:
+            "**liegen** = to be in a horizontal position. Präteritum: **lag**. Partizip II: **gelegen**.",
+          sample: {
+            de: "Das Buch liegt auf dem Tisch.",
+            en: "The book is lying on the table.",
+            highlight: "liegt",
+          },
+          case: "dativ",
         },
         {
-          left: "Der Mantel hängt im Schrank.",
-          right: "Sie hängt den Mantel in den Schrank.",
+          word: "hängen",
+          example: "Der Mantel hängt im Schrank.",
+          english: "to hang · hing, gehangen",
+          rule:
+            "**hängen** (Wo?) = to be hanging. Irregular here: Präteritum **hing**, Partizip II **gehangen**. Same infinitive as the direction verb — the conjugation tells them apart.",
+          sample: {
+            de: "Der Mantel hängt im Schrank.",
+            en: "The coat is hanging in the wardrobe.",
+            highlight: "hängt",
+          },
+          case: "dativ",
+        },
+      ],
+      sample: {
+        de: "Die Vase steht auf dem Tisch.",
+        en: "The vase is standing on the table.",
+        highlight: "steht",
+      },
+    },
+    prompt: "Das Buch ___ auf dem Tisch.",
+    hint: "The book is lying on the table.",
+    options: ["liegt", "legt", "liegen", "legen"],
+    correctIndex: 0,
+    explanation:
+      "'auf dem Tisch' = Wo? + Dativ → position verb **liegen** (irregular, 3rd sg: liegt).",
+    tr: {
+      hint: "Kitap masanın üstünde duruyor.",
+      explanation:
+        "'auf dem Tisch' = Wo? + Dativ → konum fiili **liegen** (düzensiz, 3. tekil: liegt).",
+      learn: {
+        headline: "Konum Fiilleri (Wo?)",
+        english: "4 Wo? fiili — konum, Dativ, hepsi düzensiz, nesne yok",
+        note:
+          "**Wo? → Dativ.** Bu 4 fiil düzensiz ve nesnesizdir (Akk almaz). **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Dativ ile çalışır.",
+        sample: { en: "Vazo masanın üstünde duruyor." },
+        connectors: [
+          {
+            english: "durmak (dik) · stand, gestanden",
+            rule:
+              "**stehen** = dik konumda olmak. Präteritum: **stand**. Partizip II: **gestanden**.",
+            sample: { en: "Vazo masanın üstünde duruyor." },
+          },
+          {
+            english: "oturmak · saß, gesessen",
+            rule:
+              "**sitzen** = oturur konumda olmak. Präteritum: **saß**. Partizip II: **gesessen**.",
+            sample: { en: "Çocuk sandalyede oturuyor." },
+          },
+          {
+            english: "uzanmak / yatmak · lag, gelegen",
+            rule:
+              "**liegen** = yatay konumda olmak. Präteritum: **lag**. Partizip II: **gelegen**.",
+            sample: { en: "Kitap masanın üstünde duruyor." },
+          },
+          {
+            english: "asılı olmak · hing, gehangen",
+            rule:
+              "**hängen** (Wo?) = asılı durmak. Burada düzensiz: Präteritum **hing**, Partizip II **gehangen**. Yön fiili ile aynı mastar — ayırt eden çekim.",
+            sample: { en: "Palto dolapta asılı." },
+          },
+        ],
+      },
+    },
+  },
+
+  // ── 9 ─ Anchor: Direktionsverben (Wohin? → Akk, red carousel, 4) ─
+  //
+  // Companion to Positionsverben — the Wohin? → Akk family
+  // (stellen, setzen, legen, hängen), all regular, all transitive
+  // (take an Akk object). Chevron carousel, 4 variants, each with
+  // its Präteritum/Partizip in the rule and a Wohin? sample.
+  // Tint --article-die (red). The shared 4th verb hängen appears
+  // here too with its REGULAR conjugation (hängte, gehängt) — the
+  // tricky same-form pair with the position-side hängen.
+  {
+    topic: "Direktionsverben",
+    exerciseType: "multipleChoice",
+    learn: {
+      layout: "connectorCarousel",
+      headline: "Direktionsverben",
+      english:
+        "4 Wohin? verbs — movement / direction, Akk, all regular, Akk object",
+      tint: "var(--article-die)",
+      showFormula: false,
+      note:
+        "**Wohin? → Akkusativ.** These 4 are regular and transitive (always take an Akk object). Pair with **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Akk.",
+      connectors: [
+        {
+          word: "stellen",
+          example: "Er stellt die Vase auf den Tisch.",
+          english: "to put (upright) · stellte, gestellt",
+          rule:
+            "**stellen** = to put something in an upright position. Präteritum: **stellte**. Partizip II: **gestellt**. Always takes an Akk object.",
+          sample: {
+            de: "Er stellt die Vase auf den Tisch.",
+            en: "He puts the vase on the table.",
+            highlight: "stellt",
+          },
+          case: "akkusativ",
+        },
+        {
+          word: "setzen",
+          example: "Sie setzt das Kind auf den Stuhl.",
+          english: "to seat / sit someone · setzte, gesetzt",
+          rule:
+            "**setzen** = to put something or someone in a seated position. Präteritum: **setzte**. Partizip II: **gesetzt**. Takes an Akk object.",
+          sample: {
+            de: "Sie setzt das Kind auf den Stuhl.",
+            en: "She sits the child on the chair.",
+            highlight: "setzt",
+          },
+          case: "akkusativ",
+        },
+        {
+          word: "legen",
+          example: "Er legt das Buch auf den Tisch.",
+          english: "to lay / put flat · legte, gelegt",
+          rule:
+            "**legen** = to lay something horizontally. Präteritum: **legte**. Partizip II: **gelegt**. Takes an Akk object.",
+          sample: {
+            de: "Er legt das Buch auf den Tisch.",
+            en: "He lays the book on the table.",
+            highlight: "legt",
+          },
+          case: "akkusativ",
+        },
+        {
+          word: "hängen",
+          example: "Sie hängt den Mantel in den Schrank.",
+          english: "to hang something · hängte, gehängt",
+          rule:
+            "**hängen** (Wohin?) = to hang something up. Regular here: Präteritum **hängte**, Partizip II **gehängt**. Same infinitive as the position verb — only the conjugation tells them apart.",
+          sample: {
+            de: "Sie hängt den Mantel in den Schrank.",
+            en: "She hangs the coat in the wardrobe.",
+            highlight: "hängt",
+          },
+          case: "akkusativ",
         },
       ],
       sample: {
@@ -973,24 +1149,49 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     options: ["lege", "liege", "legt", "liegt"],
     correctIndex: 0,
     explanation:
-      "'auf den Tisch' is Wohin? + Akk → direction verb **legen** (regular). 'liegen' is position (Wo?) and takes Dativ.",
+      "'auf den Tisch' = Wohin? + Akk → direction verb **legen** (regular, 1st sg: lege). 'liegen' is position (Wo?) and takes Dativ.",
     tr: {
       hint: "Kitabı masanın üstüne koyuyorum.",
       explanation:
-        "'auf den Tisch' Wohin? + Akk → yön fiili **legen** (düzenli). 'liegen' konum fiili (Wo?) ve Dativ ister.",
+        "'auf den Tisch' = Wohin? + Akk → yön fiili **legen** (düzenli, 1. tekil: lege). 'liegen' konum fiili (Wo?) ve Dativ ister.",
       learn: {
-        headline: "Position & Yön Fiilleri",
+        headline: "Yön Fiilleri (Wohin?)",
         english:
-          "4 fiil çifti: konum (Wo? → Dativ) vs yön (Wohin? → Akk)",
-        labels: ["Wo? · Dativ", "Wohin? · Akk"],
+          "4 Wohin? fiili — hareket, Akk, hepsi düzenli, Akk nesne alır",
         note:
-          "**Wo? → Dativ:** stehen · sitzen · liegen · hängen (düzensiz). **Wohin? → Akk:** stellen · setzen · legen · hängen (düzenli + Akk nesne).",
+          "**Wohin? → Akkusativ.** Bu 4 fiil düzenli ve geçişlidir (hep Akk nesne alır). **in, an, auf, über, unter, vor, hinter, neben, zwischen** + Akk ile çalışır.",
         sample: { en: "Vazoyu masanın üstüne koyuyor." },
+        connectors: [
+          {
+            english: "koymak (dik) · stellte, gestellt",
+            rule:
+              "**stellen** = bir şeyi dik konumda koymak. Präteritum: **stellte**. Partizip II: **gestellt**. Her zaman Akk nesne alır.",
+            sample: { en: "Vazoyu masanın üstüne koyuyor." },
+          },
+          {
+            english: "oturtmak · setzte, gesetzt",
+            rule:
+              "**setzen** = bir şeyi/birini oturur konumda koymak. Präteritum: **setzte**. Partizip II: **gesetzt**. Akk nesne alır.",
+            sample: { en: "Çocuğu sandalyeye oturtuyor." },
+          },
+          {
+            english: "koymak (yatay) · legte, gelegt",
+            rule:
+              "**legen** = bir şeyi yatay koymak. Präteritum: **legte**. Partizip II: **gelegt**. Akk nesne alır.",
+            sample: { en: "Kitabı masanın üstüne koyuyor." },
+          },
+          {
+            english: "asmak · hängte, gehängt",
+            rule:
+              "**hängen** (Wohin?) = bir şeyi asmak. Burada düzenli: Präteritum **hängte**, Partizip II **gehängt**. Konum fiili ile aynı mastar — ayırt eden sadece çekim.",
+            sample: { en: "Paltoyu dolaba asıyor." },
+          },
+        ],
       },
     },
   },
 
-  // ── 9 ─ Anchor: Konnektoren (chevron carousel) ───────────────────
+  // ── 10 ─ Anchor: Konnektoren (chevron carousel) ──────────────────
   //
   // Split out as a chevron carousel instead of four cards side by
   // side — four connectors at once overwhelms the learner, and
@@ -1440,49 +1641,95 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 28 ─ Drills: Positions-/Direktionsverben ─────────────────────
+  // ── 28 ─ Drills: Positionsverben (Wo? → Dativ) ───────────────────
   {
-    topic: "Positions-/Direktionsverben",
-    exerciseType: "fillBlank",
-    prompt: "Sie ___ die Vase auf den Tisch.",
-    answer: "stellt",
-    explanation:
-      "'auf den Tisch' is Wohin? + Akk → direction verb **stellen** (regular, 3rd sg: stellt). Position verb stehen would take Dativ.",
-    hint: "She puts the vase on the table.",
-    tr: {
-      hint: "Vazoyu masanın üstüne koyuyor.",
-      explanation:
-        "'auf den Tisch' Wohin? + Akk → yön fiili **stellen** (düzenli, 3. tekil: stellt). Konum fiili stehen Dativ isterdi.",
-    },
-  },
-  {
-    topic: "Positions-/Direktionsverben",
+    topic: "Positionsverben",
     exerciseType: "multipleChoice",
     prompt: "Das Kind ___ auf dem Stuhl.",
     options: ["sitzt", "setzt", "setzen", "sitzen"],
     correctIndex: 0,
     explanation:
-      "'auf dem Stuhl' is Wo? + Dat → position verb **sitzen** (irregular, 3rd sg: sitzt). setzen is the direction verb (takes Akk object).",
+      "'auf dem Stuhl' = Wo? + Dat → position verb **sitzen** (irregular, 3rd sg: sitzt). setzen is the direction counterpart (takes Akk).",
     hint: "The child is sitting on the chair.",
     tr: {
       hint: "Çocuk sandalyede oturuyor.",
       explanation:
-        "'auf dem Stuhl' Wo? + Dat → konum fiili **sitzen** (düzensiz, 3. tekil: sitzt). setzen yön fiili (Akk nesne alır).",
+        "'auf dem Stuhl' = Wo? + Dat → konum fiili **sitzen** (düzensiz, 3. tekil: sitzt). setzen yön karşılığı (Akk alır).",
     },
   },
   {
-    topic: "Positions-/Direktionsverben",
+    topic: "Positionsverben",
+    exerciseType: "fillBlank",
+    prompt: "Die Vase ___ auf dem Tisch.",
+    answer: "steht",
+    explanation:
+      "'auf dem Tisch' = Wo? + Dat → position verb **stehen** (irregular, 3rd sg: steht).",
+    hint: "The vase is standing on the table.",
+    tr: {
+      hint: "Vazo masanın üstünde duruyor.",
+      explanation:
+        "'auf dem Tisch' = Wo? + Dat → konum fiili **stehen** (düzensiz, 3. tekil: steht).",
+    },
+  },
+  {
+    topic: "Positionsverben",
+    exerciseType: "multipleChoice",
+    prompt: "Der Mantel ___ im Schrank.",
+    options: ["hängt", "stellt", "setzt", "legt"],
+    correctIndex: 0,
+    explanation:
+      "'im Schrank' = Wo? + Dat (no Akk object) → position verb **hängen** (irregular: hing, gehangen). stellt/setzt/legt would all need an Akk object.",
+    hint: "The coat is hanging in the wardrobe.",
+    tr: {
+      hint: "Palto dolapta asılı.",
+      explanation:
+        "'im Schrank' = Wo? + Dat (Akk nesne yok) → konum fiili **hängen** (düzensiz: hing, gehangen). stellt/setzt/legt Akk nesne ister.",
+    },
+  },
+
+  // ── 31 ─ Drills: Direktionsverben (Wohin? → Akk) ─────────────────
+  {
+    topic: "Direktionsverben",
+    exerciseType: "fillBlank",
+    prompt: "Sie ___ die Vase auf den Tisch.",
+    answer: "stellt",
+    explanation:
+      "'auf den Tisch' = Wohin? + Akk → direction verb **stellen** (regular, 3rd sg: stellt). Position verb stehen would take Dativ.",
+    hint: "She puts the vase on the table.",
+    tr: {
+      hint: "Vazoyu masanın üstüne koyuyor.",
+      explanation:
+        "'auf den Tisch' = Wohin? + Akk → yön fiili **stellen** (düzenli, 3. tekil: stellt). Konum fiili stehen Dativ isterdi.",
+    },
+  },
+  {
+    topic: "Direktionsverben",
+    exerciseType: "multipleChoice",
+    prompt: "Ich ___ das Buch auf den Tisch.",
+    options: ["lege", "liege", "legt", "liegt"],
+    correctIndex: 0,
+    explanation:
+      "'auf den Tisch' = Wohin? + Akk → direction verb **legen** (regular, 1st sg: lege). liegen is position (Wo?) + Dativ.",
+    hint: "I put the book on the table.",
+    tr: {
+      hint: "Kitabı masanın üstüne koyuyorum.",
+      explanation:
+        "'auf den Tisch' = Wohin? + Akk → yön fiili **legen** (düzenli, 1. tekil: lege). liegen konum (Wo?) + Dativ.",
+    },
+  },
+  {
+    topic: "Direktionsverben",
     exerciseType: "multipleChoice",
     prompt: "Er ___ den Mantel in den Schrank.",
     options: ["hängt", "liegt", "sitzt", "steht"],
     correctIndex: 0,
     explanation:
-      "Wohin? + Akk (in den Schrank) + Akk object (den Mantel) → direction verb **hängen** (regular: hängte, gehängt). The other three are all position verbs and need Dativ.",
+      "Wohin? + Akk (in den Schrank) + Akk object (den Mantel) → direction verb **hängen** (regular: hängte, gehängt). The other three are position verbs and need Dativ (no object).",
     hint: "He hangs the coat in the wardrobe.",
     tr: {
       hint: "Paltoyu dolaba asıyor.",
       explanation:
-        "Wohin? + Akk (in den Schrank) + Akk nesne (den Mantel) → yön fiili **hängen** (düzenli: hängte, gehängt). Diğer üçü konum fiili, Dativ ister.",
+        "Wohin? + Akk (in den Schrank) + Akk nesne (den Mantel) → yön fiili **hängen** (düzenli: hängte, gehängt). Diğer üçü konum fiili, Dativ ister (nesnesiz).",
     },
   },
 ];

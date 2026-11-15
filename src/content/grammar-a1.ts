@@ -271,6 +271,14 @@ export interface RelativePronounExample {
   en: string;
   highlight: string;
   role: string;
+  /** Grammatical case of the highlighted relative pronoun. When set,
+   *  the renderer tints the highlight with that case's colour
+   *  (nom → default, akk → --article-die red, dat → --article-das
+   *  green). Absent → default chip-grammar purple. Lets the two
+   *  sample sentences carry case-coloured signals so the learner
+   *  sees Dativ pronouns in one colour and Akk pronouns in another
+   *  without reading the role caption. */
+  caseKey?: "nom" | "akk" | "dat";
 }
 
 /**
@@ -308,6 +316,14 @@ export interface ConnectorCard {
    *  Without it, the anchor sample stays visible (B1 Konnektoren
    *  behaviour, kept for backward compatibility). */
   sample?: GrammarSample;
+  /** Carousel-only: per-variant grammatical case. When set, the
+   *  carousel tints the chevron word label, the in-example
+   *  highlight, and the bottom sample highlight with that case's
+   *  colour (dativ → --article-das green, akkusativ → --article-die
+   *  red) instead of the default chip-grammar purple. Used by B1
+   *  Wechselpräpositionen where each of the 9 prepositions carries
+   *  a sample in a specific case. Absent → default purple. */
+  case?: "dativ" | "akkusativ";
 }
 
 /**

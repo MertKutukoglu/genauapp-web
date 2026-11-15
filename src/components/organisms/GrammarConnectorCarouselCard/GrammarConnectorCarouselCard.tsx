@@ -70,6 +70,7 @@ export interface GrammarConnectorCarouselCardProps {
 function renderWithHighlights(
   text: string,
   targets: string[],
+  color?: string,
 ): React.ReactNode {
   type Hit = { start: number; end: number };
   const hits: Hit[] = [];
@@ -84,6 +85,7 @@ function renderWithHighlights(
   if (hits.length === 0) return text;
   hits.sort((a, b) => a.start - b.start);
 
+  const highlightColor = color ?? "var(--chip-grammar-color)";
   const out: React.ReactNode[] = [];
   let pos = 0;
   hits.forEach((h, i) => {
@@ -92,7 +94,7 @@ function renderWithHighlights(
       <strong
         key={i}
         className="font-bold"
-        style={{ color: "var(--chip-grammar-color)" }}
+        style={{ color: highlightColor }}
       >
         {text.slice(h.start, h.end)}
       </strong>,
@@ -101,6 +103,19 @@ function renderWithHighlights(
   });
   if (pos < text.length) out.push(text.slice(pos));
   return <>{out}</>;
+}
+
+/** Map a ConnectorCard.case value to its CSS colour var. Returns
+ *  undefined when the variant has no case set, so callers can fall
+ *  back to the default chip-grammar purple. Kept co-located with
+ *  the component because it's purely a render-time decision — the
+ *  content type just carries the enum, not a colour string. */
+function caseToColor(
+  caseKey: "dativ" | "akkusativ" | undefined,
+): string | undefined {
+  if (caseKey === "dativ") return "var(--article-das)";
+  if (caseKey === "akkusativ") return "var(--article-die)";
+  return undefined;
 }
 
 /**
@@ -247,6 +262,15 @@ export function GrammarConnectorCarouselCard({
   const highlights = [active.highlight ?? active.word];
   if (active.verbFinal) highlights.push(active.verbFinal);
 
+  // Per-variant case colour (Wechselpräpositionen pattern): when
+  // the content sets `case` on a variant, the chevron word label,
+  // the in-example highlight, and the bottom sample highlight all
+  // switch to the case's colour (Dativ → green, Akk → red) so the
+  // learner sees case flips as colour flips. No `case` → default
+  // chip-grammar purple.
+  const caseColor = caseToColor(active.case);
+  const wordColor = caseColor ?? "var(--chip-grammar-color)";
+
   return (
     <div
       className={clsx(
@@ -284,7 +308,7 @@ export function GrammarConnectorCarouselCard({
           <div
             key={active.word}
             className="font-sans font-bold text-[32px] leading-tight"
-            style={{ color: "var(--chip-grammar-color)" }}
+            style={{ color: wordColor }}
           >
             {active.word}
           </div>
@@ -315,7 +339,7 @@ export function GrammarConnectorCarouselCard({
           bold-purple so the pattern lands in a real sentence
           before the formula strip abstracts it. */}
       <div className="font-sans font-semibold text-[17px] text-fg text-center leading-snug">
-        {renderWithHighlights(active.example, highlights)}
+        {renderWithHighlights(active.example, highlights, caseColor)}
       </div>
 
       {/* Formula strip under the example — no sunk background,
@@ -376,6 +400,7 @@ export function GrammarConnectorCarouselCard({
         sentence={(active.sample ?? sample).de}
         highlight={(active.sample ?? sample).highlight}
         translation={(active.sample ?? sample).en}
+        highlightColor={caseColor}
       />
 
       <LearnActions
