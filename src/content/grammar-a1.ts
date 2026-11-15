@@ -441,6 +441,10 @@ export interface GrammarLocaleOverlay {
     rule?: string;
     /** articleSingle localized role label (masculine → eril). */
     role?: string;
+    /** activePassiveComparison / styleComparison column labels.
+     *  Same shape as the German-side `labels` on GrammarLearnBlock —
+     *  leave unset to keep the German headers. */
+    labels?: [string, string];
     /** Pronoun-chart English column translations (same order as forms). */
     pronounGlosses?: string[];
     sample?: { en?: string };
@@ -992,6 +996,7 @@ export function localizeGrammar(
       note: trLearn.note ?? learn.note,
       rule: trLearn.rule ?? learn.rule,
       role: trLearn.role ?? learn.role,
+      labels: trLearn.labels ?? learn.labels,
       sample: {
         ...learn.sample,
         en: trLearn.sample?.en ?? learn.sample.en,

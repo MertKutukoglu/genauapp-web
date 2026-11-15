@@ -1,12 +1,12 @@
 /**
- * Grammar — B1 deck (24 items). Verbatim port of
- * claude/GenauApp_Web_Try_Grammar_Content_B1.md §4.
+ * Grammar — B1 deck (36 items).
  *
  * Deck composition:
- *   1-6   Anchors (with `learn`): Konjunktiv II, Vorgangspassiv,
- *         Dativ-Artikel, Relativsätze, Verben mit festen
- *         Präpositionen, Konnektoren extended.
- *   7-24  18 topic-grouped drills (3 per anchor).
+ *   1-9   Anchors (with `learn`): Konjunktiv II, Vorgangspassiv,
+ *         Komparativ/Superlativ, Relativsätze, Dativ-Präpositionen,
+ *         Akkusativ-Präpositionen, Wechselpräpositionen,
+ *         Positions-/Direktionsverben, Konnektoren.
+ *   10-36 27 topic-grouped drills (3 per anchor).
  *
  * Mix: 14 multipleChoice + 10 fillBlank (close to A1/A2 ratio).
  *
@@ -717,7 +717,280 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
     },
   },
 
-  // ── 6 ─ Anchor: Konnektoren (chevron carousel) ───────────────────
+  // ── 7 ─ Anchor: Wechselpräpositionen (chevron carousel, 9) ──────
+  //
+  // Nine prepositions that take EITHER Dativ or Akkusativ depending
+  // on the question (Wo? vs Wohin?). Chevron carousel — one prep
+  // per card. The universal flip rule lives in the anchor-level
+  // `note`; each variant's `rule` teaches that preposition's
+  // spatial meaning only (no case explanation repeated 9 times).
+  // Samples mix Wo? and Wohin? sentences so the learner sees both
+  // patterns across the deck. Highlight is always the article
+  // ("dem", "der", "den", "die") so the case marker is visible.
+  // `showFormula: false` hides the Nebensatz formula strip (not
+  // relevant to preposition case). Tint uses --article-der (blue)
+  // to signal "dual case" — distinct from Dativ-Präp (das/green)
+  // and Akk-Präp (die/red).
+  {
+    topic: "Wechselpräpositionen",
+    exerciseType: "multipleChoice",
+    learn: {
+      layout: "connectorCarousel",
+      headline: "Wechselpräpositionen",
+      english: "9 prepositions that take Dativ (Wo?) or Akkusativ (Wohin?)",
+      tint: "var(--article-der)",
+      showFormula: false,
+      note:
+        "**Wo? → Dativ** (state / location). **Wohin? → Akkusativ** (movement / direction).",
+      connectors: [
+        {
+          word: "in",
+          example: "Ich gehe in die Küche.",
+          english: "in / into",
+          rule:
+            "**in** marks being inside or going inside. **in dem → im** · **in das → ins**.",
+          sample: {
+            de: "Ich gehe in die Küche.",
+            en: "I'm going into the kitchen.",
+            highlight: "die",
+          },
+        },
+        {
+          word: "an",
+          example: "Das Bild hängt an der Wand.",
+          english: "at / on (vertical)",
+          rule:
+            "**an** marks contact with a vertical surface or edge. **an dem → am** · **an das → ans**.",
+          sample: {
+            de: "Das Bild hängt an der Wand.",
+            en: "The picture hangs on the wall.",
+            highlight: "der",
+          },
+        },
+        {
+          word: "auf",
+          example: "Das Buch liegt auf dem Tisch.",
+          english: "on (horizontal)",
+          rule: "**auf** marks contact with a horizontal surface.",
+          sample: {
+            de: "Das Buch liegt auf dem Tisch.",
+            en: "The book is lying on the table.",
+            highlight: "dem",
+          },
+        },
+        {
+          word: "über",
+          example: "Das Flugzeug fliegt über die Stadt.",
+          english: "over / above",
+          rule: "**über** marks being above or moving across the top.",
+          sample: {
+            de: "Das Flugzeug fliegt über die Stadt.",
+            en: "The plane is flying over the city.",
+            highlight: "die",
+          },
+        },
+        {
+          word: "unter",
+          example: "Die Katze schläft unter dem Bett.",
+          english: "under / below",
+          rule: "**unter** marks being underneath or moving beneath.",
+          sample: {
+            de: "Die Katze schläft unter dem Bett.",
+            en: "The cat sleeps under the bed.",
+            highlight: "dem",
+          },
+        },
+        {
+          word: "vor",
+          example: "Er stellt das Auto vor das Haus.",
+          english: "in front of",
+          rule: "**vor** marks being in front of or moving to the front.",
+          sample: {
+            de: "Er stellt das Auto vor das Haus.",
+            en: "He parks the car in front of the house.",
+            highlight: "das",
+          },
+        },
+        {
+          word: "hinter",
+          example: "Der Garten liegt hinter dem Haus.",
+          english: "behind",
+          rule: "**hinter** marks being behind or moving behind.",
+          sample: {
+            de: "Der Garten liegt hinter dem Haus.",
+            en: "The garden is behind the house.",
+            highlight: "dem",
+          },
+        },
+        {
+          word: "neben",
+          example: "Das Sofa steht neben dem Fenster.",
+          english: "next to",
+          rule: "**neben** marks being beside or moving beside.",
+          sample: {
+            de: "Das Sofa steht neben dem Fenster.",
+            en: "The sofa stands next to the window.",
+            highlight: "dem",
+          },
+        },
+        {
+          word: "zwischen",
+          example: "Die Vase steht zwischen den Büchern.",
+          english: "between",
+          rule:
+            "**zwischen** marks being between or moving between two things.",
+          sample: {
+            de: "Die Vase steht zwischen den Büchern.",
+            en: "The vase stands between the books.",
+            highlight: "den",
+          },
+        },
+      ],
+      sample: {
+        de: "Ich gehe in die Küche.",
+        en: "I'm going into the kitchen.",
+        highlight: "die",
+      },
+    },
+    prompt: "Das Buch liegt ___ Tisch.",
+    hint: "The book is lying on the table.",
+    options: ["auf dem", "auf den", "auf das", "auf der"],
+    correctIndex: 0,
+    explanation:
+      "'liegen' answers Wo? → Dativ. Tisch (m) → dem. 'auf den' would be Akk (Wohin?).",
+    tr: {
+      hint: "Kitap masanın üstünde duruyor.",
+      explanation:
+        "'liegen' Wo? sorusuna cevap verir → Dativ. Tisch (eril) → dem. 'auf den' Akk olurdu (Wohin?).",
+      learn: {
+        headline: "Wechselpräpositionen",
+        english: "Hem Dativ (Wo?) hem Akkusativ (Wohin?) alan 9 edat",
+        note:
+          "**Wo? → Dativ** (bulunma / konum). **Wohin? → Akkusativ** (hareket / yön).",
+        sample: { en: "Mutfağa gidiyorum." },
+        connectors: [
+          {
+            english: "içinde / içine",
+            rule:
+              "**in** iç kısımda olma ya da içine doğru hareket. **in dem → im** · **in das → ins**.",
+            sample: { en: "Mutfağa gidiyorum." },
+          },
+          {
+            english: "-de / -e (dikey)",
+            rule:
+              "**an** dikey yüzeyle temas ya da kenarda olma. **an dem → am** · **an das → ans**.",
+            sample: { en: "Resim duvarda asılı." },
+          },
+          {
+            english: "üstünde (yatay)",
+            rule: "**auf** yatay yüzeyle temas.",
+            sample: { en: "Kitap masanın üstünde duruyor." },
+          },
+          {
+            english: "üzerinde / üzerine",
+            rule: "**über** üstte olma ya da üzerinden geçme.",
+            sample: { en: "Uçak şehrin üzerinden uçuyor." },
+          },
+          {
+            english: "altında / altına",
+            rule: "**unter** altta olma ya da altına geçme.",
+            sample: { en: "Kedi yatağın altında uyuyor." },
+          },
+          {
+            english: "önünde / önüne",
+            rule: "**vor** önde olma ya da öne geçme.",
+            sample: { en: "Arabayı evin önüne park ediyor." },
+          },
+          {
+            english: "arkasında / arkasına",
+            rule: "**hinter** arkada olma ya da arkaya geçme.",
+            sample: { en: "Bahçe evin arkasında." },
+          },
+          {
+            english: "yanında / yanına",
+            rule: "**neben** yanda olma ya da yana geçme.",
+            sample: { en: "Kanepe pencerenin yanında duruyor." },
+          },
+          {
+            english: "arasında / arasına",
+            rule:
+              "**zwischen** iki şeyin arasında olma ya da araya geçme.",
+            sample: { en: "Vazo kitapların arasında duruyor." },
+          },
+        ],
+      },
+    },
+  },
+
+  // ── 8 ─ Anchor: Positions-/Direktionsverben (styleComparison, 4) ─
+  //
+  // The natural companion to Wechselpräp: four verb pairs where
+  // the LEFT verb answers Wo? (state / Dativ) and the RIGHT verb
+  // answers Wohin? (direction / Akk + takes an object). Rendered
+  // via styleComparison — stacked left/right pairs so the learner
+  // sees the case flip in context (auf dem Tisch → auf den Tisch).
+  // The irregular / regular split + Akk-object rule lives in the
+  // `note`; per-pair sentences keep the pattern visible without
+  // restating theory. Labels: "Wo? · Dativ" / "Wohin? · Akk".
+  {
+    topic: "Positions-/Direktionsverben",
+    exerciseType: "multipleChoice",
+    learn: {
+      layout: "styleComparison",
+      headline: "Positions- & Direktionsverben",
+      english:
+        "4 verb pairs: position (Wo? → Dativ) vs direction (Wohin? → Akk)",
+      tint: "var(--article-der)",
+      labels: ["Wo? · Dativ", "Wohin? · Akk"],
+      note:
+        "**Wo? → Dativ:** stehen · sitzen · liegen · hängen (irregular). **Wohin? → Akk:** stellen · setzen · legen · hängen (regular + Akk object).",
+      stylePairs: [
+        {
+          left: "Die Vase steht auf dem Tisch.",
+          right: "Er stellt die Vase auf den Tisch.",
+        },
+        {
+          left: "Das Kind sitzt auf dem Stuhl.",
+          right: "Sie setzt das Kind auf den Stuhl.",
+        },
+        {
+          left: "Das Buch liegt auf dem Tisch.",
+          right: "Er legt das Buch auf den Tisch.",
+        },
+        {
+          left: "Der Mantel hängt im Schrank.",
+          right: "Sie hängt den Mantel in den Schrank.",
+        },
+      ],
+      sample: {
+        de: "Er stellt die Vase auf den Tisch.",
+        en: "He puts the vase on the table.",
+        highlight: "stellt",
+      },
+    },
+    prompt: "Ich ___ das Buch auf den Tisch.",
+    hint: "I put the book on the table.",
+    options: ["lege", "liege", "legt", "liegt"],
+    correctIndex: 0,
+    explanation:
+      "'auf den Tisch' is Wohin? + Akk → direction verb **legen** (regular). 'liegen' is position (Wo?) and takes Dativ.",
+    tr: {
+      hint: "Kitabı masanın üstüne koyuyorum.",
+      explanation:
+        "'auf den Tisch' Wohin? + Akk → yön fiili **legen** (düzenli). 'liegen' konum fiili (Wo?) ve Dativ ister.",
+      learn: {
+        headline: "Position & Yön Fiilleri",
+        english:
+          "4 fiil çifti: konum (Wo? → Dativ) vs yön (Wohin? → Akk)",
+        labels: ["Wo? · Dativ", "Wohin? · Akk"],
+        note:
+          "**Wo? → Dativ:** stehen · sitzen · liegen · hängen (düzensiz). **Wohin? → Akk:** stellen · setzen · legen · hängen (düzenli + Akk nesne).",
+        sample: { en: "Vazoyu masanın üstüne koyuyor." },
+      },
+    },
+  },
+
+  // ── 9 ─ Anchor: Konnektoren (chevron carousel) ───────────────────
   //
   // Split out as a chevron carousel instead of four cards side by
   // side — four connectors at once overwhelms the learner, and
@@ -1118,6 +1391,98 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       hint: "Yağmur yağmasına rağmen yürüyüşe çıkıyor.",
       explanation:
         "Beklentinin aksine (yağmura RAĞMEN yürüyüş) → obwohl ('rağmen').",
+    },
+  },
+
+  // ── 25 ─ Drills: Wechselpräpositionen ────────────────────────────
+  {
+    topic: "Wechselpräpositionen",
+    exerciseType: "multipleChoice",
+    prompt: "Ich warte ___ Hauptbahnhof.",
+    options: ["am", "ans", "an den", "an der"],
+    correctIndex: 0,
+    explanation:
+      "'warten' answers Wo? → Dativ. an dem Hauptbahnhof (m) → **am**.",
+    hint: "I'm waiting at the central station.",
+    tr: {
+      hint: "Ana istasyonda bekliyorum.",
+      explanation:
+        "'warten' Wo? sorusuna cevap verir → Dativ. an dem Hauptbahnhof (eril) → **am**.",
+    },
+  },
+  {
+    topic: "Wechselpräpositionen",
+    exerciseType: "fillBlank",
+    prompt: "Sie geht ___ die Bäckerei.",
+    answer: "in",
+    explanation:
+      "'gehen' answers Wohin? → Akkusativ. Bäckerei (f) → die, so the preposition is **in**.",
+    hint: "She goes into the bakery.",
+    tr: {
+      hint: "Fırına gidiyor.",
+      explanation:
+        "'gehen' Wohin? sorusuna cevap verir → Akkusativ. Bäckerei (dişil) → die, edat **in**.",
+    },
+  },
+  {
+    topic: "Wechselpräpositionen",
+    exerciseType: "multipleChoice",
+    prompt: "Die Bücher stehen ___ Regal.",
+    options: ["im", "ins", "in das", "in den"],
+    correctIndex: 0,
+    explanation:
+      "'stehen' is a position verb → Wo? → Dativ. in dem Regal (n) → **im**.",
+    hint: "The books are standing on the shelf.",
+    tr: {
+      hint: "Kitaplar rafta duruyor.",
+      explanation:
+        "'stehen' konum fiili → Wo? → Dativ. in dem Regal (nötr) → **im**.",
+    },
+  },
+
+  // ── 28 ─ Drills: Positions-/Direktionsverben ─────────────────────
+  {
+    topic: "Positions-/Direktionsverben",
+    exerciseType: "fillBlank",
+    prompt: "Sie ___ die Vase auf den Tisch.",
+    answer: "stellt",
+    explanation:
+      "'auf den Tisch' is Wohin? + Akk → direction verb **stellen** (regular, 3rd sg: stellt). Position verb stehen would take Dativ.",
+    hint: "She puts the vase on the table.",
+    tr: {
+      hint: "Vazoyu masanın üstüne koyuyor.",
+      explanation:
+        "'auf den Tisch' Wohin? + Akk → yön fiili **stellen** (düzenli, 3. tekil: stellt). Konum fiili stehen Dativ isterdi.",
+    },
+  },
+  {
+    topic: "Positions-/Direktionsverben",
+    exerciseType: "multipleChoice",
+    prompt: "Das Kind ___ auf dem Stuhl.",
+    options: ["sitzt", "setzt", "setzen", "sitzen"],
+    correctIndex: 0,
+    explanation:
+      "'auf dem Stuhl' is Wo? + Dat → position verb **sitzen** (irregular, 3rd sg: sitzt). setzen is the direction verb (takes Akk object).",
+    hint: "The child is sitting on the chair.",
+    tr: {
+      hint: "Çocuk sandalyede oturuyor.",
+      explanation:
+        "'auf dem Stuhl' Wo? + Dat → konum fiili **sitzen** (düzensiz, 3. tekil: sitzt). setzen yön fiili (Akk nesne alır).",
+    },
+  },
+  {
+    topic: "Positions-/Direktionsverben",
+    exerciseType: "multipleChoice",
+    prompt: "Er ___ den Mantel in den Schrank.",
+    options: ["hängt", "liegt", "sitzt", "steht"],
+    correctIndex: 0,
+    explanation:
+      "Wohin? + Akk (in den Schrank) + Akk object (den Mantel) → direction verb **hängen** (regular: hängte, gehängt). The other three are all position verbs and need Dativ.",
+    hint: "He hangs the coat in the wardrobe.",
+    tr: {
+      hint: "Paltoyu dolaba asıyor.",
+      explanation:
+        "Wohin? + Akk (in den Schrank) + Akk nesne (den Mantel) → yön fiili **hängen** (düzenli: hängte, gehängt). Diğer üçü konum fiili, Dativ ister.",
     },
   },
 ];
