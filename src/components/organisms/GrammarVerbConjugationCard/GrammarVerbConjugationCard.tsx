@@ -60,7 +60,7 @@ export function GrammarVerbConjugationCard({
         className,
       )}
     >
-      <CardToolbar speakText={verb} current={current} total={total} />
+      <CardToolbar chipLabel={strings.try.chipLabels.grammar} current={current} total={total} />
 
       <div className="flex flex-col items-center gap-1 text-center py-1">
         <div className="font-sans font-bold text-[32px] text-fg leading-tight">

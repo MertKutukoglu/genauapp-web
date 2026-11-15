@@ -280,7 +280,7 @@ export function GrammarConnectorCarouselCard({
         className,
       )}
     >
-      <CardToolbar speakText={active.example} current={current} total={total} />
+      <CardToolbar chipLabel={strings.try.chipLabels.grammar} current={current} total={total} />
 
       {/* Headline block: big connector hero flanked by chevrons +
           English gloss underneath. Matches the Konjunktiv II /

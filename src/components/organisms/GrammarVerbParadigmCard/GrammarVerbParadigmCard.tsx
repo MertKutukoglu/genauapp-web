@@ -139,7 +139,7 @@ export function GrammarVerbParadigmCard({
       )}
     >
       <CardToolbar
-        speakText={displayVerb}
+        chipLabel={strings.try.chipLabels.grammar}
         current={current}
         total={total}
       />

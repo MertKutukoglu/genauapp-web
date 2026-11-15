@@ -121,7 +121,7 @@ export function GrammarVerbCardsCard({
       )}
     >
       <CardToolbar
-        speakText={active.prefix.replace(/-$/, "")}
+        chipLabel={strings.try.chipLabels.grammar}
         current={current}
         total={total}
       />

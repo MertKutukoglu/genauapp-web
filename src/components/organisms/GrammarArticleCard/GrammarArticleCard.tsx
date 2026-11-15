@@ -88,7 +88,7 @@ export function GrammarArticleCard({
         className,
       )}
     >
-      <CardToolbar speakText={sample.de} current={current} total={total} />
+      <CardToolbar chipLabel={strings.try.chipLabels.grammar} current={current} total={total} />
 
       {/* Hero — article word as the subject of the card, big enough
           to carry the whole frame; role below as a muted subtitle. */}

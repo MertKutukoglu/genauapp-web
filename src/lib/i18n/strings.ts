@@ -237,6 +237,12 @@ const en = {
       sampleLabel: "Example",
       ruleLabel: "Rule",
     },
+    chipLabels: {
+      grammar: "Grammar · Gramer",
+      words: "Words · Kelimeler",
+      sentence: "Sentence · Cümle",
+      reading: "Reading · Okuma",
+    },
     assemblyLearnCard: {
       promptScrambled: "Type the correct translation",
       promptChunkCompose: "Compose the correct word",
@@ -517,6 +523,12 @@ const tr: typeof en = {
       },
       sampleLabel: "Örnek",
       ruleLabel: "Kural",
+    },
+    chipLabels: {
+      grammar: "Gramer · Grammar",
+      words: "Kelimeler · Words",
+      sentence: "Cümle · Sentence",
+      reading: "Okuma · Reading",
     },
     assemblyLearnCard: {
       promptScrambled: "Doğru çeviriyi yaz",
