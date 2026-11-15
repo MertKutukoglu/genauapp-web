@@ -19,6 +19,7 @@ import { GrammarConnectorCarouselCard } from "@/components/organisms/GrammarConn
 import { GrammarExerciseMC } from "@/components/organisms/GrammarExerciseMC/GrammarExerciseMC";
 import { GrammarExerciseFillBlank } from "@/components/organisms/GrammarExerciseFillBlank/GrammarExerciseFillBlank";
 import { ExerciseCompletion } from "@/components/organisms/ExerciseCompletion/ExerciseCompletion";
+import { ExercisePartsPicker } from "@/components/organisms/ExercisePartsPicker/ExercisePartsPicker";
 import { computeSkillDeltas } from "@/lib/skills/map";
 import { useSkillStore } from "@/stores/skillStore";
 import { useChipStore, type ChipId } from "@/stores/chipStore";
@@ -81,14 +82,72 @@ export function GrammarChip({
 
   const [mode, setMode] = React.useState<WordsMode>(initialMode);
 
+  // Exercise-parts picker state (B1 Grammar at 40 items is the
+  // current trigger). `exercisePartIdx === null` means the picker is
+  // on screen; a number means that part's slice is running inside
+  // the normal ExerciseDeck. `parts === null` means the deck is small
+  // enough to run in one sitting and the picker is skipped entirely.
+  const [exercisePartIdx, setExercisePartIdx] = React.useState<
+    number | null
+  >(null);
+
+  const parts = React.useMemo(() => {
+    const EXERCISE_PART_THRESHOLD = 30;
+    const CHUNK = 15;
+    if (localizedItems.length <= EXERCISE_PART_THRESHOLD) return null;
+    const result: GrammarQuestion[][] = [];
+    for (let i = 0; i < localizedItems.length; i += CHUNK) {
+      result.push(localizedItems.slice(i, i + CHUNK));
+    }
+    return result;
+  }, [localizedItems]);
+
   // Localized stat label on the Learn completion — "Cards" / "Kartlar"
   // reads right when the Learn deck is a handful of anchors rather
   // than a long word list.
   const itemsLabel = locale === "tr" ? "Kartlar" : "Cards";
 
+  const handleModeChange = React.useCallback((m: WordsMode) => {
+    setMode(m);
+    // Reset part selection whenever the user flips modes so re-entry
+    // to Exercise always shows the picker again (if applicable).
+    setExercisePartIdx(null);
+  }, []);
+
+  const renderExerciseArea = () => {
+    if (!parts) {
+      return <ExerciseDeck items={localizedItems} />;
+    }
+    if (exercisePartIdx === null) {
+      return (
+        <ExercisePartsPicker
+          parts={parts.map((slice) => ({
+            topics: distinctTopics(slice),
+            count: slice.length,
+          }))}
+          onSelect={setExercisePartIdx}
+        />
+      );
+    }
+    const activeSlice = parts[exercisePartIdx];
+    return (
+      <div className="flex flex-col gap-3 min-h-0 lg:flex-1 lg:[&>*:last-child]:flex-1">
+        <PartsBreadcrumb
+          currentIdx={exercisePartIdx}
+          total={parts.length}
+          onBack={() => setExercisePartIdx(null)}
+        />
+        <ExerciseDeck
+          key={`part-${exercisePartIdx}`}
+          items={activeSlice}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className={clsx("flex flex-col gap-4 min-h-0", className)}>
-      <ModeToggle mode={mode} onChange={setMode} />
+      <ModeToggle mode={mode} onChange={handleModeChange} />
 
       <div className="lg:flex-1 lg:flex lg:flex-col [&>*]:lg:flex-1">
         {mode === "learn" ? (
@@ -98,8 +157,66 @@ export function GrammarChip({
             onSwitchToExercise={() => setMode("exercise")}
           />
         ) : (
-          <ExerciseDeck items={localizedItems} />
+          renderExerciseArea()
         )}
+      </div>
+    </div>
+  );
+}
+
+/** Distinct topics from a slice, preserving first-appearance order.
+ *  The picker uses these for its per-part preview line. */
+function distinctTopics(items: GrammarQuestion[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const q of items) {
+    if (!seen.has(q.topic)) {
+      seen.add(q.topic);
+      out.push(q.topic);
+    }
+  }
+  return out;
+}
+
+/** Tiny breadcrumb shown above ExerciseDeck when a part is active,
+ *  so the learner can bail back to the picker at any point —
+ *  including after completion, since ExerciseCompletion renders in
+ *  place of the deck and this row stays visible above it. */
+function PartsBreadcrumb({
+  currentIdx,
+  total,
+  onBack,
+}: {
+  currentIdx: number;
+  total: number;
+  onBack: () => void;
+}) {
+  const { locale } = useLocale();
+  const backLabel = locale === "tr" ? "← Bölümler" : "← Parts";
+  const positionLabel =
+    locale === "tr"
+      ? `Bölüm ${currentIdx + 1} / ${total}`
+      : `Part ${currentIdx + 1} of ${total}`;
+  return (
+    <div className="flex items-center justify-between gap-3 px-1">
+      <button
+        type="button"
+        onClick={onBack}
+        className={clsx(
+          "font-sans font-semibold text-[12px] uppercase tracking-wide",
+          "text-fg-muted hover:text-fg",
+          "transition-colors duration-150",
+          "focus:outline-none focus-visible:underline",
+        )}
+        style={{ letterSpacing: "0.4px" }}
+      >
+        {backLabel}
+      </button>
+      <div
+        className="font-sans font-semibold text-[12px] uppercase tracking-wide text-fg-faint"
+        style={{ letterSpacing: "0.4px" }}
+      >
+        {positionLabel}
       </div>
     </div>
   );
