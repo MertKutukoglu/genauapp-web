@@ -91,6 +91,17 @@ export function GrammarChip({
     number | null
   >(null);
 
+  // When the deck is split into parts (B1 Grammar at 40 items),
+  // Grammar workout only counts as "done" once EVERY part has been
+  // completed — mirroring the app's per-workout completion mantık.
+  // Per-part skill deltas still stage, per-part completion still
+  // renders; only the chip-level "done" flip is deferred to the last
+  // part. Set of completed part indices.
+  const [completedParts, setCompletedParts] = React.useState<Set<number>>(
+    () => new Set(),
+  );
+  const chipCompleteChip = useChipStore((s) => s.completeChip);
+
   const parts = React.useMemo(() => {
     const EXERCISE_PART_THRESHOLD = 30;
     const CHUNK = 15;
@@ -114,6 +125,27 @@ export function GrammarChip({
     setExercisePartIdx(null);
   }, []);
 
+  // Fires when an individual part finishes. Records the completed
+  // part and, once every part is done, flips the Grammar chip to
+  // "done" at the chip-store level (per Option B semantics).
+  const handlePartComplete = React.useCallback(
+    (partIdx: number) => {
+      if (!parts) return;
+      setCompletedParts((prev) => {
+        if (prev.has(partIdx)) return prev;
+        const next = new Set(prev);
+        next.add(partIdx);
+        if (next.size >= parts.length) {
+          // All parts finished — only now does Grammar count as
+          // a completed workout in the daily plan.
+          chipCompleteChip("grammar");
+        }
+        return next;
+      });
+    },
+    [parts, chipCompleteChip],
+  );
+
   const renderExerciseArea = () => {
     if (!parts) {
       return <ExerciseDeck items={localizedItems} />;
@@ -125,21 +157,26 @@ export function GrammarChip({
             topics: distinctTopics(slice),
             count: slice.length,
           }))}
+          completed={completedParts}
           onSelect={setExercisePartIdx}
         />
       );
     }
     const activeSlice = parts[exercisePartIdx];
+    const activePartIdx = exercisePartIdx;
     return (
       <div className="flex flex-col gap-3 min-h-0 lg:flex-1 lg:[&>*:last-child]:flex-1">
         <PartsBreadcrumb
-          currentIdx={exercisePartIdx}
+          currentIdx={activePartIdx}
           total={parts.length}
+          completed={completedParts}
           onBack={() => setExercisePartIdx(null)}
         />
         <ExerciseDeck
-          key={`part-${exercisePartIdx}`}
+          key={`part-${activePartIdx}`}
           items={activeSlice}
+          completesChip={false}
+          onComplete={() => handlePartComplete(activePartIdx)}
         />
       </div>
     );
@@ -181,14 +218,18 @@ function distinctTopics(items: GrammarQuestion[]): string[] {
 /** Tiny breadcrumb shown above ExerciseDeck when a part is active,
  *  so the learner can bail back to the picker at any point —
  *  including after completion, since ExerciseCompletion renders in
- *  place of the deck and this row stays visible above it. */
+ *  place of the deck and this row stays visible above it. The right
+ *  side shows a small "N / total done" tally so the learner sees how
+ *  many parts they've already cleared toward the full workout. */
 function PartsBreadcrumb({
   currentIdx,
   total,
+  completed,
   onBack,
 }: {
   currentIdx: number;
   total: number;
+  completed: Set<number>;
   onBack: () => void;
 }) {
   const { locale } = useLocale();
@@ -197,6 +238,10 @@ function PartsBreadcrumb({
     locale === "tr"
       ? `Bölüm ${currentIdx + 1} / ${total}`
       : `Part ${currentIdx + 1} of ${total}`;
+  const doneLabel =
+    locale === "tr"
+      ? `${completed.size} / ${total} tamam`
+      : `${completed.size} / ${total} done`;
   return (
     <div className="flex items-center justify-between gap-3 px-1">
       <button
@@ -213,10 +258,26 @@ function PartsBreadcrumb({
         {backLabel}
       </button>
       <div
-        className="font-sans font-semibold text-[12px] uppercase tracking-wide text-fg-faint"
-        style={{ letterSpacing: "0.4px" }}
+        className="flex items-center gap-3"
       >
-        {positionLabel}
+        <div
+          className="font-sans font-semibold text-[12px] uppercase tracking-wide text-fg-faint"
+          style={{ letterSpacing: "0.4px" }}
+        >
+          {positionLabel}
+        </div>
+        <div
+          className="font-sans font-semibold text-[12px] uppercase tracking-wide"
+          style={{
+            letterSpacing: "0.4px",
+            color:
+              completed.size === total
+                ? "var(--chip-grammar-color)"
+                : "var(--fg-muted)",
+          }}
+        >
+          {doneLabel}
+        </div>
       </div>
     </div>
   );
@@ -583,7 +644,24 @@ function LearnCardSwitch({
  * PostHog event with flat delta_* props (never the nested object —
  * the analytics SDK rejects those).
  */
-function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
+function ExerciseDeck({
+  items,
+  completesChip = true,
+  onComplete,
+}: {
+  items: GrammarQuestion[];
+  /** When false, the deck stages skill deltas + addStats but does NOT
+   *  call completeChip("grammar"). Used by the parts picker so the
+   *  chip only flips to "done" once every part has been completed —
+   *  mirroring the app's per-workout completion semantics. Default
+   *  true (single-deck behaviour). */
+  completesChip?: boolean;
+  /** Fires once when the deck reaches completion — the chip uses this
+   *  to track which parts have been finished so it can decide when
+   *  to call completeChip("grammar"). Ignored when completesChip is
+   *  true (the chip owns its own completion in that case). */
+  onComplete?: (summary: { correct: number; total: number }) => void;
+}) {
   const [remaining, setRemaining] = React.useState<GrammarQuestion[]>(items);
   const [correctCount, setCorrectCount] = React.useState(0);
   const [incorrectCount, setIncorrectCount] = React.useState(0);
@@ -733,7 +811,14 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
     setSessionDeltas(d);
     stageSkillDeltas(d);
     addStats({ correct: correctCount, total: deckSize });
-    completeChip("grammar");
+    if (completesChip) {
+      completeChip("grammar");
+    }
+    try {
+      onComplete?.({ correct: correctCount, total: deckSize });
+    } catch {
+      /* no-op */
+    }
 
     try {
       window.__track?.("demo_exercise_finish", {
@@ -748,7 +833,7 @@ function ExerciseDeck({ items }: { items: GrammarQuestion[] }) {
     } catch {
       /* no-op */
     }
-  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip, addStats]);
+  }, [done, correctCount, incorrectCount, deckSize, stageSkillDeltas, completeChip, addStats, completesChip, onComplete]);
 
   if (done) {
     return (

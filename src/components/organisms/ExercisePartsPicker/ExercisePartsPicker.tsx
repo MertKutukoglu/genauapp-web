@@ -34,12 +34,17 @@ export interface ExercisePartsPickerPart {
 
 export interface ExercisePartsPickerProps {
   parts: ExercisePartsPickerPart[];
+  /** Indices of parts the learner has already finished. Rendered as
+   *  a small "✓ done" badge so the picker reads as a running tally
+   *  toward the full workout. */
+  completed?: Set<number>;
   onSelect: (partIdx: number) => void;
   className?: string;
 }
 
 export function ExercisePartsPicker({
   parts,
+  completed,
   onSelect,
   className,
 }: ExercisePartsPickerProps) {
@@ -49,10 +54,11 @@ export function ExercisePartsPicker({
     locale === "tr" ? "Hangi bölümden başlayalım?" : "Pick a part to start";
   const subtitle =
     locale === "tr"
-      ? "Egzersiz uzun — küçük parçalara böldük."
-      : "The exercise is long — we broke it into smaller parts.";
+      ? "Egzersiz uzun — küçük parçalara böldük. Hepsi bitince Grammer tamamlanmış sayılır."
+      : "The exercise is long — we broke it into smaller parts. Grammar counts as done when every part is finished.";
   const questionsLabel = locale === "tr" ? "soru" : "questions";
   const partLabel = locale === "tr" ? "Bölüm" : "Part";
+  const doneBadge = locale === "tr" ? "✓ tamam" : "✓ done";
 
   return (
     <div
@@ -76,6 +82,7 @@ export function ExercisePartsPicker({
         {parts.map((part, idx) => {
           const topicPreview = formatTopicPreview(part.topics, 3);
           const eyebrow = `${partLabel} ${idx + 1} / ${totalParts} · ${part.count} ${questionsLabel}`;
+          const isDone = completed?.has(idx) ?? false;
           return (
             <button
               key={idx}
@@ -89,15 +96,32 @@ export function ExercisePartsPicker({
               )}
               style={{
                 background: "var(--surface-sunk)",
-                border:
-                  "1px solid color-mix(in srgb, var(--chip-grammar-color) 20%, transparent)",
+                border: isDone
+                  ? "1px solid color-mix(in srgb, var(--chip-grammar-color) 55%, transparent)"
+                  : "1px solid color-mix(in srgb, var(--chip-grammar-color) 20%, transparent)",
               }}
             >
-              <div
-                className="font-sans font-semibold text-[12px] uppercase tracking-wide"
-                style={{ color: "var(--chip-grammar-color)", letterSpacing: "0.4px" }}
-              >
-                {eyebrow}
+              <div className="flex items-center justify-between gap-3">
+                <div
+                  className="font-sans font-semibold text-[12px] uppercase tracking-wide"
+                  style={{
+                    color: "var(--chip-grammar-color)",
+                    letterSpacing: "0.4px",
+                  }}
+                >
+                  {eyebrow}
+                </div>
+                {isDone ? (
+                  <div
+                    className="font-sans font-semibold text-[11px] uppercase tracking-wide"
+                    style={{
+                      color: "var(--chip-grammar-color)",
+                      letterSpacing: "0.4px",
+                    }}
+                  >
+                    {doneBadge}
+                  </div>
+                ) : null}
               </div>
               <div className="font-sans font-semibold text-[16px] text-fg leading-snug">
                 {topicPreview}
