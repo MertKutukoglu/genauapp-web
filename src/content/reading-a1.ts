@@ -53,12 +53,49 @@ export interface ReadingQuestion {
   };
 }
 
+/**
+ * ReadingHighlight — inline tap-to-translate hint for a single word
+ * (or a separable-verb pair) inside the passage. When a highlight is
+ * present, ReadingPassageCard underlines the matching word in the
+ * prose and opens a sticky chip at the top of the card on tap, with
+ * the German lemma and its EN / TR translation.
+ *
+ * Match strategy: the renderer walks the passage token-by-token and
+ * wraps the FIRST unclaimed occurrence of `surface` (case-sensitive,
+ * whole-word only). Word order inside the `highlights` array lets
+ * the author pin which occurrence counts when a word repeats.
+ *
+ * For separable verbs: set `kind: "verb-separable"` and `companion`
+ * to the detached prefix (or stem) as it appears elsewhere in the
+ * same sentence. Both tokens share the same highlight and open the
+ * same chip. A1 doesn't currently ship a separable example; the
+ * field is here so the type is stable when A2+ passages use it.
+ */
+export interface ReadingHighlight {
+  /** Exact surface form in the passage. Case-sensitive, whole-word. */
+  surface: string;
+  /** Dictionary / base form if different from `surface`. */
+  lemma?: string;
+  /** Drives the chip's header shape. */
+  kind: "noun" | "verb" | "verb-separable" | "prep" | "conn";
+  /** Nouns: article shown in the chip header ("die Lehrerin"). */
+  article?: "der" | "die" | "das";
+  /** English translation shown in the chip. */
+  en: string;
+  /** Turkish translation shown in the chip. */
+  tr: string;
+  /** Separable verbs: the detached prefix as it appears in the text. */
+  companion?: string;
+}
+
 export interface ReadingContent {
   title: string;
   subtitle: string;
   /** Full German text. `\n\n` splits paragraphs. */
   passage: string;
   questions: ReadingQuestion[];
+  /** Optional tap-to-translate hints over the passage. */
+  highlights?: ReadingHighlight[];
   tr?: {
     /**
      * Translated passage title. Shown as the big centered heading
@@ -80,6 +117,61 @@ export const READING_A1: ReadingContent = {
   subtitle: "A1 · ~1 min read",
   passage:
     "Max ist achtundzwanzig Jahre alt und wohnt in Berlin. Am Samstag bleibt er zu Hause. Morgens trinkt er einen Kaffee und liest ein Buch. Heute ist das Wetter schlecht, es regnet den ganzen Tag. Um zwölf Uhr isst Max ein Brot mit Käse. Dazu trinkt er ein Glas Wasser. Am Nachmittag telefoniert er mit seiner Schwester Anna. Anna ist zehn Jahre alt und geht in die Schule. Später kocht Max eine Suppe und sieht einen Film. Es ist ein ruhiger Tag.",
+  // Tap-to-translate hints: 5 verbs (2 strong w/ vowel change,
+  // 1 impersonal, 1 Latin loan, 1 regular) + 2 nouns (der + die).
+  // All are A1-common but easy to misread — worth the tap even for
+  // a learner who's seen them once.
+  highlights: [
+    {
+      surface: "wohnt",
+      lemma: "wohnen",
+      kind: "verb",
+      en: "to live (reside)",
+      tr: "yaşamak (ikamet etmek)",
+    },
+    {
+      surface: "liest",
+      lemma: "lesen",
+      kind: "verb",
+      en: "to read (stem-change: lesen → liest)",
+      tr: "okumak (kök değişimi: lesen → liest)",
+    },
+    {
+      surface: "regnet",
+      lemma: "regnen",
+      kind: "verb",
+      en: "to rain (impersonal: es regnet)",
+      tr: "yağmur yağmak (öznesiz: es regnet)",
+    },
+    {
+      surface: "Käse",
+      article: "der",
+      kind: "noun",
+      en: "cheese",
+      tr: "peynir",
+    },
+    {
+      surface: "telefoniert",
+      lemma: "telefonieren",
+      kind: "verb",
+      en: "to phone, to call (mit + Dat)",
+      tr: "telefon etmek (mit + Dat ile)",
+    },
+    {
+      surface: "sieht",
+      lemma: "sehen",
+      kind: "verb",
+      en: "to see, to watch (stem-change: sehen → sieht)",
+      tr: "görmek, izlemek (kök değişimi: sehen → sieht)",
+    },
+    {
+      surface: "Suppe",
+      article: "die",
+      kind: "noun",
+      en: "soup",
+      tr: "çorba",
+    },
+  ],
   questions: [
     {
       qType: "Main Idea",

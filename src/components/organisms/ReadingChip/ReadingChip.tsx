@@ -205,6 +205,7 @@ export function ReadingChip({
             title={localized.title}
             subtitle={localized.subtitle}
             passage={localized.passage}
+            highlights={localized.highlights}
             onStartExercise={() => handleModeChange("exercise")}
           />
         ) : done ? (
