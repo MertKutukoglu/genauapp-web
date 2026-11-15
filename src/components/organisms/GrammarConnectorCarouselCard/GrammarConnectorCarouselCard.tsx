@@ -366,13 +366,16 @@ export function GrammarConnectorCarouselCard({
         ))}
       </div>
 
-      {/* Anchor-level sample sentence as a secondary example line,
-          same component the rest of the Grammar deck uses, so the
-          card ends on the familiar highlighted-sample pattern. */}
+      {/* Sample sentence at the bottom. Prefers the ACTIVE
+          connector's own sample so the sunk tile rotates with the
+          chevron (B2 anchors ship one per variant). Falls back to
+          the anchor-level sample when the variant hasn't got one
+          — the B1 Konnektoren anchor still ships a single shared
+          sample, that path keeps working. */}
       <GrammarSampleSentence
-        sentence={sample.de}
-        highlight={sample.highlight}
-        translation={sample.en}
+        sentence={(active.sample ?? sample).de}
+        highlight={(active.sample ?? sample).highlight}
+        translation={(active.sample ?? sample).en}
       />
 
       <LearnActions

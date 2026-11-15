@@ -289,7 +289,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Hätte ich das gewusst, ...",
           highlight: "Hätte",
           rule:
-            "**haben + Partizip II**. Mental verbs (wissen, denken, glauben) take **haben** → ich hätte gewusst. Drop wenn and the verb jumps to position 1: **Hätte** ich das gewusst, ...",
+            "**haben + Partizip II**. Mental verbs (wissen, denken, glauben) take **haben**.",
+          sample: {
+            de: "Hätte ich das gewusst, wäre ich gekommen.",
+            highlight: "Hätte",
+            en: "Had I known that, I would have come.",
+          },
         },
         {
           word: "hätte ... geholfen",
@@ -297,7 +302,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Ich hätte dir gern geholfen.",
           highlight: "hätte",
           rule:
-            "**haben + Partizip II**. Transitive verbs with an object (dir, mir) take **haben**. Classic polite regret: Ich hätte dir gern geholfen, aber ...",
+            "**haben + Partizip II**. Transitive verbs with an object (dir, mir, uns) take **haben**.",
+          sample: {
+            de: "Ich hätte dir gern geholfen, aber ich hatte keine Zeit.",
+            highlight: "hätte",
+            en: "I would have liked to help you, but I didn't have time.",
+          },
         },
         {
           word: "wäre ... gekommen",
@@ -305,7 +315,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Ich wäre gern gekommen.",
           highlight: "wäre",
           rule:
-            "**sein + Partizip II**. Movement (kommen, gehen, fahren) takes **sein** → ich wäre gekommen. The 'I would have joined you' line at the party you missed.",
+            "**sein + Partizip II**. Movement (kommen, gehen, fahren) takes **sein**.",
+          sample: {
+            de: "Ich wäre gern zu deiner Party gekommen.",
+            highlight: "wäre",
+            en: "I would have liked to come to your party.",
+          },
         },
         {
           word: "wäre ... geblieben",
@@ -313,7 +328,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Wir wären länger geblieben.",
           highlight: "wären",
           rule:
-            "**sein + Partizip II**. Staying in place and change of state (bleiben, werden, aufstehen) take **sein** → wir wären geblieben. Also: wir wären länger geblieben.",
+            "**sein + Partizip II**. Staying in place and change of state (bleiben, werden, aufstehen) take **sein**.",
+          sample: {
+            de: "Ohne den Regen wären wir länger geblieben.",
+            highlight: "wären",
+            en: "Without the rain, we would have stayed longer.",
+          },
         },
       ],
       sample: {
@@ -341,22 +361,26 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           {
             english: "bilirdim",
             rule:
-              "**haben + Partizip II**. Zihinsel fiiller (wissen, denken, glauben) **haben** alır → ich hätte gewusst. wenn düşerse fiil 1. pozisyona atlar: **Hätte** ich das gewusst, ...",
+              "**haben + Partizip II**. Zihinsel fiiller (wissen, denken, glauben) **haben** alır.",
+            sample: { en: "Bunu bilseydim gelirdim." },
           },
           {
             english: "yardım ederdim",
             rule:
-              "**haben + Partizip II**. Nesne alan geçişli fiiller (dir, mir) **haben** alır. Klasik kibar pişmanlık: Ich hätte dir gern geholfen, aber ...",
+              "**haben + Partizip II**. Nesne alan geçişli fiiller (dir, mir, uns) **haben** alır.",
+            sample: { en: "Sana seve seve yardım ederdim ama vaktim yoktu." },
           },
           {
             english: "gelirdim",
             rule:
-              "**sein + Partizip II**. Hareket (kommen, gehen, fahren) **sein** alır → ich wäre gekommen. Kaçırdığın partideki 'gelmek isterdim'.",
+              "**sein + Partizip II**. Hareket (kommen, gehen, fahren) **sein** alır.",
+            sample: { en: "Partine seve seve gelirdim." },
           },
           {
             english: "kalırdım",
             rule:
-              "**sein + Partizip II**. Yerinde kalma ve durum değişikliği (bleiben, werden, aufstehen) **sein** alır → wir wären geblieben. Ayrıca: wir wären länger geblieben.",
+              "**sein + Partizip II**. Yerinde kalma ve durum değişikliği (bleiben, werden, aufstehen) **sein** alır.",
+            sample: { en: "Yağmur olmasaydı daha uzun kalırdık." },
           },
         ],
       },
@@ -382,8 +406,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           english: "von + thing",
           example: "Das hängt davon ab. Wovon?",
           highlight: "davon",
-          rule:
-            "**von + thing** → **davon**. Classic use: **abhängen von** → Das hängt davon ab (that depends on it). Ask with **Wovon**?",
+          rule: "**von + thing** → **davon**. Ask with **Wovon**?",
+          sample: {
+            de: "Hängt das vom Wetter ab? Ja, das hängt davon ab.",
+            highlight: "davon",
+            en: "Does that depend on the weather? Yes, it depends on it.",
+          },
         },
         {
           word: "darauf / worauf",
@@ -391,23 +419,36 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Ich freue mich darauf. Worauf?",
           highlight: "darauf",
           rule:
-            "**auf + thing** → **darauf**. The **r** is inserted because auf starts with a vowel. **sich freuen auf** → freue mich darauf (looking forward to it).",
+            "**auf + thing** → **darauf**. The **r** is inserted because auf starts with a vowel.",
+          sample: {
+            de: "Freust du dich auf den Urlaub? Ich freue mich sehr darauf.",
+            highlight: "darauf",
+            en: "Are you looking forward to the holiday? I'm really looking forward to it.",
+          },
         },
         {
           word: "damit / womit",
           english: "mit + thing",
           example: "Ich bin damit zufrieden. Womit?",
           highlight: "damit",
-          rule:
-            "**mit + thing** → **damit**. zufrieden **mit**, einverstanden **mit** — anything 'with' an idea or thing. **Womit** asks.",
+          rule: "**mit + thing** → **damit**. Ask with **Womit**?",
+          sample: {
+            de: "Bist du mit der Antwort zufrieden? Ja, ich bin damit zufrieden.",
+            highlight: "damit",
+            en: "Are you happy with the answer? Yes, I'm happy with it.",
+          },
         },
         {
           word: "dafür / wofür",
           english: "für + thing",
           example: "Ich interessiere mich dafür. Wofür?",
           highlight: "dafür",
-          rule:
-            "**für + thing** → **dafür**. **sich interessieren für**, **sich entscheiden für**. **Wofür** interessierst du dich?",
+          rule: "**für + thing** → **dafür**. Ask with **Wofür**?",
+          sample: {
+            de: "Wofür interessierst du dich? Für Politik. Ich interessiere mich sehr dafür.",
+            highlight: "dafür",
+            en: "What are you interested in? Politics. I'm very interested in it.",
+          },
         },
       ],
       sample: {
@@ -435,23 +476,24 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
         connectors: [
           {
             english: "von + şey",
-            rule:
-              "**von + şey** → **davon**. Klasik kullanım: **abhängen von** → Das hängt davon ab (ona bağlı). Soru: **Wovon**?",
+            rule: "**von + şey** → **davon**. Soru: **Wovon**?",
+            sample: { en: "Havaya mı bağlı? Evet, ona bağlı." },
           },
           {
             english: "auf + şey",
             rule:
-              "**auf + şey** → **darauf**. Araya **r** girer çünkü auf ünlüyle başlar. **sich freuen auf** → freue mich darauf (sabırsızlanıyorum).",
+              "**auf + şey** → **darauf**. Araya **r** girer çünkü auf ünlüyle başlar.",
+            sample: { en: "Tatili iple çekiyor musun? Evet, çok sabırsızlanıyorum." },
           },
           {
             english: "mit + şey",
-            rule:
-              "**mit + şey** → **damit**. zufrieden **mit**, einverstanden **mit** — bir fikir ya da şeyle ilgili her şey. Soru: **Womit**?",
+            rule: "**mit + şey** → **damit**. Soru: **Womit**?",
+            sample: { en: "Cevaptan memnun musun? Evet, memnunum." },
           },
           {
             english: "für + şey",
-            rule:
-              "**für + şey** → **dafür**. **sich interessieren für**, **sich entscheiden für**. **Wofür** interessierst du dich?",
+            rule: "**für + şey** → **dafür**. Soru: **Wofür**?",
+            sample: { en: "Neyle ilgileniyorsun? Siyasetle. Çok ilgileniyorum." },
           },
         ],
       },
@@ -519,7 +561,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Sie muss krank sein.",
           highlight: "muss",
           rule:
-            "Strongest certainty: **almost sure**. Use when the evidence is clear. Das Licht ist an, ihr Auto steht vor der Tür → sie **muss** zu Hause sein.",
+            "Strongest certainty on the scale: **almost sure**, used when the evidence is clear.",
+          sample: {
+            de: "Das Licht ist an und ihr Auto steht vor der Tür. Sie muss zu Hause sein.",
+            highlight: "muss",
+            en: "The light is on and her car is outside. She must be home.",
+          },
         },
         {
           word: "dürfte",
@@ -527,7 +574,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Er dürfte zu Hause sein.",
           highlight: "dürfte",
           rule:
-            "Educated guess: **probably**. Softer than muss, more confident than kann. Es ist 7 Uhr → er **dürfte** schon zu Hause sein.",
+            "Educated guess: **probably**. Softer than muss, more confident than kann.",
+          sample: {
+            de: "Es ist schon spät. Er dürfte schon zu Hause sein.",
+            highlight: "dürfte",
+            en: "It's already late. He's probably home by now.",
+          },
         },
         {
           word: "können",
@@ -535,7 +587,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Das kann stimmen.",
           highlight: "kann",
           rule:
-            "Open possibility: **might**. The weakest guess on the scale — leaves room for it being false. Das **kann** stimmen, es **könnte** aber auch falsch sein.",
+            "Open possibility: **might**. The weakest guess on the scale, leaves room for it being false.",
+          sample: {
+            de: "Das kann stimmen, aber es könnte auch falsch sein.",
+            highlight: "kann",
+            en: "That could be true, but it could also be wrong.",
+          },
         },
         {
           word: "sollen",
@@ -543,7 +600,12 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           example: "Er soll sehr reich sein.",
           highlight: "soll",
           rule:
-            "Hearsay: **I heard**, like Turkish **-mış**. Marks something as reported, not claimed by you. Er **soll** reich sein = people say he's rich (I'm not vouching).",
+            "Off the scale: **hearsay**, like Turkish **-mış**. Marks something as reported, not claimed by you.",
+          sample: {
+            de: "Laut Zeitung soll das Konzert schon ausverkauft sein.",
+            highlight: "soll",
+            en: "According to the paper, the concert is supposed to be sold out already.",
+          },
         },
       ],
       sample: {
@@ -572,22 +634,26 @@ export const GRAMMAR_B2: GrammarQuestion[] = [
           {
             english: "...-malı (neredeyse eminim)",
             rule:
-              "En güçlü kesinlik: **neredeyse eminim**. Kanıt netken kullan. Işık açık, arabası kapıda → **muss** zu Hause sein.",
+              "Ölçekteki en güçlü kesinlik: **neredeyse eminim**, kanıt netken kullanılır.",
+            sample: { en: "Işık açık ve arabası kapının önünde. Evde olmalı." },
           },
           {
             english: "muhtemelen",
             rule:
-              "Mantıklı tahmin: **muhtemelen**. muss'tan yumuşak, kann'dan daha emin. Es ist 7 Uhr → er **dürfte** schon zu Hause sein.",
+              "Mantıklı tahmin: **muhtemelen**. muss'tan yumuşak, kann'dan daha emin.",
+            sample: { en: "Saat çok geç oldu. Şimdiye kadar evde olmalı." },
           },
           {
             english: "olabilir",
             rule:
-              "Açık ihtimal: **olabilir**. Ölçekteki en zayıf tahmin — yanlış olma ihtimalini de bırakır. Das **kann** stimmen, aber es **könnte** auch falsch sein.",
+              "Açık ihtimal: **olabilir**. Ölçekteki en zayıf tahmin, yanlış olma ihtimalini de bırakır.",
+            sample: { en: "Doğru olabilir, ama yanlış da olabilir." },
           },
           {
             english: "...-mış (duyum)",
             rule:
-              "Duyum: **duydum**, Türkçedeki **-mış** gibi. Bir şeyi kendi iddian değil, aktarım olarak işaretler. Er **soll** reich sein = zenginmiş diyorlar (ben garanti vermiyorum).",
+              "Ölçek dışı: **duyum**, Türkçedeki **-mış** gibi. Bir şeyi kendi iddian değil, aktarım olarak işaretler.",
+            sample: { en: "Gazeteye göre konserin biletleri tükenmiş." },
           },
         ],
       },

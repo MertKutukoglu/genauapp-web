@@ -296,8 +296,18 @@ export interface ConnectorCard {
   verbFinal?: string;
   /** Carousel-only: per-connector rule shown in the purple
    *  RuleCard below the formula strip. Replaces the anchor's
-   *  shared `note` for the active card. Supports `**bold**`. */
+   *  shared `note` for the active card. Supports `**bold**`.
+   *  Keep it to the CORE PRINCIPLE only — one short line. The
+   *  example on the card already shows the worked form, and the
+   *  bottom sample reinforces it; the rule mustn't restate either. */
   rule?: string;
+  /** Carousel-only: per-connector sample sentence shown in the
+   *  sunk GrammarSampleSentence tile at the bottom of the card.
+   *  When present, the carousel uses this instead of the anchor's
+   *  shared `sample` so the sample rotates with the chevron.
+   *  Without it, the anchor sample stays visible (B1 Konnektoren
+   *  behaviour, kept for backward compatibility). */
+  sample?: GrammarSample;
 }
 
 /**
@@ -462,10 +472,14 @@ export interface GrammarLocaleOverlay {
      * B1 `connectorCarousel`: per-connector english + rule swap.
      * Same length and order as `learn.connectors`. `word`,
      * `example`, `highlight`, `verbFinal` stay German.
+     * `sample.en` lets the per-variant bottom-sample gloss
+     * localize while the German sentence stays German (same
+     * split as GrammarSample everywhere else).
      */
     connectors?: Array<{
       english?: string;
       rule?: string;
+      sample?: { en?: string };
     }>;
   };
 }
@@ -1019,13 +1033,20 @@ export function localizeGrammar(
 
     // Connector carousel: swap each connector's english + rule
     // same-index; `word` + `example` + `verbFinal` stay German.
+    // Per-variant sample (bottom sunk tile) also localizes its EN
+    // gloss while the German sentence + highlight stay German.
     if (learn.connectors && learn.connectors.length > 0) {
       localizedLearn.connectors = learn.connectors.map((c, i) => {
         const trC = trLearn.connectors?.[i];
+        const trSampleEn = trC?.sample?.en;
         return {
           ...c,
           english: trC?.english ?? c.english,
           rule: trC?.rule ?? c.rule,
+          sample:
+            c.sample && trSampleEn
+              ? { ...c.sample, en: trSampleEn }
+              : c.sample,
         };
       });
     }
