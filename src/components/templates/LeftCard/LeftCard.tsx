@@ -79,6 +79,7 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
   const doneCount = useChipStore((s) =>
     Object.values(s.progress).filter((v) => v === "done").length,
   );
+  const selectedLevel = useChipStore((s) => s.selectedLevel);
 
   const progress = useSkillStore((s) => s.progress);
   const pending = useSkillStore((s) => s.pending);
@@ -155,14 +156,17 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
           null, so previews can suppress it. */}
       {stripNode ? (
         <Card ariaLabel={skillsT.title}>
-          <h2
-            className={clsx(
-              "font-display font-bold text-[22px] leading-tight",
-              "text-fg m-0 mb-3",
-            )}
-          >
-            {skillsT.title}
-          </h2>
+          <header className="flex items-center justify-between gap-3 mb-3">
+            <h2
+              className={clsx(
+                "font-display font-bold text-[22px] leading-tight",
+                "text-fg m-0",
+              )}
+            >
+              {skillsT.title}
+            </h2>
+            {selectedLevel ? <LevelPill level={selectedLevel} /> : null}
+          </header>
           {stripNode}
         </Card>
       ) : null}
@@ -198,5 +202,33 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
         onOpenChange={(o) => setOpenSheet(o ? "grammar" : null)}
       />
     </aside>
+  );
+}
+
+/** Small pill shown in the Skills card header that echoes the
+ *  CEFR level the user picked on the gateway. Users don't switch
+ *  levels often, but once they do it's easy to forget which deck
+ *  you're on; this gives the glance back without a trip to the
+ *  profile dropdown. Style is intentionally quiet: faint border,
+ *  muted text, same visual weight as the WorkoutCounter on the
+ *  sibling card so the two card headers balance. */
+function LevelPill({ level }: { level: string }) {
+  return (
+    <div
+      className={clsx(
+        "inline-flex items-center justify-center",
+        "px-2.5 py-1 rounded-full",
+        "font-sans font-semibold text-[12px] uppercase tracking-wide",
+        "text-fg-muted",
+      )}
+      style={{
+        letterSpacing: "0.4px",
+        background: "var(--surface-sunk)",
+        border: "1px solid color-mix(in srgb, var(--fg) 12%, transparent)",
+      }}
+      aria-label={`CEFR level: ${level}`}
+    >
+      {level}
+    </div>
   );
 }
