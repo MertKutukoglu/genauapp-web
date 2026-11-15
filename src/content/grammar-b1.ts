@@ -256,7 +256,7 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
       headline: "Komparativ / Superlativ",
       english: "Comparing adjectives: schnell → schneller → am schnellsten",
       note:
-        "Regular: adjective + **-er** for comparative, **am** + adjective + **-sten** for superlative. One-syllable adjectives with a / o / u often take umlaut: jung → j**ü**nger, alt → **ä**lter, groß → gr**ö**ßer. The three must-know irregulars (★): **gut → besser → am besten**, **viel → mehr → am meisten**, **gern → lieber → am liebsten**.",
+        "**-er** for Komparativ · **am … -sten** for Superlativ. Watch for ★ irregulars and umlaut on a / o / u.",
       comparisons: [
         { positive: "schnell", komparativ: "schneller", superlativ: "am schnellsten" },
         { positive: "klein", komparativ: "kleiner", superlativ: "am kleinsten" },
@@ -268,8 +268,8 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         { positive: "gern", komparativ: "lieber", superlativ: "am liebsten", irregular: true },
       ],
       sample: {
-        de: "Berlin ist größer als Köln, aber München ist am teuersten.",
-        en: "Berlin is bigger than Köln, but München is the most expensive.",
+        de: "Berlin ist größer als Köln.",
+        en: "Berlin is bigger than Köln.",
         highlight: "größer",
       },
     },
@@ -287,9 +287,9 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
         headline: "Komparativ / Superlativ",
         english: "Sıfat karşılaştırma: schnell → schneller → am schnellsten",
         note:
-          "Düzenli: sıfat + **-er** karşılaştırma için, **am** + sıfat + **-sten** üstünlük için. Tek heceli ve a / o / u içeren sıfatlar genelde umlaut alır: jung → j**ü**nger, alt → **ä**lter, groß → gr**ö**ßer. Mutlaka bilinmesi gereken üç düzensiz (★): **gut → besser → am besten**, **viel → mehr → am meisten**, **gern → lieber → am liebsten**.",
+          "**-er** = Komparativ · **am … -sten** = Superlativ. ★ düzensizlere ve a / o / u umlaut'una dikkat.",
         sample: {
-          en: "Berlin, Köln'den daha büyük; ama München en pahalı.",
+          en: "Berlin, Köln'den daha büyük.",
         },
       },
     },
