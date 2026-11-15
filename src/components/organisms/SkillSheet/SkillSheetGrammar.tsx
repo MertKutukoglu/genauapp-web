@@ -146,7 +146,37 @@ export function SkillSheetGrammar({
         />
       ) : (
         <>
-          {/* Section 1 — Topic performance (iOS parity) */}
+          {/* Section 1 — Topic Focus (now top-of-sheet).
+              The weakest-topic focus used to sit under the topics
+              list, but Mert wanted the "here's what to work on next"
+              answer front-and-centre — you open the sheet, you see
+              the call-to-action. Topic performance moved below. */}
+          <div ref={focusRef}>
+            <SkillSheetSection
+              label={t.focusLabel.replace(
+                "{topic}",
+                focusStat?.topic ?? "",
+              )}
+            >
+              {focusStat ? (
+                <TopicFocusCard
+                  stat={focusStat}
+                  practiceLabel={t.practice.replace(
+                    "{topic}",
+                    focusStat.topic,
+                  )}
+                  appOnlyLabel={t.mockPill}
+                  lowDataHint={t.lowDataHint}
+                  legendCorrect={t.legendCorrect}
+                  legendWrong={t.legendWrong}
+                  legendNoData={t.legendNoData}
+                  onPractice={handlePracticeTopic}
+                />
+              ) : null}
+            </SkillSheetSection>
+          </div>
+
+          {/* Section 2 — Topic performance (iOS parity) */}
           <SkillSheetSection label={t.topicsLabel}>
             <TierFilterRow
               active={tierFilter}
@@ -183,31 +213,6 @@ export function SkillSheetGrammar({
               </div>
             )}
           </SkillSheetSection>
-
-          {/* Section 2 — Topic Focus */}
-          <div ref={focusRef}>
-            <SkillSheetSection
-              label={t.focusLabel.replace(
-                "{topic}",
-                focusStat?.topic ?? "",
-              )}
-            >
-              {focusStat ? (
-                <TopicFocusCard
-                  stat={focusStat}
-                  practiceLabel={t.practice.replace(
-                    "{topic}",
-                    focusStat.topic,
-                  )}
-                  lowDataHint={t.lowDataHint}
-                  legendCorrect={t.legendCorrect}
-                  legendWrong={t.legendWrong}
-                  legendNoData={t.legendNoData}
-                  onPractice={handlePracticeTopic}
-                />
-              ) : null}
-            </SkillSheetSection>
-          </div>
         </>
       )}
 
@@ -470,6 +475,7 @@ function MomentumBadge({ m }: { m: Momentum }) {
 function TopicFocusCard({
   stat,
   practiceLabel,
+  appOnlyLabel,
   lowDataHint,
   legendCorrect,
   legendWrong,
@@ -478,6 +484,7 @@ function TopicFocusCard({
 }: {
   stat: TopicStat;
   practiceLabel: string;
+  appOnlyLabel: string;
   lowDataHint: string;
   legendCorrect: string;
   legendWrong: string;
@@ -542,19 +549,34 @@ function TopicFocusCard({
         ) : null}
       </div>
 
-      {/* Practice CTA */}
+      {/* Practice CTA — carries an "App only" badge: topic-level
+          drilling (practice just this one topic, skipping the rest
+          of the deck) lives in the app. On web the button still
+          reopens the Grammar workout, but the badge is the honest
+          signal that it isn't the full topic-focused drill. */}
       <button
         type="button"
         onClick={onPractice}
         className={clsx(
-          "h-11 rounded-xl",
+          "relative h-11 rounded-xl px-4",
+          "flex items-center justify-center gap-2",
           "font-sans font-bold text-[14px] text-white",
           "bg-[var(--chip-grammar-color)] hover:brightness-110 active:scale-[0.99]",
           "transition-[filter,transform] duration-150",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--chip-grammar-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         )}
       >
-        {practiceLabel} →
+        <span>{practiceLabel} →</span>
+        <span
+          className="font-sans font-bold text-[10px] uppercase px-1.5 py-0.5 rounded-full"
+          style={{
+            letterSpacing: "0.4px",
+            background: "rgba(255,255,255,0.22)",
+            color: "#fff",
+          }}
+        >
+          {appOnlyLabel}
+        </span>
       </button>
     </div>
   );

@@ -109,17 +109,20 @@ export function LeftCard({ skillStrip, className }: LeftCardProps) {
   // detail view. Without pending, open immediately.
   const handleRingTap = React.useCallback(
     (skill: SkillStripId) => {
-      const wasPending = Boolean(pendingFlags[skill]);
-      if (wasPending) collect(skill);
-      const openDelay = wasPending ? 500 : 0;
-      // Vocab + Grammar have detail sheets; Reading / Writing fall
-      // through to collect-only behaviour until their sheets land.
-      if (skill !== "vocab" && skill !== "grammar") return;
-      if (openDelay === 0) {
-        setOpenSheet(skill);
-      } else {
-        window.setTimeout(() => setOpenSheet(skill), openDelay);
+      // Two-tap pattern per Mert: a ring with a pending delta
+      // collects on the first tap (ring tweens up) and does NOT
+      // open the sheet. The sheet opens on the second tap, once
+      // the user has seen the earned moment. This separates
+      // "collect my progress" from "show me the details" so
+      // neither surprises the other.
+      if (pendingFlags[skill]) {
+        collect(skill);
+        return;
       }
+      // Vocab + Grammar have detail sheets; Reading / Writing fall
+      // through to no-op until their sheets land.
+      if (skill !== "vocab" && skill !== "grammar") return;
+      setOpenSheet(skill);
     },
     [pendingFlags, collect],
   );
