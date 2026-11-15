@@ -1220,6 +1220,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           verbFinal: "regnet",
           rule:
             "**obwohl** marks a **concession** — the main clause happens despite the subclause. Pairs well with 'trotzdem' or just stands alone.",
+          sample: {
+            de: "Ich bleibe zu Hause, obwohl das Wetter schön ist.",
+            en: "I'm staying home even though the weather is nice.",
+            highlight: "obwohl",
+          },
         },
         {
           word: "damit",
@@ -1228,6 +1233,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           verbFinal: "kann",
           rule:
             "**damit** marks a **purpose** — the main clause happens in order to make the subclause happen. Different subjects between clauses; same subject uses **um … zu**.",
+          sample: {
+            de: "Sie spart Geld, damit sie reisen kann.",
+            en: "She saves money so that she can travel.",
+            highlight: "damit",
+          },
         },
         {
           word: "nachdem",
@@ -1236,6 +1246,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           verbFinal: "habe",
           rule:
             "**nachdem** marks **temporal order**: first the subclause event, then the main clause. Often pairs with Perfekt in the subclause and Präsens in the main clause.",
+          sample: {
+            de: "Nachdem er geduscht hat, frühstückt er.",
+            en: "After he has showered, he has breakfast.",
+            highlight: "Nachdem",
+          },
         },
         {
           word: "seit",
@@ -1244,6 +1259,11 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
           verbFinal: "wohne",
           rule:
             "**seit** marks a **duration starting in the past that continues**. German uses Präsens here where English would use the present perfect ('since I have been living').",
+          sample: {
+            de: "Seit sie Deutsch lernt, versteht sie den Film.",
+            en: "Since she has been learning German, she understands the film.",
+            highlight: "Seit",
+          },
         },
       ],
       sample: {
@@ -1271,21 +1291,31 @@ export const GRAMMAR_B1: GrammarQuestion[] = [
             english: "rağmen (karşıtlık)",
             rule:
               "**obwohl** **karşıtlık** kurar — ana cümle, yan cümleye RAĞMEN gerçekleşir. 'trotzdem' ile eşleşir ya da tek başına kullanılır.",
+            sample: { en: "Hava güzel olmasına rağmen evde kalıyorum." },
           },
           {
             english: "... olsun diye (amaç)",
             rule:
               "**damit** **amaç** kurar — ana cümle, yan cümle olsun diye gerçekleşir. İki farklı özne varsa damit; aynı özneyse **um … zu**.",
+            sample: {
+              en: "Seyahat edebilsin diye para biriktiriyor.",
+            },
           },
           {
             english: "... -dıktan sonra (zaman)",
             rule:
               "**nachdem** **zaman sırası** kurar: önce yan cümle, sonra ana cümle. Genelde yan cümlede Perfekt, ana cümlede Präsens.",
+            sample: {
+              en: "Duş aldıktan sonra kahvaltı ediyor.",
+            },
           },
           {
             english: "... den beri (süre)",
             rule:
               "**seit** geçmişte başlayıp **devam eden süreyi** kurar. Almanca burada Präsens kullanır (İngilizce 'have been living' derken).",
+            sample: {
+              en: "Almanca öğrendiğinden beri filmi anlıyor.",
+            },
           },
         ],
       },
