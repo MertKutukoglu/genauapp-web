@@ -44,11 +44,24 @@ const WORD_SPLIT_RE = /([A-Za-zÄÖÜäöüß]+)/;
 /**
  * Split a single paragraph (no `\n\n`) into tokens. Paragraph-level
  * splitting happens in the caller — this keeps the function pure.
+ *
+ * Two match sets travel through the whole passage:
+ *   - surfaceClaimed: highlights whose `surface` word was already
+ *     bound to a token.
+ *   - companionClaimed: highlights whose detached prefix (companion)
+ *     was already bound. Companion can only match AFTER its own
+ *     highlight's surface was claimed, and only once — otherwise
+ *     every later occurrence of a common preposition (e.g. "auf"
+ *     in "Schlüssel auf den Tisch") would keep latching onto the
+ *     first separable verb and read as part of it. Separable verbs
+ *     in German main clauses always place the stem first and the
+ *     prefix last, so this ordering reflects how the passage reads.
  */
 function tokenizeParagraph(
   paragraph: string,
   highlights: ReadingHighlight[],
-  claimed: Set<number>,
+  surfaceClaimed: Set<number>,
+  companionClaimed: Set<number>,
 ): HighlightToken[] {
   const parts = paragraph.split(WORD_SPLIT_RE);
   const out: HighlightToken[] = [];
@@ -59,26 +72,32 @@ function tokenizeParagraph(
       out.push({ kind: "text", text: part });
       continue;
     }
-    // Word part — first try surface matches, then companion matches.
+    // Word part — first try surface matches.
     let matched: ReadingHighlight | null = null;
     for (let i = 0; i < highlights.length; i++) {
-      if (claimed.has(i)) continue;
+      if (surfaceClaimed.has(i)) continue;
       const h = highlights[i];
       if (h.surface === part) {
         matched = h;
-        claimed.add(i);
+        surfaceClaimed.add(i);
         break;
       }
     }
     if (!matched) {
-      // Companion pass — a separable verb's detached prefix can
-      // still match an already-claimed highlight (both tokens open
-      // the same chip). Only sep-verb highlights have a companion.
+      // Companion pass — only highlights whose surface has already
+      // been claimed AND whose companion hasn't been claimed yet
+      // can bind a detached prefix. This stops a bare preposition
+      // elsewhere in the text from being read as the separable
+      // prefix of a verb we're already done rendering.
       for (let i = 0; i < highlights.length; i++) {
+        if (!surfaceClaimed.has(i)) continue;
+        if (companionClaimed.has(i)) continue;
         const h = highlights[i];
-        if (!h.companion || h.companion !== part) continue;
-        matched = h;
-        break;
+        if (h.companion && h.companion === part) {
+          matched = h;
+          companionClaimed.add(i);
+          break;
+        }
       }
     }
     if (matched) {
@@ -111,11 +130,14 @@ export function tokenizeHighlights(
     });
     return out;
   }
-  const claimed = new Set<number>();
+  const surfaceClaimed = new Set<number>();
+  const companionClaimed = new Set<number>();
   const paragraphs = passage.split("\n\n");
   const out: HighlightToken[] = [];
   paragraphs.forEach((para, i) => {
-    out.push(...tokenizeParagraph(para, highlights, claimed));
+    out.push(
+      ...tokenizeParagraph(para, highlights, surfaceClaimed, companionClaimed),
+    );
     if (i < paragraphs.length - 1) {
       out.push({ kind: "text", text: "\n\n" });
     }

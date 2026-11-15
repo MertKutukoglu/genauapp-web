@@ -3,7 +3,6 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { tryCardSurface } from "@/lib/ui/cardChrome";
-import { CardToolbar } from "@/components/molecules/CardToolbar/CardToolbar";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import type { ReadingHighlight } from "@/content/reading-a1";
 import {
@@ -102,10 +101,13 @@ export function ReadingPassageCard({
         className,
       )}
     >
-      {/* No counter pill — one passage, no deck position. The speaker
-          target is the full passage (TTS-friendly German with
-          lang='de-DE' inside SpeakerButton). */}
-      <CardToolbar speakText={passage} />
+      {/* No toolbar on Reading. The counter pill would be empty
+          (one passage, no deck position), and the whole-passage
+          speaker played the full text start-to-finish with no
+          pause control — a cumbersome affordance for a wall of
+          prose. Per-word pronunciation now lives on the
+          HighlightChip (the chip's 🔊 button speaks just the
+          lemma), which is the actual useful case. */}
 
       {/* Header — title + subtitle, centered. */}
       <div className="flex flex-col items-center gap-1 text-center py-1">
