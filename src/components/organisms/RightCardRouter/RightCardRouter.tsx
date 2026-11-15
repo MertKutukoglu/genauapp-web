@@ -16,6 +16,7 @@ import { WORDS_B2 } from "@/content/words-b2";
 import { GRAMMAR_A1 } from "@/content/grammar-a1";
 import { GRAMMAR_A2 } from "@/content/grammar-a2";
 import { GRAMMAR_B1 } from "@/content/grammar-b1";
+import { GRAMMAR_B2 } from "@/content/grammar-b2";
 import { SENTENCE_A1 } from "@/content/sentence-a1";
 import { SENTENCE_A2 } from "@/content/sentence-a2";
 import { SENTENCE_B1 } from "@/content/sentence-b1";
@@ -70,15 +71,15 @@ export function RightCardRouter({ className }: RightCardRouterProps) {
         : selectedLevel === "A2"
           ? WORDS_A2
           : WORDS_A1;
-  // Grammar ships A1, A2, and now B1. Sentence still only ships
-  // A1 + A2; B1 and B2 users fall back to A2 (closer to their
-  // baseline than A1) until B1/B2 Sentence decks land.
+  // Grammar now ships A1, A2, B1, and B2.
   const grammarDeck =
-    selectedLevel === "B1" || selectedLevel === "B2"
-      ? GRAMMAR_B1
-      : selectedLevel === "A2"
-        ? GRAMMAR_A2
-        : GRAMMAR_A1;
+    selectedLevel === "B2"
+      ? GRAMMAR_B2
+      : selectedLevel === "B1"
+        ? GRAMMAR_B1
+        : selectedLevel === "A2"
+          ? GRAMMAR_A2
+          : GRAMMAR_A1;
   // Sentence now ships A1, A2, B1, and B2.
   const sentenceDeck =
     selectedLevel === "B2"

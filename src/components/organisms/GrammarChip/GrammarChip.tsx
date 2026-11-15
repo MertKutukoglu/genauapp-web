@@ -330,12 +330,36 @@ function LearnCardSwitch({
       if (!learn.pairs || learn.pairs.length === 0) {
         return <EmptyDeck label="Missing pairs data." />;
       }
+      // Normalise B1's aktiv/passiv keys to the card's generic
+      // left/right shape. labels stays unset so the card falls back
+      // to "Aktiv" / "Passiv".
       return (
         <GrammarActivePassiveCard
           headline={learn.headline ?? ""}
           english={learn.english ?? ""}
           note={learn.note}
-          pairs={learn.pairs}
+          pairs={learn.pairs.map((p) => ({ left: p.aktiv, right: p.passiv }))}
+          sample={learn.sample}
+          current={current}
+          total={total}
+          onRepeat={onRepeat}
+          onIKnow={onIKnow}
+        />
+      );
+    case "styleComparison":
+      if (!learn.stylePairs || learn.stylePairs.length === 0) {
+        return <EmptyDeck label="Missing style-pairs data." />;
+      }
+      // Same card as activePassiveComparison, generalised with
+      // caller-supplied column labels + generic left/right pairs.
+      // Drives the B2 Nominalstil anchor.
+      return (
+        <GrammarActivePassiveCard
+          headline={learn.headline ?? ""}
+          english={learn.english ?? ""}
+          note={learn.note}
+          pairs={learn.stylePairs}
+          labels={learn.labels}
           sample={learn.sample}
           current={current}
           total={total}

@@ -54,7 +54,13 @@ export type GrammarLearnLayout =
   // the Sentence-chip formula-strip lesson included on every card
   // so the pattern ("Hauptsatz, Konnektor Subjekt ... Verb am
   // Ende") lands with each step.
-  | "connectorCarousel";
+  | "connectorCarousel"
+  // B2 layout — see GenauApp_Web_Try_Grammar_Content_B2.md §3.1:
+  // generalised `activePassiveComparison`. Same 2-column visual,
+  // but column labels (`Verbalstil` / `Nominalstil` for the B2
+  // Nominalstil anchor) and pair keys (`left` / `right`) come
+  // from data instead of being hard-coded Aktiv / Passiv.
+  | "styleComparison";
 
 /** A verb paradigm row: pronoun → fully-conjugated form. */
 export interface ParadigmForm {
@@ -214,6 +220,19 @@ export interface PassiveComparisonPair {
 }
 
 /**
+ * B2 `styleComparison` row: one plain → formal rewrite pair. Same
+ * visual as PassiveComparisonPair — the renderer tints the right
+ * column — but the keys are intentionally generic (`left` / `right`)
+ * so the layout doesn't read as "aktiv/passiv" when it really
+ * teaches something else. Paired with the `labels` field on
+ * GrammarLearnBlock, which decides the two column headers.
+ */
+export interface StyleComparisonPair {
+  left: string;
+  right: string;
+}
+
+/**
  * B1 `comparisonTable` row: one adjective across its three
  * degrees. Same visual family as `ParticipleForm` (3-col lookup
  * table where the middle column carries the pedagogical signal):
@@ -363,6 +382,14 @@ export interface GrammarLearnBlock {
   /** B1 `activePassiveComparison`: 3 Aktiv ↔ Passiv sentence
    *  pairs for the Vorgangspassiv anchor. */
   pairs?: PassiveComparisonPair[];
+  /** B2 `styleComparison`: 3 left ↔ right pairs with generic keys.
+   *  Mutually exclusive with `pairs` on a single card — the layout
+   *  decides which one it reads. */
+  stylePairs?: StyleComparisonPair[];
+  /** B2 `styleComparison`: the two column headers, left first. Also
+   *  honoured by `activePassiveComparison` when present — leave
+   *  unset there so the card falls back to "Aktiv" / "Passiv". */
+  labels?: [string, string];
   /** B1 `relativePronounGrid`: 4 gender rows × 3 case columns. */
   rows?: RelativePronounRow[];
   /** B1 `relativePronounGrid`: 2 inline-coloured example sentences
