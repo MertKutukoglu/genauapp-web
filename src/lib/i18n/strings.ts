@@ -25,6 +25,14 @@ const en = {
   nav: {
     origins: "Read our story",
     storyBanner: "Our story: how Genau started",
+    blog: "Blog",
+  },
+  blogIndex: {
+    title: "Blog",
+    description:
+      "Notes on how GenauApp teaches German: the pedagogy, the design choices, and the method behind every workout.",
+    emptyState: "No posts yet. Come back soon.",
+    postCardAria: "Open post",
   },
   // (`as const` is deliberately NOT used on `en`: it would narrow each
   // value to its literal string type and make the TR dict uninhabitable
@@ -312,6 +320,14 @@ const tr: typeof en = {
   nav: {
     origins: "Kökenler",
     storyBanner: "Hikayemiz: Genau nasıl başladı",
+    blog: "Blog",
+  },
+  blogIndex: {
+    title: "Blog",
+    description:
+      "GenauApp'in Almancayı nasıl öğrettiğine dair notlar: pedagoji, tasarım kararları ve her antrenmanın arkasındaki yöntem.",
+    emptyState: "Henüz yazı yok. Yakında tekrar bak.",
+    postCardAria: "Yazıyı aç",
   },
   languagePicker: {
     ariaLabel: "Dili değiştir",

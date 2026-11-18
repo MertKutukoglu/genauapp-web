@@ -6,7 +6,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { LanguagePicker } from "@/components/atoms/LanguagePicker/LanguagePicker";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle/ThemeToggle";
-import { NavOriginsLink } from "@/components/atoms/NavOriginsLink/NavOriginsLink";
+import { NavBlogLink } from "@/components/atoms/NavBlogLink/NavBlogLink";
 import { IOSBetaPill } from "@/components/atoms/IOSBetaPill/IOSBetaPill";
 
 /**
@@ -141,7 +141,7 @@ export function NavMenuSheet({ className }: NavMenuSheetProps) {
             <section className="flex flex-col gap-3">
               <GroupLabel>{moreGroupLabel}</GroupLabel>
               <div className="flex items-center gap-3 flex-wrap">
-                <NavOriginsLink />
+                <NavBlogLink />
                 <IOSBetaPill narrow="static" />
               </div>
             </section>

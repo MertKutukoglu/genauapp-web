@@ -3,7 +3,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Wordmark } from "@/components/atoms/Wordmark/Wordmark";
 import { IOSBetaPill } from "@/components/atoms/IOSBetaPill/IOSBetaPill";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle/ThemeToggle";
-import { NavOriginsLink } from "@/components/atoms/NavOriginsLink/NavOriginsLink";
+import { NavBlogLink } from "@/components/atoms/NavBlogLink/NavBlogLink";
 import { LanguagePicker } from "@/components/atoms/LanguagePicker/LanguagePicker";
 import { TryItButton } from "@/components/atoms/TryItButton/TryItButton";
 import { NavMenuSheet } from "@/components/organisms/NavMenuSheet/NavMenuSheet";
@@ -56,7 +56,7 @@ export function Topnav({ className }: TopnavProps) {
           sits between IOSBetaPill and LanguagePicker so it's the
           visual anchor of the cluster without floating at an edge. */}
       <div className="hidden md:flex items-center gap-2.5">
-        <NavOriginsLink />
+        <NavBlogLink />
         <IOSBetaPill />
         <TryItButton />
         <LanguagePicker />

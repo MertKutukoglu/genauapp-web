@@ -63,6 +63,7 @@ export function getLocaleFromPath(pathname: string): Locale {
  */
 export const EN_TO_TR_PATH: Record<string, string> = {
   "/": "/tr",
+  "/blog": "/tr/blog",
   "/blog/origins-of-genau": "/tr/blog/kokenler",
   "/impressum": "/tr/kunye",
   "/datenschutz": "/tr/gizlilik",
