@@ -7,7 +7,10 @@ import type { MetadataRoute } from "next";
  * discovered without manual submission.
  */
 export default function robots(): MetadataRoute.Robots {
-  const base = "https://genauapp.io";
+  // Match app/layout.tsx's canonical origin (www.genauapp.io). Using
+  // a different host here would make Google chase a sitemap URL on a
+  // host it never verified, so both must stay in lockstep.
+  const base = "https://www.genauapp.io";
   return {
     rules: [
       {

@@ -1,87 +1,125 @@
 import type { MetadataRoute } from "next";
+import { BLOG_POSTS } from "@/content/blog/posts";
 
 /**
- * sitemap.xml, the public surface we want indexed. Add new static
- * routes here as they land (blog posts, docs pages, product pages).
- * Dates are last-reviewed timestamps, bumped whenever content moves.
+ * sitemap.xml, the public surface we want indexed.
+ *
+ * Static pages (landing, try, legal, blog hub) live in a hardcoded
+ * list below; blog posts auto-expand from the BLOG_POSTS registry
+ * so publishing a new post never requires editing this file.
+ *
+ * Every entry carries `alternates.languages` pointing at its EN/TR
+ * sibling so Google reads the two-locale pairing straight from the
+ * sitemap, not only from each page's <link rel="alternate">. The
+ * domain here MUST match the canonical origin in app/layout.tsx
+ * (both resolve to www.genauapp.io) or Google treats the bare and
+ * www-prefixed variants as separate sites and splits authority.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://genauapp.io";
-  const now = new Date();
 
-  return [
-    {
-      url: `${base}/`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${base}/try`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${base}/blog/origins-of-genau`,
-      lastModified: new Date("2026-11-09"),
+const BASE = "https://www.genauapp.io";
+
+interface StaticPair {
+  en: string;
+  tr: string;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+  priority: number;
+  /** YYYY-MM-DD, author-maintained review date. Omit for today. */
+  lastReviewed?: string;
+}
+
+/** Non-blog surfaces. Each row groups the EN URL and its TR
+ *  counterpart so we emit one sitemap entry per locale with the
+ *  other side as an alternate, matching the pattern every post
+ *  page's `alternates.languages` already declares. */
+const STATIC_PAIRS: StaticPair[] = [
+  { en: "/", tr: "/tr", changeFrequency: "weekly", priority: 1.0 },
+  { en: "/try", tr: "/tr/try", changeFrequency: "monthly", priority: 0.8 },
+  { en: "/blog", tr: "/tr/blog", changeFrequency: "weekly", priority: 0.9 },
+  {
+    en: "/impressum",
+    tr: "/tr/kunye",
+    changeFrequency: "yearly",
+    priority: 0.2,
+    lastReviewed: "2026-11-10",
+  },
+  {
+    en: "/datenschutz",
+    tr: "/tr/gizlilik",
+    changeFrequency: "yearly",
+    priority: 0.2,
+    lastReviewed: "2026-11-10",
+  },
+  {
+    en: "/cookie-policy",
+    tr: "/tr/cerezler",
+    changeFrequency: "yearly",
+    priority: 0.2,
+    lastReviewed: "2026-11-10",
+  },
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+  const entries: MetadataRoute.Sitemap = [];
+
+  // Static pages: one entry per locale, each carrying the alternates
+  // map so Google sees both sides of the EN/TR pair.
+  for (const pair of STATIC_PAIRS) {
+    const lastModified = pair.lastReviewed
+      ? new Date(pair.lastReviewed)
+      : now;
+    const alternates = {
+      languages: {
+        en: `${BASE}${pair.en}`,
+        tr: `${BASE}${pair.tr}`,
+        "x-default": `${BASE}${pair.en}`,
+      },
+    };
+    entries.push({
+      url: `${BASE}${pair.en}`,
+      lastModified,
+      changeFrequency: pair.changeFrequency,
+      priority: pair.priority,
+      alternates,
+    });
+    entries.push({
+      url: `${BASE}${pair.tr}`,
+      lastModified,
+      changeFrequency: pair.changeFrequency,
+      priority: pair.priority * 0.95,
+      alternates,
+    });
+  }
+
+  // Blog posts: auto-expanded from the central registry so new posts
+  // appear in the sitemap the moment their entry lands in
+  // src/content/blog/posts.ts. publishedAt doubles as lastModified
+  // until a post is edited; bump the registry when that changes.
+  for (const post of BLOG_POSTS) {
+    if (post.hidden) continue;
+    const lastModified = new Date(post.en.publishedAt);
+    const alternates = {
+      languages: {
+        en: `${BASE}${post.en.href}`,
+        tr: `${BASE}${post.tr.href}`,
+        "x-default": `${BASE}${post.en.href}`,
+      },
+    };
+    entries.push({
+      url: `${BASE}${post.en.href}`,
+      lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
-      url: `${base}/impressum`,
-      lastModified: new Date("2026-11-09"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${base}/datenschutz`,
-      lastModified: new Date("2026-11-09"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${base}/cookie-policy`,
-      lastModified: new Date("2026-11-09"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    // Turkish surface.
-    {
-      url: `${base}/tr`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${base}/tr/blog/kokenler`,
-      lastModified: new Date("2026-11-10"),
+      alternates,
+    });
+    entries.push({
+      url: `${BASE}${post.tr.href}`,
+      lastModified: new Date(post.tr.publishedAt),
       changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${base}/tr/kunye`,
-      lastModified: new Date("2026-11-10"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${base}/tr/gizlilik`,
-      lastModified: new Date("2026-11-10"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${base}/tr/cerezler`,
-      lastModified: new Date("2026-11-10"),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${base}/tr/try`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-  ];
+      priority: 0.65,
+      alternates,
+    });
+  }
+
+  return entries;
 }
