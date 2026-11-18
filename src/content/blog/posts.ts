@@ -64,6 +64,25 @@ export interface BlogPost {
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "how-it-works",
+    en: {
+      title: "How GenauApp works, the 4 chips",
+      description:
+        "Every session is built from four chips: Words, Grammar, Sentence, Reading. Here is what each chip does, how it teaches, and why they add up to a workout you can actually finish.",
+      href: "/blog/how-it-works",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 4,
+    },
+    tr: {
+      title: "GenauApp nasıl çalışır, 4 chip",
+      description:
+        "Her session dört chip'ten kuruludur: Words, Grammar, Sentence, Reading. Her chip ne yapar, nasıl öğretir, ve bu dördü nasıl bir arada bir workout'a dönüşür, hepsi burada.",
+      href: "/tr/blog/nasil-calisir",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 4,
+    },
+  },
+  {
     slug: "how-skills-work",
     en: {
       title: "What skills are in GenauApp (and why they can go down)",
