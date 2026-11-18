@@ -63,14 +63,14 @@ export const BLOG_POSTS: BlogPost[] = [
     en: {
       title: "What skills are in GenauApp (and why they can go down)",
       description:
-        "Most apps count forward only. GenauApp's skill rings move both ways. Here is how each number grows, how it shrinks, and why the Speaking ring stays locked for now.",
+        "Every workout feeds three of your four skills, not one. The ring only climbs, but the arrow next to it tells the truth about your direction. Here is how it works.",
       href: "/blog/how-skills-work",
       publishedAt: "2026-11-18",
     },
     tr: {
       title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
       description:
-        "Çoğu dil uygulaması sadece ileri sayar. GenauApp'in skill ring'leri iki yönde de hareket eder. Her sayı nasıl büyür, nasıl küçülür, ve Speaking ring'i neden şimdilik kilitli, hepsi burada.",
+        "Her workout dört skill'inin üçünü birden besler, birini değil. Ring hep yükselir, ama yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
       href: "/tr/blog/skill-nedir",
       publishedAt: "2026-11-18",
     },

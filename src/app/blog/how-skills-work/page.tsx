@@ -15,7 +15,7 @@ import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 export const metadata: Metadata = {
   title: "What skills are in GenauApp (and why they can go down)",
   description:
-    "Most language apps count forward only. GenauApp's skill rings move both ways. Here is how each number grows, how it shrinks, and why the Speaking ring stays locked for now.",
+    "Every workout feeds three of your four skills, not one. The ring only climbs, but the arrow next to it tells the truth about your direction. Here is how it works.",
   alternates: {
     canonical: "/blog/how-skills-work",
     languages: {
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "What skills are in GenauApp (and why they can go down)",
     description:
-      "Most language apps count forward only. Here is how GenauApp's skill rings grow, shrink, and tell the truth about your German.",
+      "How GenauApp's skill rings grow as a network, how the honest direction arrow moves, and why we don't lie to you with a score that only counts up.",
     type: "article",
   },
 };
 
 const TOC = [
-  { id: "skills", label: "The five skills we track" },
-  { id: "grows", label: "How a skill grows" },
-  { id: "shrinks", label: "How a skill shrinks" },
+  { id: "skills", label: "The skills we track" },
+  { id: "grows", label: "How a skill grows (it's a network)" },
+  { id: "shrinks", label: "How a skill goes down (the arrow does)" },
   { id: "data", label: "When there isn't enough data" },
   { id: "speaking", label: "Why Speaking is locked" },
   { id: "payoff", label: "Why this matters" },
@@ -56,25 +56,29 @@ export default function HowSkillsWorkPage() {
       </p>
 
       <p>
-        GenauApp doesn&rsquo;t work that way. If you haven&rsquo;t practiced
-        Grammar in two weeks, your Grammar ring drops a notch. If your recent
-        accuracy on Vocabulary falls, the ring reflects that, with a small
-        arrow pointing down next to the number.
+        GenauApp doesn&rsquo;t work that way. If your recent Grammar answers
+        are worse than your historical ones, a small arrow next to the ring
+        flips from up to down. No &ldquo;stable&rdquo; shrug to spare
+        feelings. If accuracy dropped, the arrow says so.
       </p>
 
       <p>This is uncomfortable. It is also the point.</p>
 
       <p>
-        Below is what the app actually tracks, how each number moves, and
-        what we do when we don&rsquo;t have enough data to tell.
+        Below is what the app actually tracks, how each ring moves, why
+        every workout you finish feeds three skills at once rather than
+        one, and what we do when we don&rsquo;t have enough data to tell.
       </p>
 
-      <h2 id="skills">The five skills we track</h2>
+      <h2 id="skills">The skills we track</h2>
 
       <p>
-        Every learner carries five rings: Vocabulary, Grammar, Writing,
-        Reading, and Listening. A sixth, Speaking, stays locked for now, and
-        we will explain why in a moment.
+        Every learner carries a small set of rings: Vocabulary, Grammar,
+        Writing, and Reading in the current web demo. Listening joins them
+        when we are confident it measures honestly; Speaking, which would
+        be the next ring after that, stays locked until real speech
+        recognition lands. We will explain the locked ones at the end of
+        the post.
       </p>
 
       <p>
@@ -97,58 +101,101 @@ export default function HowSkillsWorkPage() {
         names mean what you would expect them to mean.
       </p>
 
-      <h2 id="grows">How a skill grows</h2>
+      <h2 id="grows">How a skill grows (it&rsquo;s a network)</h2>
 
       <p>
-        Every workout you finish feeds specific skills. A Words workout
-        feeds Vocabulary. A Grammar workout feeds Grammar. A Sentence
-        workout feeds Writing. A Reading workout feeds Reading. The mapping
-        is deliberate: the activity you just did is the activity that
-        should move the ring you would expect it to move.
+        Here is the part most people get wrong when they first open the
+        app, because they expect a one to one mapping. Every workout you
+        finish feeds <strong>three</strong> of your four skills at once,
+        not one. The mapping is:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Words</strong>: primary feeds Vocabulary, also feeds
+          Grammar and Writing.
+        </li>
+        <li>
+          <strong>Grammar</strong>: primary feeds Grammar, also feeds
+          Writing and Vocabulary.
+        </li>
+        <li>
+          <strong>Sentence</strong>: primary feeds Writing, also feeds
+          Grammar and Vocabulary.
+        </li>
+        <li>
+          <strong>Reading</strong>: primary feeds Reading, also feeds
+          Vocabulary and Grammar.
+        </li>
+      </ul>
+
+      <p>
+        Two things worth noticing. First, every workout <strong>skips one
+        skill on purpose</strong>. Words, Grammar, and Sentence workouts
+        never touch the Reading ring. Only the Reading chip itself feeds
+        it. Reading comprehension has its own path in this app: no amount
+        of article picking or sentence building will get you ready to
+        read German news. You have to actually read German news.
       </p>
 
       <p>
-        But one correct answer does not finish the job. Most language apps
-        will light up a progress bar after your first tap, because a jumping
-        bar feels rewarding. We will not. The bar is <strong>confidence
-        weighted</strong>: if you have answered three questions in a skill,
-        the ring shows a tentative estimate. If you have answered thirty,
-        the ring shows real accuracy. The more you have practiced, the more
-        the ring trusts what it sees.
+        Second, the primary skill of a workout gets the bigger payoff
+        (15 to 25% of ring fill per session, scaled by how well you did),
+        and the two fed skills each get a smaller payoff (5 to 10%). So
+        finishing a Grammar workout pushes Grammar forward hard and
+        pulls Writing and Vocabulary along with it. The learning is
+        networked, not isolated.
       </p>
 
       <p>
-        This means that early on, your ring moves slowly, even when you are
-        doing well. It also means that later on, one bad day does not crash
-        the number. You have earned the signal both ways.
+        One correct answer still does not finish the job. The ring fill
+        is <strong>confidence weighted</strong>: early attempts barely
+        move the bar because we don&rsquo;t have enough data to trust
+        them yet. Ten or more attempts in a skill and the bar settles to
+        real accuracy. Early on your ring moves slowly, even when you
+        are doing well. Later, one bad day does not crash the number.
+        You earn the signal in both directions.
       </p>
 
-      <h2 id="shrinks">How a skill shrinks</h2>
-
-      <p>Here is the part most apps leave out.</p>
+      <h2 id="shrinks">How a skill goes down (the arrow does)</h2>
 
       <p>
-        Two weeks without touching Grammar? The Grammar ring drops. Not
-        back to zero, but a step down, enough to tell you honestly that
-        your Grammar practice is cooling off. If you come back and your
-        recent answers are worse than your historical ones, the ring
-        reflects that, and a small down arrow appears next to the number.
-      </p>
-
-      <p>
-        Nobody designs this to make you feel bad. It is the opposite. An
-        ever upward number is a lie: you know you have been away, you know
-        your German is rustier than it was, and if the app keeps telling
-        you that you are at eighty five percent, the app is lying to your
-        face. The app you trust is the one that tells you the truth even
-        when the truth is uncomfortable.
+        The ring itself doesn&rsquo;t go backward. We don&rsquo;t punish a
+        bad session with negative progress because effort is effort, and
+        finishing a workout counts as effort even when the answers were
+        wrong. The ring only climbs.
       </p>
 
       <p>
-        The down arrow is also useful. It tells you where your next workout
-        should go. If Reading is holding steady but Grammar has a down
-        arrow next to it, you do not need to think about what to open
-        tomorrow.
+        But right next to each skill sits a small arrow: up, stable, or
+        <strong>down</strong>. That arrow is the honest direction signal,
+        and it does go the other way.
+      </p>
+
+      <p>
+        The arrow compares your <strong>recent three answers</strong> in
+        that skill to your <strong>historical average</strong>. If recent
+        is better than history by 10 points or more, the arrow points up.
+        If recent is worse than history by 10 points or more, the arrow
+        points down. If it is in between, stable. No &ldquo;stable&rdquo;
+        shrug used to soften a real drop.
+      </p>
+
+      <p>
+        Here is why this split matters. The ring says &ldquo;this is how
+        much German you have built.&rdquo; The arrow says &ldquo;this is
+        which direction you are heading right now.&rdquo; You can sit at
+        a 70% Grammar ring with a down arrow next to it, which means your
+        foundation is real, but your recent answers are shakier than they
+        used to be. That is useful information. It tells you where
+        tomorrow&rsquo;s workout should go.
+      </p>
+
+      <p>
+        The down arrow is the thing XP only apps cannot show you, because
+        they would have to admit that their numbers mean nothing in the
+        direction that actually matters. A score that only knows how to
+        count up stops being a score and starts being a decoration.
       </p>
 
       <h2 id="data">When there isn&rsquo;t enough data</h2>
@@ -174,21 +221,36 @@ export default function HowSkillsWorkPage() {
         walk in unprepared. The dot keeps that from happening.
       </p>
 
-      <h2 id="speaking">Why Speaking is locked</h2>
+      <h2 id="speaking">Why Speaking is locked (and Listening is coming)</h2>
 
       <p>
-        Speech recognition against a learner&rsquo;s accent is hard. Doing
-        it well requires audio pipelines and model work that live in the
-        native app, not in the web demo. Until we can measure your
-        speaking honestly, we will not put a number on it.
+        Two rings are missing from the current web demo: Listening and
+        Speaking. They are missing for different reasons, and both come
+        back to the same rule.
       </p>
 
       <p>
-        Most apps will cheerfully give you a speaking score based on
-        nothing. We would rather leave the ring empty than give you a
-        score we cannot defend. When speaking recognition lands, the ring
-        unlocks, and it starts from the data your voice gives us, not
-        from a seed we invented.
+        <strong>Listening</strong> is on the roadmap. The content and the
+        audio pipeline work for it live in the native iOS app, not in the
+        web demo, which is why you don&rsquo;t see a Listening ring in
+        the browser yet. When the ring ships, it will be fed the same
+        way the others are: from the activities designed to grow it,
+        with the same confidence weighting and the same honest arrow.
+      </p>
+
+      <p>
+        <strong>Speaking</strong> is locked across both. Speech recognition
+        against a learner&rsquo;s accent is hard. Doing it well requires
+        model work that we are not shipping yet. Until we can measure
+        your speaking honestly, we will not put a number on it.
+      </p>
+
+      <p>
+        Most apps cheerfully give you a speaking score based on nothing.
+        We would rather leave the ring empty than show you a score we
+        cannot defend. When speaking recognition lands, the ring unlocks,
+        and it starts from the data your voice gives us, not from a seed
+        we invented.
       </p>
 
       <h2 id="payoff">Why this matters</h2>

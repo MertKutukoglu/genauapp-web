@@ -13,7 +13,7 @@ import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 export const metadata: Metadata = {
   title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
   description:
-    "Çoğu dil uygulaması sadece ileri sayar. GenauApp'in skill ring'leri iki yönde de hareket eder. Her sayı nasıl büyür, nasıl küçülür, ve Speaking ring'i neden şimdilik kilitli, hepsi burada.",
+    "Her workout dört skill'inin üçünü birden besler, birini değil. Ring hep yükselir, ama yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
   alternates: {
     canonical: "/tr/blog/skill-nedir",
     languages: {
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
     description:
-      "GenauApp'in skill ring'leri nasıl büyür, nasıl küçülür ve Almancan hakkında sana gerçeği nasıl söyler.",
+      "GenauApp'in skill ring'leri ağ gibi nasıl büyür, dürüst ok nasıl hareket eder, ve neden sadece ileri sayan bir skora güvenemezsin.",
     type: "article",
   },
 };
 
 const TOC = [
-  { id: "skills", label: "Takip ettiğimiz beş skill" },
-  { id: "grows", label: "Bir skill nasıl büyür" },
-  { id: "shrinks", label: "Bir skill nasıl küçülür" },
+  { id: "skills", label: "Takip ettiğimiz skill'ler" },
+  { id: "grows", label: "Bir skill nasıl büyür (ağ gibi)" },
+  { id: "shrinks", label: "Bir skill nasıl aşağı iner (ok iner)" },
   { id: "data", label: "Yeterli veri olmadığında" },
   { id: "speaking", label: "Speaking neden kilitli" },
   { id: "payoff", label: "Bu sana ne kazandırır" },
@@ -54,26 +54,29 @@ export default function SkillNedirPage() {
       </p>
 
       <p>
-        GenauApp öyle çalışmıyor. İki haftadır Grammar&rsquo;a dokunmadın mı,
-        Grammar ring&rsquo;in bir basamak düşer. Son zamanlardaki Vocabulary
-        cevapların önceki ortalamandan kötüyse, ring bunu yansıtır, sayının
-        yanında küçük bir aşağı ok belirir.
+        GenauApp öyle çalışmıyor. Son Grammar cevapların geçmiş ortalamandan
+        kötüyse, ring&rsquo;in yanındaki küçük ok yukarıdan aşağı döner. Duyguları
+        incitmemek için &ldquo;stabil&rdquo; omuz silkmeleri yok. Doğruluk
+        düştüyse, ok bunu söyler.
       </p>
 
       <p>Bu rahatsız edici. Ve bütün mesele tam da bu.</p>
 
       <p>
-        Aşağıda uygulamanın tam olarak neyi takip ettiğini, her sayının
-        nasıl hareket ettiğini, ve elimizde yeterli veri olmadığında ne
+        Aşağıda uygulamanın tam olarak neyi takip ettiğini, her ring&rsquo;in
+        nasıl hareket ettiğini, her workout&rsquo;un neden bir skill&rsquo;i değil üç
+        skill&rsquo;i birden beslediğini, ve elimizde yeterli veri olmadığında ne
         yaptığımızı anlatıyoruz.
       </p>
 
-      <h2 id="skills">Takip ettiğimiz beş skill</h2>
+      <h2 id="skills">Takip ettiğimiz skill&rsquo;ler</h2>
 
       <p>
-        Her öğrenen beş ring taşır: Vocabulary, Grammar, Writing, Reading,
-        Listening. Altıncısı, Speaking, şimdilik kilitli; biraz sonra
-        sebebini anlatacağız.
+        Her öğrenen küçük bir ring kümesi taşır: şu anki web demosunda
+        Vocabulary, Grammar, Writing, ve Reading. Listening, dürüstçe
+        ölçtüğümüze güvendiğimizde onlara katılacak; ondan sonraki ring
+        olacak Speaking ise gerçek konuşma tanıma gelene kadar kilitli
+        kalacak. Kilitli olanları yazının sonunda anlatacağız.
       </p>
 
       <p>
@@ -96,58 +99,102 @@ export default function SkillNedirPage() {
         isimleri tam olarak anlattıklarını ifade ediyor.
       </p>
 
-      <h2 id="grows">Bir skill nasıl büyür</h2>
+      <h2 id="grows">Bir skill nasıl büyür (ağ gibi)</h2>
 
       <p>
-        Bitirdiğin her workout belirli skill&rsquo;leri besler. Words workout&rsquo;u
-        Vocabulary&rsquo;yi, Grammar workout&rsquo;u Grammar&rsquo;ı, Sentence workout&rsquo;u
-        Writing&rsquo;i, Reading ise Reading&rsquo;i besler. Eşleme kasıtlı: az önce
-        yaptığın aktivite, hareket etmesini bekleyeceğin ring&rsquo;i hareket
-        ettirir.
+        İnsanlar uygulamayı ilk açtığında burada yanlış tahmin yapıyor,
+        çünkü bire bir eşleme bekliyorlar. Bitirdiğin her workout dört
+        skill&rsquo;inin <strong>üçünü birden</strong> besler, birini değil.
+        Eşleme şöyle:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Words</strong>: primary Vocabulary&rsquo;yi, yanında
+          Grammar ve Writing&rsquo;i de besler.
+        </li>
+        <li>
+          <strong>Grammar</strong>: primary Grammar&rsquo;ı, yanında Writing
+          ve Vocabulary&rsquo;yi de besler.
+        </li>
+        <li>
+          <strong>Sentence</strong>: primary Writing&rsquo;i, yanında Grammar
+          ve Vocabulary&rsquo;yi de besler.
+        </li>
+        <li>
+          <strong>Reading</strong>: primary Reading&rsquo;i, yanında
+          Vocabulary ve Grammar&rsquo;ı da besler.
+        </li>
+      </ul>
+
+      <p>
+        İki şey dikkat çekici. Birincisi, her workout <strong>bir
+        skill&rsquo;i kasıtlı atlar</strong>. Words, Grammar ve Sentence
+        workout&rsquo;ları Reading ring&rsquo;ine hiç dokunmaz. Reading&rsquo;i sadece
+        Reading chip&rsquo;inin kendisi besler. Bu uygulamada reading
+        anlama yeteneğinin kendi path&rsquo;i var: ne kadar artikel seçersen
+        seç, ne kadar cümle kurarsan kur, Alman gazetesini okumaya hazır
+        olmazsın. Gerçekten Alman gazetesi okuyarak hazır olursun.
       </p>
 
       <p>
-        Ama tek bir doğru cevap işi bitirmez. Çoğu dil uygulaması, ilk
-        dokunuşundan sonra ödüllendirici hissettirmek için progress bar&rsquo;ı
-        anında yukarı tırmandırır. Biz tırmandırmayız. Bar <strong>güven
-        ağırlıklı</strong>: bir skill&rsquo;de üç soru cevapladıysan, ring
-        temkinli bir tahmin gösterir. Otuz soru cevapladıysan, ring gerçek
-        doğruluğu gösterir. Ne kadar çok pratik yaptıysan, ring gördüğüne
-        o kadar güvenir.
+        İkincisi, workout&rsquo;un primary skill&rsquo;i daha büyük payoff alır
+        (ne kadar iyi gittiğine göre session başına ring doluluğunun
+        %15&rsquo;i ile %25&rsquo;i arasında), beslenen iki skill ise daha küçük
+        payoff alır (%5 ile %10). Yani bir Grammar workout&rsquo;unu iyi
+        bitirince Grammar sertçe ileri giderken, Writing ve Vocabulary
+        de yanında sürüklenir. Öğrenme izole değil, ağ şeklinde.
       </p>
 
       <p>
-        Bunun anlamı şu: başta iyi gitse bile ring yavaş hareket eder.
+        Tek bir doğru cevap yine de işi bitirmez. Ring doluluğu
+        <strong>güven ağırlıklı</strong>: ilk denemeler bar&rsquo;ı pek
+        hareket ettirmez çünkü henüz güvenecek yeterli veri yok. Bir
+        skill&rsquo;de on veya daha fazla deneme sonrası bar gerçek
+        doğruluğa oturur. Başta iyi gitsen bile ring yavaş hareket eder.
         İleride ise tek kötü bir gün sayıyı çökertmez. Sinyali her iki
         yönde de hak etmiş oluyorsun.
       </p>
 
-      <h2 id="shrinks">Bir skill nasıl küçülür</h2>
-
-      <p>Çoğu uygulamanın atladığı kısım tam burası.</p>
+      <h2 id="shrinks">Bir skill nasıl aşağı iner (ok iner)</h2>
 
       <p>
-        İki haftadır Grammar&rsquo;a dokunmadın mı, Grammar ring&rsquo;i düşer. Sıfıra
-        kadar değil, bir basamak, ama Grammar pratiğinin soğuduğunu dürüstçe
-        söylemeye yetecek kadar. Geri döndüğünde son cevapların geçmiş
-        ortalamandan kötüyse, ring bunu yansıtır, sayının yanında küçük bir
-        aşağı ok belirir.
+        Ring&rsquo;in kendisi geri gitmez. Kötü bir session&rsquo;ı negatif
+        progress ile cezalandırmıyoruz çünkü çaba çabadır, ve bir
+        workout&rsquo;u bitirmek cevaplar yanlış olsa bile çaba sayılır.
+        Ring sadece tırmanır.
       </p>
 
       <p>
-        Bunu kimse seni kötü hissettirmek için tasarlamıyor. Tam tersi. Hep
-        yukarı giden bir sayı bir yalan: uzak kaldığını biliyorsun,
-        Almancanın eskisi gibi olmadığını biliyorsun, ve uygulama sana hâlâ
-        yüzde seksen beştesin demeye devam ediyorsa, uygulama suratına yalan
-        söylüyor. Güvenebileceğin uygulama, gerçeğin rahatsız edici olduğu
-        zamanlarda bile gerçeği söyleyendir.
+        Ama her skill&rsquo;in yanında küçük bir ok duruyor: yukarı,
+        stabil, veya <strong>aşağı</strong>. İşte o ok dürüst yön
+        sinyali, ve ters yöne gidiyor.
       </p>
 
       <p>
-        Aşağı ok aynı zamanda işe de yarar. Sıradaki workout&rsquo;unun nereye
-        gitmesi gerektiğini söyler. Reading dengede duruyorsa ama
-        Grammar&rsquo;ın yanında aşağı ok varsa, yarın ne açacağını düşünmene
-        gerek yok.
+        Ok, o skill&rsquo;deki <strong>son üç cevabını</strong> <strong>geçmiş
+        ortalamanla</strong> karşılaştırır. Son dönem geçmişinden 10 puan
+        veya daha fazla iyiyse, ok yukarı. 10 puan veya daha fazla
+        kötüyse, ok aşağı. Arada ise stabil. Gerçek düşüşü yumuşatmak için
+        kullanılan &ldquo;stabil&rdquo; omuz silkmesi yok.
+      </p>
+
+      <p>
+        Bu ayrımın neden önemli olduğu şu: ring sana &ldquo;şu ana kadar
+        ne kadar Almanca inşa ettin&rdquo; der. Ok ise sana &ldquo;şu an
+        hangi yöne gidiyorsun&rdquo; der. Grammar ring&rsquo;in %70&rsquo;te
+        olup yanında aşağı ok görebilirsin, bu şu demek: temelin
+        gerçek, ama son cevapların eskiye göre daha sarsak. Bu değerli
+        bir bilgi. Yarınki workout&rsquo;unun nereye gitmesi gerektiğini
+        söyler.
+      </p>
+
+      <p>
+        Aşağı ok, sadece ileri sayan uygulamaların sana gösteremediği
+        şey, çünkü göstermek için sayılarının asıl önemli olan yönde
+        hiçbir şey ifade etmediğini kabul etmek zorundalar. Sadece
+        yukarı saymayı bilen bir skor, skor olmaktan çıkar, dekorasyona
+        dönüşür.
       </p>
 
       <h2 id="data">Yeterli veri olmadığında</h2>
@@ -173,13 +220,27 @@ export default function SkillNedirPage() {
         Nokta bunu önler.
       </p>
 
-      <h2 id="speaking">Speaking neden kilitli</h2>
+      <h2 id="speaking">Speaking neden kilitli (ve Listening geliyor)</h2>
 
       <p>
-        Konuşma tanıma, bir öğrenenin aksanına karşı çalışmak zorunda, ve
-        bu zor. İyi yapması, web demosunda değil, native uygulamada yaşayan
-        ses pipeline&rsquo;ları ve model işi gerektiriyor. Konuşmanı dürüstçe
-        ölçebilene kadar, ona bir sayı koymayız.
+        Şu anki web demosunda iki ring eksik: Listening ve Speaking. Farklı
+        sebeplerle eksikler, ama ikisi de aynı kurala dayanıyor.
+      </p>
+
+      <p>
+        <strong>Listening</strong> roadmap&rsquo;te. İçerik ve ses
+        pipeline&rsquo;ı işi web demosunda değil, native iOS uygulamasında
+        yaşıyor, o yüzden tarayıcıda henüz Listening ring&rsquo;ini görmüyorsun.
+        Ring geldiğinde, diğerleriyle aynı şekilde beslenecek: büyütmek
+        için tasarlanmış aktivitelerden, aynı güven ağırlıklandırmasıyla,
+        aynı dürüst okla.
+      </p>
+
+      <p>
+        <strong>Speaking</strong> her iki tarafta da kilitli. Konuşma
+        tanıma, bir öğrenenin aksanına karşı çalışmak zorunda, ve bu zor.
+        İyi yapması henüz üzerinde çalışmadığımız model işi gerektiriyor.
+        Konuşmanı dürüstçe ölçebilene kadar, ona bir sayı koymayız.
       </p>
 
       <p>
