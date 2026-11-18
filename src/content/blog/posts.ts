@@ -64,6 +64,25 @@ export interface BlogPost {
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "visual-german-articles",
+    en: {
+      title: "Visual German articles, the color-coded method",
+      description:
+        "Memorizing der / die / das one word at a time is slow. German articles follow patterns you can see at a glance once the UI gives you a color for each gender. Here is how we teach them.",
+      href: "/blog/visual-german-articles",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 6,
+    },
+    tr: {
+      title: "Görsel Almanca artikel, renk kodlu yöntem",
+      description:
+        "der / die / das'ı kelime kelime ezberlemek yavaş. Almanca artikeller, UI her cinse bir renk verdiğinde göze çarpan kalıplara uyar. İşte nasıl öğrettiğimiz.",
+      href: "/tr/blog/gorsel-almanca-artikel",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 6,
+    },
+  },
+  {
     slug: "how-it-works",
     en: {
       title: "How GenauApp works, the 4 chips",
