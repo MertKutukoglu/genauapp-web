@@ -46,10 +46,9 @@ export const metadata: Metadata = {
 const TOC = [
   { id: "problem", label: "Why lists don't work" },
   { id: "colors", label: "The three colors" },
-  { id: "ung", label: "-ung → die" },
-  { id: "keit-heit", label: "-keit, -heit → die" },
-  { id: "ge", label: "Ge- → das" },
-  { id: "nis", label: "-nis → das" },
+  { id: "die", label: "die (feminine)" },
+  { id: "der", label: "der (masculine)" },
+  { id: "das", label: "das (neuter)" },
   { id: "compound", label: "Compound nouns" },
   { id: "app", label: "How it looks in the app" },
 ];
@@ -150,17 +149,29 @@ export default function VisualGermanArticlesPage() {
         <span>§</span>
       </p>
 
-      <h2 id="ung">-ung → die</h2>
+      <h2 id="die">die (feminine), the signals</h2>
 
       <p>
-        Every German noun ending in <strong>-ung</strong> is feminine.
-        No exceptions worth worrying about at A1 or A2 level. These are
-        abstract nouns formed from verbs: &ldquo;entscheiden&rdquo; (to
-        decide) becomes &ldquo;Entscheidung&rdquo; (decision), and that
-        decision takes <strong>die</strong>.
+        Most feminine nouns announce themselves through their ending.
+        Five suffixes do most of the work; if a noun ends in one of
+        these, you can almost always reach for <strong>die</strong>
+        without checking.
       </p>
 
-      <BlogFormulaPill left="-ung" right="die" rightColor="die" />
+      <BlogFormulaPill
+        left="-ung · -keit · -heit · -schaft · -ion"
+        right="die"
+        rightColor="die"
+      />
+
+      <p>
+        <strong>-ung</strong> for abstract nouns from verbs,
+        <strong> -keit</strong> and <strong>-heit</strong> for abstract
+        nouns from adjectives, <strong>-schaft</strong> for groupings
+        and relationships, and <strong>-ion</strong> for Latin-origin
+        loanwords. <strong>-ik</strong> and <strong>-tät</strong>
+        belong to the same family (die Musik, die Universität).
+      </p>
 
       <BlogWordGallery
         words={[
@@ -178,58 +189,9 @@ export default function VisualGermanArticlesPage() {
           },
           {
             article: "die",
-            noun: "Meinung",
-            translation: "the opinion",
-            rule: "-ung → die",
-          },
-          {
-            article: "die",
-            noun: "Erfahrung",
-            translation: "the experience",
-            rule: "-ung → die",
-          },
-        ]}
-      />
-
-      <p>
-        Four red cards. Scroll back to them in a month and your brain
-        will still know what to do with the next <strong>-ung</strong>
-        noun it meets.
-      </p>
-
-      <p className="section-divider">
-        <span>§</span>
-      </p>
-
-      <h2 id="keit-heit">-keit, -heit → die</h2>
-
-      <p>
-        Two more suffixes, same gender. <strong>-keit</strong> and
-        <strong> -heit</strong> turn adjectives and adjective-like words
-        into abstract nouns, and all of them take <strong>die</strong>.
-      </p>
-
-      <BlogFormulaPill left="-keit, -heit" right="die" rightColor="die" />
-
-      <BlogWordGallery
-        words={[
-          {
-            article: "die",
             noun: "Möglichkeit",
             translation: "the possibility",
             rule: "-keit → die",
-          },
-          {
-            article: "die",
-            noun: "Freundlichkeit",
-            translation: "the friendliness",
-            rule: "-keit → die",
-          },
-          {
-            article: "die",
-            noun: "Gesundheit",
-            translation: "the health",
-            rule: "-heit → die",
           },
           {
             article: "die",
@@ -237,6 +199,18 @@ export default function VisualGermanArticlesPage() {
             translation: "the freedom",
             rule: "-heit → die",
           },
+          {
+            article: "die",
+            noun: "Freundschaft",
+            translation: "the friendship",
+            rule: "-schaft → die",
+          },
+          {
+            article: "die",
+            noun: "Information",
+            translation: "the information",
+            rule: "-ion → die",
+          },
         ]}
       />
 
@@ -244,15 +218,90 @@ export default function VisualGermanArticlesPage() {
         <span>§</span>
       </p>
 
-      <h2 id="ge">Ge- → das</h2>
+      <h2 id="der">der (masculine), the signals</h2>
 
       <p>
-        Now the greens. The prefix <strong>Ge-</strong> often marks a
-        collective noun, something that groups a bunch of things or
-        actions together. Those are <strong>das</strong>.
+        Masculine nouns don&rsquo;t have a single suffix family the way
+        feminine ones do, but they do carry recognizable signals. The
+        agent suffix <strong>-er</strong> on a profession, the suffix
+        <strong> -ling</strong>, the ending <strong>-ismus</strong>
+        on an ideology, plus the whole calendar: days of the week,
+        months, and seasons are all masculine.
       </p>
 
-      <BlogFormulaPill left="Ge-" right="das" rightColor="das" />
+      <BlogFormulaPill
+        left="-er · -ling · -ismus · days, months, seasons"
+        right="der"
+        rightColor="der"
+      />
+
+      <BlogWordGallery
+        words={[
+          {
+            article: "der",
+            noun: "Lehrer",
+            translation: "the teacher",
+            rule: "-er → der (agent)",
+          },
+          {
+            article: "der",
+            noun: "Lehrling",
+            translation: "the apprentice",
+            rule: "-ling → der",
+          },
+          {
+            article: "der",
+            noun: "Kapitalismus",
+            translation: "the capitalism",
+            rule: "-ismus → der",
+          },
+          {
+            article: "der",
+            noun: "Montag",
+            translation: "the Monday",
+            rule: "weekday → der",
+          },
+          {
+            article: "der",
+            noun: "Januar",
+            translation: "the January",
+            rule: "month → der",
+          },
+          {
+            article: "der",
+            noun: "Winter",
+            translation: "the winter",
+            rule: "season → der",
+          },
+        ]}
+      />
+
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
+      <h2 id="das">das (neuter), the signals</h2>
+
+      <p>
+        Neuter signals cluster around the prefix <strong>Ge-</strong>
+        for collective nouns, the suffixes <strong>-nis</strong> for
+        results and states, <strong>-ment</strong> for Latin-origin
+        loanwords, and the two diminutive endings <strong>-chen</strong>
+        and <strong>-lein</strong>, which always take das regardless of
+        the original word&rsquo;s gender.
+      </p>
+
+      <BlogFormulaPill
+        left="Ge- · -nis · -ment · -chen · -lein"
+        right="das"
+        rightColor="das"
+      />
+
+      <p>
+        A handful of <strong>-nis</strong> nouns are feminine
+        (die Erlaubnis, die Kenntnis), which we flag inline when they
+        come up. The default is green.
+      </p>
 
       <BlogWordGallery
         words={[
@@ -264,42 +313,10 @@ export default function VisualGermanArticlesPage() {
           },
           {
             article: "das",
-            noun: "Gepäck",
-            translation: "the luggage",
-            rule: "Ge- → das",
-          },
-          {
-            article: "das",
-            noun: "Geschäft",
-            translation: "the shop",
-            rule: "Ge- → das",
-          },
-          {
-            article: "das",
             noun: "Geschenk",
             translation: "the gift",
             rule: "Ge- → das",
           },
-        ]}
-      />
-
-      <p className="section-divider">
-        <span>§</span>
-      </p>
-
-      <h2 id="nis">-nis → das</h2>
-
-      <p>
-        <strong>-nis</strong> nouns usually name a result or a state,
-        and they are also <strong>das</strong>. A handful are feminine
-        (die Erlaubnis, die Kenntnis), which we flag inline when they
-        come up; the default is green.
-      </p>
-
-      <BlogFormulaPill left="-nis" right="das" rightColor="das" />
-
-      <BlogWordGallery
-        words={[
           {
             article: "das",
             noun: "Ergebnis",
@@ -308,21 +325,21 @@ export default function VisualGermanArticlesPage() {
           },
           {
             article: "das",
-            noun: "Verständnis",
-            translation: "the understanding",
-            rule: "-nis → das",
+            noun: "Dokument",
+            translation: "the document",
+            rule: "-ment → das",
           },
           {
             article: "das",
-            noun: "Geheimnis",
-            translation: "the secret",
-            rule: "-nis → das",
+            noun: "Mädchen",
+            translation: "the girl",
+            rule: "-chen → das (diminutive)",
           },
           {
             article: "das",
-            noun: "Bedürfnis",
-            translation: "the need",
-            rule: "-nis → das",
+            noun: "Büchlein",
+            translation: "the little book",
+            rule: "-lein → das (diminutive)",
           },
         ]}
       />
@@ -384,28 +401,51 @@ export default function VisualGermanArticlesPage() {
       <p>
         When a Words workout gives you an article picker, the question
         has no article in front of the noun. You tap one of the three
-        buttons. Then the rule shows up next to the answer, whether you
-        got it right or wrong.
+        buttons. Then the rule shows up, whether you got it right or
+        wrong.
       </p>
 
       <div className="flex justify-center my-5">
         <BlogArticlePicker
           noun="Entscheidung"
           translation="the decision"
-          className="max-w-[360px] w-full"
+          correctArticle="die"
+          className="max-w-[380px] w-full"
         />
       </div>
 
       <p>
-        Pick <strong>die</strong>, and the rule lands:
+        Pick <strong>die</strong>, and the picker locks on the correct
+        answer:
       </p>
 
       <div className="flex justify-center my-5">
         <BlogArticlePicker
           noun="Entscheidung"
           translation="the decision"
+          correctArticle="die"
           answered="die"
-          className="max-w-[360px] w-full"
+          className="max-w-[380px] w-full"
+        />
+      </div>
+
+      <p>
+        Pick the wrong one, and two things happen at once. The pill you
+        tapped goes solid in the error colour, the correct article drops
+        in alongside the noun in its own gender colour so you see what
+        the right answer was, and the rule banner slides in under the
+        pills with the pattern that explains it. The mistake becomes a
+        lesson in the same two seconds it took to make it.
+      </p>
+
+      <div className="flex justify-center my-5">
+        <BlogArticlePicker
+          noun="Entscheidung"
+          translation="the decision"
+          correctArticle="die"
+          wrongPick="das"
+          rule="Nouns ending in -ung are feminine. die Entscheidung, die Lösung, die Meinung."
+          className="max-w-[380px] w-full"
         />
       </div>
 
@@ -421,9 +461,9 @@ export default function VisualGermanArticlesPage() {
         Each Words workout feeds Vocabulary primarily and pulls Grammar
         and Writing along with it (we wrote up{" "}
         <Link href="/blog/how-skills-work">how the network works</Link>{" "}
-        if you want the deeper mechanic). Twenty cards per workout, five
-        patterns in rotation, and the article question starts to answer
-        itself.
+        if you want the deeper mechanic). Twenty cards per workout, the
+        rule next to every answer, and the article question starts to
+        answer itself.
       </p>
 
       <p className="section-divider">
@@ -432,10 +472,9 @@ export default function VisualGermanArticlesPage() {
 
       <p>
         If you want to try this in the demo, open the Words chip at A1
-        or A2 level. Every third card will carry an <strong>-ung</strong>,
-        a <strong>Ge-</strong>, or a <strong>-keit</strong>. After a
-        workout the rule starts to feel less like a rule and more like
-        how German actually works.
+        or A2 level. Most of the cards carry a pattern you can spot by
+        the ending or the prefix. After a workout, the rules start to
+        feel less like rules and more like how German actually works.
       </p>
 
       <BlogCTA source="visual_articles_blog" />

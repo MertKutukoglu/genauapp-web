@@ -38,10 +38,9 @@ export const metadata: Metadata = {
 const TOC = [
   { id: "problem", label: "Liste neden işe yaramaz" },
   { id: "colors", label: "Üç renk" },
-  { id: "ung", label: "-ung → die" },
-  { id: "keit-heit", label: "-keit, -heit → die" },
-  { id: "ge", label: "Ge- → das" },
-  { id: "nis", label: "-nis → das" },
+  { id: "die", label: "die (dişil)" },
+  { id: "der", label: "der (eril)" },
+  { id: "das", label: "das (nötr)" },
   { id: "compound", label: "Bileşik isimler" },
   { id: "app", label: "Uygulamada nasıl görünüyor" },
 ];
@@ -137,17 +136,28 @@ export default function GorselAlmancaArtikelPage() {
         <span>§</span>
       </p>
 
-      <h2 id="ung">-ung → die</h2>
+      <h2 id="die">die (dişil), sinyaller</h2>
 
       <p>
-        <strong>-ung</strong> ile biten her Almanca isim dişildir.
-        A1 ya da A2 seviyesinde endişelenecek istisna yok. Bunlar
-        fiillerden türetilmiş soyut isimler: &ldquo;entscheiden&rdquo;
-        (karar vermek) &ldquo;Entscheidung&rdquo; (karar) olur, ve o
-        karar <strong>die</strong> alır.
+        Dişil isimlerin çoğu kendini sonlarıyla ele verir. Beş son ek
+        işin büyük kısmını yapar; bir isim bunlardan biriyle bitiyorsa,
+        kontrol etmeden hemen <strong>die</strong>&rsquo;ye uzanabilirsin.
       </p>
 
-      <BlogFormulaPill left="-ung" right="die" rightColor="die" />
+      <BlogFormulaPill
+        left="-ung · -keit · -heit · -schaft · -ion"
+        right="die"
+        rightColor="die"
+      />
+
+      <p>
+        Fiillerden türetilmiş soyut isimler için <strong>-ung</strong>,
+        sıfatlardan türetilmiş soyut isimler için <strong>-keit</strong>
+        ve <strong>-heit</strong>, grup ve ilişki isimleri için
+        <strong> -schaft</strong>, ve Latince kökenli yabancı kelimeler
+        için <strong>-ion</strong>. <strong>-ik</strong> ile
+        <strong> -tät</strong> aynı aileye ait (die Musik, die Universität).
+      </p>
 
       <BlogWordGallery
         words={[
@@ -165,58 +175,9 @@ export default function GorselAlmancaArtikelPage() {
           },
           {
             article: "die",
-            noun: "Meinung",
-            translation: "görüş, fikir",
-            rule: "-ung → die",
-          },
-          {
-            article: "die",
-            noun: "Erfahrung",
-            translation: "deneyim",
-            rule: "-ung → die",
-          },
-        ]}
-      />
-
-      <p>
-        Dört kırmızı kart. Bir ay sonra buraya geri dön, beynin bir
-        sonraki karşılaştığı <strong>-ung</strong> ismi ile ne
-        yapacağını hâlâ bilecek.
-      </p>
-
-      <p className="section-divider">
-        <span>§</span>
-      </p>
-
-      <h2 id="keit-heit">-keit, -heit → die</h2>
-
-      <p>
-        İki tane daha son ek, aynı cins. <strong>-keit</strong> ve
-        <strong> -heit</strong> sıfatları ve sıfat benzeri kelimeleri
-        soyut isme çevirir, ve hepsi <strong>die</strong> alır.
-      </p>
-
-      <BlogFormulaPill left="-keit, -heit" right="die" rightColor="die" />
-
-      <BlogWordGallery
-        words={[
-          {
-            article: "die",
             noun: "Möglichkeit",
-            translation: "ihtimal, olanak",
+            translation: "ihtimal",
             rule: "-keit → die",
-          },
-          {
-            article: "die",
-            noun: "Freundlichkeit",
-            translation: "nezaket",
-            rule: "-keit → die",
-          },
-          {
-            article: "die",
-            noun: "Gesundheit",
-            translation: "sağlık",
-            rule: "-heit → die",
           },
           {
             article: "die",
@@ -224,6 +185,18 @@ export default function GorselAlmancaArtikelPage() {
             translation: "özgürlük",
             rule: "-heit → die",
           },
+          {
+            article: "die",
+            noun: "Freundschaft",
+            translation: "arkadaşlık",
+            rule: "-schaft → die",
+          },
+          {
+            article: "die",
+            noun: "Information",
+            translation: "bilgi",
+            rule: "-ion → die",
+          },
         ]}
       />
 
@@ -231,15 +204,90 @@ export default function GorselAlmancaArtikelPage() {
         <span>§</span>
       </p>
 
-      <h2 id="ge">Ge- → das</h2>
+      <h2 id="der">der (eril), sinyaller</h2>
 
       <p>
-        Şimdi yeşiller. <strong>Ge-</strong> ön eki genelde bir
-        topluluk ismini işaretler, birçok şeyi ya da eylemi bir arada
-        gruplandıran bir şey. Bunlar <strong>das</strong>.
+        Eril isimlerin dişilde olduğu gibi tek bir son ek ailesi yok,
+        ama tanınabilir sinyalleri var. Meslek adlarında işi yapanı
+        gösteren <strong>-er</strong>, <strong>-ling</strong> son eki,
+        ideoloji ve akım adlarında <strong>-ismus</strong>, artı
+        tüm takvim: haftanın günleri, aylar ve mevsimler erildir.
       </p>
 
-      <BlogFormulaPill left="Ge-" right="das" rightColor="das" />
+      <BlogFormulaPill
+        left="-er · -ling · -ismus · günler, aylar, mevsimler"
+        right="der"
+        rightColor="der"
+      />
+
+      <BlogWordGallery
+        words={[
+          {
+            article: "der",
+            noun: "Lehrer",
+            translation: "öğretmen",
+            rule: "-er → der (işi yapan)",
+          },
+          {
+            article: "der",
+            noun: "Lehrling",
+            translation: "çırak",
+            rule: "-ling → der",
+          },
+          {
+            article: "der",
+            noun: "Kapitalismus",
+            translation: "kapitalizm",
+            rule: "-ismus → der",
+          },
+          {
+            article: "der",
+            noun: "Montag",
+            translation: "Pazartesi",
+            rule: "gün → der",
+          },
+          {
+            article: "der",
+            noun: "Januar",
+            translation: "Ocak",
+            rule: "ay → der",
+          },
+          {
+            article: "der",
+            noun: "Winter",
+            translation: "kış",
+            rule: "mevsim → der",
+          },
+        ]}
+      />
+
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
+      <h2 id="das">das (nötr), sinyaller</h2>
+
+      <p>
+        Nötr sinyalleri topluluk isimleri için <strong>Ge-</strong>
+        ön eki etrafında, sonuç ve durum adları için
+        <strong> -nis</strong> son eki, Latince kökenli yabancı
+        kelimeler için <strong>-ment</strong>, ve orijinal kelimenin
+        cinsi ne olursa olsun her zaman das alan iki küçültme eki
+        <strong> -chen</strong> ve <strong>-lein</strong> etrafında
+        toplanır.
+      </p>
+
+      <BlogFormulaPill
+        left="Ge- · -nis · -ment · -chen · -lein"
+        right="das"
+        rightColor="das"
+      />
+
+      <p>
+        Bir avuç <strong>-nis</strong> ismi dişildir (die Erlaubnis,
+        die Kenntnis), karşına çıktığında satır içinde işaretliyoruz.
+        Varsayılan yeşil.
+      </p>
 
       <BlogWordGallery
         words={[
@@ -251,42 +299,10 @@ export default function GorselAlmancaArtikelPage() {
           },
           {
             article: "das",
-            noun: "Gepäck",
-            translation: "bagaj",
-            rule: "Ge- → das",
-          },
-          {
-            article: "das",
-            noun: "Geschäft",
-            translation: "dükkan",
-            rule: "Ge- → das",
-          },
-          {
-            article: "das",
             noun: "Geschenk",
             translation: "hediye",
             rule: "Ge- → das",
           },
-        ]}
-      />
-
-      <p className="section-divider">
-        <span>§</span>
-      </p>
-
-      <h2 id="nis">-nis → das</h2>
-
-      <p>
-        <strong>-nis</strong> isimleri genelde bir sonucu ya da durumu
-        adlandırır, ve onlar da <strong>das</strong>. Bir avuç tanesi
-        dişildir (die Erlaubnis, die Kenntnis), karşına çıktığında
-        satır içinde işaretliyoruz; varsayılan yeşil.
-      </p>
-
-      <BlogFormulaPill left="-nis" right="das" rightColor="das" />
-
-      <BlogWordGallery
-        words={[
           {
             article: "das",
             noun: "Ergebnis",
@@ -295,21 +311,21 @@ export default function GorselAlmancaArtikelPage() {
           },
           {
             article: "das",
-            noun: "Verständnis",
-            translation: "anlayış",
-            rule: "-nis → das",
+            noun: "Dokument",
+            translation: "belge",
+            rule: "-ment → das",
           },
           {
             article: "das",
-            noun: "Geheimnis",
-            translation: "sır",
-            rule: "-nis → das",
+            noun: "Mädchen",
+            translation: "kız",
+            rule: "-chen → das (küçültme)",
           },
           {
             article: "das",
-            noun: "Bedürfnis",
-            translation: "ihtiyaç",
-            rule: "-nis → das",
+            noun: "Büchlein",
+            translation: "kitapçık",
+            rule: "-lein → das (küçültme)",
           },
         ]}
       />
@@ -371,28 +387,49 @@ export default function GorselAlmancaArtikelPage() {
       <p>
         Bir Words workout&rsquo;u sana bir artikel seçici verdiğinde,
         sorunun önünde artikel yoktur. Üç butondan birine dokunursun.
-        Sonra, doğru da cevaplasan yanlış da cevaplasan, cevabın yanında
-        kural belirir.
+        Sonra, doğru da cevaplasan yanlış da cevaplasan, kural belirir.
       </p>
 
       <div className="flex justify-center my-5">
         <BlogArticlePicker
           noun="Entscheidung"
           translation="karar"
-          className="max-w-[360px] w-full"
+          correctArticle="die"
+          className="max-w-[380px] w-full"
         />
       </div>
 
       <p>
-        <strong>die</strong>&rsquo;yi seç, kural yerine oturur:
+        <strong>die</strong>&rsquo;yi seç, picker doğru cevap üzerinde
+        kilitlenir:
       </p>
 
       <div className="flex justify-center my-5">
         <BlogArticlePicker
           noun="Entscheidung"
           translation="karar"
+          correctArticle="die"
           answered="die"
-          className="max-w-[360px] w-full"
+          className="max-w-[380px] w-full"
+        />
+      </div>
+
+      <p>
+        Yanlış olanı seçersen aynı anda iki şey olur. Dokunduğun pill
+        hata renginde kalır, doğru artikel ismin yanına kendi cins
+        renginde düşer ki doğru cevabın ne olduğunu göresin, ve
+        pill&rsquo;lerin altından kuralı açıklayan bir banner kayar.
+        Hata, yapıldığı iki saniyenin içinde derse dönüşür.
+      </p>
+
+      <div className="flex justify-center my-5">
+        <BlogArticlePicker
+          noun="Entscheidung"
+          translation="karar"
+          correctArticle="die"
+          wrongPick="das"
+          rule="-ung ile biten isimler dişildir. die Entscheidung, die Lösung, die Meinung."
+          className="max-w-[380px] w-full"
         />
       </div>
 
@@ -408,7 +445,7 @@ export default function GorselAlmancaArtikelPage() {
         Her Words workout&rsquo;u önce Vocabulary&rsquo;yi besler, Grammar
         ve Writing&rsquo;i de yanında sürükler (<Link href="/tr/blog/skill-nedir">
         ağın nasıl çalıştığını</Link> daha derin mekanik için yazdık).
-        Workout başına yirmi kart, dönüşümlü beş kalıp, ve artikel
+        Workout başına yirmi kart, her cevabın yanında kural, ve artikel
         sorusu kendini cevaplamaya başlar.
       </p>
 
@@ -418,10 +455,10 @@ export default function GorselAlmancaArtikelPage() {
 
       <p>
         Bunu demoda denemek istersen, A1 ya da A2 seviyede Words
-        chip&rsquo;ini aç. Her üçüncü kart bir <strong>-ung</strong>,
-        <strong> Ge-</strong>, ya da <strong>-keit</strong> taşır. Bir
-        workout sonrasında kural, bir kural gibi değil, Almancanın
-        gerçekte nasıl çalıştığı gibi hissettirmeye başlar.
+        chip&rsquo;ini aç. Kartların çoğu, sonundan ya da önündeki ekten
+        tanıyabileceğin bir kalıp taşır. Bir workout sonrasında
+        kurallar, kural gibi değil, Almancanın gerçekte nasıl çalıştığı
+        gibi hissettirmeye başlar.
       </p>
 
       <BlogCTA source="visual_articles_blog" />
