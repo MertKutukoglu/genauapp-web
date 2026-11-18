@@ -71,6 +71,8 @@ export function BlogIndex({ locale, className }: BlogIndexProps) {
                 title={post.title}
                 description={post.description}
                 publishedAt={post.publishedAt}
+                readingTimeMinutes={post.readingTimeMinutes}
+                readingTimeLabel={strings.blogIndex.readingTime}
                 locale={locale}
                 ariaLabel={strings.blogIndex.postCardAria}
               />

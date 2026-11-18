@@ -39,6 +39,11 @@ export interface BlogPostLocale {
   /** ISO date string (YYYY-MM-DD). Rendered as a localized
    *  date on the index card; also drives the default sort. */
   publishedAt: string;
+  /** Rough reading time in whole minutes, author-supplied so a
+   *  TR version can land at a different number from the EN one
+   *  without us word-counting JSX bodies. Shown on the index
+   *  card eyebrow and under the post byline. */
+  readingTimeMinutes: number;
 }
 
 export interface BlogPost {
@@ -66,6 +71,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "Every workout feeds three of your four skills, not one. The ring only climbs, but the arrow next to it tells the truth about your direction. Here is how it works.",
       href: "/blog/how-skills-work",
       publishedAt: "2026-11-18",
+      readingTimeMinutes: 6,
     },
     tr: {
       title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
@@ -73,6 +79,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "Her workout dört skill'inin üçünü birden besler, birini değil. Ring hep yükselir, ama yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
       href: "/tr/blog/skill-nedir",
       publishedAt: "2026-11-18",
+      readingTimeMinutes: 6,
     },
   },
   {
@@ -83,6 +90,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "I rewrote my German flashcards in color, then built an app around it. For adults who need German to live in Germany, not to pass an exam in ten years.",
       href: "/blog/origins-of-genau",
       publishedAt: "2026-10-27",
+      readingTimeMinutes: 7,
     },
     tr: {
       title: "Genau'nun kökenleri",
@@ -90,6 +98,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "Kendi Almanca flashcard'larımı renkli yazdım, sonra etrafında bir uygulama kurdum. Almanya'da yaşamak için Almanca'ya ihtiyacı olan yetişkinler için.",
       href: "/tr/blog/kokenler",
       publishedAt: "2026-10-27",
+      readingTimeMinutes: 7,
     },
   },
 ];

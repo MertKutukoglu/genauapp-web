@@ -50,7 +50,7 @@ export default function KokenlerPage() {
   return (
     <BlogLayout slug="kokenler" toc={TOC}>
       <h1 className="title">Genau&apos;nun kökenleri</h1>
-      <p className="byline">Mert tarafından · Kasım 2026</p>
+      <p className="byline">Mert tarafından · Kasım 2026 · 7 dk okuma</p>
 
       <p>
         Eğer yetişkin olarak Almanca öğrenmeye çalıştıysan, bu hissi

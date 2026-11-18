@@ -47,7 +47,7 @@ export default function HowSkillsWorkPage() {
       <h1 className="title">
         What skills are in GenauApp (and why they can go down)
       </h1>
-      <p className="byline">By Mert · November 2026</p>
+      <p className="byline">By Mert · November 2026 · 6 min read</p>
 
       <p>
         Most apps count forward only. XP goes up. Streaks count up. Hearts
@@ -68,6 +68,10 @@ export default function HowSkillsWorkPage() {
         Below is what the app actually tracks, how each ring moves, why
         every workout you finish feeds three skills at once rather than
         one, and what we do when we don&rsquo;t have enough data to tell.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="skills">The skills we track</h2>
@@ -99,6 +103,10 @@ export default function HowSkillsWorkPage() {
       <p>
         Nothing clever, nothing hidden. One ring per skill, and the skill
         names mean what you would expect them to mean.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="grows">How a skill grows (it&rsquo;s a network)</h2>
@@ -157,6 +165,10 @@ export default function HowSkillsWorkPage() {
         You earn the signal in both directions.
       </p>
 
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
       <h2 id="shrinks">How a skill goes down (the arrow does)</h2>
 
       <p>
@@ -198,6 +210,10 @@ export default function HowSkillsWorkPage() {
         count up stops being a score and starts being a decoration.
       </p>
 
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
       <h2 id="data">When there isn&rsquo;t enough data</h2>
 
       <p>
@@ -219,6 +235,10 @@ export default function HowSkillsWorkPage() {
         two percent. You would walk in confident. If that ninety two
         percent came from three lucky multiple choice answers, you would
         walk in unprepared. The dot keeps that from happening.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="speaking">Why Speaking is locked (and Listening is coming)</h2>
@@ -251,6 +271,10 @@ export default function HowSkillsWorkPage() {
         cannot defend. When speaking recognition lands, the ring unlocks,
         and it starts from the data your voice gives us, not from a seed
         we invented.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="payoff">Why this matters</h2>

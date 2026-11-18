@@ -45,7 +45,7 @@ export default function SkillNedirPage() {
       <h1 className="title">
         GenauApp&rsquo;te skill nedir? (Ve neden aşağı da iner)
       </h1>
-      <p className="byline">Mert · Kasım 2026</p>
+      <p className="byline">Mert · Kasım 2026 · 6 dk okuma</p>
 
       <p>
         Çoğu uygulama sadece ileri sayar. XP birikir, streak sayılır, hearts
@@ -67,6 +67,10 @@ export default function SkillNedirPage() {
         nasıl hareket ettiğini, her workout&rsquo;un neden bir skill&rsquo;i değil üç
         skill&rsquo;i birden beslediğini, ve elimizde yeterli veri olmadığında ne
         yaptığımızı anlatıyoruz.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="skills">Takip ettiğimiz skill&rsquo;ler</h2>
@@ -97,6 +101,10 @@ export default function SkillNedirPage() {
       <p>
         Kurnazlık yok, gizli bir şey yok. Skill başına bir ring, ve skill
         isimleri tam olarak anlattıklarını ifade ediyor.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="grows">Bir skill nasıl büyür (ağ gibi)</h2>
@@ -156,6 +164,10 @@ export default function SkillNedirPage() {
         yönde de hak etmiş oluyorsun.
       </p>
 
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
       <h2 id="shrinks">Bir skill nasıl aşağı iner (ok iner)</h2>
 
       <p>
@@ -197,6 +209,10 @@ export default function SkillNedirPage() {
         dönüşür.
       </p>
 
+      <p className="section-divider">
+        <span>§</span>
+      </p>
+
       <h2 id="data">Yeterli veri olmadığında</h2>
 
       <p>
@@ -218,6 +234,10 @@ export default function SkillNedirPage() {
         olduğunu söylüyor. İçeri güvenle girersin. Eğer o yüzde doksan iki,
         üç şanslı çoktan seçmeli cevaba dayanıyorsa, hazırlıksız girersin.
         Nokta bunu önler.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="speaking">Speaking neden kilitli (ve Listening geliyor)</h2>
@@ -249,6 +269,10 @@ export default function SkillNedirPage() {
         bırakmayı tercih ederiz. Konuşma tanıma geldiğinde, ring açılır,
         ve senin sesinin verdiği veriden başlar, bizim uydurduğumuz bir
         tohumdan değil.
+      </p>
+
+      <p className="section-divider">
+        <span>§</span>
       </p>
 
       <h2 id="payoff">Bu sana ne kazandırır</h2>

@@ -22,6 +22,12 @@ export interface BlogIndexCardProps {
   title: string;
   description: string;
   publishedAt: string;
+  /** Author-supplied reading time in whole minutes, from the blog
+   *  registry. Rendered next to the date in the eyebrow. */
+  readingTimeMinutes: number;
+  /** Localized "min read" / "dk okuma" label. Passed in so the
+   *  card can stay a pure presentational component. */
+  readingTimeLabel: string;
   locale: Locale;
   ariaLabel: string;
   className?: string;
@@ -32,6 +38,8 @@ export function BlogIndexCard({
   title,
   description,
   publishedAt,
+  readingTimeMinutes,
+  readingTimeLabel,
   locale,
   ariaLabel,
   className,
@@ -55,16 +63,19 @@ export function BlogIndexCard({
         border: "1px solid var(--border)",
       }}
     >
-      <time
-        dateTime={publishedAt}
+      <div
         className={clsx(
-          "block font-sans font-semibold text-[11px] uppercase text-fg-faint",
-          "mb-2",
+          "flex items-center gap-2 mb-2",
+          "font-sans font-semibold text-[11px] uppercase text-fg-faint",
         )}
         style={{ letterSpacing: "0.4px" }}
       >
-        {formattedDate}
-      </time>
+        <time dateTime={publishedAt}>{formattedDate}</time>
+        <span aria-hidden>·</span>
+        <span>
+          {readingTimeMinutes} {readingTimeLabel}
+        </span>
+      </div>
       <h2
         className={clsx(
           "font-display font-bold leading-tight text-fg m-0 mb-2",
