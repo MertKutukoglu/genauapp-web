@@ -65,6 +65,7 @@ export const EN_TO_TR_PATH: Record<string, string> = {
   "/": "/tr",
   "/blog": "/tr/blog",
   "/blog/origins-of-genau": "/tr/blog/kokenler",
+  "/blog/how-skills-work": "/tr/blog/skill-nedir",
   "/impressum": "/tr/kunye",
   "/datenschutz": "/tr/gizlilik",
   "/cookie-policy": "/tr/cerezler",
