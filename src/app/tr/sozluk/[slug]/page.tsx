@@ -87,12 +87,13 @@ export default async function SozlukWordPage({
             locale="tr"
             hrefPrefix="/tr/sozluk"
             initialQuery={entry.german}
+            emptyState={
+              <div className="flex flex-col gap-5">
+                <WordCard entry={entry} locale="tr" />
+                <GrammarInfoDisclosure entry={entry} locale="tr" />
+              </div>
+            }
           />
-
-          <div className="mt-6 flex flex-col gap-5">
-            <WordCard entry={entry} locale="tr" />
-            <GrammarInfoDisclosure entry={entry} locale="tr" />
-          </div>
 
           <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center">
             Gramer verilerinin bir kısmı Wiktionary'den uyarlandı (CC BY-SA 4.0).

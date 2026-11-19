@@ -86,18 +86,24 @@ export default async function DictionaryWordPage({
             <TranslationLangToggle />
           </div>
 
-          {/* Persistent search bar, prefilled with the current word. */}
+          {/* Persistent search bar, prefilled with the current
+              word. WordCard + GrammarInfoDisclosure sit inside
+              the `emptyState` slot so they collapse with the
+              same grid-rows + opacity transition the browse
+              surface uses on landing: focusing the search fades
+              the current word out, clearing brings it back. */}
           <DictionarySearch
             entries={DICT_ENTRIES}
             locale="en"
             hrefPrefix="/dictionary"
             initialQuery={entry.german}
+            emptyState={
+              <div className="flex flex-col gap-5">
+                <WordCard entry={entry} locale="en" />
+                <GrammarInfoDisclosure entry={entry} locale="en" />
+              </div>
+            }
           />
-
-          <div className="mt-6 flex flex-col gap-5">
-            <WordCard entry={entry} locale="en" />
-            <GrammarInfoDisclosure entry={entry} locale="en" />
-          </div>
 
           <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center">
             Some grammatical data adapted from Wiktionary (CC BY-SA 4.0).
