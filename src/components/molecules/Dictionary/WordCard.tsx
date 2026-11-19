@@ -1,8 +1,11 @@
+"use client";
+
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 import type { DictionaryEntry, DictLocale } from "./types";
 import { STR, TYPE_LABEL, pick } from "./strings";
+import { useTranslationLang } from "./TranslationLangContext";
 
 /**
  * WordCard, the lean primary card of a dictionary page.
@@ -38,22 +41,14 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
     ? ARTICLE_COLOR[entry.noun!.article]
     : undefined;
   const heroColor = articleColor ?? "var(--fg)";
-  const primaryTranslation =
-    locale === "tr"
+  // Translation shown uses the user's chosen translation language
+  // (the dictionary toggle), falling back to the other translation
+  // if the chosen one is missing.
+  const tLang = useTranslationLang();
+  const translation =
+    tLang === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
-  // Show the other locale's translation as a secondary line so a
-  // Turkish visitor on /dictionary (or an English visitor on
-  // /tr/sozluk) still sees their language without switching the
-  // whole site.
-  const secondaryTranslation =
-    locale === "tr"
-      ? entry.translations.turkish && entry.translations.english
-        ? entry.translations.english
-        : undefined
-      : entry.translations.english && entry.translations.turkish
-        ? entry.translations.turkish
-        : undefined;
   const ruleText =
     locale === "tr"
       ? entry.rule?.turkish ?? entry.rule?.english
@@ -129,14 +124,9 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
           </h1>
         )}
 
-        {primaryTranslation ? (
+        {translation ? (
           <p className="font-sans text-[16px] sm:text-[18px] text-fg-muted text-center m-0">
-            {primaryTranslation}
-          </p>
-        ) : null}
-        {secondaryTranslation ? (
-          <p className="font-sans text-[13px] sm:text-[14px] text-fg-faint text-center m-0">
-            {secondaryTranslation}
+            {translation}
           </p>
         ) : null}
 

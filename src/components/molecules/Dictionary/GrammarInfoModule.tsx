@@ -1,9 +1,12 @@
+"use client";
+
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 import type { DictionaryEntry, DictLocale, CaseRow, ConjugationRow } from "./types";
 import { STR, TYPE_LABEL, CASE_LABEL_TR, pick } from "./strings";
 import { GrammarTagPill } from "./WordCard";
+import { useTranslationLang } from "./TranslationLangContext";
 
 /**
  * GrammarInfoModule, the deeper info panel rendered inline under
@@ -248,18 +251,11 @@ function SummaryRow({
     ? ARTICLE_COLOR[entry.noun!.article]
     : undefined;
   const squareColor = articleColor ?? "var(--accent)";
-  const primaryTranslation =
-    locale === "tr"
+  const tLang = useTranslationLang();
+  const translation =
+    tLang === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
-  const secondaryTranslation =
-    locale === "tr"
-      ? entry.translations.turkish && entry.translations.english
-        ? entry.translations.english
-        : undefined
-      : entry.translations.english && entry.translations.turkish
-        ? entry.translations.turkish
-        : undefined;
   return (
     <div
       className="flex items-center gap-3 rounded-xl p-3"
@@ -296,12 +292,9 @@ function SummaryRow({
         <span className="font-sans font-bold text-[18px] text-fg truncate">
           {entry.german}
         </span>
-        {primaryTranslation ? (
+        {translation ? (
           <span className="font-sans text-[13px] text-fg-muted truncate">
-            {primaryTranslation}
-            {secondaryTranslation ? (
-              <span className="text-fg-faint"> · {secondaryTranslation}</span>
-            ) : null}
+            {translation}
           </span>
         ) : null}
       </span>

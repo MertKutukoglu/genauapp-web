@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { clsx } from "@/lib/utils/clsx";
@@ -7,6 +9,7 @@ import type {
   DictionaryEntry,
   DictLocale,
 } from "./types";
+import { useTranslationLang } from "./TranslationLangContext";
 
 /**
  * BrowseSurface, the "browse without typing" block that sits under
@@ -198,18 +201,11 @@ function PopularCard({
 }) {
   const isNoun = entry.type === "noun" && !!entry.noun;
   const color = isNoun ? ARTICLE_COLOR[entry.noun!.article] : "var(--accent)";
-  const primaryTranslation =
-    locale === "tr"
+  const tLang = useTranslationLang();
+  const translation =
+    tLang === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
-  const secondaryTranslation =
-    locale === "tr"
-      ? entry.translations.turkish && entry.translations.english
-        ? entry.translations.english
-        : undefined
-      : entry.translations.english && entry.translations.turkish
-        ? entry.translations.turkish
-        : undefined;
   return (
     <Link
       href={`${hrefPrefix}/${entry.slug}`}
@@ -237,12 +233,9 @@ function PopularCard({
           {entry.german}
         </span>
       </div>
-      {primaryTranslation ? (
+      {translation ? (
         <div className="font-sans text-[13px] text-fg-muted truncate">
-          {primaryTranslation}
-          {secondaryTranslation ? (
-            <span className="text-fg-faint"> · {secondaryTranslation}</span>
-          ) : null}
+          {translation}
         </div>
       ) : null}
       <div

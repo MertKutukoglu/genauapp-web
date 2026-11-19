@@ -7,6 +7,7 @@ import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
 import type { DictionaryEntry, DictLocale } from "./types";
 import { STR, TYPE_LABEL, pick } from "./strings";
+import { useTranslationLang } from "./TranslationLangContext";
 
 /**
  * DictionarySearch, the type-as-you-go search surface for /dictionary
@@ -363,6 +364,7 @@ function ResultList({
   locale: DictLocale;
   hrefPrefix: string;
 }) {
+  const tLang = useTranslationLang();
   return (
     <ul
       id="dict-results"
@@ -377,23 +379,15 @@ function ResultList({
         const isActive = activeIdx === i;
         const [before, match, after] = split(e.german, query);
 
-        // Always show both translations on a direct German match,
-        // user locale first, so a Turkish visitor on /dictionary
-        // still sees the TR translation at a glance. When the match
-        // itself came from a translation, keep the existing
-        // "matched text + language tag" shape.
-        const primary =
-          locale === "tr"
+        // Direct German match: show the translation in the user's
+        // chosen translation language (the toggle). When the match
+        // itself came from a translation, keep the "matched text +
+        // language tag" shape so the signal of which language
+        // caught the match stays visible.
+        const translation =
+          tLang === "tr"
             ? e.translations.turkish ?? e.translations.english
             : e.translations.english ?? e.translations.turkish;
-        const secondary =
-          locale === "tr"
-            ? e.translations.turkish && e.translations.english
-              ? e.translations.english
-              : undefined
-            : e.translations.english && e.translations.turkish
-              ? e.translations.turkish
-              : undefined;
         return (
           <li
             key={e.slug}
@@ -440,12 +434,9 @@ function ResultList({
                       {hit.matchLang}
                     </span>
                   </span>
-                ) : primary ? (
+                ) : translation ? (
                   <span className="font-sans text-[12px] text-fg-muted mt-0.5 truncate">
-                    {primary}
-                    {secondary ? (
-                      <span className="text-fg-faint"> · {secondary}</span>
-                    ) : null}
+                    {translation}
                   </span>
                 ) : null}
               </span>
