@@ -38,10 +38,22 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
     ? ARTICLE_COLOR[entry.noun!.article]
     : undefined;
   const heroColor = articleColor ?? "var(--fg)";
-  const translation =
+  const primaryTranslation =
     locale === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
+  // Show the other locale's translation as a secondary line so a
+  // Turkish visitor on /dictionary (or an English visitor on
+  // /tr/sozluk) still sees their language without switching the
+  // whole site.
+  const secondaryTranslation =
+    locale === "tr"
+      ? entry.translations.turkish && entry.translations.english
+        ? entry.translations.english
+        : undefined
+      : entry.translations.english && entry.translations.turkish
+        ? entry.translations.turkish
+        : undefined;
   const ruleText =
     locale === "tr"
       ? entry.rule?.turkish ?? entry.rule?.english
@@ -117,9 +129,14 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
           </h1>
         )}
 
-        {translation ? (
+        {primaryTranslation ? (
           <p className="font-sans text-[16px] sm:text-[18px] text-fg-muted text-center m-0">
-            {translation}
+            {primaryTranslation}
+          </p>
+        ) : null}
+        {secondaryTranslation ? (
+          <p className="font-sans text-[13px] sm:text-[14px] text-fg-faint text-center m-0">
+            {secondaryTranslation}
           </p>
         ) : null}
 

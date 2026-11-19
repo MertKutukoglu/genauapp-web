@@ -198,10 +198,18 @@ function PopularCard({
 }) {
   const isNoun = entry.type === "noun" && !!entry.noun;
   const color = isNoun ? ARTICLE_COLOR[entry.noun!.article] : "var(--accent)";
-  const translation =
+  const primaryTranslation =
     locale === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
+  const secondaryTranslation =
+    locale === "tr"
+      ? entry.translations.turkish && entry.translations.english
+        ? entry.translations.english
+        : undefined
+      : entry.translations.english && entry.translations.turkish
+        ? entry.translations.turkish
+        : undefined;
   return (
     <Link
       href={`${hrefPrefix}/${entry.slug}`}
@@ -229,9 +237,12 @@ function PopularCard({
           {entry.german}
         </span>
       </div>
-      {translation ? (
+      {primaryTranslation ? (
         <div className="font-sans text-[13px] text-fg-muted truncate">
-          {translation}
+          {primaryTranslation}
+          {secondaryTranslation ? (
+            <span className="text-fg-faint"> · {secondaryTranslation}</span>
+          ) : null}
         </div>
       ) : null}
       <div

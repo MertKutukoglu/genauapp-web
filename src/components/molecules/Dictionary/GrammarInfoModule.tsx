@@ -248,10 +248,18 @@ function SummaryRow({
     ? ARTICLE_COLOR[entry.noun!.article]
     : undefined;
   const squareColor = articleColor ?? "var(--accent)";
-  const translation =
+  const primaryTranslation =
     locale === "tr"
       ? entry.translations.turkish ?? entry.translations.english
       : entry.translations.english ?? entry.translations.turkish;
+  const secondaryTranslation =
+    locale === "tr"
+      ? entry.translations.turkish && entry.translations.english
+        ? entry.translations.english
+        : undefined
+      : entry.translations.english && entry.translations.turkish
+        ? entry.translations.turkish
+        : undefined;
   return (
     <div
       className="flex items-center gap-3 rounded-xl p-3"
@@ -288,9 +296,12 @@ function SummaryRow({
         <span className="font-sans font-bold text-[18px] text-fg truncate">
           {entry.german}
         </span>
-        {translation ? (
+        {primaryTranslation ? (
           <span className="font-sans text-[13px] text-fg-muted truncate">
-            {translation}
+            {primaryTranslation}
+            {secondaryTranslation ? (
+              <span className="text-fg-faint"> · {secondaryTranslation}</span>
+            ) : null}
           </span>
         ) : null}
       </span>

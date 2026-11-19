@@ -376,6 +376,24 @@ function ResultList({
         const color = isNoun ? ARTICLE_COLOR[e.noun!.article] : "var(--fg)";
         const isActive = activeIdx === i;
         const [before, match, after] = split(e.german, query);
+
+        // Always show both translations on a direct German match,
+        // user locale first, so a Turkish visitor on /dictionary
+        // still sees the TR translation at a glance. When the match
+        // itself came from a translation, keep the existing
+        // "matched text + language tag" shape.
+        const primary =
+          locale === "tr"
+            ? e.translations.turkish ?? e.translations.english
+            : e.translations.english ?? e.translations.turkish;
+        const secondary =
+          locale === "tr"
+            ? e.translations.turkish && e.translations.english
+              ? e.translations.english
+              : undefined
+            : e.translations.english && e.translations.turkish
+              ? e.translations.turkish
+              : undefined;
         return (
           <li
             key={e.slug}
@@ -421,6 +439,13 @@ function ResultList({
                     >
                       {hit.matchLang}
                     </span>
+                  </span>
+                ) : primary ? (
+                  <span className="font-sans text-[12px] text-fg-muted mt-0.5 truncate">
+                    {primary}
+                    {secondary ? (
+                      <span className="text-fg-faint"> · {secondary}</span>
+                    ) : null}
                   </span>
                 ) : null}
               </span>
