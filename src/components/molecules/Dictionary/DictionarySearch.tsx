@@ -36,32 +36,9 @@ const SEARCH_PLACEHOLDER = {
   tr: "Almanca, Türkçe veya İngilizce bir kelime yaz",
 } as const;
 
-const EMPTY_TITLE = {
-  en: "Search German words",
-  tr: "Almanca kelime ara",
-} as const;
-
-const EMPTY_SUBTITLE = {
-  en: "Find any word by typing in German, English or Turkish. See articles, grammar rules, and example sentences.",
-  tr: "Almanca, İngilizce veya Türkçe yaz. Artikel, gramer kuralları ve örnek cümleleri gör.",
-} as const;
-
-const EMPTY_HINTS = {
-  en: [
-    { icon: "book-open" as const, text: "Articles & grammar rules" },
-    { icon: "chip-sentence" as const, text: "Example sentences" },
-    { icon: "bookmark" as const, text: "Save words in the GenauApp" },
-  ],
-  tr: [
-    { icon: "book-open" as const, text: "Artikel ve gramer kuralları" },
-    { icon: "chip-sentence" as const, text: "Örnek cümleler" },
-    { icon: "bookmark" as const, text: "Kelimeleri GenauApp'te kaydet" },
-  ],
-} as const;
-
 const POPULAR_LABEL = {
-  en: "Popular words",
-  tr: "Sık aranan kelimeler",
+  en: "Popular",
+  tr: "Sık aranan",
 } as const;
 
 const NOT_FOUND_TITLE = {
@@ -187,6 +164,11 @@ export interface DictionarySearchProps {
   locale: DictLocale;
   /** URL path prefix for word hrefs. `/dictionary` or `/tr/sozluk`. */
   hrefPrefix: string;
+  /** Replaces the component's built-in empty state. Pass the page's
+   *  own browse surfaces (article tiles, popular grid, level chips)
+   *  so the landing doesn't look like a templated widget. When
+   *  omitted the component falls back to a minimal popular-strip. */
+  emptyState?: React.ReactNode;
   className?: string;
 }
 
@@ -194,6 +176,7 @@ export function DictionarySearch({
   entries,
   locale,
   hrefPrefix,
+  emptyState,
   className,
 }: DictionarySearchProps) {
   const [raw, setRaw] = React.useState("");
@@ -241,17 +224,30 @@ export function DictionarySearch({
 
   return (
     <div className={clsx("w-full flex flex-col gap-6", className)}>
-      {/* Search bar */}
+      {/* Search bar. Cleaner surface than a plain sunken pill, with
+          a cherry focus ring so the control reads as the hero of
+          the page. */}
       <div
-        className="flex items-center gap-3 rounded-2xl px-4"
+        className={clsx(
+          "dict-search-bar",
+          "flex items-center gap-3 rounded-2xl px-4",
+          "transition-shadow",
+        )}
         style={{
-          height: 52,
-          background:
-            "color-mix(in srgb, var(--fg) 6%, transparent)",
+          height: 56,
+          background: "var(--surface-card)",
           border: "1px solid var(--border)",
+          boxShadow:
+            "0 2px 10px color-mix(in srgb, var(--fg) 5%, transparent)",
         }}
       >
-        <Icon name="search" className="w-5 h-5 text-fg-faint shrink-0" />
+        <Icon
+          name="search"
+          className={clsx(
+            "w-[22px] h-[22px] shrink-0 transition-colors",
+            hasQuery ? "text-[color:var(--accent)]" : "text-fg-muted",
+          )}
+        />
         <input
           ref={inputRef}
           type="search"
@@ -296,8 +292,10 @@ export function DictionarySearch({
         ) : (
           <NotFound query={raw} locale={locale} entries={entries} hrefPrefix={hrefPrefix} />
         )
+      ) : emptyState !== undefined ? (
+        emptyState
       ) : (
-        <EmptyState entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
+        <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
       )}
     </div>
   );
@@ -392,55 +390,6 @@ function ResultList({
         );
       })}
     </ul>
-  );
-}
-
-/* ---------- Empty state ---------- */
-
-function EmptyState({
-  entries,
-  locale,
-  hrefPrefix,
-}: {
-  entries: DictionaryEntry[];
-  locale: DictLocale;
-  hrefPrefix: string;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-6 py-8 sm:py-12">
-      <div
-        className="inline-flex items-center justify-center rounded-2xl"
-        style={{
-          width: 72,
-          height: 72,
-          background: "color-mix(in srgb, var(--accent) 10%, transparent)",
-          color: "var(--accent)",
-        }}
-      >
-        <Icon name="search" className="w-9 h-9" />
-      </div>
-      <div className="flex flex-col items-center gap-2 text-center max-w-md">
-        <h2 className="font-sans font-bold text-[22px] text-fg m-0">
-          {EMPTY_TITLE[locale]}
-        </h2>
-        <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">
-          {EMPTY_SUBTITLE[locale]}
-        </p>
-      </div>
-      <ul className="flex flex-col gap-3 m-0 p-0 list-none">
-        {EMPTY_HINTS[locale].map((h) => (
-          <li
-            key={h.text}
-            className="flex items-center gap-3 font-sans text-[14px] text-fg-muted"
-          >
-            <Icon name={h.icon} className="w-5 h-5 text-[color:var(--accent)]" />
-            {h.text}
-          </li>
-        ))}
-      </ul>
-
-      <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
-    </div>
   );
 }
 

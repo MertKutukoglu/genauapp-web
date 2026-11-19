@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { DictionarySearch } from "@/components/molecules/Dictionary";
+import {
+  DictionarySearch,
+  ArticleTiles,
+  PopularGrid,
+  LevelStrip,
+} from "@/components/molecules/Dictionary";
 import { DICT_ENTRIES } from "@/content/dictionary/entries";
 
 /**
- * /tr/sozluk, Turkish dictionary landing page. Search-first mirror
- * of /dictionary; trilingual matching covers queries typed in TR,
- * EN or DE so the same search UI serves both audiences.
+ * /tr/sozluk, Turkish dictionary landing page. Same browse-first
+ * shape as the EN sibling (eyebrow + search + article tiles +
+ * popular grid + level strip). Search is trilingual so TR users
+ * can type in TR, EN or DE and get the same results.
  */
 export const metadata: Metadata = {
   title: "Almanca Sözlük | Artikel, çekim, örnek cümle | GenauApp",
@@ -24,21 +30,33 @@ export const metadata: Metadata = {
 export default function SozlukLandingPage() {
   return (
     <main className="min-h-screen pb-24">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-8 sm:pt-14">
-        <header className="flex flex-col items-center text-center gap-3 mb-8 sm:mb-10">
-          <h1 className="font-display font-bold text-[32px] sm:text-[44px] text-fg leading-tight m-0">
-            Almanca Sözlük
-          </h1>
-          <p className="font-sans text-[15px] sm:text-[17px] text-fg-muted m-0 max-w-lg leading-relaxed">
-            Almanca bir kelime ara, artikelini, kurallarını, çekimini
-            ve örnek cümlelerini gör.
-          </p>
-        </header>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
+        <h1
+          className="font-sans font-semibold text-[12px] uppercase text-fg-faint m-0 mb-4"
+          style={{ letterSpacing: "0.6px" }}
+        >
+          Sözlük
+        </h1>
 
         <DictionarySearch
           entries={DICT_ENTRIES}
           locale="tr"
           hrefPrefix="/tr/sozluk"
+          emptyState={
+            <div className="flex flex-col gap-8 mt-2">
+              <ArticleTiles
+                entries={DICT_ENTRIES}
+                locale="tr"
+                hrefPrefix="/tr/sozluk"
+              />
+              <PopularGrid
+                entries={DICT_ENTRIES}
+                locale="tr"
+                hrefPrefix="/tr/sozluk"
+              />
+              <LevelStrip entries={DICT_ENTRIES} locale="tr" />
+            </div>
+          }
         />
       </div>
     </main>

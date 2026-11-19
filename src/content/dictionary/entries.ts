@@ -16,6 +16,88 @@ import type { DictionaryEntry } from "@/components/molecules/Dictionary/types";
 
 export const DICT_ENTRIES: DictionaryEntry[] = [
   {
+    slug: "journalist",
+    german: "Journalist",
+    type: "noun",
+    level: "A2",
+    translations: {
+      english: "journalist",
+      turkish: "gazeteci",
+    },
+    tags: [
+      {
+        key: "masculine",
+        label: "Masculine",
+        tone: "info",
+        explanation:
+          "Masculine nouns take der in nominative, den in accusative, dem in dative, des in genitive.",
+      },
+      {
+        key: "n-declension",
+        label: "n-Deklination",
+        tone: "warn",
+        explanation:
+          "Takes an -en ending in every case except the nominative singular.",
+      },
+    ],
+    leveledExamples: [
+      {
+        de: "Der Journalist arbeitet für eine große Zeitung.",
+        en: "The journalist works for a big newspaper.",
+        tr: "Gazeteci büyük bir gazete için çalışıyor.",
+        level: "A2",
+      },
+      {
+        de: "Als Journalist muss man viel recherchieren.",
+        en: "As a journalist, you have to research a lot.",
+        tr: "Gazeteci olarak çok araştırmak gerek.",
+        level: "B1",
+      },
+    ],
+    collocations: [
+      {
+        de: "als Journalist arbeiten",
+        en: "to work as a journalist",
+        tr: "gazeteci olarak çalışmak",
+      },
+    ],
+    noun: {
+      article: "der",
+      plural: "die Journalisten",
+      nDeclension: true,
+      declension: [
+        {
+          label: "Nominativ",
+          question: "Wer?",
+          definite: "der Journalist",
+          indefinite: "ein Journalist",
+          plural: "die Journalisten",
+        },
+        {
+          label: "Akkusativ",
+          question: "Wen?",
+          definite: "den Journalisten",
+          indefinite: "einen Journalisten",
+          plural: "die Journalisten",
+        },
+        {
+          label: "Dativ",
+          question: "Wem?",
+          definite: "dem Journalisten",
+          indefinite: "einem Journalisten",
+          plural: "den Journalisten",
+        },
+        {
+          label: "Genitiv",
+          question: "Wessen?",
+          definite: "des Journalisten",
+          indefinite: "eines Journalisten",
+          plural: "der Journalisten",
+        },
+      ],
+    },
+  },
+  {
     slug: "erfahrung",
     german: "Erfahrung",
     type: "noun",

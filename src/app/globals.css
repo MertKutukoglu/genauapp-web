@@ -566,3 +566,13 @@ body {
    affordance. */
 .dict-grammar-disclosure > summary::-webkit-details-marker { display: none; }
 .dict-grammar-disclosure > summary::marker { content: ""; }
+
+/* Dictionary search bar focus ring. Cherry glow when the input
+   inside gains focus, so the control reads as the active element
+   on the page. */
+.dict-search-bar:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent),
+    0 2px 10px color-mix(in srgb, var(--fg) 5%, transparent);
+}
