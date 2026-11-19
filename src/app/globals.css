@@ -718,3 +718,13 @@ body {
 .dict-chevron-circle:active:not(:disabled) {
   transform: translateY(1px);
 }
+
+/* Conjugation table swipe track: hide the native scrollbar; the
+   tense tabs above are the only paging affordance. */
+.dict-conjug-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.dict-conjug-track::-webkit-scrollbar {
+  display: none;
+}

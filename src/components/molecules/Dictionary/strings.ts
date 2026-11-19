@@ -15,8 +15,18 @@ export const STR = {
   } satisfies S,
 
   grammarInfo: {
-    en: "Grammar info",
-    tr: "Gramer bilgisi",
+    en: "Word anatomy",
+    tr: "Kelime anatomisi",
+  } satisfies S,
+
+  conjugation: {
+    en: "Conjugation",
+    tr: "Çekim",
+  } satisfies S,
+
+  tags: {
+    en: "Tags",
+    tr: "Etiketler",
   } satisfies S,
 
   flagTitle: {

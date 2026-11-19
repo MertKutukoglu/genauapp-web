@@ -3,25 +3,46 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
-import type { DictionaryEntry, DictLocale, CaseRow, ConjugationRow } from "./types";
+import type {
+  DictionaryEntry,
+  DictLocale,
+  CaseRow,
+  ConjugationRow,
+  LeveledExample,
+  Collocation,
+} from "./types";
 import { STR, TYPE_LABEL, CASE_LABEL_TR, pick } from "./strings";
 import { GrammarTagPill } from "./WordCard";
 import { useTranslationLang } from "./TranslationLangContext";
 
 /**
- * GrammarInfoModule, the deeper info panel rendered inline under
- * WordCard. iOS presents this as a bottom sheet with `grammar
- * info →` button; web renders it inline so Google indexes the
- * tables and the user sees them with one scroll.
+ * GrammarInfoModule — rebranded "Word Anatomy".
  *
- * Anatomy follows the iOS sheet: a flag card on top, a re-summary
- * row that re-identifies the word, then type-specific sections
- * (noun: details + declension; verb: präsens + präteritum +
- * perfekt + properties; adjective: comparison + declension), and
- * an example block at the foot.
+ * The one long card is gone; the module composes a sequence of
+ * tightly-packed sub-cards, each dedicated to a single part of the
+ * word anatomy. Per type:
  *
- * Any section whose data is missing collapses. The module never
- * renders empty scaffolding.
+ *   NOUN:    1. Grammar (article + plural tiles, declension table)
+ *            2. Samples (level tabs, one sentence at a time)
+ *            3. Phrases (collocations)
+ *
+ *   VERB:    1. Conjugation (Präsens / Präteritum swipe + tabs)
+ *            2. Perfekt + tags (aux + perfekt form tiles, tag pills)
+ *            3. Samples
+ *            4. Phrases
+ *
+ *   ADJ:     1. Comparison (Positiv / Komparativ / Superlativ tiles,
+ *               + tag pills)
+ *            2. Samples
+ *            3. Phrases
+ *
+ *   ADVERB / OTHER: Tags (if any), Samples, Phrases.
+ *
+ * Shared pieces up top: flag card, summary row (re-identifies the
+ * word when the user scrolled deep). Each sub-card uses SubCard
+ * for a consistent header + body shell; gap between sub-cards is
+ * tight (8px) so the stack reads as one anatomy strip, not four
+ * disconnected boxes.
  */
 
 const ARTICLE_COLOR = {
@@ -34,8 +55,7 @@ export interface GrammarInfoModuleProps {
   entry: DictionaryEntry;
   locale: DictLocale;
   /** When wrapped in GrammarInfoDisclosure, the disclosure trigger
-   *  already carries the title, so hide the inner header to avoid
-   *  the "Grammar info · Grammar info" double title. */
+   *  already carries the title, so hide the inner header. */
   hideHeader?: boolean;
   className?: string;
 }
@@ -46,48 +66,57 @@ export function GrammarInfoModule({
   hideHeader = false,
   className,
 }: GrammarInfoModuleProps) {
-  // Translation language drives the example + collocation gloss
-  // language, so a Turkish visitor on /dictionary sees TR under
-  // every German line without switching the whole site locale.
   const tLang = useTranslationLang();
   const isNoun = entry.type === "noun" && !!entry.noun;
   const isVerb = entry.type === "verb" && !!entry.verb;
   const isAdj = entry.type === "adjective" && !!entry.adjective;
 
-  // Verify at least one section has data to render before mounting
-  // the module. If nothing does, return null (the card already
-  // carried everything we know).
-  const hasNounSection = isNoun && (entry.noun!.plural || entry.noun!.declension);
-  const hasVerbSection =
+  const hasNounGrammar =
+    isNoun && (!!entry.noun!.plural || !!entry.noun!.declension);
+  const hasConjugation =
     isVerb &&
-    (entry.verb!.present ||
-      entry.verb!.praeteritum ||
-      entry.verb!.auxiliary ||
-      entry.verb!.perfektForm);
-  const hasAdjSection =
-    isAdj && (entry.adjective!.komparativ || entry.adjective!.superlativ);
-  const hasTags = entry.tags.length > 0;
-  const extraExamples = entry.leveledExamples.slice(1);
-  const hasAnything =
-    hasNounSection ||
-    hasVerbSection ||
-    hasAdjSection ||
-    hasTags ||
-    extraExamples.length > 0 ||
-    (entry.collocations && entry.collocations.length > 0);
+    ((entry.verb!.present && entry.verb!.present.length > 0) ||
+      (entry.verb!.praeteritum && entry.verb!.praeteritum.length > 0));
+  const hasPerfekt =
+    isVerb &&
+    (!!entry.verb!.auxiliary || !!entry.verb!.perfektForm);
+  const hasComparison =
+    isAdj &&
+    (!!entry.adjective!.komparativ || !!entry.adjective!.superlativ);
 
-  if (!hasAnything) return null;
+  // Tags: skip noun gender pills (article already shows gender).
+  // Keep the rest (n-Deklination, regular/irregular, separable,
+  // case requirements, +sein).
+  const tags = entry.tags.filter(
+    (t) => !["masculine", "feminine", "neuter"].includes(t.key),
+  );
+
+  const allSamples = [...entry.leveledExamples].sort((a, b) =>
+    a.level.localeCompare(b.level),
+  );
+  // The primary sample sits on the WordCard; the Samples sub-card
+  // shows every level the word has, including the primary, so the
+  // user can jump back to the one on the card.
+  const hasSamples = allSamples.length > 0;
+  const hasPhrases =
+    !!entry.collocations && entry.collocations.length > 0;
+
+  const anything =
+    hasNounGrammar ||
+    hasConjugation ||
+    hasPerfekt ||
+    hasComparison ||
+    tags.length > 0 ||
+    hasSamples ||
+    hasPhrases;
+  if (!anything) return null;
 
   return (
     <section
       aria-label={pick(STR.grammarInfo, locale)}
       className={clsx(
-        "flex flex-col gap-6",
-        // When wrapped in GrammarInfoDisclosure the outer surface is
-        // the disclosure's own, so skip the card chrome here.
-        hideHeader
-          ? ""
-          : "rounded-[24px] p-5 sm:p-6",
+        "flex flex-col gap-3",
+        hideHeader ? "" : "rounded-[24px] p-5 sm:p-6",
         className,
       )}
       style={
@@ -99,14 +128,9 @@ export function GrammarInfoModule({
             }
       }
     >
-      {/* Section header: title + (muted) type on the right. Hidden
-          when the module is wrapped in a disclosure (the trigger
-          carries the title then). */}
       {hideHeader ? null : (
         <div className="flex items-baseline justify-between">
-          <h2
-            className="font-sans font-bold text-[18px] sm:text-[20px] text-fg m-0"
-          >
+          <h2 className="font-sans font-bold text-[18px] sm:text-[20px] text-fg m-0">
             {pick(STR.grammarInfo, locale)}
           </h2>
           <span
@@ -118,112 +142,107 @@ export function GrammarInfoModule({
         </div>
       )}
 
-      {/* Flag card. First item in the module, as in iOS. */}
-      <FlagCard locale={locale} entry={entry} />
+      <FlagCard entry={entry} locale={locale} />
+      <SummaryRow entry={entry} locale={locale} tLang={tLang} />
 
-      {/* Re-summary row so a user scrolled this deep still sees
-          which word they are reading about. */}
-      <SummaryRow entry={entry} locale={locale} />
+      <div className="flex flex-col gap-2">
+        {hasNounGrammar ? (
+          <NounGrammarCard entry={entry} locale={locale} />
+        ) : null}
 
-      {/* Noun sections */}
-      {isNoun ? (
-        <NounSections entry={entry} locale={locale} />
-      ) : null}
+        {hasConjugation ? (
+          <ConjugationCard entry={entry} locale={locale} />
+        ) : null}
 
-      {/* Verb sections */}
-      {isVerb ? (
-        <VerbSections entry={entry} locale={locale} />
-      ) : null}
+        {hasPerfekt || (isVerb && tags.length > 0) ? (
+          <PerfektAndTagsCard
+            entry={entry}
+            locale={locale}
+            tags={tags}
+          />
+        ) : null}
 
-      {/* Adjective sections */}
-      {isAdj ? (
-        <AdjSections entry={entry} locale={locale} />
-      ) : null}
+        {hasComparison ? (
+          <AdjectiveCard entry={entry} locale={locale} tags={tags} />
+        ) : null}
 
-      {/* Grammar tags (nouns + any other type carrying case/aux
-          tags). Verb's lead tag already sits on the card; the tag
-          strip here is the full list with explanations. */}
-      {hasTags ? (
-        <SectionShell title={pick(STR.grammarTags, locale)}>
-          <div className="flex flex-wrap gap-2">
-            {entry.tags.map((t) => (
-              <GrammarTagPill key={t.key} tag={t} />
-            ))}
-          </div>
-          <TagExplanations tags={entry.tags} />
-        </SectionShell>
-      ) : null}
+        {/* Standalone tags card for non-verb / non-adjective types
+            where the main card doesn't already carry them. */}
+        {!isVerb &&
+        !isAdj &&
+        tags.length > 0 &&
+        entry.type !== "noun" ? (
+          <TagsOnlyCard tags={tags} locale={locale} />
+        ) : null}
 
-      {/* Extra leveled examples (the lowest-level one already sits
-          on the card). Example glosses follow the translation-lang
-          toggle, not the UI locale, so toggling TR on the EN site
-          swaps every example subtitle to its TR gloss. */}
-      {extraExamples.length > 0 ? (
-        <SectionShell title={pick(STR.sampleSentence, locale)}>
-          <div className="flex flex-col gap-3">
-            {extraExamples.map((ex, i) => {
-              const gloss =
-                tLang === "tr"
-                  ? ex.tr ?? ex.en
-                  : ex.en ?? ex.tr;
-              return (
-                <div
-                  key={`ex-${i}`}
-                  className="rounded-xl p-3"
-                  style={{ background: "var(--surface-sunk)" }}
-                >
-                  <div
-                    className="font-sans text-[11px] uppercase text-fg-faint mb-1.5"
-                    style={{ letterSpacing: "0.4px" }}
-                  >
-                    {ex.level}
-                  </div>
-                  <p className="font-sans font-semibold text-[15px] text-fg m-0 leading-snug">
-                    {ex.de}
-                  </p>
-                  {gloss ? (
-                    <p className="font-sans text-[13px] text-fg-muted mt-1 m-0 leading-snug">
-                      {gloss}
-                    </p>
-                  ) : null}
-                </div>
-              );
-            })}
-          </div>
-        </SectionShell>
-      ) : null}
+        {hasSamples ? (
+          <SamplesCard
+            samples={allSamples}
+            locale={locale}
+            tLang={tLang}
+          />
+        ) : null}
 
-      {/* Collocations */}
-      {entry.collocations && entry.collocations.length > 0 ? (
-        <SectionShell title={pick(STR.commonPhrases, locale)}>
-          <ul className="flex flex-col gap-2 m-0 list-none p-0">
-            {entry.collocations.map((c, i) => {
-              const gloss =
-                tLang === "tr"
-                  ? c.tr ?? c.en
-                  : c.en ?? c.tr;
-              return (
-                <li key={`col-${i}`} className="flex flex-col gap-0.5 py-1">
-                  <span className="font-sans font-semibold text-[15px] text-fg">
-                    {c.de}
-                  </span>
-                  {gloss ? (
-                    <span className="font-sans text-[13px] text-fg-muted">
-                      {gloss}
-                    </span>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
-        </SectionShell>
-      ) : null}
+        {hasPhrases ? (
+          <PhrasesCard
+            collocations={entry.collocations!}
+            locale={locale}
+            tLang={tLang}
+          />
+        ) : null}
+      </div>
     </section>
   );
 }
 
 /* ================================================================ *
- *  Flag card + Summary row                                         *
+ *  Shared SubCard shell                                             *
+ * ================================================================ */
+
+function SubCard({
+  title,
+  action,
+  children,
+  className,
+}: {
+  title?: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-4 flex flex-col gap-3",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      {title || action ? (
+        <div className="flex items-center justify-between gap-3">
+          {title ? (
+            <h3
+              className="font-sans font-semibold text-[11px] uppercase text-fg-faint m-0"
+              style={{ letterSpacing: "0.5px" }}
+            >
+              {title}
+            </h3>
+          ) : (
+            <span />
+          )}
+          {action}
+        </div>
+      ) : null}
+      {children}
+    </div>
+  );
+}
+
+/* ================================================================ *
+ *  Flag card + Summary row                                          *
  * ================================================================ */
 
 function FlagCard({
@@ -260,16 +279,17 @@ function FlagCard({
 function SummaryRow({
   entry,
   locale,
+  tLang,
 }: {
   entry: DictionaryEntry;
   locale: DictLocale;
+  tLang: DictLocale;
 }) {
   const isNoun = entry.type === "noun" && !!entry.noun;
   const articleColor = isNoun
     ? ARTICLE_COLOR[entry.noun!.article]
     : undefined;
   const squareColor = articleColor ?? "var(--accent)";
-  const tLang = useTranslationLang();
   const translation =
     tLang === "tr"
       ? entry.translations.turkish ?? entry.translations.english
@@ -331,77 +351,10 @@ function SummaryRow({
 }
 
 /* ================================================================ *
- *  Section shell + tables                                          *
+ *  Noun grammar card                                                *
  * ================================================================ */
 
-function SectionShell({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-3">
-      <h3
-        className="font-sans font-semibold text-[11px] uppercase text-fg-faint m-0"
-        style={{ letterSpacing: "0.5px" }}
-      >
-        {title}
-      </h3>
-      {children}
-    </div>
-  );
-}
-
-function Tile({
-  label,
-  value,
-  valueColor,
-  bold = true,
-  outlined = false,
-}: {
-  label: string;
-  value: string;
-  valueColor?: string;
-  bold?: boolean;
-  outlined?: boolean;
-}) {
-  return (
-    <div
-      className="flex flex-col items-center justify-center rounded-2xl py-5 px-3 gap-1"
-      style={{
-        background: "var(--surface-sunk)",
-        border: outlined && valueColor
-          ? `1px solid color-mix(in srgb, ${valueColor} 40%, transparent)`
-          : "1px solid var(--border)",
-      }}
-    >
-      <div
-        className={clsx(
-          "font-sans leading-none",
-          bold ? "font-bold" : "font-semibold",
-          "text-[22px] sm:text-[24px]",
-        )}
-        style={{ color: valueColor ?? "var(--fg)" }}
-      >
-        {value}
-      </div>
-      <div
-        className="font-sans text-[11px] uppercase text-fg-faint"
-        style={{ letterSpacing: "0.4px" }}
-      >
-        {label}
-      </div>
-    </div>
-  );
-}
-
-/* ================================================================ *
- *  Noun sections                                                   *
- * ================================================================ */
-
-function NounSections({
+function NounGrammarCard({
   entry,
   locale,
 }: {
@@ -411,44 +364,421 @@ function NounSections({
   const n = entry.noun!;
   const color = ARTICLE_COLOR[n.article];
   return (
-    <>
-      <SectionShell title={pick(STR.nounDetails, locale)}>
-        <div className="grid grid-cols-2 gap-3">
-          <Tile
-            label={pick(STR.article, locale)}
-            value={n.article}
-            valueColor={color}
-          />
-          <Tile
-            label={pick(STR.plural, locale)}
-            value={n.plural ?? pick(STR.noPlural, locale)}
-          />
-        </div>
-      </SectionShell>
+    <SubCard
+      title={pick(STR.nounDetails, locale)}
+      action={
+        n.nDeclension ? (
+          <span
+            className="inline-flex items-center px-2 py-0.5 rounded-full font-sans font-semibold text-[10px]"
+            style={{
+              color: "var(--accent)",
+              background:
+                "color-mix(in srgb, var(--accent) 10%, transparent)",
+              border:
+                "1px solid color-mix(in srgb, var(--accent) 30%, transparent)",
+              letterSpacing: "0.3px",
+            }}
+          >
+            {pick(STR.nDeclination, locale)}
+          </span>
+        ) : null
+      }
+    >
+      <div className="grid grid-cols-2 gap-2">
+        <Tile label={pick(STR.article, locale)} value={n.article} valueColor={color} />
+        <Tile
+          label={pick(STR.plural, locale)}
+          value={n.plural ?? pick(STR.noPlural, locale)}
+        />
+      </div>
 
       {n.declension && n.declension.length > 0 ? (
-        <SectionShell title={pick(STR.declension, locale)}>
+        <>
+          <div
+            className="font-sans text-[11px] uppercase text-fg-faint mt-2"
+            style={{ letterSpacing: "0.5px" }}
+          >
+            {pick(STR.declension, locale)}
+          </div>
           <DeclensionTable
             rows={n.declension}
             articleColor={color}
             locale={locale}
           />
-        </SectionShell>
+        </>
       ) : null}
+    </SubCard>
+  );
+}
 
-      {n.nDeclension ? (
-        <div
-          className="inline-flex self-start items-center px-3 py-1.5 rounded-full font-sans font-semibold text-[12px]"
-          style={{
-            color: "var(--accent)",
-            background: "color-mix(in srgb, var(--accent) 10%, transparent)",
-            border: "1px solid color-mix(in srgb, var(--accent) 30%, transparent)",
-          }}
-        >
-          {pick(STR.nDeclination, locale)}
+/* ================================================================ *
+ *  Verb conjugation card (Präsens / Präteritum swipe)               *
+ * ================================================================ */
+
+function ConjugationCard({
+  entry,
+  locale,
+}: {
+  entry: DictionaryEntry;
+  locale: DictLocale;
+}) {
+  const v = entry.verb!;
+  type Tense = "present" | "praeteritum";
+  const pages: Array<{
+    key: Tense;
+    title: string;
+    rows: ConjugationRow[];
+  }> = [];
+  if (v.present && v.present.length > 0) {
+    pages.push({
+      key: "present",
+      title: pick(STR.praesens, locale),
+      rows: v.present,
+    });
+  }
+  if (v.praeteritum && v.praeteritum.length > 0) {
+    pages.push({
+      key: "praeteritum",
+      title: pick(STR.praeteritum, locale),
+      rows: v.praeteritum,
+    });
+  }
+  const [active, setActive] = React.useState(0);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+
+  const goto = React.useCallback((i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: track.clientWidth * i, behavior: "smooth" });
+    setActive(i);
+  }, []);
+
+  const onScroll = React.useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const w = track.clientWidth;
+    if (!w) return;
+    const next = Math.round(track.scrollLeft / w);
+    setActive((prev) => (prev === next ? prev : next));
+  }, []);
+
+  return (
+    <SubCard>
+      {/* Tab bar: tenses as segmented control. Also doubles as
+          page indicator for the swipe track below. */}
+      <div
+        className="inline-flex p-1 rounded-full self-start"
+        style={{
+          background: "var(--surface-sunk)",
+          border: "1px solid var(--border)",
+        }}
+      >
+        {pages.map((p, i) => (
+          <button
+            key={p.key}
+            type="button"
+            onClick={() => goto(i)}
+            aria-pressed={active === i}
+            className="inline-flex items-center justify-center px-3 py-1 rounded-full font-sans font-semibold text-[12px] transition-colors"
+            style={{
+              color: active === i ? "var(--surface-card)" : "var(--fg-muted)",
+              background: active === i ? "var(--fg)" : "transparent",
+            }}
+          >
+            {p.title}
+          </button>
+        ))}
+      </div>
+
+      <div
+        ref={trackRef}
+        onScroll={onScroll}
+        className="dict-conjug-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
+      >
+        <div className="flex">
+          {pages.map((p) => (
+            <div
+              key={p.key}
+              className="snap-start shrink-0 w-full"
+            >
+              <ConjugationTable rows={p.rows} locale={locale} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Perfekt + tags card (verb)                                       *
+ * ================================================================ */
+
+function PerfektAndTagsCard({
+  entry,
+  locale,
+  tags,
+}: {
+  entry: DictionaryEntry;
+  locale: DictLocale;
+  tags: DictionaryEntry["tags"];
+}) {
+  const v = entry.verb!;
+  const hasPerfekt = !!v.auxiliary || !!v.perfektForm;
+  return (
+    <SubCard title={hasPerfekt ? pick(STR.perfekt, locale) : pick(STR.tags, locale)}>
+      {hasPerfekt ? (
+        <div className="grid grid-cols-2 gap-2">
+          {v.auxiliary ? (
+            <Tile
+              label={pick(STR.auxiliary, locale)}
+              value={v.auxiliary}
+              valueColor={v.auxiliary === "haben" ? "#14B8A6" : "#E8A838"}
+              outlined
+            />
+          ) : (
+            <div />
+          )}
+          {v.perfektForm ? (
+            <Tile
+              label={pick(STR.perfektForm, locale)}
+              value={v.perfektForm}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       ) : null}
-    </>
+
+      {tags.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <GrammarTagPill key={t.key} tag={t} />
+          ))}
+        </div>
+      ) : null}
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Adjective card                                                   *
+ * ================================================================ */
+
+function AdjectiveCard({
+  entry,
+  locale,
+  tags,
+}: {
+  entry: DictionaryEntry;
+  locale: DictLocale;
+  tags: DictionaryEntry["tags"];
+}) {
+  const a = entry.adjective!;
+  return (
+    <SubCard title={pick(STR.comparison, locale)}>
+      <div className="grid grid-cols-3 gap-2">
+        <Tile label={pick(STR.positive, locale)} value={a.positive} />
+        {a.komparativ ? (
+          <Tile label={pick(STR.komparativ, locale)} value={a.komparativ} />
+        ) : (
+          <div />
+        )}
+        {a.superlativ ? (
+          <Tile label={pick(STR.superlativ, locale)} value={a.superlativ} />
+        ) : (
+          <div />
+        )}
+      </div>
+
+      {tags.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <GrammarTagPill key={t.key} tag={t} />
+          ))}
+        </div>
+      ) : null}
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Tags-only card (fallback for other types)                        *
+ * ================================================================ */
+
+function TagsOnlyCard({
+  tags,
+  locale,
+}: {
+  tags: DictionaryEntry["tags"];
+  locale: DictLocale;
+}) {
+  return (
+    <SubCard title={pick(STR.tags, locale)}>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((t) => (
+          <GrammarTagPill key={t.key} tag={t} />
+        ))}
+      </div>
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Samples card (level tabs, one sentence at a time)                *
+ * ================================================================ */
+
+function SamplesCard({
+  samples,
+  locale,
+  tLang,
+}: {
+  samples: LeveledExample[];
+  locale: DictLocale;
+  tLang: DictLocale;
+}) {
+  const levels = Array.from(
+    new Set(samples.map((s) => s.level)),
+  ).sort();
+  const [activeLevel, setActiveLevel] = React.useState<string>(levels[0]);
+  const active = samples.find((s) => s.level === activeLevel) ?? samples[0];
+  const gloss =
+    tLang === "tr" ? active.tr ?? active.en : active.en ?? active.tr;
+
+  return (
+    <SubCard
+      title={pick(STR.sampleSentence, locale)}
+      action={
+        <div className="flex items-center gap-1">
+          {levels.map((lvl) => {
+            const isActive = lvl === activeLevel;
+            return (
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setActiveLevel(lvl)}
+                aria-pressed={isActive}
+                className="inline-flex items-center justify-center rounded-full font-sans font-bold text-[10px] transition-colors"
+                style={{
+                  width: 28,
+                  height: 22,
+                  color: isActive
+                    ? "var(--surface-card)"
+                    : "var(--fg-muted)",
+                  background: isActive ? "var(--fg)" : "var(--surface-sunk)",
+                  border: isActive
+                    ? "1px solid var(--fg)"
+                    : "1px solid var(--border)",
+                  letterSpacing: "0.3px",
+                }}
+              >
+                {lvl}
+              </button>
+            );
+          })}
+        </div>
+      }
+    >
+      <div
+        className="rounded-xl p-3"
+        style={{ background: "var(--surface-sunk)" }}
+      >
+        <p className="font-sans font-semibold text-[15px] text-fg m-0 leading-snug">
+          {active.de}
+        </p>
+        {gloss ? (
+          <p className="font-sans text-[13px] text-fg-muted mt-1 m-0 leading-snug">
+            {gloss}
+          </p>
+        ) : null}
+      </div>
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Phrases card (collocations, bigger font)                         *
+ * ================================================================ */
+
+function PhrasesCard({
+  collocations,
+  locale,
+  tLang,
+}: {
+  collocations: Collocation[];
+  locale: DictLocale;
+  tLang: DictLocale;
+}) {
+  return (
+    <SubCard title={pick(STR.commonPhrases, locale)}>
+      <ul className="flex flex-col gap-2 m-0 list-none p-0">
+        {collocations.map((c, i) => {
+          const gloss =
+            tLang === "tr" ? c.tr ?? c.en : c.en ?? c.tr;
+          return (
+            <li
+              key={`col-${i}`}
+              className="flex flex-col gap-0.5"
+              style={{
+                paddingTop: i === 0 ? 0 : 8,
+                borderTop: i === 0 ? undefined : "1px solid var(--border)",
+              }}
+            >
+              <span className="font-sans font-semibold text-[16px] text-fg leading-snug">
+                {c.de}
+              </span>
+              {gloss ? (
+                <span className="font-sans text-[14px] text-fg-muted leading-snug">
+                  {gloss}
+                </span>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
+    </SubCard>
+  );
+}
+
+/* ================================================================ *
+ *  Shared primitives: Tile, DeclensionTable, ConjugationTable       *
+ * ================================================================ */
+
+function Tile({
+  label,
+  value,
+  valueColor,
+  outlined = false,
+}: {
+  label: string;
+  value: string;
+  valueColor?: string;
+  outlined?: boolean;
+}) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center rounded-xl py-3 px-3 gap-0.5"
+      style={{
+        background: "var(--surface-sunk)",
+        border:
+          outlined && valueColor
+            ? `1px solid color-mix(in srgb, ${valueColor} 40%, transparent)`
+            : "1px solid var(--border)",
+      }}
+    >
+      <div
+        className="font-sans font-bold leading-none text-[18px] sm:text-[20px]"
+        style={{ color: valueColor ?? "var(--fg)" }}
+      >
+        {value}
+      </div>
+      <div
+        className="font-sans text-[10px] uppercase text-fg-faint"
+        style={{ letterSpacing: "0.4px" }}
+      >
+        {label}
+      </div>
+    </div>
   );
 }
 
@@ -464,17 +794,15 @@ function DeclensionTable({
   const hasPluralCol = rows.some((r) => r.plural);
   return (
     <div
-      className="rounded-[14px] overflow-hidden"
+      className="rounded-[12px] overflow-hidden"
       style={{ border: "1px solid var(--border)" }}
     >
-      {/* Header */}
       <div
         className={clsx(
           "grid",
           hasPluralCol
-            ? "grid-cols-[1.1fr_1fr_1fr_1fr] md:grid-cols-[1.1fr_1fr_1fr_1fr]"
+            ? "grid-cols-[1.1fr_1fr_1fr_1fr]"
             : "grid-cols-[1.1fr_1fr_1fr]",
-          "font-sans text-[12px] text-fg-muted",
         )}
         style={{ background: "var(--surface-sunk)" }}
       >
@@ -498,7 +826,7 @@ function DeclensionTable({
         >
           <BodyCell>
             <div className="flex flex-col">
-              <span className="font-sans font-semibold text-[14px] text-fg">
+              <span className="font-sans font-semibold text-[13px] text-fg">
                 {r.label}
               </span>
               <span className="font-sans text-[11px] text-fg-faint">
@@ -510,20 +838,20 @@ function DeclensionTable({
           </BodyCell>
           <BodyCell>
             <span
-              className="font-sans font-semibold text-[14px]"
+              className="font-sans font-semibold text-[13px]"
               style={{ color: articleColor }}
             >
               {r.definite}
             </span>
           </BodyCell>
           <BodyCell>
-            <span className="font-sans text-[14px] text-fg-muted">
+            <span className="font-sans text-[13px] text-fg-muted">
               {r.indefinite}
             </span>
           </BodyCell>
           {hasPluralCol ? (
             <BodyCell>
-              <span className="font-sans text-[14px] text-fg-muted">
+              <span className="font-sans text-[13px] text-fg-muted">
                 {r.plural ?? ""}
               </span>
             </BodyCell>
@@ -531,73 +859,6 @@ function DeclensionTable({
         </div>
       ))}
     </div>
-  );
-}
-
-function HeadCell({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="px-3 py-2.5 font-sans font-medium text-[12px] text-fg-muted"
-      style={{ letterSpacing: "0.2px" }}
-    >
-      {children}
-    </div>
-  );
-}
-
-function BodyCell({ children }: { children: React.ReactNode }) {
-  return <div className="px-3 py-2.5 flex items-center min-h-[46px]">{children}</div>;
-}
-
-/* ================================================================ *
- *  Verb sections                                                   *
- * ================================================================ */
-
-function VerbSections({
-  entry,
-  locale,
-}: {
-  entry: DictionaryEntry;
-  locale: DictLocale;
-}) {
-  const v = entry.verb!;
-  return (
-    <>
-      {v.present && v.present.length > 0 ? (
-        <SectionShell title={pick(STR.praesens, locale)}>
-          <ConjugationTable rows={v.present} locale={locale} />
-        </SectionShell>
-      ) : null}
-      {v.praeteritum && v.praeteritum.length > 0 ? (
-        <SectionShell title={pick(STR.praeteritum, locale)}>
-          <ConjugationTable rows={v.praeteritum} locale={locale} />
-        </SectionShell>
-      ) : null}
-      {v.auxiliary || v.perfektForm ? (
-        <SectionShell title={pick(STR.perfekt, locale)}>
-          <div className="grid grid-cols-2 gap-3">
-            {v.auxiliary ? (
-              <Tile
-                label={pick(STR.auxiliary, locale)}
-                value={v.auxiliary}
-                valueColor={v.auxiliary === "haben" ? "#14B8A6" : "#E8A838"}
-                outlined
-              />
-            ) : (
-              <div />
-            )}
-            {v.perfektForm ? (
-              <Tile
-                label={pick(STR.perfektForm, locale)}
-                value={v.perfektForm}
-              />
-            ) : (
-              <div />
-            )}
-          </div>
-        </SectionShell>
-      ) : null}
-    </>
   );
 }
 
@@ -610,7 +871,7 @@ function ConjugationTable({
 }) {
   return (
     <div
-      className="rounded-[14px] overflow-hidden"
+      className="rounded-[12px] overflow-hidden"
       style={{ border: "1px solid var(--border)" }}
     >
       <div
@@ -629,12 +890,12 @@ function ConjugationTable({
           }}
         >
           <BodyCell>
-            <span className="font-sans text-[14px] text-fg-muted">
+            <span className="font-sans text-[13px] text-fg-muted">
               {r.pronoun}
             </span>
           </BodyCell>
           <BodyCell>
-            <span className="font-sans font-semibold text-[14px] text-fg">
+            <span className="font-sans font-semibold text-[13px] text-fg">
               {r.form}
             </span>
           </BodyCell>
@@ -644,56 +905,21 @@ function ConjugationTable({
   );
 }
 
-/* ================================================================ *
- *  Adjective sections                                              *
- * ================================================================ */
-
-function AdjSections({
-  entry,
-  locale,
-}: {
-  entry: DictionaryEntry;
-  locale: DictLocale;
-}) {
-  const a = entry.adjective!;
+function HeadCell({ children }: { children: React.ReactNode }) {
   return (
-    <SectionShell title={pick(STR.comparison, locale)}>
-      <div className="grid grid-cols-3 gap-3">
-        <Tile label={pick(STR.positive, locale)} value={a.positive} />
-        {a.komparativ ? (
-          <Tile label={pick(STR.komparativ, locale)} value={a.komparativ} />
-        ) : (
-          <div />
-        )}
-        {a.superlativ ? (
-          <Tile label={pick(STR.superlativ, locale)} value={a.superlativ} />
-        ) : (
-          <div />
-        )}
-      </div>
-    </SectionShell>
+    <div
+      className="px-3 py-2 font-sans font-medium text-[11px] text-fg-muted"
+      style={{ letterSpacing: "0.2px" }}
+    >
+      {children}
+    </div>
   );
 }
 
-/* ================================================================ *
- *  Tag explanation list, rendered below the pill strip             *
- * ================================================================ */
-
-function TagExplanations({ tags }: { tags: DictionaryEntry["tags"] }) {
-  const withExplanations = tags.filter((t) => t.explanation);
-  if (withExplanations.length === 0) return null;
+function BodyCell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-2 pt-1">
-      {withExplanations.map((t) => (
-        <div key={t.key} className="flex items-start gap-2">
-          <span className="font-sans font-semibold text-[12px] text-fg shrink-0 mt-px">
-            {t.label}
-          </span>
-          <span className="font-sans text-[13px] text-fg-muted leading-snug">
-            {t.explanation}
-          </span>
-        </div>
-      ))}
+    <div className="px-3 py-2 flex items-center min-h-[40px]">
+      {children}
     </div>
   );
 }
