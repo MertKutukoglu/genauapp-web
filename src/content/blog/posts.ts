@@ -125,7 +125,7 @@ export const BLOG_POSTS: BlogPost[] = [
     en: {
       title: "What skills are in GenauApp (and why they can go down)",
       description:
-        "Every workout feeds three of your four skills, not one. The ring only climbs, but the arrow next to it tells the truth about your direction. Here is how it works.",
+        "Every workout feeds three of your four skills, not one. The ring moves both ways because wrong answers cost you points, and the arrow next to it tells the truth about your direction. Here is how it works.",
       href: "/blog/how-skills-work",
       publishedAt: "2026-11-18",
       readingTimeMinutes: 6,
@@ -133,7 +133,7 @@ export const BLOG_POSTS: BlogPost[] = [
     tr: {
       title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
       description:
-        "Her workout dört skill'inin üçünü birden besler, birini değil. Ring hep yükselir, ama yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
+        "Her workout dört skill'inin üçünü birden besler, birini değil. Ring iki yönlü hareket eder çünkü yanlış cevaplar sana puan kaybettirir, ve yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
       href: "/tr/blog/skill-nedir",
       publishedAt: "2026-11-18",
       readingTimeMinutes: 6,

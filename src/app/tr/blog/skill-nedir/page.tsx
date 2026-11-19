@@ -13,7 +13,7 @@ import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 export const metadata: Metadata = {
   title: "GenauApp'te skill nedir? (Ve neden aşağı da iner)",
   description:
-    "Her workout dört skill'inin üçünü birden besler, birini değil. Ring hep yükselir, ama yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
+    "Her workout dört skill'inin üçünü birden besler, birini değil. Ring iki yönlü hareket eder çünkü yanlış cevaplar sana puan kaybettirir, ve yanındaki ok sana yönünün gerçeğini söyler. İşte nasıl çalışıyor.",
   alternates: {
     canonical: "/tr/blog/skill-nedir",
     languages: {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const TOC = [
   { id: "skills", label: "Takip ettiğimiz skill'ler" },
   { id: "grows", label: "Bir skill nasıl büyür (ağ gibi)" },
-  { id: "shrinks", label: "Bir skill nasıl aşağı iner (ok iner)" },
+  { id: "shrinks", label: "Bir skill nasıl aşağı iner" },
   { id: "data", label: "Yeterli veri olmadığında" },
   { id: "speaking", label: "Speaking neden kilitli" },
   { id: "payoff", label: "Bu sana ne kazandırır" },
@@ -168,45 +168,40 @@ export default function SkillNedirPage() {
         <span>§</span>
       </p>
 
-      <h2 id="shrinks">Bir skill nasıl aşağı iner (ok iner)</h2>
+      <h2 id="shrinks">Bir skill nasıl aşağı iner</h2>
 
       <p>
-        Ring&rsquo;in kendisi geri gitmez. Kötü bir session&rsquo;ı negatif
-        progress ile cezalandırmıyoruz çünkü çaba çabadır, ve bir
-        workout&rsquo;u bitirmek cevaplar yanlış olsa bile çaba sayılır.
-        Ring sadece tırmanır.
+        Ring&rsquo;in kendisi iki yönlü hareket eder. Doğru cevaplar
+        yukarı iter. Yanlış cevaplar progress&rsquo;ten doğrudan
+        düşer. &ldquo;Çaba doğruluğa ağır basar&rdquo; affı yok, bir
+        timer üstünde sessiz decay yok: ring bir ölçüm, ve ölçümler
+        verdiğin yanlış cevapları da içerir.
       </p>
 
       <p>
-        Ama her skill&rsquo;in yanında küçük bir ok duruyor: yukarı,
-        stabil, veya <strong>aşağı</strong>. İşte o ok dürüst yön
-        sinyali, ve ters yöne gidiyor.
+        Her ring&rsquo;in yanında küçük bir ok durur: yukarı, stabil,
+        veya <strong>aşağı</strong>. Ok ikinci, ayrı bir sinyal. O
+        skill&rsquo;deki <strong>son üç cevabını geçmiş ortalamanla</strong>
+        karşılaştırır. Son dönem geçmişten 10 puan veya daha fazla
+        iyiyse ok yukarı. 10 puan veya daha fazla kötüyse ok aşağı.
+        Arada ise stabil. Gerçek düşüşü yumuşatmak için kullanılan
+        &ldquo;stabil&rdquo; omuz silkmesi yok.
       </p>
 
       <p>
-        Ok, o skill&rsquo;deki <strong>son üç cevabını</strong> <strong>geçmiş
-        ortalamanla</strong> karşılaştırır. Son dönem geçmişinden 10 puan
-        veya daha fazla iyiyse, ok yukarı. 10 puan veya daha fazla
-        kötüyse, ok aşağı. Arada ise stabil. Gerçek düşüşü yumuşatmak için
-        kullanılan &ldquo;stabil&rdquo; omuz silkmesi yok.
+        Ring ile ok neden ayrı: ring sana &ldquo;Almancan bugün hangi
+        seviyede duruyor&rdquo; der. Ok ise sana &ldquo;şu an hangi
+        yöne gidiyorsun&rdquo; der. Grammar ring&rsquo;in %70&rsquo;te
+        olup yanında aşağı ok görebilirsin: temelin gerçek, ama son
+        cevapların eskiye göre daha sarsak. Bu değerli bir bilgi.
+        Yarınki workout&rsquo;unun nereye gitmesi gerektiğini söyler.
       </p>
 
       <p>
-        Bu ayrımın neden önemli olduğu şu: ring sana &ldquo;şu ana kadar
-        ne kadar Almanca inşa ettin&rdquo; der. Ok ise sana &ldquo;şu an
-        hangi yöne gidiyorsun&rdquo; der. Grammar ring&rsquo;in %70&rsquo;te
-        olup yanında aşağı ok görebilirsin, bu şu demek: temelin
-        gerçek, ama son cevapların eskiye göre daha sarsak. Bu değerli
-        bir bilgi. Yarınki workout&rsquo;unun nereye gitmesi gerektiğini
-        söyler.
-      </p>
-
-      <p>
-        Aşağı ok, sadece ileri sayan uygulamaların sana gösteremediği
-        şey, çünkü göstermek için sayılarının asıl önemli olan yönde
-        hiçbir şey ifade etmediğini kabul etmek zorundalar. Sadece
-        yukarı saymayı bilen bir skor, skor olmaktan çıkar, dekorasyona
-        dönüşür.
+        Sadece ileri sayan uygulamaların yapamadığı şey bu, çünkü
+        yapmak için sayılarının asıl önemli olan yönde hiçbir şey
+        ifade etmediğini kabul etmek zorundalar. Geriye hareket
+        edemeyen bir skor, skor olmaktan çıkar, dekorasyona dönüşür.
       </p>
 
       <p className="section-divider">

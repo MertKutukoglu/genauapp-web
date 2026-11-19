@@ -47,7 +47,7 @@ const TOC = [
   { id: "self", label: "Self-rating is the problem" },
   { id: "measure", label: "What we measure instead" },
   { id: "confidence", label: "Why one answer is a weak signal" },
-  { id: "arrow", label: "The two-way arrow" },
+  { id: "arrow", label: "Wrong answers cost you" },
   { id: "payoff", label: "The whole loop" },
 ];
 
@@ -191,31 +191,41 @@ export default function SpacedRepetitionPage() {
         <span>§</span>
       </p>
 
-      <h2 id="arrow">The two-way arrow</h2>
+      <h2 id="arrow">Wrong answers cost you</h2>
 
       <p>
-        The ring only climbs. That is a design choice: finishing a
-        workout is effort, and effort is positive even when the
-        answers were wrong. But the ring alone cannot tell you where
-        you are heading, which is the one thing a learner actually
-        needs.
+        Measured answers cut both ways. A right answer pushes the ring
+        up. A wrong answer takes ring points off, directly. No &ldquo;effort
+        trumps accuracy&rdquo; forgiveness, no silent decay on a timer:
+        the ring is a measurement, and measurements include the wrong
+        ones.
       </p>
 
       <p>
-        So right next to each ring sits a small arrow: up, stable, or
-        down. The arrow compares your last three answers in that skill
-        to your historical average. Ten points better and it points
-        up. Ten points worse and it points down. Everything in between
-        is stable, and &ldquo;stable&rdquo; is not a shrug (we wrote
-        up <Link href="/blog/how-skills-work">the full mechanic
+        This is the piece SM-2 cannot do. When you tap Again on an
+        Anki card, the box reschedules the card. It does not lower a
+        score, because there is no score to lower. Your &ldquo;did I
+        know this?&rdquo; is the input, and the output is just another
+        interval. The number that tracks your German lives in your
+        head.
+      </p>
+
+      <p>
+        Alongside the ring sits a small arrow: up, stable, or down. The
+        ring is your level today; the arrow is your direction right now.
+        It compares your last three answers in that skill to your
+        historical average. Ten points better and it points up. Ten
+        points worse and it points down. Everything in between is
+        stable, and &ldquo;stable&rdquo; is not a shrug (we wrote up
+        <Link href="/blog/how-skills-work"> the full mechanic
         here</Link>).
       </p>
 
       <p>
-        That arrow is the thing SM-2 cannot give you. SM-2 can say
-        &ldquo;your next review is in four days.&rdquo; It cannot say
-        &ldquo;your recent answers are shakier than they used to be.&rdquo;
-        We can.
+        SM-2 can say &ldquo;your next review is in four days.&rdquo; It
+        cannot say &ldquo;your recent answers are shakier than they
+        used to be,&rdquo; and it cannot cost you points when you miss.
+        We can do both.
       </p>
 
       <p className="section-divider">
@@ -226,12 +236,12 @@ export default function SpacedRepetitionPage() {
 
       <p>
         The loop, in order. You open the app and the daily plan picks
-        one of your four chips for you, usually the one whose arrow is
-        pointing the wrong way. You work through the exercises. The
-        app measures each answer. Confidence weighting decides how
-        much the ring moves. The arrow next to the ring tells you
-        which direction the recent data is heading. No rate yourself.
-        No ease factor. No opaque interval calculation.
+        one of your four chips for you, usually the one whose arrow
+        is pointing the wrong way. You work through the exercises.
+        The app measures each answer. Right answers push the ring up,
+        wrong answers cost you points, and the arrow next to the ring
+        tells you which direction your recent data is heading. No
+        rate yourself. No ease factor. No opaque interval calculation.
       </p>
 
       <p>

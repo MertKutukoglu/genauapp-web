@@ -41,7 +41,7 @@ const TOC = [
   { id: "self", label: "Self-rating asıl sorun" },
   { id: "measure", label: "Biz ne ölçüyoruz" },
   { id: "confidence", label: "Neden tek cevap zayıf sinyal" },
-  { id: "arrow", label: "İki yönlü ok" },
+  { id: "arrow", label: "Yanlış cevap puan kaybettirir" },
   { id: "payoff", label: "Bütün döngü" },
 ];
 
@@ -184,31 +184,39 @@ export default function AralikliTekrarPage() {
         <span>§</span>
       </p>
 
-      <h2 id="arrow">İki yönlü ok</h2>
+      <h2 id="arrow">Yanlış cevap sana puan kaybettirir</h2>
 
       <p>
-        Ring sadece yukarı çıkar. Bu bir tasarım kararı: workout
-        bitirmek efordur ve efor, cevaplar yanlış olsa bile,
-        pozitiftir. Ama ring tek başına nereye gittiğini sana
-        söyleyemez, ki bir öğrencinin gerçekten ihtiyacı olan tam
-        da bu.
+        Ölçülmüş cevaplar iki yönlü kesiyor. Doğru cevap ring&rsquo;i
+        yukarı iter. Yanlış cevap ring&rsquo;ten doğrudan puan
+        düşürür. &ldquo;Çaba doğruluğa ağır basar&rdquo; affı yok, bir
+        timer üstünde sessiz decay yok: ring bir ölçüm, ve ölçümler
+        yanlışları da içerir.
       </p>
 
       <p>
-        Bu yüzden her ring&rsquo;in yanında küçük bir ok durur:
-        yukarı, stabil veya aşağı. Ok, o skill&rsquo;deki son üç
-        cevabını geçmiş ortalamanla karşılaştırır. On puan daha
-        iyiyse yukarı. On puan daha kötüyse aşağı. Aradaki her şey
-        stabil, ve &ldquo;stabil&rdquo; omuz silkmek değil (bütün
-        mekanik <Link href="/tr/blog/skill-nedir">burada</Link>
-        yazılı).
+        Bu, SM-2&rsquo;nin yapamadığı parça. Bir Anki kartında
+        Again&rsquo;e bastığında kutu kartı yeniden schedule eder. Bir
+        skoru düşürmez, çünkü düşürecek skor yok. &ldquo;Bunu biliyor
+        muydum?&rdquo; sorusu input, output ise sadece başka bir
+        aralık. Almancanı takip eden sayı senin kafanda yaşar.
       </p>
 
       <p>
-        O ok, SM-2&rsquo;nin sana veremediği şey. SM-2 &ldquo;bir
-        sonraki review&rsquo;ın dört gün sonra&rdquo; diyebilir.
-        &ldquo;Son cevapların eskiden olduğundan daha
-        sallantılı&rdquo; diyemez. Biz diyebiliriz.
+        Ring&rsquo;in yanında küçük bir ok durur: yukarı, stabil veya
+        aşağı. Ring bugünkü seviyen; ok şu anki yönün. O
+        skill&rsquo;deki son üç cevabını geçmiş ortalamanla
+        karşılaştırır. On puan daha iyiyse yukarı. On puan daha
+        kötüyse aşağı. Arasındaki her şey stabil, ve
+        &ldquo;stabil&rdquo; omuz silkmek değil (bütün mekanik
+        <Link href="/tr/blog/skill-nedir"> burada</Link> yazılı).
+      </p>
+
+      <p>
+        SM-2 &ldquo;bir sonraki review&rsquo;ın dört gün sonra&rdquo;
+        diyebilir. &ldquo;Son cevapların eskiden olduğundan daha
+        sallantılı&rdquo; diyemez, ve yanlış cevapladığında sana puan
+        da kaybettiremez. Biz ikisini de yapıyoruz.
       </p>
 
       <p className="section-divider">
@@ -221,10 +229,10 @@ export default function AralikliTekrarPage() {
         Döngü, sırasıyla. Uygulamayı açarsın, günlük plan dört
         chip&rsquo;ten birini senin için seçer, genelde oku yanlış
         yöne bakanı. Egzersizleri yaparsın. Uygulama her cevabı
-        ölçer. Confidence weighting ring&rsquo;in ne kadar hareket
-        edeceğine karar verir. Ring&rsquo;in yanındaki ok son
-        data&rsquo;nın hangi yöne gittiğini söyler. Kendini
-        değerlendir yok. Ease factor yok. Opak aralık hesabı yok.
+        ölçer. Doğrular ring&rsquo;i yukarı iter, yanlışlar puan
+        kaybettirir, ve ring&rsquo;in yanındaki ok son data&rsquo;nın
+        hangi yöne gittiğini söyler. Kendini değerlendir yok. Ease
+        factor yok. Opak aralık hesabı yok.
       </p>
 
       <p>

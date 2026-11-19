@@ -15,7 +15,7 @@ import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
 export const metadata: Metadata = {
   title: "What skills are in GenauApp (and why they can go down)",
   description:
-    "Every workout feeds three of your four skills, not one. The ring only climbs, but the arrow next to it tells the truth about your direction. Here is how it works.",
+    "Every workout feeds three of your four skills, not one. The ring moves both ways because wrong answers cost you points, and the arrow next to it tells the truth about your direction. Here is how it works.",
   alternates: {
     canonical: "/blog/how-skills-work",
     languages: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 const TOC = [
   { id: "skills", label: "The skills we track" },
   { id: "grows", label: "How a skill grows (it's a network)" },
-  { id: "shrinks", label: "How a skill goes down (the arrow does)" },
+  { id: "shrinks", label: "How a skill goes down" },
   { id: "data", label: "When there isn't enough data" },
   { id: "speaking", label: "Why Speaking is locked" },
   { id: "payoff", label: "Why this matters" },
@@ -169,45 +169,44 @@ export default function HowSkillsWorkPage() {
         <span>§</span>
       </p>
 
-      <h2 id="shrinks">How a skill goes down (the arrow does)</h2>
+      <h2 id="shrinks">How a skill goes down</h2>
 
       <p>
-        The ring itself doesn&rsquo;t go backward. We don&rsquo;t punish a
-        bad session with negative progress because effort is effort, and
-        finishing a workout counts as effort even when the answers were
-        wrong. The ring only climbs.
+        The ring itself moves both ways. Right answers push it up. Wrong
+        answers cost you progress directly. No &ldquo;effort trumps
+        accuracy&rdquo; forgiveness, no silent decay on a timer: the
+        ring is a measurement, and measurements include the wrong
+        answers you gave.
       </p>
 
       <p>
-        But right next to each skill sits a small arrow: up, stable, or
-        <strong>down</strong>. That arrow is the honest direction signal,
-        and it does go the other way.
+        Next to each ring sits a small arrow: up, stable, or
+        <strong>down</strong>. The arrow is a second, separate signal.
+        It compares your <strong>recent three answers</strong> in that
+        skill to your <strong>historical average</strong>. If recent is
+        better than history by 10 points or more, the arrow points up.
+        If recent is worse by 10 points or more, the arrow points down.
+        In between, stable. No &ldquo;stable&rdquo; shrug used to soften
+        a real drop.
       </p>
 
       <p>
-        The arrow compares your <strong>recent three answers</strong> in
-        that skill to your <strong>historical average</strong>. If recent
-        is better than history by 10 points or more, the arrow points up.
-        If recent is worse than history by 10 points or more, the arrow
-        points down. If it is in between, stable. No &ldquo;stable&rdquo;
-        shrug used to soften a real drop.
+        Here is why ring and arrow are separate. The ring says
+        &ldquo;this is where your German sits today.&rdquo; The arrow
+        says &ldquo;this is which direction you are heading right
+        now.&rdquo; You can sit at a 70% Grammar ring with a down arrow
+        next to it, which means your foundation is real but your recent
+        answers are shakier than they used to be. That is useful
+        information. It tells you where tomorrow&rsquo;s workout should
+        go.
       </p>
 
       <p>
-        Here is why this split matters. The ring says &ldquo;this is how
-        much German you have built.&rdquo; The arrow says &ldquo;this is
-        which direction you are heading right now.&rdquo; You can sit at
-        a 70% Grammar ring with a down arrow next to it, which means your
-        foundation is real, but your recent answers are shakier than they
-        used to be. That is useful information. It tells you where
-        tomorrow&rsquo;s workout should go.
-      </p>
-
-      <p>
-        The down arrow is the thing XP only apps cannot show you, because
-        they would have to admit that their numbers mean nothing in the
-        direction that actually matters. A score that only knows how to
-        count up stops being a score and starts being a decoration.
+        This is the thing XP only apps cannot do, because they would
+        have to admit that a number which only counts up means nothing
+        in the direction that actually matters. A score that cannot
+        move backward stops being a score and starts being a
+        decoration.
       </p>
 
       <p className="section-divider">
