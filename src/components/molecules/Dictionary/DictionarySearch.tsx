@@ -364,7 +364,7 @@ function ResultList({
       style={{
         border: "1px solid var(--border)",
         borderRadius: 16,
-        // Capped scroll area: fits roughly 7–8 rows on desktop and
+        // Capped scroll area: fits roughly 7 or 8 rows on desktop and
         // ~60% of a phone viewport, so the page itself never grows
         // the full 20 rows tall when the list is packed.
         maxHeight: "min(60vh, 480px)",
