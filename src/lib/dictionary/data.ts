@@ -341,65 +341,34 @@ function mapConjugation(raw: unknown): ConjugationRow[] | undefined {
 interface TagSpec {
   label: string;
   tone: GrammarTag["tone"];
-  explanation?: string;
 }
 
+/**
+ * Label map for DB-sourced tag strings. Nothing on this surface
+ * writes an explanation: the app/site never computes grammar,
+ * and any text we invented here would be an unverified gloss on
+ * a real linguistic fact. The pills stand as labels only; when a
+ * rule exists for the word, it comes from public.words.rule in
+ * the DB (shown as the WordCard rule pill).
+ */
 const CASE_TAG_MAP: Record<string, TagSpec> = {
-  regular: {
-    label: "Regular",
-    tone: "ok",
-    explanation: "Follows standard conjugation patterns.",
-  },
-  irregular: {
-    label: "Irregular",
-    tone: "danger",
-    explanation: "Stem-changing or otherwise non-standard conjugation.",
-  },
-  separable: {
-    label: "Separable",
-    tone: "warn",
-    explanation:
-      "Prefix detaches and lands at the end of the main clause.",
-  },
-  inseparable: {
-    label: "Inseparable",
-    tone: "info",
-    explanation: "Prefix stays attached to the verb stem.",
-  },
-  accusative: {
-    label: "+ Akkusativ",
-    tone: "info",
-    explanation: "Takes an accusative object.",
-  },
-  dative: {
-    label: "+ Dativ",
-    tone: "info",
-    explanation: "Takes a dative object.",
-  },
-  genitive: {
-    label: "+ Genitiv",
-    tone: "info",
-    explanation: "Takes a genitive object.",
-  },
-  reflexive: {
-    label: "Reflexive",
-    tone: "info",
-    explanation: "Used with a reflexive pronoun (mich, dich, sich, ...).",
-  },
-  modal: {
-    label: "Modal",
-    tone: "info",
-    explanation:
-      "Modal verb; typically pairs with another verb in the infinitive.",
-  },
+  regular: { label: "Regular", tone: "ok" },
+  irregular: { label: "Irregular", tone: "danger" },
+  separable: { label: "Separable", tone: "warn" },
+  inseparable: { label: "Inseparable", tone: "info" },
+  accusative: { label: "+ Akkusativ", tone: "info" },
+  dative: { label: "+ Dativ", tone: "info" },
+  genitive: { label: "+ Genitiv", tone: "info" },
+  reflexive: { label: "Reflexive", tone: "info" },
+  modal: { label: "Modal", tone: "info" },
 };
 
 function buildTags(type: string, d: Record<string, unknown>): GrammarTag[] {
   const tags: GrammarTag[] = [];
   const seen = new Set<string>();
 
-  // Tags from the details.cases string array (regular/irregular/
-  // separable/accusative/...).
+  // DB-sourced grammatical tag strings: details.cases
+  // ("regular", "irregular", "separable", "accusative", ...).
   const rawCases = Array.isArray(d.cases) ? (d.cases as unknown[]) : [];
   for (const raw of rawCases) {
     if (typeof raw !== "string") continue;
@@ -407,63 +376,34 @@ function buildTags(type: string, d: Record<string, unknown>): GrammarTag[] {
     const spec = CASE_TAG_MAP[key];
     if (!spec || seen.has(key)) continue;
     seen.add(key);
-    tags.push({ key, label: spec.label, tone: spec.tone, explanation: spec.explanation });
+    tags.push({ key, label: spec.label, tone: spec.tone });
   }
 
-  // Noun-specific: gender tag.
+  // Noun gender, read straight from details.article. The label
+  // reports what the DB says; no commentary.
   if (type === "noun") {
     const article = d.article;
     if (article === "der" && !seen.has("masculine")) {
-      tags.push({
-        key: "masculine",
-        label: "Masculine",
-        tone: "info",
-        explanation:
-          "Masculine nouns take der in nominative, den in accusative, dem in dative, des in genitive.",
-      });
+      tags.push({ key: "masculine", label: "Masculine", tone: "info" });
       seen.add("masculine");
     } else if (article === "die" && !seen.has("feminine")) {
-      tags.push({
-        key: "feminine",
-        label: "Feminine",
-        tone: "danger",
-        explanation:
-          "Feminine nouns take die in nominative and accusative, der in dative and genitive.",
-      });
+      tags.push({ key: "feminine", label: "Feminine", tone: "danger" });
       seen.add("feminine");
     } else if (article === "das" && !seen.has("neuter")) {
-      tags.push({
-        key: "neuter",
-        label: "Neuter",
-        tone: "ok",
-        explanation:
-          "Neuter nouns take das in nominative and accusative, dem in dative, des in genitive.",
-      });
+      tags.push({ key: "neuter", label: "Neuter", tone: "ok" });
       seen.add("neuter");
     }
     if (d.n_declension === true && !seen.has("n-declension")) {
-      tags.push({
-        key: "n-declension",
-        label: "n-Deklination",
-        tone: "warn",
-        explanation:
-          "Takes an -en ending in every case except the nominative singular.",
-      });
+      tags.push({ key: "n-declension", label: "n-Deklination", tone: "warn" });
       seen.add("n-declension");
     }
   }
 
-  // Verb-specific: auxiliary signal on hat/ist pairs.
+  // Verb auxiliary signal.
   if (type === "verb") {
     const aux = d.auxiliary;
     if (aux === "sein" && !seen.has("aux-sein")) {
-      tags.push({
-        key: "aux-sein",
-        label: "hat+sein",
-        tone: "info",
-        explanation:
-          "Forms the Perfekt with sein, typical for motion and change-of-state verbs.",
-      });
+      tags.push({ key: "aux-sein", label: "+ sein", tone: "info" });
       seen.add("aux-sein");
     }
   }

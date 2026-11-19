@@ -15,7 +15,8 @@ import {
 } from "@/lib/dictionary/data";
 
 export const metadata: Metadata = {
-  title: "Almanca Sözlük | Artikel, çekim, örnek cümle | GenauApp",
+  // Root layout appends " · GenauApp" via the title template.
+  title: "Almanca Sözlük · Artikel, çekim, örnek cümle",
   description:
     "Almanca öğrenenler için sözlük: artikel, çekim, konjugasyon, örnek cümle. Almanca, Türkçe veya İngilizce yaz, kelime kartını gör.",
   alternates: {

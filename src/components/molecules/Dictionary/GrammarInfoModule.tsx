@@ -151,32 +151,40 @@ export function GrammarInfoModule({
       ) : null}
 
       {/* Extra leveled examples (the lowest-level one already sits
-          on the card). */}
+          on the card). Example glosses follow the translation-lang
+          toggle, not the UI locale, so toggling TR on the EN site
+          swaps every example subtitle to its TR gloss. */}
       {extraExamples.length > 0 ? (
         <SectionShell title={pick(STR.sampleSentence, locale)}>
           <div className="flex flex-col gap-3">
-            {extraExamples.map((ex, i) => (
-              <div
-                key={`ex-${i}`}
-                className="rounded-xl p-3"
-                style={{ background: "var(--surface-sunk)" }}
-              >
+            {extraExamples.map((ex, i) => {
+              const gloss =
+                tLang === "tr"
+                  ? ex.tr ?? ex.en
+                  : ex.en ?? ex.tr;
+              return (
                 <div
-                  className="font-sans text-[11px] uppercase text-fg-faint mb-1.5"
-                  style={{ letterSpacing: "0.4px" }}
+                  key={`ex-${i}`}
+                  className="rounded-xl p-3"
+                  style={{ background: "var(--surface-sunk)" }}
                 >
-                  {ex.level}
-                </div>
-                <p className="font-sans font-semibold text-[15px] text-fg m-0 leading-snug">
-                  {ex.de}
-                </p>
-                {(ex[locale] || ex.en) ? (
-                  <p className="font-sans text-[13px] text-fg-muted mt-1 m-0 leading-snug">
-                    {ex[locale] ?? ex.en}
+                  <div
+                    className="font-sans text-[11px] uppercase text-fg-faint mb-1.5"
+                    style={{ letterSpacing: "0.4px" }}
+                  >
+                    {ex.level}
+                  </div>
+                  <p className="font-sans font-semibold text-[15px] text-fg m-0 leading-snug">
+                    {ex.de}
                   </p>
-                ) : null}
-              </div>
-            ))}
+                  {gloss ? (
+                    <p className="font-sans text-[13px] text-fg-muted mt-1 m-0 leading-snug">
+                      {gloss}
+                    </p>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         </SectionShell>
       ) : null}
@@ -185,18 +193,24 @@ export function GrammarInfoModule({
       {entry.collocations && entry.collocations.length > 0 ? (
         <SectionShell title={pick(STR.commonPhrases, locale)}>
           <ul className="flex flex-col gap-2 m-0 list-none p-0">
-            {entry.collocations.map((c, i) => (
-              <li key={`col-${i}`} className="flex flex-col gap-0.5 py-1">
-                <span className="font-sans font-semibold text-[15px] text-fg">
-                  {c.de}
-                </span>
-                {(c[locale] || c.en) ? (
-                  <span className="font-sans text-[13px] text-fg-muted">
-                    {c[locale] ?? c.en}
+            {entry.collocations.map((c, i) => {
+              const gloss =
+                tLang === "tr"
+                  ? c.tr ?? c.en
+                  : c.en ?? c.tr;
+              return (
+                <li key={`col-${i}`} className="flex flex-col gap-0.5 py-1">
+                  <span className="font-sans font-semibold text-[15px] text-fg">
+                    {c.de}
                   </span>
-                ) : null}
-              </li>
-            ))}
+                  {gloss ? (
+                    <span className="font-sans text-[13px] text-fg-muted">
+                      {gloss}
+                    </span>
+                  ) : null}
+                </li>
+              );
+            })}
           </ul>
         </SectionShell>
       ) : null}

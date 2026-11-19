@@ -31,10 +31,11 @@ export async function generateMetadata({
   const translation = entry.translations.turkish;
   const typeLabel = pick(TYPE_LABEL[entry.type], "tr");
   return {
-    title: `${headline} · Almanca "${translation}" | ${typeLabel} | GenauApp Sözlük`,
+    // Root layout appends " · GenauApp"; drop the duplicate here.
+    title: `${headline} · Almanca "${translation}" · ${typeLabel}`,
     description: entry.noun
-      ? `${entry.german} (${article}, çoğulu ${entry.noun.plural ?? "yok"}) Türkçede "${translation}" demek. Artikel, çekim, örnek cümle ve telaffuz GenauApp'te.`
-      : `${entry.german} Türkçede "${translation}" demek. Gramer bilgisi, çekim ve örnek cümleler GenauApp Sözlük'te.`,
+      ? `${entry.german} (${article}, çoğulu ${entry.noun.plural ?? "yok"}) Türkçede "${translation}" demek. Artikel, çekim ve A1 ile B2 arası örnek cümleler.`
+      : `${entry.german} Türkçede "${translation}" demek. ${typeLabel} grameri, çekim ve seviyeli örnek cümleler.`,
     alternates: {
       canonical: `/tr/sozluk/${slug}`,
       languages: {
@@ -86,8 +87,35 @@ export default async function SozlukWordPage({
             <GrammarInfoDisclosure entry={entry} locale="tr" />
           </div>
 
-          <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center">
-            Gramer verilerinin bir kısmı Wiktionary'den uyarlandı (CC BY-SA 4.0).
+          <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center leading-relaxed">
+            Gramer verilerinin bir kısmı{" "}
+            <a
+              href="https://de.wiktionary.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              Wiktionary (DE)
+            </a>
+            {" / "}
+            <a
+              href="https://en.wiktionary.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              Wiktionary (EN)
+            </a>
+            {" kaynağından "}
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              CC BY-SA 4.0
+            </a>
+            {" ile uyarlandı."}
           </footer>
         </div>
       </main>

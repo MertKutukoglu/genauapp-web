@@ -159,8 +159,10 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
         ) : null}
       </div>
 
-      {/* Sample sentence block. Just one on the card; the rest live
-          in GrammarInfoModule. */}
+      {/* Sample sentence block. The example translation follows
+          the user's chosen translation language (the toggle), not
+          the UI locale, so a Turkish visitor on /dictionary sees
+          the TR gloss under the German sentence. */}
       {primaryExample ? (
         <div
           className="rounded-2xl p-4"
@@ -175,11 +177,17 @@ export function WordCard({ entry, locale, className }: WordCardProps) {
           <p className="font-sans font-semibold text-[16px] text-fg m-0 leading-snug">
             {primaryExample.de}
           </p>
-          {primaryExample[locale] || primaryExample.en ? (
-            <p className="font-sans text-[14px] text-fg-muted mt-1 m-0 leading-snug">
-              {primaryExample[locale] ?? primaryExample.en}
-            </p>
-          ) : null}
+          {(() => {
+            const exGloss =
+              tLang === "tr"
+                ? primaryExample.tr ?? primaryExample.en
+                : primaryExample.en ?? primaryExample.tr;
+            return exGloss ? (
+              <p className="font-sans text-[14px] text-fg-muted mt-1 m-0 leading-snug">
+                {exGloss}
+              </p>
+            ) : null;
+          })()}
         </div>
       ) : null}
 

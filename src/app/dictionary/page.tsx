@@ -15,7 +15,8 @@ import {
 } from "@/lib/dictionary/data";
 
 export const metadata: Metadata = {
-  title: "German Dictionary | Articles, grammar, examples | GenauApp",
+  // Root layout appends " · GenauApp" via the title template.
+  title: "German Dictionary · Articles, grammar, examples",
   description:
     "German dictionary for learners: articles, declension, conjugation, example sentences. Type in German, English or Turkish and get the word card.",
   alternates: {

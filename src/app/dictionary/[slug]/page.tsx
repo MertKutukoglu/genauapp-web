@@ -39,10 +39,12 @@ export async function generateMetadata({
   const translation = entry.translations.english;
   const typeLabel = pick(TYPE_LABEL[entry.type], "en");
   return {
-    title: `${headline} · "${translation}" in German | ${typeLabel} | GenauApp`,
+    // The root layout's title template appends " · GenauApp"; keep
+    // that single occurrence and drop the duplicate here.
+    title: `${headline} · "${translation}" in German · ${typeLabel}`,
     description: entry.noun
-      ? `${entry.german} (${article}, plural ${entry.noun.plural ?? "none"}) means "${translation}" in English. Article, declension, example sentences and pronunciation on GenauApp.`
-      : `${entry.german} means "${translation}" in English. Grammar info, conjugation and example sentences on GenauApp.`,
+      ? `${entry.german} (${article}, plural ${entry.noun.plural ?? "none"}) means "${translation}" in English. Article, declension and example sentences for every A1 to B2 level.`
+      : `${entry.german} means "${translation}" in English. ${typeLabel} grammar, conjugation and leveled example sentences.`,
     alternates: {
       canonical: `/dictionary/${slug}`,
       languages: {
@@ -94,8 +96,35 @@ export default async function DictionaryWordPage({
             <GrammarInfoDisclosure entry={entry} locale="en" />
           </div>
 
-          <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center">
-            Some grammatical data adapted from Wiktionary (CC BY-SA 4.0).
+          <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center leading-relaxed">
+            Some grammatical data adapted from{" "}
+            <a
+              href="https://de.wiktionary.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              Wiktionary (DE)
+            </a>
+            {" / "}
+            <a
+              href="https://en.wiktionary.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              Wiktionary (EN)
+            </a>
+            {" under "}
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg"
+            >
+              CC BY-SA 4.0
+            </a>
+            .
           </footer>
         </div>
       </main>
