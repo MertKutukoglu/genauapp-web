@@ -115,7 +115,10 @@ export function GrammarInfoModule({
     <section
       aria-label={pick(STR.grammarInfo, locale)}
       className={clsx(
-        "flex flex-col gap-3",
+        // Flat stack: every piece (flag, summary, grammar, samples,
+        // phrases) is a sibling card at the same level. No wrapper
+        // card wraps them.
+        "flex flex-col gap-2",
         hideHeader ? "" : "rounded-[24px] p-5 sm:p-6",
         className,
       )}
@@ -129,7 +132,7 @@ export function GrammarInfoModule({
       }
     >
       {hideHeader ? null : (
-        <div className="flex items-baseline justify-between">
+        <div className="flex items-baseline justify-between mb-1">
           <h2 className="font-sans font-bold text-[18px] sm:text-[20px] text-fg m-0">
             {pick(STR.grammarInfo, locale)}
           </h2>
@@ -145,52 +148,44 @@ export function GrammarInfoModule({
       <FlagCard entry={entry} locale={locale} />
       <SummaryRow entry={entry} locale={locale} tLang={tLang} />
 
-      <div className="flex flex-col gap-2">
-        {hasNounGrammar ? (
-          <NounGrammarCard entry={entry} locale={locale} />
-        ) : null}
+      {hasNounGrammar ? (
+        <NounGrammarCard entry={entry} locale={locale} />
+      ) : null}
 
-        {hasConjugation ? (
-          <ConjugationCard entry={entry} locale={locale} />
-        ) : null}
+      {hasConjugation ? (
+        <ConjugationCard entry={entry} locale={locale} />
+      ) : null}
 
-        {hasPerfekt || (isVerb && tags.length > 0) ? (
-          <PerfektAndTagsCard
-            entry={entry}
-            locale={locale}
-            tags={tags}
-          />
-        ) : null}
+      {hasPerfekt || (isVerb && tags.length > 0) ? (
+        <PerfektAndTagsCard entry={entry} locale={locale} tags={tags} />
+      ) : null}
 
-        {hasComparison ? (
-          <AdjectiveCard entry={entry} locale={locale} tags={tags} />
-        ) : null}
+      {hasComparison ? (
+        <AdjectiveCard entry={entry} locale={locale} tags={tags} />
+      ) : null}
 
-        {/* Standalone tags card for non-verb / non-adjective types
-            where the main card doesn't already carry them. */}
-        {!isVerb &&
-        !isAdj &&
-        tags.length > 0 &&
-        entry.type !== "noun" ? (
-          <TagsOnlyCard tags={tags} locale={locale} />
-        ) : null}
+      {!isVerb &&
+      !isAdj &&
+      tags.length > 0 &&
+      entry.type !== "noun" ? (
+        <TagsOnlyCard tags={tags} locale={locale} />
+      ) : null}
 
-        {hasSamples ? (
-          <SamplesCard
-            samples={allSamples}
-            locale={locale}
-            tLang={tLang}
-          />
-        ) : null}
+      {hasSamples ? (
+        <SamplesCard
+          samples={allSamples}
+          locale={locale}
+          tLang={tLang}
+        />
+      ) : null}
 
-        {hasPhrases ? (
-          <PhrasesCard
-            collocations={entry.collocations!}
-            locale={locale}
-            tLang={tLang}
-          />
-        ) : null}
-      </div>
+      {hasPhrases ? (
+        <PhrasesCard
+          collocations={entry.collocations!}
+          locale={locale}
+          tLang={tLang}
+        />
+      ) : null}
     </section>
   );
 }
