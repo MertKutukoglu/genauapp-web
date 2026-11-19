@@ -36,6 +36,10 @@ const STR = {
   statWords:    { en: "words",    tr: "kelime" },
   statExamples: { en: "sentences", tr: "cümle" },
   statRules:    { en: "rules",    tr: "kural" },
+  statsCaption: {
+    en: "Every entry carries an article, its grammar, a rule when one applies, and A1 to B2 example sentences in English and Turkish.",
+    tr: "Her girdide artikel, gramer bilgisi, varsa kural, ve A1 ile B2 arası İngilizce + Türkçe örnek cümleler bulunur.",
+  },
   wotdEyebrow:  { en: "Word of the day", tr: "Günün kelimesi" },
   popularEyebrow: {
     en: "Most common",
@@ -89,23 +93,31 @@ export function DictionaryStats({
   const fmt = (n: number) =>
     n.toLocaleString(locale === "tr" ? "tr-TR" : "en-US");
   return (
-    <div
-      className={clsx(
-        "flex flex-wrap items-center gap-2",
-        className,
-      )}
-    >
-      <Chip number={fmt(wordCount)} label={pick(STR.statWords, locale)} />
-      <Chip number={fmt(exampleCount)} label={pick(STR.statExamples, locale)} />
-      <Chip number={fmt(ruleCount)} label={pick(STR.statRules, locale)} />
+    <div className={clsx("flex flex-col gap-2", className)}>
+      <div
+        role="list"
+        aria-label={pick(STR.statsCaption, locale)}
+        className="flex flex-wrap items-center gap-2"
+      >
+        <Chip number={fmt(wordCount)} label={pick(STR.statWords, locale)} />
+        <Chip number={fmt(exampleCount)} label={pick(STR.statExamples, locale)} />
+        <Chip number={fmt(ruleCount)} label={pick(STR.statRules, locale)} />
+      </div>
+      <p className="font-sans text-[12px] text-fg-muted m-0 leading-snug">
+        {pick(STR.statsCaption, locale)}
+      </p>
     </div>
   );
 }
 
 function Chip({ number, label }: { number: string; label: string }) {
+  // Non-interactive span (no cursor pointer, no hover state) so the
+  // stat row doesn't read as clickable. These are information, not
+  // navigation.
   return (
     <span
-      className="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full"
+      role="listitem"
+      className="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full select-none"
       style={{
         background: "var(--surface-card)",
         border: "1px solid var(--border)",
@@ -176,7 +188,7 @@ export function WordOfTheDay({
 
       <Link
         href={`${hrefPrefix}/${entry.slug}`}
-        className="group flex flex-col gap-4 rounded-[20px] p-5 no-underline"
+        className="dict-card-hover group flex flex-col gap-4 rounded-[20px] p-5 no-underline"
         style={{
           background: "var(--surface-card)",
           border: "1px solid var(--border)",
@@ -199,7 +211,7 @@ export function WordOfTheDay({
             </div>
           )}
           {translation ? (
-            <div className="font-sans text-[14px] sm:text-[15px] text-fg-muted text-center">
+            <div className="font-sans text-[18px] sm:text-[20px] text-fg-muted text-center">
               {translation}
             </div>
           ) : null}
@@ -314,7 +326,7 @@ function PopularCard({
   return (
     <Link
       href={`${hrefPrefix}/${entry.slug}`}
-      className="group flex flex-col gap-3 rounded-2xl p-4 no-underline"
+      className="dict-card-hover group flex flex-col gap-3 rounded-2xl p-4 no-underline"
       style={{
         background: isNoun
           ? `color-mix(in srgb, ${color} 6%, var(--surface-card))`
@@ -346,14 +358,27 @@ function PopularCard({
         ) : null}
       </div>
       {primaryExample ? (
-        <div
-          className="rounded-lg p-2.5 mt-auto"
-          style={{ background: "var(--surface-sunk)" }}
-        >
-          <p className="font-sans text-[12px] text-fg m-0 leading-snug line-clamp-2">
-            {primaryExample.de}
-          </p>
-        </div>
+        (() => {
+          const gloss =
+            tLang === "tr"
+              ? primaryExample.tr ?? primaryExample.en
+              : primaryExample.en ?? primaryExample.tr;
+          return (
+            <div
+              className="rounded-lg p-2.5 mt-auto flex flex-col gap-0.5"
+              style={{ background: "var(--surface-sunk)" }}
+            >
+              <p className="font-sans font-semibold text-[12px] text-fg m-0 leading-snug line-clamp-2">
+                {primaryExample.de}
+              </p>
+              {gloss ? (
+                <p className="font-sans text-[11px] text-fg-muted m-0 leading-snug line-clamp-2">
+                  {gloss}
+                </p>
+              ) : null}
+            </div>
+          );
+        })()
       ) : null}
       <div
         className="font-sans text-[10px] uppercase text-fg-faint"

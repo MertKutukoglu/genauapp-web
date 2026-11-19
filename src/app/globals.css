@@ -665,3 +665,26 @@ body {
   opacity: 0;
   transition: opacity 120ms ease;
 }
+
+/* Dictionary cards clickability affordance: lift + stronger
+   shadow on hover, so user knows the whole card is a link.
+   160ms ease, falls back to rest state on blur/leave. */
+.dict-card-hover {
+  transition:
+    transform 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+.dict-card-hover:hover,
+.dict-card-hover:focus-visible {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 24px color-mix(in srgb, var(--fg) 10%, transparent),
+    0 2px 6px color-mix(in srgb, var(--fg) 6%, transparent);
+  border-color: color-mix(in srgb, var(--fg) 14%, var(--border));
+}
+@media (prefers-reduced-motion: reduce) {
+  .dict-card-hover { transition: none; }
+  .dict-card-hover:hover,
+  .dict-card-hover:focus-visible { transform: none; }
+}
