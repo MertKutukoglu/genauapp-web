@@ -332,31 +332,75 @@ function PopularCarousel({
     track.scrollTo({ left: w * p, behavior: "smooth" });
   }, []);
 
+  const atStart = page === 0;
+  const atEnd = page >= pageCount - 1;
+
   return (
     <div className="flex flex-col gap-3">
-      <div
-        ref={trackRef}
-        onScroll={onScroll}
-        className="dict-carousel-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
-      >
-        <div className="flex gap-3">
-          {entries.map((e) => (
-            <div
-              key={e.slug}
-              className="snap-start shrink-0"
+      <div className="relative">
+        {/* Right chevron for mouse / keyboard users. Height follows
+            the card height (absolute inset-y-0), hidden when on the
+            last page. */}
+        {pageCount > 1 ? (
+          <>
+            <button
+              type="button"
+              onClick={() => goto(Math.max(0, page - 1))}
+              disabled={atStart}
+              aria-label={locale === "tr" ? "Önceki" : "Previous"}
+              className="dict-carousel-chevron hidden sm:flex absolute left-0 inset-y-0 z-10 items-center justify-center rounded-l-2xl"
               style={{
-                // Two cards per viewport width, minus the gap between
-                // them: calc((100% - gap) / 2).
-                width: "calc((100% - 12px) / 2)",
+                width: 32,
+                opacity: atStart ? 0 : 1,
+                pointerEvents: atStart ? "none" : "auto",
               }}
             >
-              <PopularCard
-                entry={e}
-                locale={locale}
-                hrefPrefix={hrefPrefix}
-              />
-            </div>
-          ))}
+              <Icon name="chevron-left" className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => goto(Math.min(pageCount - 1, page + 1))}
+              disabled={atEnd}
+              aria-label={locale === "tr" ? "Sonraki" : "Next"}
+              className="dict-carousel-chevron hidden sm:flex absolute right-0 inset-y-0 z-10 items-center justify-center rounded-r-2xl"
+              style={{
+                width: 32,
+                opacity: atEnd ? 0 : 1,
+                pointerEvents: atEnd ? "none" : "auto",
+              }}
+            >
+              <Icon name="chevron-right" className="w-5 h-5" />
+            </button>
+          </>
+        ) : null}
+
+        <div
+          ref={trackRef}
+          onScroll={onScroll}
+          className="dict-carousel-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
+        >
+          {/* Vertical padding on the inner track so the hover lift +
+              shadow on each card has room without the overflow-x
+              rule clipping it. */}
+          <div className="flex gap-3 py-2">
+            {entries.map((e) => (
+              <div
+                key={e.slug}
+                className="snap-start shrink-0"
+                style={{
+                  // Two cards per viewport width, minus the gap
+                  // between them: calc((100% - gap) / 2).
+                  width: "calc((100% - 12px) / 2)",
+                }}
+              >
+                <PopularCard
+                  entry={e}
+                  locale={locale}
+                  hrefPrefix={hrefPrefix}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -531,7 +575,7 @@ export function ComingSoonBanner({
           {pick(STR.bannerBody, locale)}
         </p>
       </div>
-      <div className="flex flex-col items-start sm:items-end shrink-0 gap-1.5">
+      <div className="flex items-center shrink-0 gap-3">
         <Link
           href={waitlistHref}
           className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full font-sans font-semibold text-[13px] no-underline"
@@ -545,7 +589,7 @@ export function ComingSoonBanner({
         </Link>
         <Link
           href={tryHref}
-          className="font-sans font-semibold text-[12px] no-underline hover:underline"
+          className="font-sans font-semibold text-[13px] no-underline hover:underline whitespace-nowrap"
           style={{ color: "var(--accent)" }}
         >
           {pick(STR.bannerTryIt, locale)}

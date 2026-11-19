@@ -699,3 +699,21 @@ body {
 .dict-carousel-track::-webkit-scrollbar {
   display: none;
 }
+
+/* PopularCarousel chevron buttons. Subtle surface-card backdrop
+   that appears over the first/last card, so the arrow reads as
+   an inline nudge without a separate pill competing with the
+   cards themselves. Only visible on sm+ (mouse/keyboard); on
+   touch viewports the swipe is the primary paging gesture. */
+.dict-carousel-chevron {
+  background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  transition: opacity 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.dict-carousel-chevron:hover {
+  color: var(--fg);
+}
+.dict-carousel-chevron:active {
+  transform: translateY(1px);
+}

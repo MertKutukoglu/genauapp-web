@@ -55,8 +55,9 @@ export default async function SozlukLandingPage() {
             locale="tr"
             hrefPrefix="/tr/sozluk"
             emptyState={
-              <div className="flex flex-col gap-8 mt-2">
+              <div className="flex flex-col gap-8">
                 <DictionaryStats
+                  className="-mt-3"
                   wordCount={stats.wordCount}
                   exampleCount={stats.exampleCount}
                   ruleCount={stats.ruleCount}
