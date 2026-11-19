@@ -700,20 +700,21 @@ body {
   display: none;
 }
 
-/* PopularCarousel chevron buttons. Subtle surface-card backdrop
-   that appears over the first/last card, so the arrow reads as
-   an inline nudge without a separate pill competing with the
-   cards themselves. Only visible on sm+ (mouse/keyboard); on
-   touch viewports the swipe is the primary paging gesture. */
-.dict-carousel-chevron {
-  background: color-mix(in srgb, var(--surface-card) 92%, transparent);
-  border: 1px solid var(--border);
-  color: var(--fg-muted);
-  transition: opacity 160ms ease, color 160ms ease, transform 160ms ease;
+/* PopularCarousel chevron circles. Sit on the title row, next
+   to the "Most common" eyebrow, so paging is a title-level
+   control, not an overlay on the cards. */
+.dict-chevron-circle {
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
 }
-.dict-carousel-chevron:hover {
-  color: var(--fg);
+.dict-chevron-circle:hover:not(:disabled) {
+  color: var(--fg) !important;
+  border-color: color-mix(in srgb, var(--fg) 20%, var(--border)) !important;
+  background: color-mix(in srgb, var(--fg) 4%, var(--surface-card)) !important;
 }
-.dict-carousel-chevron:active {
+.dict-chevron-circle:active:not(:disabled) {
   transform: translateY(1px);
 }

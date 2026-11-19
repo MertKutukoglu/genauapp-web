@@ -55,12 +55,13 @@ export default async function DictionaryLandingPage() {
             locale="en"
             hrefPrefix="/dictionary"
             emptyState={
-              // Stats hug the search bar (-mt-3 cancels most of the
-              // parent flex gap above), the rest of the sections
-              // keep breathing room via gap-8.
+              // No negative margin on the first child: the browse
+              // collapse wrapper has overflow:hidden (so the fade
+              // animation works), which was clipping the top of
+              // the stat chips. Stats sit at the natural start of
+              // the empty state block.
               <div className="flex flex-col gap-8">
                 <DictionaryStats
-                  className="-mt-3"
                   wordCount={stats.wordCount}
                   exampleCount={stats.exampleCount}
                   ruleCount={stats.ruleCount}

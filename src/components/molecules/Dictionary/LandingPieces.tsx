@@ -280,37 +280,35 @@ export function PopularList({
 }: PopularListProps) {
   const picks = entries.slice(0, limit);
   return (
-    <section className={clsx("flex flex-col gap-3", className)}>
-      <div
-        className="font-sans text-[11px] uppercase text-fg-faint"
-        style={{ letterSpacing: "0.5px" }}
-      >
-        {pick(STR.popularEyebrow, locale)}
-      </div>
-      <PopularCarousel
-        entries={picks}
-        locale={locale}
-        hrefPrefix={hrefPrefix}
-      />
-    </section>
+    <PopularCarousel
+      entries={picks}
+      locale={locale}
+      hrefPrefix={hrefPrefix}
+      eyebrow={pick(STR.popularEyebrow, locale)}
+      className={className}
+    />
   );
 }
 
-/* ---------- Carousel (2 cards per page, swipe + stepper) ---------- */
+/* ---------- Carousel (title row with chevron circles + swipe track + stepper) ---------- */
 
 function PopularCarousel({
   entries,
   locale,
   hrefPrefix,
+  eyebrow,
+  className,
 }: {
   entries: DictionaryEntry[];
   locale: DictLocale;
   hrefPrefix: string;
+  eyebrow: string;
+  className?: string;
 }) {
   // Each page holds 2 cards. Scroll uses native scroll-snap on a
-  // horizontal track; the stepper below is derived from the track's
-  // scrollLeft so it stays in sync with touch scrolling, chevron
-  // clicks, and keyboard arrows.
+  // horizontal track; the title row chevrons and the dot stepper
+  // below are both derived from the track's scrollLeft so every
+  // affordance stays in sync with touch scrolling.
   const PER_PAGE = 2;
   const pageCount = Math.max(1, Math.ceil(entries.length / PER_PAGE));
   const trackRef = React.useRef<HTMLDivElement>(null);
@@ -336,71 +334,60 @@ function PopularCarousel({
   const atEnd = page >= pageCount - 1;
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative">
-        {/* Right chevron for mouse / keyboard users. Height follows
-            the card height (absolute inset-y-0), hidden when on the
-            last page. */}
+    <section className={clsx("flex flex-col gap-3", className)}>
+      {/* Title row: eyebrow left, round chevron buttons right.
+          Chevrons live on the title row, not overlaid on the
+          cards, so the carousel reads as "here is the control
+          strip, below is the content." */}
+      <div className="flex items-center justify-between gap-3">
+        <div
+          className="font-sans text-[11px] uppercase text-fg-faint"
+          style={{ letterSpacing: "0.5px" }}
+        >
+          {eyebrow}
+        </div>
         {pageCount > 1 ? (
-          <>
-            <button
-              type="button"
+          <div className="flex items-center gap-2">
+            <ChevronButton
               onClick={() => goto(Math.max(0, page - 1))}
               disabled={atStart}
-              aria-label={locale === "tr" ? "Önceki" : "Previous"}
-              className="dict-carousel-chevron hidden sm:flex absolute left-0 inset-y-0 z-10 items-center justify-center rounded-l-2xl"
-              style={{
-                width: 32,
-                opacity: atStart ? 0 : 1,
-                pointerEvents: atStart ? "none" : "auto",
-              }}
-            >
-              <Icon name="chevron-left" className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
+              direction="left"
+              label={locale === "tr" ? "Önceki" : "Previous"}
+            />
+            <ChevronButton
               onClick={() => goto(Math.min(pageCount - 1, page + 1))}
               disabled={atEnd}
-              aria-label={locale === "tr" ? "Sonraki" : "Next"}
-              className="dict-carousel-chevron hidden sm:flex absolute right-0 inset-y-0 z-10 items-center justify-center rounded-r-2xl"
+              direction="right"
+              label={locale === "tr" ? "Sonraki" : "Next"}
+            />
+          </div>
+        ) : null}
+      </div>
+
+      <div
+        ref={trackRef}
+        onScroll={onScroll}
+        className="dict-carousel-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
+      >
+        {/* Vertical padding so the hover lift + shadow on each
+            card has room; overflow-x on the parent would otherwise
+            clip the y-axis shadow. */}
+        <div className="flex gap-3 py-2">
+          {entries.map((e) => (
+            <div
+              key={e.slug}
+              className="snap-start shrink-0"
               style={{
-                width: 32,
-                opacity: atEnd ? 0 : 1,
-                pointerEvents: atEnd ? "none" : "auto",
+                width: "calc((100% - 12px) / 2)",
               }}
             >
-              <Icon name="chevron-right" className="w-5 h-5" />
-            </button>
-          </>
-        ) : null}
-
-        <div
-          ref={trackRef}
-          onScroll={onScroll}
-          className="dict-carousel-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
-        >
-          {/* Vertical padding on the inner track so the hover lift +
-              shadow on each card has room without the overflow-x
-              rule clipping it. */}
-          <div className="flex gap-3 py-2">
-            {entries.map((e) => (
-              <div
-                key={e.slug}
-                className="snap-start shrink-0"
-                style={{
-                  // Two cards per viewport width, minus the gap
-                  // between them: calc((100% - gap) / 2).
-                  width: "calc((100% - 12px) / 2)",
-                }}
-              >
-                <PopularCard
-                  entry={e}
-                  locale={locale}
-                  hrefPrefix={hrefPrefix}
-                />
-              </div>
-            ))}
-          </div>
+              <PopularCard
+                entry={e}
+                locale={locale}
+                hrefPrefix={hrefPrefix}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -430,7 +417,43 @@ function PopularCarousel({
           })}
         </div>
       ) : null}
-    </div>
+    </section>
+  );
+}
+
+function ChevronButton({
+  onClick,
+  disabled,
+  direction,
+  label,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  direction: "left" | "right";
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="dict-chevron-circle inline-flex items-center justify-center rounded-full"
+      style={{
+        width: 32,
+        height: 32,
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+        color: disabled ? "var(--fg-faint)" : "var(--fg-muted)",
+        opacity: disabled ? 0.5 : 1,
+        cursor: disabled ? "default" : "pointer",
+      }}
+    >
+      <Icon
+        name={direction === "left" ? "chevron-left" : "chevron-right"}
+        className="w-4 h-4"
+      />
+    </button>
   );
 }
 
@@ -575,7 +598,7 @@ export function ComingSoonBanner({
           {pick(STR.bannerBody, locale)}
         </p>
       </div>
-      <div className="flex items-center shrink-0 gap-3">
+      <div className="flex flex-col items-center shrink-0 gap-2">
         <Link
           href={waitlistHref}
           className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full font-sans font-semibold text-[13px] no-underline"
@@ -589,7 +612,7 @@ export function ComingSoonBanner({
         </Link>
         <Link
           href={tryHref}
-          className="font-sans font-semibold text-[13px] no-underline hover:underline whitespace-nowrap"
+          className="font-sans font-semibold text-[12px] no-underline hover:underline whitespace-nowrap text-center"
           style={{ color: "var(--accent)" }}
         >
           {pick(STR.bannerTryIt, locale)}

@@ -57,7 +57,6 @@ export default async function SozlukLandingPage() {
             emptyState={
               <div className="flex flex-col gap-8">
                 <DictionaryStats
-                  className="-mt-3"
                   wordCount={stats.wordCount}
                   exampleCount={stats.exampleCount}
                   ruleCount={stats.ruleCount}
