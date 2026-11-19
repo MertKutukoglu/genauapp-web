@@ -124,43 +124,52 @@
   --role-place:       #7C3AED;                              /* violet-600 */
 }
 
-/* Dark theme — swap semantics only, primitives stay. */
+/* Dark theme, swap semantics only, primitives stay.
+   Values tuned so cards read as clearly lifted panels against a
+   deeper near-black bg with a visible but subtle border, matching
+   the "everything in one place" dark hero pattern. The old values
+   put card at only 3 lightness steps above bg and border at the
+   same hue as sunk, which made every card dissolve into the
+   backdrop. */
 [data-theme="dark"] {
-  --bg:               var(--color-warmdk-900);
+  --bg:               #0A0908;
   --fg:               var(--color-warmdk-50);
   --fg-muted:         var(--color-warmdk-300);
   --fg-faint:         var(--color-warmdk-500);
-  --surface-card:     var(--color-warmdk-800);
-  --surface-sunk:     var(--color-warmdk-700);
+  --surface-card:     #171313;
+  --surface-sunk:     #221D1C;
   --accent:           var(--color-rose-400);
   --accent-ink:       var(--color-rose-300);
-  --border:           var(--color-warmdk-700);
-  --border-strong:    var(--color-warmdk-500);
+  --border:           #2C2624;
+  --border-strong:    #4A403D;
   --ok:               var(--color-green-500);
 
   --article-der:      var(--color-article-der-dark);
   --article-die:      var(--color-article-die-dark);
   --article-das:      var(--color-article-das-dark);
 
-  /* Sentence role colors — lift amber + violet into brighter dark
-     shades so they read against the warmdk-800 card surface. */
+  /* Sentence role colors, lift amber + violet into brighter dark
+     shades so they read against the deeper card surface. */
   --role-time:        #F59E0B;                              /* amber-500 */
   --role-place:       #A78BFA;                              /* violet-400 */
 }
 
-/* prefers-color-scheme fallback when no explicit data-theme is set. */
+/* prefers-color-scheme fallback when no explicit data-theme is set.
+   Mirrors the [data-theme="dark"] values above so a system-dark
+   visitor sees the same deeper-bg + lifted-card layering as a
+   visitor who manually picked dark. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg:               var(--color-warmdk-900);
+    --bg:               #0A0908;
     --fg:               var(--color-warmdk-50);
     --fg-muted:         var(--color-warmdk-300);
     --fg-faint:         var(--color-warmdk-500);
-    --surface-card:     var(--color-warmdk-800);
-    --surface-sunk:     var(--color-warmdk-700);
+    --surface-card:     #171313;
+    --surface-sunk:     #221D1C;
     --accent:           var(--color-rose-400);
     --accent-ink:       var(--color-rose-300);
-    --border:           var(--color-warmdk-700);
-    --border-strong:    var(--color-warmdk-500);
+    --border:           #2C2624;
+    --border-strong:    #4A403D;
     --ok:               var(--color-green-500);
     --article-der:      var(--color-article-der-dark);
     --article-die:      var(--color-article-die-dark);
