@@ -195,6 +195,13 @@ export function DictionarySearch({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
+    // Clearing has no "think time" — snap debounced to empty
+    // immediately so the result panel unmounts the same frame
+    // the user taps X. Only buffer actual typing.
+    if (raw.trim() === "") {
+      setDebounced(raw);
+      return;
+    }
     const id = window.setTimeout(() => setDebounced(raw), 150);
     return () => window.clearTimeout(id);
   }, [raw]);
@@ -240,6 +247,7 @@ export function DictionarySearch({
       }
     } else if (e.key === "Escape") {
       setRaw("");
+      inputRef.current?.blur();
     }
   }
 
@@ -290,13 +298,19 @@ export function DictionarySearch({
           <button
             type="button"
             onMouseDown={(e) => {
-              // mousedown so the input doesn't blur first (which
-              // would collapse the results panel for a frame).
+              // mousedown so the input doesn't blur mid-click,
+              // which would flicker the browse surface for a frame
+              // between the blur and the explicit focus/blur call
+              // we make in onClick.
               e.preventDefault();
             }}
             onClick={() => {
               setRaw("");
-              inputRef.current?.focus();
+              // Blur on clear so the browse surface returns: tapping
+              // X is the signal "I am done with this search." If the
+              // user wants to type again, one tap on the bar focuses
+              // it back.
+              inputRef.current?.blur();
             }}
             aria-label={locale === "tr" ? "Temizle" : "Clear"}
             className="inline-flex items-center justify-center text-fg-faint hover:text-fg transition-colors shrink-0"
