@@ -30,12 +30,17 @@ const ARTICLE_COLOR = {
 export interface GrammarInfoModuleProps {
   entry: DictionaryEntry;
   locale: DictLocale;
+  /** When wrapped in GrammarInfoDisclosure, the disclosure trigger
+   *  already carries the title, so hide the inner header to avoid
+   *  the "Grammar info · Grammar info" double title. */
+  hideHeader?: boolean;
   className?: string;
 }
 
 export function GrammarInfoModule({
   entry,
   locale,
+  hideHeader = false,
   className,
 }: GrammarInfoModuleProps) {
   const isNoun = entry.type === "noun" && !!entry.noun;
@@ -70,29 +75,41 @@ export function GrammarInfoModule({
     <section
       aria-label={pick(STR.grammarInfo, locale)}
       className={clsx(
-        "rounded-[24px] flex flex-col gap-6",
-        "p-5 sm:p-6",
+        "flex flex-col gap-6",
+        // When wrapped in GrammarInfoDisclosure the outer surface is
+        // the disclosure's own, so skip the card chrome here.
+        hideHeader
+          ? ""
+          : "rounded-[24px] p-5 sm:p-6",
         className,
       )}
-      style={{
-        background: "var(--surface-card)",
-        border: "1px solid var(--border)",
-      }}
+      style={
+        hideHeader
+          ? undefined
+          : {
+              background: "var(--surface-card)",
+              border: "1px solid var(--border)",
+            }
+      }
     >
-      {/* Section header: title + (muted) type on the right. */}
-      <div className="flex items-baseline justify-between">
-        <h2
-          className="font-sans font-bold text-[18px] sm:text-[20px] text-fg m-0"
-        >
-          {pick(STR.grammarInfo, locale)}
-        </h2>
-        <span
-          className="font-sans text-[11px] uppercase text-fg-faint"
-          style={{ letterSpacing: "0.4px" }}
-        >
-          {pick(TYPE_LABEL[entry.type], locale)}
-        </span>
-      </div>
+      {/* Section header: title + (muted) type on the right. Hidden
+          when the module is wrapped in a disclosure (the trigger
+          carries the title then). */}
+      {hideHeader ? null : (
+        <div className="flex items-baseline justify-between">
+          <h2
+            className="font-sans font-bold text-[18px] sm:text-[20px] text-fg m-0"
+          >
+            {pick(STR.grammarInfo, locale)}
+          </h2>
+          <span
+            className="font-sans text-[11px] uppercase text-fg-faint"
+            style={{ letterSpacing: "0.4px" }}
+          >
+            {pick(TYPE_LABEL[entry.type], locale)}
+          </span>
+        </div>
+      )}
 
       {/* Flag card. First item in the module, as in iOS. */}
       <FlagCard locale={locale} entry={entry} />

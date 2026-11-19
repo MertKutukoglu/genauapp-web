@@ -560,3 +560,9 @@ body {
   .iosbeta-rotator-item-2,
   .iosbeta-rotator-item-3 { display: none; }
 }
+
+/* Dictionary GrammarInfoDisclosure: hide the native details marker
+   across engines so the custom chevron is the only disclosure
+   affordance. */
+.dict-grammar-disclosure > summary::-webkit-details-marker { display: none; }
+.dict-grammar-disclosure > summary::marker { content: ""; }

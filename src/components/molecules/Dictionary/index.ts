@@ -1,5 +1,6 @@
 export { WordCard } from "./WordCard";
 export { GrammarInfoModule } from "./GrammarInfoModule";
+export { GrammarInfoDisclosure } from "./GrammarInfoDisclosure";
 export type {
   DictionaryEntry,
   DictLocale,

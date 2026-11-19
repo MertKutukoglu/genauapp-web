@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { WordCard } from "./WordCard";
 import { GrammarInfoModule } from "./GrammarInfoModule";
+import { GrammarInfoDisclosure } from "./GrammarInfoDisclosure";
 import { DICT_ENTRIES } from "@/content/dictionary/entries";
 
 /**
@@ -26,7 +27,17 @@ function page(slug: string, locale: "en" | "tr" = "en") {
   return (
     <div style={{ width: 420, display: "flex", flexDirection: "column", gap: 20 }}>
       <WordCard entry={entry} locale={locale} />
-      <GrammarInfoModule entry={entry} locale={locale} />
+      <GrammarInfoDisclosure entry={entry} locale={locale} />
+    </div>
+  );
+}
+
+function pageOpen(slug: string, locale: "en" | "tr" = "en") {
+  const entry = DICT_ENTRIES.find((e) => e.slug === slug)!;
+  return (
+    <div style={{ width: 420, display: "flex", flexDirection: "column", gap: 20 }}>
+      <WordCard entry={entry} locale={locale} />
+      <GrammarInfoDisclosure entry={entry} locale={locale} defaultOpen />
     </div>
   );
 }
@@ -59,6 +70,25 @@ export const Verb_TR: Story = {
 export const Adjective_EN: Story = {
   name: "Adjective · gut (EN)",
   render: () => page("gut", "en"),
+};
+
+export const NounOpen_EN: Story = {
+  name: "Noun open · die Erfahrung (EN)",
+  render: () => pageOpen("erfahrung", "en"),
+};
+
+export const VerbOpen_EN: Story = {
+  name: "Verb open · buchstabieren (EN)",
+  render: () => pageOpen("buchstabieren", "en"),
+};
+
+export const RawModule: Story = {
+  name: "Raw GrammarInfoModule (no disclosure)",
+  render: () => (
+    <div style={{ width: 420 }}>
+      <GrammarInfoModule entry={DICT_ENTRIES[0]} locale="en" />
+    </div>
+  ),
 };
 
 export const CardOnly_Noun: Story = {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   WordCard,
-  GrammarInfoModule,
+  GrammarInfoDisclosure,
 } from "@/components/molecules/Dictionary";
 import { getAllSlugs, getEntry } from "@/content/dictionary/entries";
 import { Icon } from "@/components/atoms/Icon/Icon";
@@ -80,7 +80,7 @@ export default async function DictionaryWordPage({
 
         <div className="mt-6 flex flex-col gap-5">
           <WordCard entry={entry} locale="en" />
-          <GrammarInfoModule entry={entry} locale="en" />
+          <GrammarInfoDisclosure entry={entry} locale="en" />
         </div>
 
         <footer className="mt-10 font-sans text-[12px] text-fg-faint text-center">
