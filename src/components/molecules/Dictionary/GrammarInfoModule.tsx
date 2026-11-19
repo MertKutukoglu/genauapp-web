@@ -16,7 +16,7 @@ import { GrammarTagPill } from "./WordCard";
 import { useTranslationLang } from "./TranslationLangContext";
 
 /**
- * GrammarInfoModule — rebranded "Word Anatomy".
+ * GrammarInfoModule, rebranded "Word Anatomy".
  *
  * The one long card is gone; the module composes a sequence of
  * tightly-packed sub-cards, each dedicated to a single part of the
