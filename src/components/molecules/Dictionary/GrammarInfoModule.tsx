@@ -46,6 +46,10 @@ export function GrammarInfoModule({
   hideHeader = false,
   className,
 }: GrammarInfoModuleProps) {
+  // Translation language drives the example + collocation gloss
+  // language, so a Turkish visitor on /dictionary sees TR under
+  // every German line without switching the whole site locale.
+  const tLang = useTranslationLang();
   const isNoun = entry.type === "noun" && !!entry.noun;
   const isVerb = entry.type === "verb" && !!entry.verb;
   const isAdj = entry.type === "adjective" && !!entry.adjective;
