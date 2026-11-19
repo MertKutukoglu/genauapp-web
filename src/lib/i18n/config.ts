@@ -82,15 +82,44 @@ export const TR_TO_EN_PATH: Record<string, string> = Object.fromEntries(
 );
 
 /**
+ * Prefix-level swaps for routes with a shared slug tail (dictionary
+ * word pages, blog posts that mirror each other, etc.). Without these
+ * every slug would need its own EN_TO_TR_PATH row.
+ *
+ * Order matters: longest prefix first, so `/dictionary/foo` matches
+ * `/dictionary/` before any shorter prefix. The function below walks
+ * this list in order and returns the first hit.
+ */
+const PREFIX_SWAPS: Array<{ en: string; tr: string }> = [
+  { en: "/dictionary/", tr: "/tr/sozluk/" },
+];
+
+/**
  * Given a path on one locale, return the equivalent path on the other.
- * If no mapping is registered yet, fall back to that locale's root.
+ * First consults the exact-path map, then prefix swaps for routes
+ * whose slug tail is shared across locales; falls back to that
+ * locale's root when nothing matches.
  */
 export function getEquivalentPath(pathname: string, target: Locale): string {
   const current = getLocaleFromPath(pathname);
   if (current === target) return pathname;
 
   if (target === "tr") {
-    return EN_TO_TR_PATH[pathname] ?? "/tr";
+    const exact = EN_TO_TR_PATH[pathname];
+    if (exact) return exact;
+    for (const p of PREFIX_SWAPS) {
+      if (pathname.startsWith(p.en)) {
+        return p.tr + pathname.slice(p.en.length);
+      }
+    }
+    return "/tr";
   }
-  return TR_TO_EN_PATH[pathname] ?? "/";
+  const exact = TR_TO_EN_PATH[pathname];
+  if (exact) return exact;
+  for (const p of PREFIX_SWAPS) {
+    if (pathname.startsWith(p.tr)) {
+      return p.en + pathname.slice(p.tr.length);
+    }
+  }
+  return "/";
 }

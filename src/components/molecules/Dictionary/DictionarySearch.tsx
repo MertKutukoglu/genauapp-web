@@ -1,0 +1,533 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { clsx } from "@/lib/utils/clsx";
+import { Icon } from "@/components/atoms/Icon/Icon";
+import type { DictionaryEntry, DictLocale } from "./types";
+import { STR, TYPE_LABEL, pick } from "./strings";
+
+/**
+ * DictionarySearch, the type-as-you-go search surface for /dictionary
+ * and /tr/sozluk. Trilingual: a query can be a German headword, an
+ * English translation, or a Turkish translation; matches from any of
+ * the three come back together, ranked by exactness, substring hit,
+ * and finally translation match.
+ *
+ * V0 matches against an in-memory entries list. When the Supabase
+ * `dict_search` RPC lands, the matching call becomes a Route Handler
+ * fetch with the same shape, and the keyboard + rendering stay
+ * unchanged.
+ *
+ * Why client: needs input state, debounce, keyboard navigation. The
+ * landing page it sits on stays a server component; the component
+ * tree lives below it.
+ */
+
+const ARTICLE_COLOR = {
+  der: "var(--article-der)",
+  die: "var(--article-die)",
+  das: "var(--article-das)",
+} as const;
+
+const SEARCH_PLACEHOLDER = {
+  en: "Search in German, English or Turkish",
+  tr: "Almanca, Türkçe veya İngilizce bir kelime yaz",
+} as const;
+
+const EMPTY_TITLE = {
+  en: "Search German words",
+  tr: "Almanca kelime ara",
+} as const;
+
+const EMPTY_SUBTITLE = {
+  en: "Find any word by typing in German, English or Turkish. See articles, grammar rules, and example sentences.",
+  tr: "Almanca, İngilizce veya Türkçe yaz. Artikel, gramer kuralları ve örnek cümleleri gör.",
+} as const;
+
+const EMPTY_HINTS = {
+  en: [
+    { icon: "book-open" as const, text: "Articles & grammar rules" },
+    { icon: "chip-sentence" as const, text: "Example sentences" },
+    { icon: "bookmark" as const, text: "Save words in the GenauApp" },
+  ],
+  tr: [
+    { icon: "book-open" as const, text: "Artikel ve gramer kuralları" },
+    { icon: "chip-sentence" as const, text: "Örnek cümleler" },
+    { icon: "bookmark" as const, text: "Kelimeleri GenauApp'te kaydet" },
+  ],
+} as const;
+
+const POPULAR_LABEL = {
+  en: "Popular words",
+  tr: "Sık aranan kelimeler",
+} as const;
+
+const NOT_FOUND_TITLE = {
+  en: "No match for",
+  tr: "Şununla eşleşen bir sonuç yok:",
+} as const;
+
+const NOT_FOUND_BODY = {
+  en: "We haven't added this word yet. Try a more general term, or browse the popular words below.",
+  tr: "Bu kelimeyi henüz eklemedik. Daha genel bir kelime dene, ya da aşağıdaki sık aranan kelimelere bak.",
+} as const;
+
+/* ---------- Matching ---------- */
+
+/** Fold umlauts (ä → ae etc.) and lowercase, so "mude" matches
+ *  "müde" and "Ubung" matches "Übung". */
+function fold(input: string): string {
+  return input
+    .toLowerCase()
+    .replaceAll("ä", "ae")
+    .replaceAll("ö", "oe")
+    .replaceAll("ü", "ue")
+    .replaceAll("ß", "ss")
+    // Turkish dotless-i fold keeps TR queries forgiving.
+    .replaceAll("ı", "i")
+    .replaceAll("İ", "i")
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .trim();
+}
+
+type MatchLang = "de" | "en" | "tr";
+
+interface SearchHit {
+  entry: DictionaryEntry;
+  score: number;
+  matchLang: MatchLang;
+  matchText: string;
+}
+
+function scoreEntry(
+  entry: DictionaryEntry,
+  qf: string,
+): SearchHit | null {
+  if (!qf) return null;
+
+  const gf = fold(entry.german);
+  // German headword match (strongest)
+  if (gf === qf)
+    return { entry, score: 100, matchLang: "de", matchText: entry.german };
+  if (gf.startsWith(qf))
+    return { entry, score: 85, matchLang: "de", matchText: entry.german };
+  if (gf.includes(qf))
+    return { entry, score: 65, matchLang: "de", matchText: entry.german };
+
+  // English translation
+  const en = entry.translations.english;
+  if (en) {
+    // Strip "to " prefix so "go" matches "to go".
+    const ef = fold(en).replace(/^to\s+/, "");
+    const qStripped = qf.replace(/^to\s+/, "");
+    if (ef === qStripped)
+      return { entry, score: 75, matchLang: "en", matchText: en };
+    if (ef.startsWith(qStripped))
+      return { entry, score: 55, matchLang: "en", matchText: en };
+    if (ef.includes(qStripped))
+      return { entry, score: 40, matchLang: "en", matchText: en };
+  }
+
+  // Turkish translation
+  const tr = entry.translations.turkish;
+  if (tr) {
+    const tf = fold(tr);
+    if (tf === qf)
+      return { entry, score: 75, matchLang: "tr", matchText: tr };
+    if (tf.startsWith(qf))
+      return { entry, score: 55, matchLang: "tr", matchText: tr };
+    if (tf.includes(qf))
+      return { entry, score: 40, matchLang: "tr", matchText: tr };
+  }
+
+  return null;
+}
+
+function search(
+  entries: DictionaryEntry[],
+  query: string,
+  limit = 20,
+): SearchHit[] {
+  const qf = fold(query);
+  if (!qf) return [];
+  const hits: SearchHit[] = [];
+  for (const e of entries) {
+    const h = scoreEntry(e, qf);
+    if (h) hits.push(h);
+  }
+  hits.sort((a, b) => b.score - a.score);
+  return hits.slice(0, limit);
+}
+
+/** Split a string into [before, match, after] for in-DOM
+ *  highlighting. Case-insensitive; returns the whole string
+ *  unsplit when the query isn't a direct substring (umlaut
+ *  folded matches lose the highlight on purpose, the row still
+ *  renders). */
+function split(original: string, query: string): [string, string, string] {
+  if (!query) return [original, "", ""];
+  const lo = original.toLowerCase();
+  const q = query.toLowerCase();
+  const idx = lo.indexOf(q);
+  if (idx < 0) return [original, "", ""];
+  return [
+    original.slice(0, idx),
+    original.slice(idx, idx + q.length),
+    original.slice(idx + q.length),
+  ];
+}
+
+/* ---------- Component ---------- */
+
+export interface DictionarySearchProps {
+  entries: DictionaryEntry[];
+  locale: DictLocale;
+  /** URL path prefix for word hrefs. `/dictionary` or `/tr/sozluk`. */
+  hrefPrefix: string;
+  className?: string;
+}
+
+export function DictionarySearch({
+  entries,
+  locale,
+  hrefPrefix,
+  className,
+}: DictionarySearchProps) {
+  const [raw, setRaw] = React.useState("");
+  const [debounced, setDebounced] = React.useState("");
+  const [activeIdx, setActiveIdx] = React.useState(0);
+  const router = useRouter();
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    const id = window.setTimeout(() => setDebounced(raw), 150);
+    return () => window.clearTimeout(id);
+  }, [raw]);
+
+  const results = React.useMemo(
+    () => search(entries, debounced),
+    [entries, debounced],
+  );
+
+  // Reset the active row whenever the result list changes.
+  React.useEffect(() => {
+    setActiveIdx(0);
+  }, [debounced]);
+
+  const hasQuery = raw.trim().length > 0;
+  const hasResults = results.length > 0;
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!hasResults) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.min(i + 1, results.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      const hit = results[activeIdx];
+      if (hit) {
+        e.preventDefault();
+        router.push(`${hrefPrefix}/${hit.entry.slug}`);
+      }
+    } else if (e.key === "Escape") {
+      setRaw("");
+    }
+  }
+
+  return (
+    <div className={clsx("w-full flex flex-col gap-6", className)}>
+      {/* Search bar */}
+      <div
+        className="flex items-center gap-3 rounded-2xl px-4"
+        style={{
+          height: 52,
+          background:
+            "color-mix(in srgb, var(--fg) 6%, transparent)",
+          border: "1px solid var(--border)",
+        }}
+      >
+        <Icon name="search" className="w-5 h-5 text-fg-faint shrink-0" />
+        <input
+          ref={inputRef}
+          type="search"
+          inputMode="search"
+          autoComplete="off"
+          spellCheck={false}
+          value={raw}
+          onChange={(e) => setRaw(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={SEARCH_PLACEHOLDER[locale]}
+          aria-label={SEARCH_PLACEHOLDER[locale]}
+          aria-autocomplete="list"
+          aria-controls="dict-results"
+          className="flex-1 min-w-0 bg-transparent outline-none border-none font-sans text-[16px] text-fg placeholder:text-fg-faint"
+        />
+        {hasQuery ? (
+          <button
+            type="button"
+            onClick={() => {
+              setRaw("");
+              inputRef.current?.focus();
+            }}
+            aria-label={locale === "tr" ? "Temizle" : "Clear"}
+            className="inline-flex items-center justify-center text-fg-faint hover:text-fg transition-colors shrink-0"
+          >
+            <Icon name="close" className="w-5 h-5" />
+          </button>
+        ) : null}
+      </div>
+
+      {/* Results or empty state */}
+      {hasQuery ? (
+        hasResults ? (
+          <ResultList
+            results={results}
+            activeIdx={activeIdx}
+            setActiveIdx={setActiveIdx}
+            query={raw}
+            locale={locale}
+            hrefPrefix={hrefPrefix}
+          />
+        ) : (
+          <NotFound query={raw} locale={locale} entries={entries} hrefPrefix={hrefPrefix} />
+        )
+      ) : (
+        <EmptyState entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
+      )}
+    </div>
+  );
+}
+
+/* ---------- Result list ---------- */
+
+function ResultList({
+  results,
+  activeIdx,
+  setActiveIdx,
+  query,
+  locale,
+  hrefPrefix,
+}: {
+  results: SearchHit[];
+  activeIdx: number;
+  setActiveIdx: (i: number) => void;
+  query: string;
+  locale: DictLocale;
+  hrefPrefix: string;
+}) {
+  return (
+    <ul
+      id="dict-results"
+      role="listbox"
+      className="flex flex-col m-0 p-0 list-none"
+      style={{ border: "1px solid var(--border)", borderRadius: 16 }}
+    >
+      {results.map((hit, i) => {
+        const e = hit.entry;
+        const isNoun = e.type === "noun" && !!e.noun;
+        const color = isNoun ? ARTICLE_COLOR[e.noun!.article] : "var(--fg)";
+        const isActive = activeIdx === i;
+        const [before, match, after] = split(e.german, query);
+        return (
+          <li
+            key={e.slug}
+            role="option"
+            aria-selected={isActive}
+            onMouseEnter={() => setActiveIdx(i)}
+            style={{
+              borderTop: i === 0 ? undefined : "1px solid var(--border)",
+              background: isActive
+                ? "color-mix(in srgb, var(--fg) 4%, transparent)"
+                : undefined,
+            }}
+          >
+            <Link
+              href={`${hrefPrefix}/${e.slug}`}
+              className="flex items-start justify-between gap-3 px-4 py-3 no-underline"
+            >
+              <span className="flex flex-col min-w-0">
+                <span
+                  className="font-sans text-[16px] leading-tight"
+                  style={{ color }}
+                >
+                  {isNoun ? (
+                    <>
+                      <span className="font-bold">{e.noun!.article}</span>{" "}
+                    </>
+                  ) : null}
+                  <span>
+                    {before}
+                    <span className="font-bold">{match}</span>
+                    {after}
+                  </span>
+                </span>
+                {hit.matchLang !== "de" ? (
+                  <span className="font-sans text-[12px] text-fg-muted mt-0.5">
+                    {hit.matchText}
+                    <span
+                      className="inline-block ml-1.5 px-1.5 py-0.5 rounded font-sans text-[9px] font-semibold uppercase align-middle text-fg-faint"
+                      style={{
+                        background: "var(--surface-sunk)",
+                        letterSpacing: "0.3px",
+                      }}
+                    >
+                      {hit.matchLang}
+                    </span>
+                  </span>
+                ) : null}
+              </span>
+              <span
+                className="font-sans text-[13px] text-fg-muted shrink-0 pt-0.5"
+                style={{ letterSpacing: "0.1px" }}
+              >
+                {pick(TYPE_LABEL[e.type], locale)}
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/* ---------- Empty state ---------- */
+
+function EmptyState({
+  entries,
+  locale,
+  hrefPrefix,
+}: {
+  entries: DictionaryEntry[];
+  locale: DictLocale;
+  hrefPrefix: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-6 py-8 sm:py-12">
+      <div
+        className="inline-flex items-center justify-center rounded-2xl"
+        style={{
+          width: 72,
+          height: 72,
+          background: "color-mix(in srgb, var(--accent) 10%, transparent)",
+          color: "var(--accent)",
+        }}
+      >
+        <Icon name="search" className="w-9 h-9" />
+      </div>
+      <div className="flex flex-col items-center gap-2 text-center max-w-md">
+        <h2 className="font-sans font-bold text-[22px] text-fg m-0">
+          {EMPTY_TITLE[locale]}
+        </h2>
+        <p className="font-sans text-[15px] text-fg-muted m-0 leading-relaxed">
+          {EMPTY_SUBTITLE[locale]}
+        </p>
+      </div>
+      <ul className="flex flex-col gap-3 m-0 p-0 list-none">
+        {EMPTY_HINTS[locale].map((h) => (
+          <li
+            key={h.text}
+            className="flex items-center gap-3 font-sans text-[14px] text-fg-muted"
+          >
+            <Icon name={h.icon} className="w-5 h-5 text-[color:var(--accent)]" />
+            {h.text}
+          </li>
+        ))}
+      </ul>
+
+      <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
+    </div>
+  );
+}
+
+/* ---------- Popular words strip ---------- */
+
+function PopularStrip({
+  entries,
+  locale,
+  hrefPrefix,
+}: {
+  entries: DictionaryEntry[];
+  locale: DictLocale;
+  hrefPrefix: string;
+}) {
+  if (entries.length === 0) return null;
+  return (
+    <div className="flex flex-col items-center gap-3 w-full mt-2">
+      <div
+        className="font-sans text-[11px] uppercase text-fg-faint"
+        style={{ letterSpacing: "0.4px" }}
+      >
+        {POPULAR_LABEL[locale]}
+      </div>
+      <ul className="flex flex-wrap items-center justify-center gap-2 m-0 p-0 list-none">
+        {entries.slice(0, 12).map((e) => {
+          const isNoun = e.type === "noun" && !!e.noun;
+          const color = isNoun ? ARTICLE_COLOR[e.noun!.article] : "var(--fg)";
+          return (
+            <li key={e.slug}>
+              <Link
+                href={`${hrefPrefix}/${e.slug}`}
+                className="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full no-underline font-sans font-semibold text-[14px]"
+                style={{
+                  background: "var(--surface-card)",
+                  border: "1px solid var(--border)",
+                  color,
+                }}
+              >
+                {isNoun ? <span>{e.noun!.article}</span> : null}
+                <span>{e.german}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/* ---------- Not found ---------- */
+
+function NotFound({
+  query,
+  locale,
+  entries,
+  hrefPrefix,
+}: {
+  query: string;
+  locale: DictLocale;
+  entries: DictionaryEntry[];
+  hrefPrefix: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-5 py-8 text-center">
+      <div
+        className="inline-flex items-center justify-center rounded-2xl"
+        style={{
+          width: 64,
+          height: 64,
+          background: "color-mix(in srgb, var(--accent) 8%, transparent)",
+          color: "var(--accent)",
+        }}
+      >
+        <Icon name="search" className="w-8 h-8" />
+      </div>
+      <div className="flex flex-col items-center gap-1 max-w-md">
+        <p className="font-sans text-[15px] text-fg-muted m-0">
+          {NOT_FOUND_TITLE[locale]}
+        </p>
+        <p className="font-sans font-bold text-[20px] text-fg m-0">
+          {`"${query}"`}
+        </p>
+      </div>
+      <p className="font-sans text-[14px] text-fg-muted max-w-md m-0 leading-relaxed">
+        {NOT_FOUND_BODY[locale]}
+      </p>
+      <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
+    </div>
+  );
+}
