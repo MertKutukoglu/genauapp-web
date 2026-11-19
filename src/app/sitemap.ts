@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/content/blog/posts";
+import { DICT_ENTRIES } from "@/content/dictionary/entries";
 
 /**
  * sitemap.xml, the public surface we want indexed.
@@ -35,6 +36,7 @@ const STATIC_PAIRS: StaticPair[] = [
   { en: "/", tr: "/tr", changeFrequency: "weekly", priority: 1.0 },
   { en: "/try", tr: "/tr/try", changeFrequency: "monthly", priority: 0.8 },
   { en: "/blog", tr: "/tr/blog", changeFrequency: "weekly", priority: 0.9 },
+  { en: "/dictionary", tr: "/tr/sozluk", changeFrequency: "weekly", priority: 0.9 },
   {
     en: "/impressum",
     tr: "/tr/kunye",
@@ -117,6 +119,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(post.tr.publishedAt),
       changeFrequency: "monthly",
       priority: 0.65,
+      alternates,
+    });
+  }
+
+  // Dictionary entries: one per locale per published slug. Shared
+  // slug across locales keeps the alternates clean.
+  for (const entry of DICT_ENTRIES) {
+    const alternates = {
+      languages: {
+        en: `${BASE}/dictionary/${entry.slug}`,
+        tr: `${BASE}/tr/sozluk/${entry.slug}`,
+        "x-default": `${BASE}/dictionary/${entry.slug}`,
+      },
+    };
+    entries.push({
+      url: `${BASE}/dictionary/${entry.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates,
+    });
+    entries.push({
+      url: `${BASE}/tr/sozluk/${entry.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.55,
       alternates,
     });
   }

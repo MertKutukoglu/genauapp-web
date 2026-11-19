@@ -142,6 +142,30 @@ export const ICONS = {
     </>
   ),
 
+  // ---------- Dictionary surface ----------
+  speaker: (
+    <>
+      <path d="M11 5L6 9H3v6h3l5 4V5z" fill="currentColor" stroke="none" />
+      <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+      <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+    </>
+  ),
+  bookmark: (
+    <path d="M6 3h12v18l-6-4-6 4V3z" />
+  ),
+  "bookmark-plus": (
+    <>
+      <path d="M6 3h12v18l-6-4-6 4V3z" />
+      <path d="M12 8v6M9 11h6" />
+    </>
+  ),
+  flag: (
+    <>
+      <path d="M4 22V4" />
+      <path d="M4 4h12l-2 4 2 4H4" />
+    </>
+  ),
+
   // ---------- Status / feedback ----------
   "thumbs-up": (
     <path d="M7 10v11H4V10h3zm3 0l3-7a2 2 0 0 1 2 2v5h5a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 1h-8V10z" />
