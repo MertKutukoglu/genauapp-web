@@ -249,6 +249,12 @@ export function DictionarySearch({
       setRaw("");
       setDebounced("");
       inputRef.current?.blur();
+      // On a word page, Escape also means "done with this word";
+      // return to the landing so the word card goes with the
+      // search text.
+      if (initialQuery !== undefined) {
+        router.push(hrefPrefix);
+      }
     }
   }
 
@@ -311,10 +317,17 @@ export function DictionarySearch({
               // single-frame flash of the previous results.
               setRaw("");
               setDebounced("");
-              // Blur so the browse surface returns on landing;
-              // tapping X is the signal "I am done with this
-              // search." One tap on the bar refocuses it.
               inputRef.current?.blur();
+              // On a word page the X means "done with this word,
+              // searching for another." Navigate back to the
+              // landing so the WordCard + Grammar Info go with
+              // the search text, user lands on the empty state
+              // ready for a new query. On landing (no
+              // initialQuery) there is nothing to navigate from,
+              // the clear just restores the browse surface.
+              if (initialQuery !== undefined) {
+                router.push(hrefPrefix);
+              }
             }}
             aria-label={locale === "tr" ? "Temizle" : "Clear"}
             className="inline-flex items-center justify-center text-fg-faint hover:text-fg transition-colors shrink-0"
