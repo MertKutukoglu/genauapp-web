@@ -64,6 +64,25 @@ export interface BlogPost {
  */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "spaced-repetition-done-honestly",
+    en: {
+      title: "Spaced repetition done honestly",
+      description:
+        "Classic SRS asks you to grade your own paper. GenauApp measures instead: the answer you tap is the data, the arrow next to the ring is the direction, and the box is not opaque.",
+      href: "/blog/spaced-repetition-done-honestly",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 5,
+    },
+    tr: {
+      title: "Aralıklı tekrar, ama dürüstçe",
+      description:
+        "Klasik SRS senden kendi kağıdını not vermeni ister. GenauApp ölçer: dokunduğun cevap data'dır, ring'in yanındaki ok yönünü söyler, ve kutu kapalı değildir.",
+      href: "/tr/blog/aralikli-tekrar",
+      publishedAt: "2026-11-19",
+      readingTimeMinutes: 5,
+    },
+  },
+  {
     slug: "visual-german-articles",
     en: {
       title: "Visual German articles, the color-coded method",

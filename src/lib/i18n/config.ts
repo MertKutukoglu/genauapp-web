@@ -68,6 +68,7 @@ export const EN_TO_TR_PATH: Record<string, string> = {
   "/blog/how-skills-work": "/tr/blog/skill-nedir",
   "/blog/how-it-works": "/tr/blog/nasil-calisir",
   "/blog/visual-german-articles": "/tr/blog/gorsel-almanca-artikel",
+  "/blog/spaced-repetition-done-honestly": "/tr/blog/aralikli-tekrar",
   "/impressum": "/tr/kunye",
   "/datenschutz": "/tr/gizlilik",
   "/cookie-policy": "/tr/cerezler",

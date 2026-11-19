@@ -26,6 +26,8 @@ import { SkillRing } from "@/components/atoms/SkillRing/SkillRing";
  *   - <BlogSentenceBuilder />  pool of uncolored chips + an answered row in role colors
  *   - <BlogReadingExcerpt />   a passage block with an underlined word + translation chip
  *   - <BlogSkillRingRow />     four SkillRings with sample progress and momentum arrows
+ *   - <BlogSrsSelfRateCard />  mock of a classic SRS self-rating card (Again/Hard/Good/Easy)
+ *   - <BlogObservedAnswer />   the GenauApp counterpart: a tapped article picker with verdict
  */
 
 const ARTICLE_COLOR: Record<ArticleColor, string> = {
@@ -842,6 +844,205 @@ export function BlogSkillRingRow({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogSrsSelfRateCard                                             *
+ *  Mock of a classic SRS card (Anki / SM-2 descendants). Prompt    *
+ *  on top, revealed answer under it, then four self-rating pills.  *
+ *  Visual only: the pills do not light up. Used in the Spaced      *
+ *  Repetition post to contrast "the user grades their own paper"   *
+ *  with GenauApp's "the app measures" counterpart.                 *
+ * ---------------------------------------------------------------- */
+
+export interface BlogSrsSelfRateCardProps {
+  prompt: string;
+  answer: string;
+  /** Rating labels, left to right. Defaults to the Anki quartet. */
+  ratings?: [string, string, string, string];
+  className?: string;
+}
+
+const DEFAULT_RATINGS: [string, string, string, string] = [
+  "Again",
+  "Hard",
+  "Good",
+  "Easy",
+];
+
+/** Classic SRS card with four self-rating pills under the answer.
+ *  The pills carry the four familiar tints (cherry / amber / green
+ *  / mint) that every SRS clone ships. Deliberately visual only
+ *  so it reads as a picture of the pattern, not a control. */
+export function BlogSrsSelfRateCard({
+  prompt,
+  answer,
+  ratings = DEFAULT_RATINGS,
+  className,
+}: BlogSrsSelfRateCardProps) {
+  const RATING_COLORS = [
+    "var(--accent)",         // Again, cherry
+    "#D97706",               // Hard, amber
+    "var(--ok)",             // Good, green
+    "#14B8A6",               // Easy, mint
+  ];
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5 flex flex-col gap-4",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <div className="flex flex-col items-center gap-2 py-4">
+        <div className="font-sans text-[22px] font-bold text-fg leading-tight text-center">
+          {prompt}
+        </div>
+        <div
+          className="w-16 h-px"
+          style={{ background: "var(--border)" }}
+        />
+        <div className="font-sans text-[18px] text-fg-muted text-center">
+          {answer}
+        </div>
+      </div>
+      <div className="grid grid-cols-4 gap-2">
+        {ratings.map((label, i) => {
+          const color = RATING_COLORS[i];
+          return (
+            <span
+              key={label}
+              className="inline-flex items-center justify-center px-3 py-2 rounded-xl font-sans font-semibold text-[13px]"
+              style={{
+                color,
+                background: `color-mix(in srgb, ${color} 10%, transparent)`,
+                border: `1px solid color-mix(in srgb, ${color} 30%, transparent)`,
+              }}
+            >
+              {label}
+            </span>
+          );
+        })}
+      </div>
+      <div
+        className="font-sans text-[11px] uppercase text-fg-faint text-center"
+        style={{ letterSpacing: "0.4px" }}
+      >
+        You rate yourself
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogObservedAnswer                                              *
+ *  The GenauApp counterpart to the SRS self-rate card. A tapped    *
+ *  article picker with the verdict stamp. Shows that the           *
+ *  measurement happened without a self-report step.                *
+ * ---------------------------------------------------------------- */
+
+export interface BlogObservedAnswerProps {
+  noun: string;
+  translation: string;
+  correctArticle: ArticleColor;
+  /** Which article the learner tapped. */
+  tapped: ArticleColor;
+  className?: string;
+}
+
+/** Mini article picker that shows the tap already happened: the
+ *  tapped pill is solid, every other pill dims, and a small
+ *  verdict label sits at the foot of the card instead of the
+ *  self-rating pills. Deliberately mirrors BlogSrsSelfRateCard's
+ *  footprint so the two read as a before/after pair. */
+export function BlogObservedAnswer({
+  noun,
+  translation,
+  correctArticle,
+  tapped,
+  className,
+}: BlogObservedAnswerProps) {
+  const wasCorrect = tapped === correctArticle;
+  const heroColor = ARTICLE_COLOR[wasCorrect ? tapped : correctArticle];
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5 flex flex-col gap-4",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <div className="flex flex-col items-center gap-1 py-2">
+        <div className="flex items-baseline gap-2">
+          <span
+            className="font-sans font-bold leading-none text-[28px]"
+            style={{ color: heroColor }}
+          >
+            {wasCorrect ? tapped : correctArticle}
+          </span>
+          <span
+            className="font-sans font-bold leading-none text-[28px]"
+            style={{ color: heroColor }}
+          >
+            {noun}
+          </span>
+        </div>
+        <div className="font-sans font-normal text-[14px] text-fg-muted">
+          {translation}
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {(["der", "die", "das"] as const).map((a) => {
+          const isTapped = tapped === a;
+          const isCorrect = correctArticle === a;
+          const color = ARTICLE_COLOR[a];
+          const dim = !isTapped && !(isCorrect && !wasCorrect);
+          let background = `color-mix(in srgb, ${color} 10%, transparent)`;
+          let textColor = color;
+          let borderColor = `color-mix(in srgb, ${color} 30%, transparent)`;
+          if (isTapped && wasCorrect) {
+            background = color;
+            textColor = "white";
+            borderColor = color;
+          } else if (isTapped && !wasCorrect) {
+            background = "var(--accent)";
+            textColor = "white";
+            borderColor = "var(--accent)";
+          } else if (isCorrect && !wasCorrect) {
+            background = color;
+            textColor = "white";
+            borderColor = color;
+          }
+          return (
+            <span
+              key={a}
+              className="inline-flex items-center justify-center px-3 py-2 rounded-full font-sans font-bold text-[15px]"
+              style={{
+                color: textColor,
+                background,
+                border: `1px solid ${borderColor}`,
+                opacity: dim ? 0.35 : 1,
+              }}
+            >
+              {a}
+            </span>
+          );
+        })}
+      </div>
+      <div
+        className="font-sans text-[11px] uppercase text-fg-faint text-center"
+        style={{ letterSpacing: "0.4px" }}
+      >
+        {wasCorrect ? "App measured, correct" : "App measured, incorrect"}
+      </div>
     </div>
   );
 }
