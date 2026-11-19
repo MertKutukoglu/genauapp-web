@@ -169,6 +169,12 @@ export interface DictionarySearchProps {
    *  so the landing doesn't look like a templated widget. When
    *  omitted the component falls back to a minimal popular-strip. */
   emptyState?: React.ReactNode;
+  /** Prefill the input (used on word pages: the bar shows the word
+   *  the user is reading, with X to clear and start a fresh search).
+   *  Results only appear when the user types something different
+   *  from this value, so the bar reads as context, not as an auto-
+   *  triggered query. */
+  initialQuery?: string;
   className?: string;
 }
 
@@ -177,11 +183,13 @@ export function DictionarySearch({
   locale,
   hrefPrefix,
   emptyState,
+  initialQuery,
   className,
 }: DictionarySearchProps) {
-  const [raw, setRaw] = React.useState("");
-  const [debounced, setDebounced] = React.useState("");
+  const [raw, setRaw] = React.useState(initialQuery ?? "");
+  const [debounced, setDebounced] = React.useState(initialQuery ?? "");
   const [activeIdx, setActiveIdx] = React.useState(0);
+  const [focused, setFocused] = React.useState(false);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -190,18 +198,30 @@ export function DictionarySearch({
     return () => window.clearTimeout(id);
   }, [raw]);
 
+  // Only treat the input as an active query when the user typed
+  // something that differs from the initial prefill. Lets us show
+  // the current word on a word page without auto-triggering a
+  // result row for the page the user is already reading.
+  const isDifferentFromInitial =
+    initialQuery === undefined || raw.trim() !== initialQuery.trim();
+  const activeQuery = isDifferentFromInitial ? debounced : "";
+
   const results = React.useMemo(
-    () => search(entries, debounced),
-    [entries, debounced],
+    () => search(entries, activeQuery),
+    [entries, activeQuery],
   );
 
   // Reset the active row whenever the result list changes.
   React.useEffect(() => {
     setActiveIdx(0);
-  }, [debounced]);
+  }, [activeQuery]);
 
-  const hasQuery = raw.trim().length > 0;
+  const hasQuery = activeQuery.trim().length > 0;
   const hasResults = results.length > 0;
+  // Hide the browse surface the moment the user focuses the input,
+  // even before they type: the focus is now the search, so the rest
+  // should get out of the way.
+  const hideBrowse = focused || hasQuery;
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (!hasResults) return;
@@ -256,16 +276,23 @@ export function DictionarySearch({
           spellCheck={false}
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           onKeyDown={onKeyDown}
           placeholder={SEARCH_PLACEHOLDER[locale]}
           aria-label={SEARCH_PLACEHOLDER[locale]}
           aria-autocomplete="list"
           aria-controls="dict-results"
-          className="flex-1 min-w-0 bg-transparent outline-none border-none font-sans text-[16px] text-fg placeholder:text-fg-faint"
+          className="dict-search-input flex-1 min-w-0 bg-transparent outline-none border-none font-sans text-[16px] text-fg placeholder:text-fg-faint"
         />
-        {hasQuery ? (
+        {raw.length > 0 ? (
           <button
             type="button"
+            onMouseDown={(e) => {
+              // mousedown so the input doesn't blur first (which
+              // would collapse the results panel for a frame).
+              e.preventDefault();
+            }}
             onClick={() => {
               setRaw("");
               inputRef.current?.focus();
@@ -278,25 +305,43 @@ export function DictionarySearch({
         ) : null}
       </div>
 
-      {/* Results or empty state */}
+      {/* Results panel: appears only when the user typed something
+          distinct from the initial prefill. */}
       {hasQuery ? (
         hasResults ? (
           <ResultList
             results={results}
             activeIdx={activeIdx}
             setActiveIdx={setActiveIdx}
-            query={raw}
+            query={activeQuery}
             locale={locale}
             hrefPrefix={hrefPrefix}
           />
         ) : (
-          <NotFound query={raw} locale={locale} entries={entries} hrefPrefix={hrefPrefix} />
+          <NotFound
+            query={activeQuery}
+            locale={locale}
+            entries={entries}
+            hrefPrefix={hrefPrefix}
+          />
         )
-      ) : emptyState !== undefined ? (
-        emptyState
-      ) : (
-        <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
-      )}
+      ) : null}
+
+      {/* Browse surface: collapses with a grid-rows + opacity
+          transition the moment the input receives focus (or any
+          query lands). The grid-template-rows trick animates
+          height-to-auto smoothly without JS measurement. */}
+      {emptyState !== undefined ? (
+        <div
+          aria-hidden={hideBrowse}
+          className={clsx(
+            "dict-browse-collapse",
+            hideBrowse ? "is-collapsed" : "",
+          )}
+        >
+          <div className="dict-browse-inner">{emptyState}</div>
+        </div>
+      ) : null}
     </div>
   );
 }

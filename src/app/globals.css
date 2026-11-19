@@ -576,3 +576,36 @@ body {
     0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent),
     0 2px 10px color-mix(in srgb, var(--fg) 5%, transparent);
 }
+
+/* Hide the native webkit clear ("X") button on <input type="search">.
+   The custom close button inside the dictionary bar is the only
+   affordance; two X icons side by side (and the native one tinted
+   blue by the UA stylesheet) was a UX bug on the dictionary bar. */
+.dict-search-input::-webkit-search-cancel-button,
+.dict-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Smooth collapse of the browse surface the moment the search is
+   focused. grid-template-rows: 0fr → 1fr animates height-to-auto
+   without any JS measurement; opacity fades the content in step. */
+.dict-browse-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 220ms ease,
+    margin-top 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+}
+.dict-browse-collapse.is-collapsed {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: -1.5rem; /* absorb the parent flex gap when collapsed */
+  pointer-events: none;
+}
+.dict-browse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
