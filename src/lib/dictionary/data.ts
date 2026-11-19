@@ -130,6 +130,49 @@ export async function getCanonicalForArticle(
   );
 }
 
+/** Stat triple shown in the landing stat chip row:
+ *  word_count · example_count · rule_count. Cached per build. */
+export interface DictionaryStats {
+  wordCount: number;
+  exampleCount: number;
+  ruleCount: number;
+}
+
+let _statsCache: DictionaryStats | null = null;
+
+export async function getDictionaryStats(): Promise<DictionaryStats> {
+  if (_statsCache) return _statsCache;
+  const entries = await loadAll();
+  const wordCount = entries.length;
+  const exampleCount = entries.reduce(
+    (sum, e) => sum + e.leveledExamples.length,
+    0,
+  );
+  const supabase = makeClient();
+  let ruleCount = 0;
+  if (supabase) {
+    const { count } = await supabase
+      .from("grammar_rules")
+      .select("*", { count: "exact", head: true });
+    ruleCount = count ?? 0;
+  }
+  _statsCache = { wordCount, exampleCount, ruleCount };
+  return _statsCache;
+}
+
+/** Deterministic daily pick: hash YYYY-MM-DD (UTC) → modulo
+ *  entries count. Same word for every visitor on the same day. */
+export async function getWordOfTheDay(): Promise<DictionaryEntry | null> {
+  const entries = await loadAll();
+  if (entries.length === 0) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  let hash = 0;
+  for (let i = 0; i < today.length; i++) {
+    hash = ((hash << 5) - hash + today.charCodeAt(i)) | 0;
+  }
+  return entries[Math.abs(hash) % entries.length];
+}
+
 /* ================================================================ *
  *  Row transform: dict_entries row → DictionaryEntry                *
  * ================================================================ */

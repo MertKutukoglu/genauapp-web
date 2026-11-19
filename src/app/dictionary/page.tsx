@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import {
   DictionarySearch,
-  ArticleTiles,
-  PopularGrid,
-  LevelStrip,
+  DictionaryStats,
+  WordOfTheDay,
+  PopularList,
+  ComingSoonBanner,
   TranslationLangProvider,
   TranslationLangToggle,
 } from "@/components/molecules/Dictionary";
-import { getAllEntries } from "@/lib/dictionary/data";
+import {
+  getAllEntries,
+  getDictionaryStats,
+  getWordOfTheDay,
+} from "@/lib/dictionary/data";
 
 export const metadata: Metadata = {
   title: "German Dictionary | Articles, grammar, examples | GenauApp",
@@ -23,12 +28,14 @@ export const metadata: Metadata = {
   },
 };
 
-// Revalidate the landing hourly so newly published dict_entries
-// rows appear on the home surface within an hour of landing in DB.
 export const revalidate = 3600;
 
 export default async function DictionaryLandingPage() {
-  const entries = await getAllEntries();
+  const [entries, stats, wotd] = await Promise.all([
+    getAllEntries(),
+    getDictionaryStats(),
+    getWordOfTheDay(),
+  ]);
   return (
     <TranslationLangProvider initialValue="en">
       <main className="min-h-screen pb-24">
@@ -48,17 +55,25 @@ export default async function DictionaryLandingPage() {
             hrefPrefix="/dictionary"
             emptyState={
               <div className="flex flex-col gap-8 mt-2">
-                <ArticleTiles
+                <DictionaryStats
+                  wordCount={stats.wordCount}
+                  exampleCount={stats.exampleCount}
+                  ruleCount={stats.ruleCount}
+                  locale="en"
+                />
+                {wotd ? (
+                  <WordOfTheDay
+                    entry={wotd}
+                    locale="en"
+                    hrefPrefix="/dictionary"
+                  />
+                ) : null}
+                <PopularList
                   entries={entries}
                   locale="en"
                   hrefPrefix="/dictionary"
                 />
-                <PopularGrid
-                  entries={entries}
-                  locale="en"
-                  hrefPrefix="/dictionary"
-                />
-                <LevelStrip entries={entries} locale="en" />
+                <ComingSoonBanner locale="en" />
               </div>
             }
           />

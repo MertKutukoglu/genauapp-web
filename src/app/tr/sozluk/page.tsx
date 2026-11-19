@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import {
   DictionarySearch,
-  ArticleTiles,
-  PopularGrid,
-  LevelStrip,
+  DictionaryStats,
+  WordOfTheDay,
+  PopularList,
+  ComingSoonBanner,
   TranslationLangProvider,
   TranslationLangToggle,
 } from "@/components/molecules/Dictionary";
-import { getAllEntries } from "@/lib/dictionary/data";
+import {
+  getAllEntries,
+  getDictionaryStats,
+  getWordOfTheDay,
+} from "@/lib/dictionary/data";
 
 export const metadata: Metadata = {
   title: "Almanca Sözlük | Artikel, çekim, örnek cümle | GenauApp",
@@ -26,7 +31,11 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function SozlukLandingPage() {
-  const entries = await getAllEntries();
+  const [entries, stats, wotd] = await Promise.all([
+    getAllEntries(),
+    getDictionaryStats(),
+    getWordOfTheDay(),
+  ]);
   return (
     <TranslationLangProvider initialValue="tr">
       <main className="min-h-screen pb-24">
@@ -46,17 +55,25 @@ export default async function SozlukLandingPage() {
             hrefPrefix="/tr/sozluk"
             emptyState={
               <div className="flex flex-col gap-8 mt-2">
-                <ArticleTiles
+                <DictionaryStats
+                  wordCount={stats.wordCount}
+                  exampleCount={stats.exampleCount}
+                  ruleCount={stats.ruleCount}
+                  locale="tr"
+                />
+                {wotd ? (
+                  <WordOfTheDay
+                    entry={wotd}
+                    locale="tr"
+                    hrefPrefix="/tr/sozluk"
+                  />
+                ) : null}
+                <PopularList
                   entries={entries}
                   locale="tr"
                   hrefPrefix="/tr/sozluk"
                 />
-                <PopularGrid
-                  entries={entries}
-                  locale="tr"
-                  hrefPrefix="/tr/sozluk"
-                />
-                <LevelStrip entries={entries} locale="tr" />
+                <ComingSoonBanner locale="tr" />
               </div>
             }
           />

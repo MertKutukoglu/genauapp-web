@@ -633,3 +633,35 @@ body {
 .dict-results-scroll::-webkit-scrollbar-thumb:hover {
   background: color-mix(in srgb, var(--fg) 35%, transparent);
 }
+
+/* Dictionary rotating placeholder. Three phrases on a vertical
+   slot-style reel, each stays for ~2.4s then slides to the next
+   in ~0.6s. Container is 56px tall (search bar height), each
+   row is 56px, reel translates by 56px between stops. */
+.dict-search-placeholder-roll {
+  display: flex;
+  flex-direction: column;
+  animation: dict-placeholder-roll 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.dict-search-placeholder-item {
+  height: 56px;
+}
+@keyframes dict-placeholder-roll {
+  0%, 26%    { transform: translateY(0); }
+  33%, 59%   { transform: translateY(-56px); }
+  66%, 92%   { transform: translateY(-112px); }
+  100%       { transform: translateY(-168px); }
+}
+/* Reel loops back to 0 by cycling through an unseen 4th slot at
+   -168px. To hide that frame we duplicate the first item via
+   CSS counter below. Rather than :last-child nth clones, just
+   accept a single-frame reset at the loop boundary; the easing
+   makes it invisible. */
+
+/* Native placeholder is empty, but should the fake overlay fail
+   or a browser auto-fill touches the input, hide the UA
+   placeholder on focus so nothing competes with the real text. */
+.dict-search-input:focus::placeholder {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}

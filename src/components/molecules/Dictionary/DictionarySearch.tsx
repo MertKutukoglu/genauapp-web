@@ -25,9 +25,16 @@ import { TYPE_LABEL, pick } from "./strings";
  * component; this tree lives below.
  */
 
-const SEARCH_PLACEHOLDER = {
+/** Three-way rotating placeholder phrases, cycled like a slot
+ *  reel while the input is empty + unfocused. */
+const SEARCH_PLACEHOLDER_ROTATION = {
+  en: ["Search in German", "Search in English", "Search in Turkish"],
+  tr: ["Almanca bir kelime yaz", "İngilizce bir kelime yaz", "Türkçe bir kelime yaz"],
+} as const;
+
+const SEARCH_PLACEHOLDER_ARIA = {
   en: "Search in German, English or Turkish",
-  tr: "Almanca, Türkçe veya İngilizce bir kelime yaz",
+  tr: "Almanca, İngilizce veya Türkçe bir kelime yaz",
 } as const;
 
 const NOT_FOUND_TITLE = {
@@ -218,23 +225,49 @@ export function DictionarySearch({
             hasQuery ? "text-[color:var(--accent)]" : "text-fg-muted",
           )}
         />
-        <input
-          ref={inputRef}
-          type="search"
-          inputMode="search"
-          autoComplete="off"
-          spellCheck={false}
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onKeyDown={onKeyDown}
-          placeholder={SEARCH_PLACEHOLDER[locale]}
-          aria-label={SEARCH_PLACEHOLDER[locale]}
-          aria-autocomplete="list"
-          aria-controls="dict-results"
-          className="dict-search-input flex-1 min-w-0 bg-transparent outline-none border-none font-sans text-[16px] text-fg placeholder:text-fg-faint"
-        />
+        <div className="relative flex-1 min-w-0 flex items-center">
+          <input
+            ref={inputRef}
+            type="search"
+            inputMode="search"
+            autoComplete="off"
+            spellCheck={false}
+            value={raw}
+            onChange={(e) => setRaw(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onKeyDown={onKeyDown}
+            placeholder=""
+            aria-label={SEARCH_PLACEHOLDER_ARIA[locale]}
+            aria-autocomplete="list"
+            aria-controls="dict-results"
+            className="dict-search-input w-full min-w-0 bg-transparent outline-none border-none font-sans text-[16px] text-fg"
+          />
+          {/* Animated placeholder: three phrases roll on a shared
+              9s cycle (3s per phrase, soft cubic-bezier slide).
+              Hidden the moment the input gains focus or picks up
+              a query, so standard "placeholder goes away when
+              you start typing" still applies. */}
+          {raw.length === 0 && !focused ? (
+            <div
+              aria-hidden
+              className="dict-search-placeholder absolute inset-y-0 left-0 right-0 pointer-events-none overflow-hidden flex items-center"
+              style={{ color: "var(--fg-faint)" }}
+            >
+              <div className="dict-search-placeholder-roll">
+                {SEARCH_PLACEHOLDER_ROTATION[locale].map((phrase, i) => (
+                  <div
+                    key={i}
+                    className="dict-search-placeholder-item flex items-center font-sans text-[16px]"
+                    style={{ height: 56 }}
+                  >
+                    {phrase}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
         {raw.length > 0 ? (
           <button
             type="button"

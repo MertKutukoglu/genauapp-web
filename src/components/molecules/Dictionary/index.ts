@@ -8,6 +8,12 @@ export {
   LevelStrip,
 } from "./BrowseSurface";
 export {
+  DictionaryStats,
+  WordOfTheDay,
+  PopularList,
+  ComingSoonBanner,
+} from "./LandingPieces";
+export {
   TranslationLangProvider,
   useTranslationLang,
   useTranslationLangControls,
