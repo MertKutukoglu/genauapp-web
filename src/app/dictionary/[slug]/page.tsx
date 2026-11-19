@@ -8,23 +8,22 @@ import {
   TranslationLangProvider,
   TranslationLangToggle,
 } from "@/components/molecules/Dictionary";
-import { getAllSlugs, getEntry } from "@/content/dictionary/entries";
-import { DICT_ENTRIES } from "@/content/dictionary/entries";
+import { getAllSlugs, getEntryBySlug } from "@/lib/dictionary/data";
 import { TYPE_LABEL, pick } from "@/components/molecules/Dictionary/strings";
 
 /**
  * /dictionary/[slug], the English dictionary word page.
  *
- * Static per published entry (generateStaticParams), inline
- * primary card + Grammar Info module. Mobile-first stacked layout;
- * on desktop (>= 1024px) the card sticks on the left and the info
- * module scrolls on the right.
+ * Static per published entry (slugs come from dict_entries at
+ * build) + ISR so a late-published word doesn't need a redeploy
+ * to acquire its own URL.
  */
 
-export const dynamicParams = false;
+export const revalidate = 3600;
 
-export function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -33,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getEntry(slug);
+  const entry = await getEntryBySlug(slug);
   if (!entry) return { title: "Word not found | GenauApp Dictionary" };
   const article = entry.noun?.article;
   const headline = article ? `${article} ${entry.german}` : entry.german;
@@ -66,15 +65,13 @@ export default async function DictionaryWordPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const entry = getEntry(slug);
+  const entry = await getEntryBySlug(slug);
   if (!entry) notFound();
 
   return (
     <TranslationLangProvider initialValue="en">
       <main className="min-h-screen pb-24">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
-          {/* Eyebrow (doubles as breadcrumb) left, translation
-              toggle right, aligned with the search bar below. */}
           <div className="flex items-center justify-between gap-3 mb-4">
             <Link
               href="/dictionary"
@@ -86,15 +83,7 @@ export default async function DictionaryWordPage({
             <TranslationLangToggle />
           </div>
 
-          {/* Persistent search bar, prefilled with the current
-              word. The word's content below is a sibling, not an
-              emptyState: it stays visible while the user searches
-              a different word (results list overlays above it
-              inside the search panel), and the X clears only the
-              input + the search results list, never the page's
-              own content. */}
           <DictionarySearch
-            entries={DICT_ENTRIES}
             locale="en"
             hrefPrefix="/dictionary"
             initialQuery={entry.german}

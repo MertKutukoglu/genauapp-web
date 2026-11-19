@@ -7,7 +7,7 @@ import {
   TranslationLangProvider,
   TranslationLangToggle,
 } from "@/components/molecules/Dictionary";
-import { DICT_ENTRIES } from "@/content/dictionary/entries";
+import { getAllEntries } from "@/lib/dictionary/data";
 
 export const metadata: Metadata = {
   title: "Almanca Sözlük | Artikel, çekim, örnek cümle | GenauApp",
@@ -23,7 +23,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SozlukLandingPage() {
+export const revalidate = 3600;
+
+export default async function SozlukLandingPage() {
+  const entries = await getAllEntries();
   return (
     <TranslationLangProvider initialValue="tr">
       <main className="min-h-screen pb-24">
@@ -39,22 +42,21 @@ export default function SozlukLandingPage() {
           </div>
 
           <DictionarySearch
-            entries={DICT_ENTRIES}
             locale="tr"
             hrefPrefix="/tr/sozluk"
             emptyState={
               <div className="flex flex-col gap-8 mt-2">
                 <ArticleTiles
-                  entries={DICT_ENTRIES}
+                  entries={entries}
                   locale="tr"
                   hrefPrefix="/tr/sozluk"
                 />
                 <PopularGrid
-                  entries={DICT_ENTRIES}
+                  entries={entries}
                   locale="tr"
                   hrefPrefix="/tr/sozluk"
                 />
-                <LevelStrip entries={DICT_ENTRIES} locale="tr" />
+                <LevelStrip entries={entries} locale="tr" />
               </div>
             }
           />

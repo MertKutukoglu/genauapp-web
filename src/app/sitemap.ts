@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/content/blog/posts";
-import { DICT_ENTRIES } from "@/content/dictionary/entries";
+import { getAllSlugs } from "@/lib/dictionary/data";
 
 /**
  * sitemap.xml, the public surface we want indexed.
@@ -60,7 +60,7 @@ const STATIC_PAIRS: StaticPair[] = [
   },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
 
@@ -123,25 +123,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  // Dictionary entries: one per locale per published slug. Shared
-  // slug across locales keeps the alternates clean.
-  for (const entry of DICT_ENTRIES) {
+  // Dictionary entries: one per locale per published slug pulled
+  // from public.dict_entries. Shared slug across locales keeps the
+  // alternates clean.
+  const dictSlugs = await getAllSlugs();
+  for (const slug of dictSlugs) {
     const alternates = {
       languages: {
-        en: `${BASE}/dictionary/${entry.slug}`,
-        tr: `${BASE}/tr/sozluk/${entry.slug}`,
-        "x-default": `${BASE}/dictionary/${entry.slug}`,
+        en: `${BASE}/dictionary/${slug}`,
+        tr: `${BASE}/tr/sozluk/${slug}`,
+        "x-default": `${BASE}/dictionary/${slug}`,
       },
     };
     entries.push({
-      url: `${BASE}/dictionary/${entry.slug}`,
+      url: `${BASE}/dictionary/${slug}`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
       alternates,
     });
     entries.push({
-      url: `${BASE}/tr/sozluk/${entry.slug}`,
+      url: `${BASE}/tr/sozluk/${slug}`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.55,

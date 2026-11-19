@@ -8,21 +8,14 @@ import {
   TranslationLangProvider,
   TranslationLangToggle,
 } from "@/components/molecules/Dictionary";
-import { getAllSlugs, getEntry } from "@/content/dictionary/entries";
-import { DICT_ENTRIES } from "@/content/dictionary/entries";
+import { getAllSlugs, getEntryBySlug } from "@/lib/dictionary/data";
 import { TYPE_LABEL, pick } from "@/components/molecules/Dictionary/strings";
 
-/**
- * /tr/sozluk/[slug], the Turkish dictionary word page. Mirror of
- * /dictionary/[slug] with locale="tr" passed into the molecules.
- * Slugs are shared across locales so a search in either language
- * lands on the same entry.
- */
+export const revalidate = 3600;
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -31,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getEntry(slug);
+  const entry = await getEntryBySlug(slug);
   if (!entry) return { title: "Kelime bulunamadı | GenauApp Sözlük" };
   const article = entry.noun?.article;
   const headline = article ? `${article} ${entry.german}` : entry.german;
@@ -64,7 +57,7 @@ export default async function SozlukWordPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const entry = getEntry(slug);
+  const entry = await getEntryBySlug(slug);
   if (!entry) notFound();
 
   return (
@@ -83,7 +76,6 @@ export default async function SozlukWordPage({
           </div>
 
           <DictionarySearch
-            entries={DICT_ENTRIES}
             locale="tr"
             hrefPrefix="/tr/sozluk"
             initialQuery={entry.german}

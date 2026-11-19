@@ -5,41 +5,29 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
-import type { DictionaryEntry, DictLocale } from "./types";
-import { STR, TYPE_LABEL, pick } from "./strings";
-import { useTranslationLang } from "./TranslationLangContext";
+import type { DictLocale } from "./types";
+import { TYPE_LABEL, pick } from "./strings";
 
 /**
  * DictionarySearch, the type-as-you-go search surface for /dictionary
  * and /tr/sozluk. Trilingual: a query can be a German headword, an
- * English translation, or a Turkish translation; matches from any of
- * the three come back together, ranked by exactness, substring hit,
- * and finally translation match.
+ * English translation, or a Turkish translation; matches are
+ * served by /api/dict/search which calls public.dict_search on
+ * Supabase.
  *
- * V0 matches against an in-memory entries list. When the Supabase
- * `dict_search` RPC lands, the matching call becomes a Route Handler
- * fetch with the same shape, and the keyboard + rendering stay
- * unchanged.
+ * Why the API layer: the ranking logic (umlaut fold, bucketed
+ * scoring, canonical dedup) lives once in SQL and is shared with
+ * iOS. The client only handles input, debounce, keyboard nav and
+ * rendering.
  *
- * Why client: needs input state, debounce, keyboard navigation. The
- * landing page it sits on stays a server component; the component
- * tree lives below it.
+ * Why client component: needs input state, debounce, keyboard
+ * navigation. The landing page it sits on stays a server
+ * component; this tree lives below.
  */
-
-const ARTICLE_COLOR = {
-  der: "var(--article-der)",
-  die: "var(--article-die)",
-  das: "var(--article-das)",
-} as const;
 
 const SEARCH_PLACEHOLDER = {
   en: "Search in German, English or Turkish",
   tr: "Almanca, Türkçe veya İngilizce bir kelime yaz",
-} as const;
-
-const POPULAR_LABEL = {
-  en: "Popular",
-  tr: "Sık aranan",
 } as const;
 
 const NOT_FOUND_TITLE = {
@@ -48,103 +36,38 @@ const NOT_FOUND_TITLE = {
 } as const;
 
 const NOT_FOUND_BODY = {
-  en: "We haven't added this word yet. Try a more general term, or browse the popular words below.",
-  tr: "Bu kelimeyi henüz eklemedik. Daha genel bir kelime dene, ya da aşağıdaki sık aranan kelimelere bak.",
+  en: "We haven't added this word yet. Try a more general term, or clear the search and browse what's below.",
+  tr: "Bu kelimeyi henüz eklemedik. Daha genel bir kelime dene, ya da aramayı temizleyip aşağıya bak.",
 } as const;
 
-/* ---------- Matching ---------- */
+const ARTICLE_COLOR: Record<string, string> = {
+  der: "var(--article-der)",
+  die: "var(--article-die)",
+  das: "var(--article-das)",
+};
 
-/** Fold umlauts (ä → ae etc.) and lowercase, so "mude" matches
- *  "müde" and "Ubung" matches "Übung". */
-function fold(input: string): string {
-  return input
-    .toLowerCase()
-    .replaceAll("ä", "ae")
-    .replaceAll("ö", "oe")
-    .replaceAll("ü", "ue")
-    .replaceAll("ß", "ss")
-    // Turkish dotless-i fold keeps TR queries forgiving.
-    .replaceAll("ı", "i")
-    .replaceAll("İ", "i")
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .trim();
-}
-
-type MatchLang = "de" | "en" | "tr";
-
+/** Shape returned by /api/dict/search (see route.ts + dict_search RPC). */
 interface SearchHit {
-  entry: DictionaryEntry;
-  score: number;
-  matchLang: MatchLang;
-  matchText: string;
+  slug: string;
+  german: string;
+  type: string;
+  level: string;
+  article: string | null;
+  translation_en: string | null;
+  translation_tr: string | null;
+  match_lang: "de" | "en" | "tr";
+  match_text: string | null;
 }
 
-function scoreEntry(
-  entry: DictionaryEntry,
-  qf: string,
-): SearchHit | null {
-  if (!qf) return null;
-
-  const gf = fold(entry.german);
-  // German headword match (strongest)
-  if (gf === qf)
-    return { entry, score: 100, matchLang: "de", matchText: entry.german };
-  if (gf.startsWith(qf))
-    return { entry, score: 85, matchLang: "de", matchText: entry.german };
-  if (gf.includes(qf))
-    return { entry, score: 65, matchLang: "de", matchText: entry.german };
-
-  // English translation
-  const en = entry.translations.english;
-  if (en) {
-    // Strip "to " prefix so "go" matches "to go".
-    const ef = fold(en).replace(/^to\s+/, "");
-    const qStripped = qf.replace(/^to\s+/, "");
-    if (ef === qStripped)
-      return { entry, score: 75, matchLang: "en", matchText: en };
-    if (ef.startsWith(qStripped))
-      return { entry, score: 55, matchLang: "en", matchText: en };
-    if (ef.includes(qStripped))
-      return { entry, score: 40, matchLang: "en", matchText: en };
-  }
-
-  // Turkish translation
-  const tr = entry.translations.turkish;
-  if (tr) {
-    const tf = fold(tr);
-    if (tf === qf)
-      return { entry, score: 75, matchLang: "tr", matchText: tr };
-    if (tf.startsWith(qf))
-      return { entry, score: 55, matchLang: "tr", matchText: tr };
-    if (tf.includes(qf))
-      return { entry, score: 40, matchLang: "tr", matchText: tr };
-  }
-
-  return null;
-}
-
-function search(
-  entries: DictionaryEntry[],
-  query: string,
-  limit = 20,
-): SearchHit[] {
-  const qf = fold(query);
-  if (!qf) return [];
-  const hits: SearchHit[] = [];
-  for (const e of entries) {
-    const h = scoreEntry(e, qf);
-    if (h) hits.push(h);
-  }
-  hits.sort((a, b) => b.score - a.score);
-  return hits.slice(0, limit);
+interface SearchResponse {
+  results: SearchHit[];
+  error?: string;
 }
 
 /** Split a string into [before, match, after] for in-DOM
  *  highlighting. Case-insensitive; returns the whole string
- *  unsplit when the query isn't a direct substring (umlaut
- *  folded matches lose the highlight on purpose, the row still
- *  renders). */
+ *  unsplit when the query isn't a direct substring (umlaut-folded
+ *  matches lose the highlight; the row still renders). */
 function split(original: string, query: string): [string, string, string] {
   if (!query) return [original, "", ""];
   const lo = original.toLowerCase();
@@ -158,29 +81,22 @@ function split(original: string, query: string): [string, string, string] {
   ];
 }
 
-/* ---------- Component ---------- */
-
 export interface DictionarySearchProps {
-  entries: DictionaryEntry[];
   locale: DictLocale;
   /** URL path prefix for word hrefs. `/dictionary` or `/tr/sozluk`. */
   hrefPrefix: string;
-  /** Replaces the component's built-in empty state. Pass the page's
-   *  own browse surfaces (article tiles, popular grid, level chips)
-   *  so the landing doesn't look like a templated widget. When
-   *  omitted the component falls back to a minimal popular-strip. */
+  /** Replaces the default empty state. Landing passes its Browse
+   *  surface; word pages leave this undefined and show nothing. */
   emptyState?: React.ReactNode;
-  /** Prefill the input (used on word pages: the bar shows the word
-   *  the user is reading, with X to clear and start a fresh search).
+  /** Prefill the input (word pages pass the current word).
    *  Results only appear when the user types something different
-   *  from this value, so the bar reads as context, not as an auto-
-   *  triggered query. */
+   *  from this value, so the bar reads as context, not as an
+   *  auto-triggered query. */
   initialQuery?: string;
   className?: string;
 }
 
 export function DictionarySearch({
-  entries,
   locale,
   hrefPrefix,
   emptyState,
@@ -191,13 +107,13 @@ export function DictionarySearch({
   const [debounced, setDebounced] = React.useState(initialQuery ?? "");
   const [activeIdx, setActiveIdx] = React.useState(0);
   const [focused, setFocused] = React.useState(false);
+  const [hits, setHits] = React.useState<SearchHit[]>([]);
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const requestIdRef = React.useRef(0);
 
   React.useEffect(() => {
-    // Clearing has no "think time" — snap debounced to empty
-    // immediately so the result panel unmounts the same frame
-    // the user taps X. Only buffer actual typing.
     if (raw.trim() === "") {
       setDebounced(raw);
       return;
@@ -206,52 +122,72 @@ export function DictionarySearch({
     return () => window.clearTimeout(id);
   }, [raw]);
 
-  // Only treat the input as an active query when the user typed
-  // something that differs from the initial prefill. Lets us show
-  // the current word on a word page without auto-triggering a
-  // result row for the page the user is already reading.
+  // Treat the input as an active query only when the user typed
+  // something distinct from the initial prefill. Word page lands
+  // with raw === initialQuery, so no results fire for the page the
+  // user is already reading.
   const isDifferentFromInitial =
     initialQuery === undefined || raw.trim() !== initialQuery.trim();
-  const activeQuery = isDifferentFromInitial ? debounced : "";
+  const activeQuery = isDifferentFromInitial ? debounced.trim() : "";
+  const hasQuery = activeQuery.length > 0;
 
-  const results = React.useMemo(
-    () => search(entries, activeQuery),
-    [entries, activeQuery],
-  );
+  // Fetch results from the Route Handler whenever the active query
+  // changes. Use a request id to drop stale responses (fast typers
+  // can issue several in-flight requests; only the most recent is
+  // allowed to write state).
+  React.useEffect(() => {
+    if (!hasQuery) {
+      setHits([]);
+      setLoading(false);
+      return;
+    }
+    const myId = ++requestIdRef.current;
+    setLoading(true);
+    const ctrl = new AbortController();
+    (async () => {
+      try {
+        const res = await fetch(
+          `/api/dict/search?q=${encodeURIComponent(activeQuery)}`,
+          { signal: ctrl.signal },
+        );
+        const body = (await res.json()) as SearchResponse;
+        if (myId !== requestIdRef.current) return;
+        setHits(body.results ?? []);
+      } catch (err) {
+        if ((err as Error)?.name === "AbortError") return;
+        if (myId !== requestIdRef.current) return;
+        setHits([]);
+      } finally {
+        if (myId === requestIdRef.current) setLoading(false);
+      }
+    })();
+    return () => ctrl.abort();
+  }, [activeQuery, hasQuery]);
 
-  // Reset the active row whenever the result list changes.
   React.useEffect(() => {
     setActiveIdx(0);
   }, [activeQuery]);
 
-  const hasQuery = activeQuery.trim().length > 0;
-  const hasResults = results.length > 0;
-  // Hide the browse surface the moment the user focuses the input,
-  // even before they type: the focus is now the search, so the rest
-  // should get out of the way.
+  const hasResults = hits.length > 0;
   const hideBrowse = focused || hasQuery;
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (!hasResults) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActiveIdx((i) => Math.min(i + 1, results.length - 1));
+      setActiveIdx((i) => Math.min(i + 1, Math.max(hits.length - 1, 0)));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActiveIdx((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
-      const hit = results[activeIdx];
+      const hit = hits[activeIdx];
       if (hit) {
         e.preventDefault();
-        router.push(`${hrefPrefix}/${hit.entry.slug}`);
+        router.push(`${hrefPrefix}/${hit.slug}`);
       }
     } else if (e.key === "Escape") {
       setRaw("");
       setDebounced("");
       inputRef.current?.blur();
-      // On a word page, Escape also means "done with this word";
-      // return to the landing so the word card goes with the
-      // search text.
       if (initialQuery !== undefined) {
         router.push(hrefPrefix);
       }
@@ -260,9 +196,7 @@ export function DictionarySearch({
 
   return (
     <div className={clsx("w-full flex flex-col gap-6", className)}>
-      {/* Search bar. Cleaner surface than a plain sunken pill, with
-          a cherry focus ring so the control reads as the hero of
-          the page. */}
+      {/* Search bar */}
       <div
         className={clsx(
           "dict-search-bar",
@@ -305,26 +239,13 @@ export function DictionarySearch({
           <button
             type="button"
             onMouseDown={(e) => {
-              // mousedown so the input doesn't blur mid-click,
-              // which would flicker the browse surface for a frame
-              // between the blur and the explicit focus/blur call
-              // we make in onClick.
               e.preventDefault();
             }}
             onClick={() => {
-              // Clear raw AND debounced in the same frame so the
-              // result list unmounts on the very next render, no
-              // single-frame flash of the previous results.
               setRaw("");
               setDebounced("");
+              setHits([]);
               inputRef.current?.blur();
-              // On a word page the X means "done with this word,
-              // searching for another." Navigate back to the
-              // landing so the WordCard + Grammar Info go with
-              // the search text, user lands on the empty state
-              // ready for a new query. On landing (no
-              // initialQuery) there is nothing to navigate from,
-              // the clear just restores the browse surface.
               if (initialQuery !== undefined) {
                 router.push(hrefPrefix);
               }
@@ -337,32 +258,25 @@ export function DictionarySearch({
         ) : null}
       </div>
 
-      {/* Results panel: appears only when the user typed something
-          distinct from the initial prefill. */}
+      {/* Results panel */}
       {hasQuery ? (
         hasResults ? (
           <ResultList
-            results={results}
+            hits={hits}
             activeIdx={activeIdx}
             setActiveIdx={setActiveIdx}
             query={activeQuery}
             locale={locale}
             hrefPrefix={hrefPrefix}
           />
+        ) : loading ? (
+          <LoadingList />
         ) : (
-          <NotFound
-            query={activeQuery}
-            locale={locale}
-            entries={entries}
-            hrefPrefix={hrefPrefix}
-          />
+          <NotFound query={activeQuery} locale={locale} />
         )
       ) : null}
 
-      {/* Browse surface: collapses with a grid-rows + opacity
-          transition the moment the input receives focus (or any
-          query lands). The grid-template-rows trick animates
-          height-to-auto smoothly without JS measurement. */}
+      {/* Browse surface */}
       {emptyState !== undefined ? (
         <div
           aria-hidden={hideBrowse}
@@ -381,21 +295,20 @@ export function DictionarySearch({
 /* ---------- Result list ---------- */
 
 function ResultList({
-  results,
+  hits,
   activeIdx,
   setActiveIdx,
   query,
   locale,
   hrefPrefix,
 }: {
-  results: SearchHit[];
+  hits: SearchHit[];
   activeIdx: number;
   setActiveIdx: (i: number) => void;
   query: string;
   locale: DictLocale;
   hrefPrefix: string;
 }) {
-  const tLang = useTranslationLang();
   return (
     <ul
       id="dict-results"
@@ -403,25 +316,24 @@ function ResultList({
       className="flex flex-col m-0 p-0 list-none"
       style={{ border: "1px solid var(--border)", borderRadius: 16 }}
     >
-      {results.map((hit, i) => {
-        const e = hit.entry;
-        const isNoun = e.type === "noun" && !!e.noun;
-        const color = isNoun ? ARTICLE_COLOR[e.noun!.article] : "var(--fg)";
+      {hits.map((h, i) => {
+        const isNoun = h.type === "noun" && !!h.article;
+        const color = isNoun ? ARTICLE_COLOR[h.article!] : "var(--fg)";
         const isActive = activeIdx === i;
-        const [before, match, after] = split(e.german, query);
-
-        // Direct German match: show the translation in the user's
-        // chosen translation language (the toggle). When the match
-        // itself came from a translation, keep the "matched text +
-        // language tag" shape so the signal of which language
-        // caught the match stays visible.
-        const translation =
-          tLang === "tr"
-            ? e.translations.turkish ?? e.translations.english
-            : e.translations.english ?? e.translations.turkish;
+        const [before, match, after] = split(h.german, query);
+        const typeLabel = pick(
+          TYPE_LABEL[
+            (["noun", "verb", "adjective", "adverb"] as const).includes(
+              h.type as "noun",
+            )
+              ? (h.type as "noun" | "verb" | "adjective" | "adverb")
+              : "other"
+          ],
+          locale,
+        );
         return (
           <li
-            key={e.slug}
+            key={h.slug}
             role="option"
             aria-selected={isActive}
             onMouseEnter={() => setActiveIdx(i)}
@@ -433,7 +345,7 @@ function ResultList({
             }}
           >
             <Link
-              href={`${hrefPrefix}/${e.slug}`}
+              href={`${hrefPrefix}/${h.slug}`}
               className="flex items-start justify-between gap-3 px-4 py-3 no-underline"
             >
               <span className="flex flex-col min-w-0">
@@ -443,7 +355,7 @@ function ResultList({
                 >
                   {isNoun ? (
                     <>
-                      <span className="font-bold">{e.noun!.article}</span>{" "}
+                      <span className="font-bold">{h.article}</span>{" "}
                     </>
                   ) : null}
                   <span>
@@ -452,9 +364,9 @@ function ResultList({
                     {after}
                   </span>
                 </span>
-                {hit.matchLang !== "de" ? (
+                {h.match_lang !== "de" && h.match_text ? (
                   <span className="font-sans text-[12px] text-fg-muted mt-0.5">
-                    {hit.matchText}
+                    {h.match_text}
                     <span
                       className="inline-block ml-1.5 px-1.5 py-0.5 rounded font-sans text-[9px] font-semibold uppercase align-middle text-fg-faint"
                       style={{
@@ -462,12 +374,8 @@ function ResultList({
                         letterSpacing: "0.3px",
                       }}
                     >
-                      {hit.matchLang}
+                      {h.match_lang}
                     </span>
-                  </span>
-                ) : translation ? (
-                  <span className="font-sans text-[12px] text-fg-muted mt-0.5 truncate">
-                    {translation}
                   </span>
                 ) : null}
               </span>
@@ -475,7 +383,7 @@ function ResultList({
                 className="font-sans text-[13px] text-fg-muted shrink-0 pt-0.5"
                 style={{ letterSpacing: "0.1px" }}
               >
-                {pick(TYPE_LABEL[e.type], locale)}
+                {typeLabel}
               </span>
             </Link>
           </li>
@@ -485,48 +393,38 @@ function ResultList({
   );
 }
 
-/* ---------- Popular words strip ---------- */
+/* ---------- Loading placeholder ---------- */
 
-function PopularStrip({
-  entries,
-  locale,
-  hrefPrefix,
-}: {
-  entries: DictionaryEntry[];
-  locale: DictLocale;
-  hrefPrefix: string;
-}) {
-  if (entries.length === 0) return null;
+function LoadingList() {
   return (
-    <div className="flex flex-col items-center gap-3 w-full mt-2">
-      <div
-        className="font-sans text-[11px] uppercase text-fg-faint"
-        style={{ letterSpacing: "0.4px" }}
-      >
-        {POPULAR_LABEL[locale]}
-      </div>
-      <ul className="flex flex-wrap items-center justify-center gap-2 m-0 p-0 list-none">
-        {entries.slice(0, 12).map((e) => {
-          const isNoun = e.type === "noun" && !!e.noun;
-          const color = isNoun ? ARTICLE_COLOR[e.noun!.article] : "var(--fg)";
-          return (
-            <li key={e.slug}>
-              <Link
-                href={`${hrefPrefix}/${e.slug}`}
-                className="inline-flex items-baseline gap-1.5 px-3 py-1.5 rounded-full no-underline font-sans font-semibold text-[14px]"
-                style={{
-                  background: "var(--surface-card)",
-                  border: "1px solid var(--border)",
-                  color,
-                }}
-              >
-                {isNoun ? <span>{e.noun!.article}</span> : null}
-                <span>{e.german}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+    <div
+      className="flex flex-col"
+      style={{ border: "1px solid var(--border)", borderRadius: 16 }}
+    >
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="flex items-center justify-between px-4 py-3"
+          style={{
+            borderTop: i === 0 ? undefined : "1px solid var(--border)",
+          }}
+        >
+          <div
+            className="h-4 rounded"
+            style={{
+              width: 140 + i * 10,
+              background: "var(--surface-sunk)",
+            }}
+          />
+          <div
+            className="h-3 rounded"
+            style={{
+              width: 44,
+              background: "var(--surface-sunk)",
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 }
@@ -536,16 +434,12 @@ function PopularStrip({
 function NotFound({
   query,
   locale,
-  entries,
-  hrefPrefix,
 }: {
   query: string;
   locale: DictLocale;
-  entries: DictionaryEntry[];
-  hrefPrefix: string;
 }) {
   return (
-    <div className="flex flex-col items-center gap-5 py-8 text-center">
+    <div className="flex flex-col items-center gap-4 py-8 text-center">
       <div
         className="inline-flex items-center justify-center rounded-2xl"
         style={{
@@ -568,7 +462,6 @@ function NotFound({
       <p className="font-sans text-[14px] text-fg-muted max-w-md m-0 leading-relaxed">
         {NOT_FOUND_BODY[locale]}
       </p>
-      <PopularStrip entries={entries} locale={locale} hrefPrefix={hrefPrefix} />
     </div>
   );
 }
