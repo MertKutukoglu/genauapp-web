@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogLayout } from "@/components/templates/BlogLayout/BlogLayout";
 import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
+import {
+  BlogChipRow,
+  BlogWordCard,
+  BlogRoleStrip,
+  BlogSentenceBuilder,
+  BlogReadingExcerpt,
+  BlogSkillRingRow,
+} from "@/components/molecules/BlogAppSnippets/BlogAppSnippets";
 
 /**
  * /blog/how-it-works, the "4 chips" overview post.
@@ -55,6 +63,15 @@ export default function HowItWorksPage() {
 
       <p>Here is what each chip does and how it teaches.</p>
 
+      <BlogChipRow
+        captions={{
+          words: "Nouns & verbs",
+          grammar: "Rules in use",
+          sentence: "Build the shape",
+          reading: "Real passages",
+        }}
+      />
+
       <p className="section-divider">
         <span>§</span>
       </p>
@@ -77,6 +94,27 @@ export default function HowItWorksPage() {
         of words, you are learning the pattern that explains why this word
         takes die and the next five like it will too.
       </p>
+
+      <div className="not-prose grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <BlogWordCard
+          article="die"
+          noun="Erfahrung"
+          translation="experience"
+          rule="-ung → die"
+        />
+        <BlogWordCard
+          article="das"
+          noun="Geschenk"
+          translation="gift"
+          rule="Ge- → das"
+        />
+        <BlogWordCard
+          article="das"
+          noun="Ergebnis"
+          translation="result"
+          rule="-nis → das"
+        />
+      </div>
 
       <p>
         A Words workout feeds Vocabulary first, then nudges Grammar and
@@ -112,6 +150,15 @@ export default function HowItWorksPage() {
         that shows up every time is a rule that becomes the reflex.
       </p>
 
+      <BlogRoleStrip
+        pieces={[
+          { text: "Der Hund", role: "subject" },
+          { text: "sieht", role: "verb" },
+          { text: "den Mann", role: "object" },
+        ]}
+        translation="The dog sees the man. Subject blue, verb cherry, object green."
+      />
+
       <p>
         A Grammar workout feeds Grammar first, then Writing and Vocabulary.
       </p>
@@ -144,6 +191,26 @@ export default function HowItWorksPage() {
         in the right place, because the color should not give the answer
         away. You earn the color by getting the order right.
       </p>
+
+      <BlogRoleStrip
+        pieces={[
+          { text: "Ich", role: "subject" },
+          { text: "will", role: "verb" },
+          { text: "heute Abend ins Kino", role: "middle" },
+          { text: "gehen", role: "verb2" },
+        ]}
+        translation="Two cherry pills at the ends of the clause, the Verbklammer in picture form."
+      />
+
+      <BlogSentenceBuilder
+        pool={["gehen", "Ich", "heute Abend", "ins Kino", "will"]}
+        placed={[
+          { text: "Ich", role: "subject" },
+          { text: "will", role: "verb" },
+          { text: "heute Abend ins Kino", role: "middle" },
+          { text: "gehen", role: "verb2" },
+        ]}
+      />
 
       <p>
         A Sentence workout feeds Writing first, then Grammar and
@@ -179,6 +246,13 @@ export default function HowItWorksPage() {
         sequence are where real reading happens.
       </p>
 
+      <BlogReadingExcerpt
+        passage="Am Montag holt sie ihre Tochter vom Kindergarten ab und bringt sie zum Arzt."
+        tappable="holt"
+        infinitive="abholen"
+        translation="to pick up (separable)"
+      />
+
       <p>
         A Reading workout feeds Reading. No other chip does. Reading
         comprehension is its own path in this app, and no amount of
@@ -200,6 +274,15 @@ export default function HowItWorksPage() {
         Vocab; Sentence feeds Writing, Grammar, and Vocab; Reading feeds
         Reading, Vocab, and Grammar).
       </p>
+
+      <BlogSkillRingRow
+        skills={[
+          { skill: "vocab", value: 72, momentum: "up" },
+          { skill: "grammar", value: 58, momentum: "up" },
+          { skill: "writing", value: 44, momentum: "stable" },
+          { skill: "reading", value: 31, momentum: "down" },
+        ]}
+      />
 
       <p>
         The daily plan picks one of the four chips for you based on what

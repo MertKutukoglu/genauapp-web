@@ -1,5 +1,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
+import { Icon, type IconName } from "@/components/atoms/Icon/Icon";
+import { SkillRing } from "@/components/atoms/SkillRing/SkillRing";
 
 /**
  * BlogAppSnippets, small inline UI mockups for blog posts.
@@ -19,6 +21,11 @@ import { clsx } from "@/lib/utils/clsx";
  *   - <BlogArticlePicker />    der / die / das pill row under a noun
  *   - <BlogFormulaPill />      "-ung → die" compact formula pill
  *   - <BlogWordGallery />      grid of 2-6 BlogWordCards showing a pattern
+ *   - <BlogChipRow />          the four Chip tiles (Words / Grammar / Sentence / Reading)
+ *   - <BlogRoleStrip />        role colored sentence pills (subject, verb, Mittelfeld, verb2)
+ *   - <BlogSentenceBuilder />  pool of uncolored chips + an answered row in role colors
+ *   - <BlogReadingExcerpt />   a passage block with an underlined word + translation chip
+ *   - <BlogSkillRingRow />     four SkillRings with sample progress and momentum arrows
  */
 
 const ARTICLE_COLOR: Record<ArticleColor, string> = {
@@ -324,6 +331,517 @@ export function BlogWordGallery({
       {words.map((w, i) => (
         <BlogWordCard key={`${w.article}-${w.noun}-${i}`} {...w} />
       ))}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogChipRow                                                     *
+ *  Visual only mock of the four workout chips in the picker.       *
+ *  Not a button, not focusable: it stands in an article as a       *
+ *  picture of the chips.                                           *
+ * ---------------------------------------------------------------- */
+
+type BlogChipId = "words" | "grammar" | "sentence" | "reading";
+
+interface BlogChipMetaEntry {
+  label: string;
+  colorVar: string;
+  icon: IconName;
+}
+
+const BLOG_CHIP_META: Record<BlogChipId, BlogChipMetaEntry> = {
+  words: {
+    label: "Words",
+    colorVar: "var(--chip-words-color)",
+    icon: "chip-words",
+  },
+  grammar: {
+    label: "Grammar",
+    colorVar: "var(--chip-grammar-color)",
+    icon: "chip-grammar",
+  },
+  sentence: {
+    label: "Sentence",
+    colorVar: "var(--chip-sentence-color)",
+    icon: "chip-sentence",
+  },
+  reading: {
+    label: "Reading",
+    colorVar: "var(--chip-reading-color)",
+    icon: "chip-reading",
+  },
+};
+
+export interface BlogChipRowProps {
+  /** Which chip renders in the selected state (solid border + glow).
+   *  Omit for an all idle look. */
+  selected?: BlogChipId;
+  /** Which chips render in the done state (check, muted). */
+  done?: BlogChipId[];
+  /** Optional override for which chips to show and in what order.
+   *  Defaults to all four in app order. */
+  chips?: BlogChipId[];
+  /** Optional per chip caption. Keyed by chip id. */
+  captions?: Partial<Record<BlogChipId, string>>;
+  className?: string;
+}
+
+/** Row of four chip tiles. Carries the same tint math the live
+ *  Chip atom uses (14% idle, 28% selected, 10% done, 36% icon well)
+ *  so the picture is faithful without pulling in a button. */
+export function BlogChipRow({
+  selected,
+  done,
+  chips = ["words", "grammar", "sentence", "reading"],
+  captions,
+  className,
+}: BlogChipRowProps) {
+  const doneSet = new Set(done ?? []);
+  return (
+    <div
+      className={clsx(
+        "grid grid-cols-2 sm:grid-cols-4 gap-2.5",
+        className,
+      )}
+    >
+      {chips.map((id) => {
+        const meta = BLOG_CHIP_META[id];
+        const isSelected = selected === id;
+        const isDone = doneSet.has(id);
+        const tintPct = isSelected ? "28%" : isDone ? "10%" : "14%";
+        const iconTintPct = isDone ? "20%" : "36%";
+        return (
+          <div
+            key={id}
+            className={clsx(
+              "relative flex flex-col items-start justify-between",
+              "rounded-2xl p-4 min-h-24",
+              "border",
+              isSelected
+                ? "shadow-lg"
+                : "",
+            )}
+            style={{
+              ["--blog-chip-color" as string]: meta.colorVar,
+              background: `color-mix(in oklab, var(--blog-chip-color) ${tintPct}, var(--surface-card))`,
+              borderColor: isSelected
+                ? "var(--blog-chip-color)"
+                : "transparent",
+              opacity: isDone ? 0.9 : 1,
+            }}
+          >
+            <span
+              className="inline-flex items-center justify-center rounded-lg h-10 w-10"
+              style={{
+                background: `color-mix(in oklab, var(--blog-chip-color) ${iconTintPct}, var(--surface-card))`,
+              }}
+              aria-hidden
+            >
+              <Icon
+                name={meta.icon}
+                className={clsx(
+                  "w-6 h-6",
+                  isDone
+                    ? "text-fg-muted"
+                    : "",
+                )}
+                style={
+                  isDone
+                    ? undefined
+                    : { color: "var(--blog-chip-color)" }
+                }
+              />
+            </span>
+            <span className="mt-3 flex w-full flex-col items-start gap-0.5">
+              <span
+                className={clsx(
+                  "font-sans text-base font-semibold",
+                  isDone ? "text-fg-muted" : "text-fg",
+                )}
+              >
+                {meta.label}
+              </span>
+              {captions?.[id] ? (
+                <span className="text-xs text-fg-muted">
+                  {captions[id]}
+                </span>
+              ) : null}
+            </span>
+            {isDone ? (
+              <span
+                aria-label="done"
+                className="absolute bottom-2 right-2 inline-flex items-center justify-center rounded-full bg-ok text-white h-6 w-6"
+              >
+                <Icon name="check" className="w-4 h-4" />
+              </span>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogRoleStrip                                                   *
+ *  Role colored pill row for a German sentence. Subject blue,      *
+ *  verb cherry, Mittelfeld neutral, verb2 cherry, so the two       *
+ *  cherry pills at the ends of the clause show Verbklammer         *
+ *  without naming it.                                              *
+ * ---------------------------------------------------------------- */
+
+export type SentenceRole =
+  | "subject"
+  | "verb"
+  | "middle"
+  | "object"
+  | "verb2";
+
+export interface SentencePiece {
+  text: string;
+  role: SentenceRole;
+}
+
+export interface BlogRoleStripProps {
+  pieces: SentencePiece[];
+  /** Optional translation rendered under the strip, muted. */
+  translation?: string;
+  className?: string;
+}
+
+const ROLE_COLOR: Record<SentenceRole, string> = {
+  subject: "var(--article-der)", // blue
+  verb: "var(--accent)",         // cherry
+  middle: "var(--fg-muted)",     // neutral grey
+  object: "var(--article-das)",  // green
+  verb2: "var(--accent)",        // cherry, mirrors verb
+};
+
+/** Row of role tinted pills. Cherry pills at both ends of the row
+ *  carry the Verbklammer visual. Middle pills render neutral so the
+ *  two frame pills pop. */
+export function BlogRoleStrip({
+  pieces,
+  translation,
+  className,
+}: BlogRoleStripProps) {
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5 flex flex-col gap-3",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <div className="flex flex-wrap gap-2">
+        {pieces.map((p, i) => {
+          const color = ROLE_COLOR[p.role];
+          const isNeutral = p.role === "middle";
+          return (
+            <span
+              key={`${p.text}-${i}`}
+              className="inline-flex items-center px-3 py-1.5 rounded-full font-sans font-semibold text-[15px]"
+              style={{
+                color: isNeutral ? "var(--fg)" : color,
+                background: isNeutral
+                  ? "var(--surface-sunk)"
+                  : `color-mix(in srgb, ${color} 12%, transparent)`,
+                border: `1px solid ${
+                  isNeutral
+                    ? "var(--border)"
+                    : `color-mix(in srgb, ${color} 32%, transparent)`
+                }`,
+              }}
+            >
+              {p.text}
+            </span>
+          );
+        })}
+      </div>
+      {translation ? (
+        <div className="font-sans font-normal text-[14px] text-fg-muted">
+          {translation}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogSentenceBuilder                                             *
+ *  Two rows: a pool of uncolored chips (as they arrive in the      *
+ *  exercise) and the placed row where chips take on role color     *
+ *  once dropped in the right spot.                                 *
+ * ---------------------------------------------------------------- */
+
+export interface BlogSentenceBuilderProps {
+  /** Shuffled pool: just text, no roles. Colored neutral. */
+  pool: string[];
+  /** Placed row: text + role, each pill in its role color. */
+  placed: SentencePiece[];
+  className?: string;
+}
+
+/** Side by side mock of the Sentence Builder. Pool chips stay
+ *  neutral; placed chips earn the role color only when they land
+ *  in the right spot. Mirrors the "color should not give the
+ *  answer away" rule from CDP. */
+export function BlogSentenceBuilder({
+  pool,
+  placed,
+  className,
+}: BlogSentenceBuilderProps) {
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5 flex flex-col gap-4",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <div className="flex flex-col gap-2">
+        <div
+          className="font-sans font-semibold text-[11px] uppercase text-fg-faint"
+          style={{ letterSpacing: "0.4px" }}
+        >
+          Placed
+        </div>
+        <div
+          className="flex flex-wrap gap-2 rounded-xl p-3 min-h-12"
+          style={{
+            background: "var(--surface-sunk)",
+            border: "1px dashed var(--border)",
+          }}
+        >
+          {placed.map((p, i) => {
+            const color = ROLE_COLOR[p.role];
+            const isNeutral = p.role === "middle";
+            return (
+              <span
+                key={`placed-${p.text}-${i}`}
+                className="inline-flex items-center px-3 py-1.5 rounded-full font-sans font-semibold text-[14px]"
+                style={{
+                  color: isNeutral ? "var(--fg)" : color,
+                  background: isNeutral
+                    ? "var(--surface-card)"
+                    : `color-mix(in srgb, ${color} 14%, transparent)`,
+                  border: `1px solid ${
+                    isNeutral
+                      ? "var(--border)"
+                      : `color-mix(in srgb, ${color} 35%, transparent)`
+                  }`,
+                }}
+              >
+                {p.text}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <div
+          className="font-sans font-semibold text-[11px] uppercase text-fg-faint"
+          style={{ letterSpacing: "0.4px" }}
+        >
+          Pool
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {pool.map((t, i) => (
+            <span
+              key={`pool-${t}-${i}`}
+              className="inline-flex items-center px-3 py-1.5 rounded-full font-sans font-semibold text-[14px] text-fg"
+              style={{
+                background: "var(--surface-sunk)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogReadingExcerpt                                              *
+ *  A short passage block with one word marked as "tappable"        *
+ *  (dotted underline) and a translation chip sliding up under it.  *
+ * ---------------------------------------------------------------- */
+
+export interface BlogReadingExcerptProps {
+  /** Whole passage as a single string. The target word must match
+   *  the `tappable` prop verbatim; the first occurrence is marked. */
+  passage: string;
+  tappable: string;
+  /** Translation shown in the chip. */
+  translation: string;
+  /** Optional infinitive shown inside the chip, useful for
+   *  separable verbs where the tapped token is just "ab" or
+   *  "holen". */
+  infinitive?: string;
+  className?: string;
+}
+
+/** Short passage snippet. The target word carries a dotted
+ *  underline in the Reading blue, and a translation chip renders
+ *  below the passage as if it just slid up from the bottom. */
+export function BlogReadingExcerpt({
+  passage,
+  tappable,
+  translation,
+  infinitive,
+  className,
+}: BlogReadingExcerptProps) {
+  const idx = passage.indexOf(tappable);
+  const before = idx >= 0 ? passage.slice(0, idx) : passage;
+  const after = idx >= 0 ? passage.slice(idx + tappable.length) : "";
+  const readingColor = "var(--chip-reading-color)";
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5 flex flex-col gap-4",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <p className="font-sans text-[16px] text-fg leading-relaxed m-0">
+        {before}
+        {idx >= 0 ? (
+          <span
+            className="font-semibold"
+            style={{
+              color: readingColor,
+              borderBottom: `2px dotted ${readingColor}`,
+              paddingBottom: "1px",
+            }}
+          >
+            {tappable}
+          </span>
+        ) : null}
+        {after}
+      </p>
+      <div
+        className="inline-flex self-start items-center gap-2 px-3 py-2 rounded-full"
+        style={{
+          background: `color-mix(in srgb, ${readingColor} 10%, transparent)`,
+          border: `1px solid color-mix(in srgb, ${readingColor} 30%, transparent)`,
+        }}
+      >
+        <span
+          className="font-sans font-semibold text-[13px]"
+          style={{ color: readingColor }}
+        >
+          {infinitive ?? tappable}
+        </span>
+        <span className="font-sans text-[13px] text-fg-muted">
+          {translation}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- *
+ *  BlogSkillRingRow                                                *
+ *  Row of SkillRings with sample progress and momentum arrows.     *
+ *  Uses the real SkillRing atom so the ring art matches the app.   *
+ * ---------------------------------------------------------------- */
+
+export type Momentum = "up" | "down" | "stable";
+export type BlogSkill = "vocab" | "grammar" | "writing" | "reading";
+
+export interface BlogSkillState {
+  skill: BlogSkill;
+  value: number;      // 0..100
+  momentum?: Momentum;
+}
+
+export interface BlogSkillRingRowProps {
+  skills: BlogSkillState[];
+  /** Ring size. Defaults to sm (64px) so four fit on a column. */
+  size?: "xs" | "sm" | "md";
+  className?: string;
+}
+
+const MOMENTUM_GLYPH: Record<Momentum, string> = {
+  up: "↑",
+  down: "↓",
+  stable: "·",
+};
+
+const MOMENTUM_COLOR: Record<Momentum, string> = {
+  up: "var(--ok)",
+  down: "var(--accent)",
+  stable: "var(--fg-faint)",
+};
+
+const SKILL_LABEL: Record<BlogSkill, string> = {
+  vocab: "Vocab",
+  grammar: "Grammar",
+  writing: "Writing",
+  reading: "Reading",
+};
+
+/** Row of four SkillRings with their labels and momentum arrows.
+ *  The momentum arrow renders next to the label, not inside the
+ *  ring, matching the SkillStrip layout. */
+export function BlogSkillRingRow({
+  skills,
+  size = "sm",
+  className,
+}: BlogSkillRingRowProps) {
+  return (
+    <div
+      className={clsx(
+        "rounded-2xl p-5",
+        "grid grid-cols-2 sm:grid-cols-4 gap-4",
+        className,
+      )}
+      style={{
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      {skills.map((s) => {
+        const momentum = s.momentum ?? "stable";
+        return (
+          <div
+            key={s.skill}
+            className="flex flex-col items-center gap-2"
+          >
+            <SkillRing
+              skill={s.skill}
+              progress={Math.min(Math.max(s.value / 100, 0), 1)}
+              size={size}
+              hideLabel
+            />
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-sans font-semibold text-[13px] text-fg">
+                {SKILL_LABEL[s.skill]}
+              </span>
+              <span
+                className="font-sans font-bold text-[14px] leading-none"
+                style={{ color: MOMENTUM_COLOR[momentum] }}
+                aria-label={`momentum ${momentum}`}
+              >
+                {MOMENTUM_GLYPH[momentum]}
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

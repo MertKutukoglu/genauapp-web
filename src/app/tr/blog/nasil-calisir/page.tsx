@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogLayout } from "@/components/templates/BlogLayout/BlogLayout";
 import { BlogCTA } from "@/components/molecules/BlogCTA/BlogCTA";
+import {
+  BlogChipRow,
+  BlogWordCard,
+  BlogRoleStrip,
+  BlogSentenceBuilder,
+  BlogReadingExcerpt,
+  BlogSkillRingRow,
+} from "@/components/molecules/BlogAppSnippets/BlogAppSnippets";
 
 /**
  * /tr/blog/nasil-calisir, "GenauApp nasıl çalışır" post.
@@ -54,6 +62,15 @@ export default function NasilCalisirPage() {
 
       <p>İşte her chip ne yapar ve nasıl öğretir.</p>
 
+      <BlogChipRow
+        captions={{
+          words: "İsim ve fiil",
+          grammar: "Kural iş başında",
+          sentence: "Şekli kur",
+          reading: "Gerçek metin",
+        }}
+      />
+
       <p className="section-divider">
         <span>§</span>
       </p>
@@ -76,6 +93,27 @@ export default function NasilCalisirPage() {
         aldığını ve sonraki beş benzerinin de neden die alacağını
         açıklayan kalıbı öğreniyorsun.
       </p>
+
+      <div className="not-prose grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <BlogWordCard
+          article="die"
+          noun="Erfahrung"
+          translation="tecrübe, deneyim"
+          rule="-ung → die"
+        />
+        <BlogWordCard
+          article="das"
+          noun="Geschenk"
+          translation="hediye"
+          rule="Ge- → das"
+        />
+        <BlogWordCard
+          article="das"
+          noun="Ergebnis"
+          translation="sonuç"
+          rule="-nis → das"
+        />
+      </div>
 
       <p>
         Bir Words workout&rsquo;u önce Vocabulary&rsquo;yi besler, sonra
@@ -112,6 +150,15 @@ export default function NasilCalisirPage() {
         kural refleks olmaya başlar.
       </p>
 
+      <BlogRoleStrip
+        pieces={[
+          { text: "Der Hund", role: "subject" },
+          { text: "sieht", role: "verb" },
+          { text: "den Mann", role: "object" },
+        ]}
+        translation="Köpek adamı görüyor. Özne mavi, fiil kiraz, nesne yeşil."
+      />
+
       <p>
         Bir Grammar workout&rsquo;u önce Grammar&rsquo;ı besler, sonra
         Writing ve Vocabulary&rsquo;yi.
@@ -145,6 +192,26 @@ export default function NasilCalisirPage() {
         oturduklarında belirir, çünkü renk cevabı ele vermemeli.
         Rengi doğru sıralamayı kurarak kazanırsın.
       </p>
+
+      <BlogRoleStrip
+        pieces={[
+          { text: "Ich", role: "subject" },
+          { text: "will", role: "verb" },
+          { text: "heute Abend ins Kino", role: "middle" },
+          { text: "gehen", role: "verb2" },
+        ]}
+        translation="Cümlenin iki ucunda duran iki kiraz pill. Verbklammer, görsel haliyle."
+      />
+
+      <BlogSentenceBuilder
+        pool={["gehen", "Ich", "heute Abend", "ins Kino", "will"]}
+        placed={[
+          { text: "Ich", role: "subject" },
+          { text: "will", role: "verb" },
+          { text: "heute Abend ins Kino", role: "middle" },
+          { text: "gehen", role: "verb2" },
+        ]}
+      />
 
       <p>
         Bir Sentence workout&rsquo;u önce Writing&rsquo;i besler, sonra
@@ -181,6 +248,13 @@ export default function NasilCalisirPage() {
         okumanın yaşandığı yer.
       </p>
 
+      <BlogReadingExcerpt
+        passage="Am Montag holt sie ihre Tochter vom Kindergarten ab und bringt sie zum Arzt."
+        tappable="holt"
+        infinitive="abholen"
+        translation="almak, teslim almak (ayrılabilir)"
+      />
+
       <p>
         Bir Reading workout&rsquo;u Reading&rsquo;i besler. Başka hiçbir
         chip beslemez. Reading anlama yeteneği bu uygulamada kendi
@@ -203,6 +277,15 @@ export default function NasilCalisirPage() {
         Writing, Grammar ve Vocab&rsquo;ı; Reading Reading, Vocab ve
         Grammar&rsquo;ı besler).
       </p>
+
+      <BlogSkillRingRow
+        skills={[
+          { skill: "vocab", value: 72, momentum: "up" },
+          { skill: "grammar", value: 58, momentum: "up" },
+          { skill: "writing", value: 44, momentum: "stable" },
+          { skill: "reading", value: 31, momentum: "down" },
+        ]}
+      />
 
       <p>
         Günlük plan senin için dört chip&rsquo;ten birini en çok ihtiyacın
