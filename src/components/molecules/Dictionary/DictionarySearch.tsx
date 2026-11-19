@@ -309,12 +309,33 @@ function ResultList({
   locale: DictLocale;
   hrefPrefix: string;
 }) {
+  const listRef = React.useRef<HTMLUListElement>(null);
+  const itemRefs = React.useRef<Array<HTMLLIElement | null>>([]);
+
+  // When keyboard navigation moves the active row outside the
+  // visible scroll region, ease it into view. block:"nearest" so
+  // mouse-driven cursor doesn't yank the scroll on top-of-list hits.
+  React.useEffect(() => {
+    const el = itemRefs.current[activeIdx];
+    if (el && listRef.current) {
+      el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [activeIdx]);
+
   return (
     <ul
+      ref={listRef}
       id="dict-results"
       role="listbox"
-      className="flex flex-col m-0 p-0 list-none"
-      style={{ border: "1px solid var(--border)", borderRadius: 16 }}
+      className="dict-results-scroll flex flex-col m-0 p-0 list-none overflow-y-auto overscroll-contain"
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: 16,
+        // Capped scroll area: fits roughly 7–8 rows on desktop and
+        // ~60% of a phone viewport, so the page itself never grows
+        // the full 20 rows tall when the list is packed.
+        maxHeight: "min(60vh, 480px)",
+      }}
     >
       {hits.map((h, i) => {
         const isNoun = h.type === "noun" && !!h.article;
@@ -334,6 +355,9 @@ function ResultList({
         return (
           <li
             key={h.slug}
+            ref={(el) => {
+              itemRefs.current[i] = el;
+            }}
             role="option"
             aria-selected={isActive}
             onMouseEnter={() => setActiveIdx(i)}
