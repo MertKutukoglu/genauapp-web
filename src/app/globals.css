@@ -688,3 +688,14 @@ body {
   .dict-card-hover:hover,
   .dict-card-hover:focus-visible { transform: none; }
 }
+
+/* PopularCarousel track: hide the native scrollbar; the stepper
+   dots below are the only paging affordance. Touch and wheel
+   scroll still work as expected. */
+.dict-carousel-track {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.dict-carousel-track::-webkit-scrollbar {
+  display: none;
+}

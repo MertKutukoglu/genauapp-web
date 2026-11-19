@@ -57,6 +57,10 @@ const STR = {
     en: "Join the waitlist",
     tr: "Bekleme listesine katıl",
   },
+  bannerTryIt: {
+    en: "Or try the live demo",
+    tr: "Veya canlı demoyu dene",
+  },
   rule: { en: "Rule", tr: "Kural" },
   sampleEyebrow: { en: "Example", tr: "Örnek" },
 } as const;
@@ -93,19 +97,14 @@ export function DictionaryStats({
   const fmt = (n: number) =>
     n.toLocaleString(locale === "tr" ? "tr-TR" : "en-US");
   return (
-    <div className={clsx("flex flex-col gap-2", className)}>
-      <div
-        role="list"
-        aria-label={pick(STR.statsCaption, locale)}
-        className="flex flex-wrap items-center gap-2"
-      >
-        <Chip number={fmt(wordCount)} label={pick(STR.statWords, locale)} />
-        <Chip number={fmt(exampleCount)} label={pick(STR.statExamples, locale)} />
-        <Chip number={fmt(ruleCount)} label={pick(STR.statRules, locale)} />
-      </div>
-      <p className="font-sans text-[12px] text-fg-muted m-0 leading-snug">
-        {pick(STR.statsCaption, locale)}
-      </p>
+    <div
+      role="list"
+      aria-label={pick(STR.statsCaption, locale)}
+      className={clsx("flex flex-wrap items-center gap-2", className)}
+    >
+      <Chip number={fmt(wordCount)} label={pick(STR.statWords, locale)} />
+      <Chip number={fmt(exampleCount)} label={pick(STR.statExamples, locale)} />
+      <Chip number={fmt(ruleCount)} label={pick(STR.statRules, locale)} />
     </div>
   );
 }
@@ -288,17 +287,106 @@ export function PopularList({
       >
         {pick(STR.popularEyebrow, locale)}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {picks.map((e) => (
-          <PopularCard
-            key={e.slug}
-            entry={e}
-            locale={locale}
-            hrefPrefix={hrefPrefix}
-          />
-        ))}
-      </div>
+      <PopularCarousel
+        entries={picks}
+        locale={locale}
+        hrefPrefix={hrefPrefix}
+      />
     </section>
+  );
+}
+
+/* ---------- Carousel (2 cards per page, swipe + stepper) ---------- */
+
+function PopularCarousel({
+  entries,
+  locale,
+  hrefPrefix,
+}: {
+  entries: DictionaryEntry[];
+  locale: DictLocale;
+  hrefPrefix: string;
+}) {
+  // Each page holds 2 cards. Scroll uses native scroll-snap on a
+  // horizontal track; the stepper below is derived from the track's
+  // scrollLeft so it stays in sync with touch scrolling, chevron
+  // clicks, and keyboard arrows.
+  const PER_PAGE = 2;
+  const pageCount = Math.max(1, Math.ceil(entries.length / PER_PAGE));
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const [page, setPage] = React.useState(0);
+
+  const onScroll = React.useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const w = track.clientWidth;
+    if (w === 0) return;
+    const newPage = Math.round(track.scrollLeft / w);
+    setPage((prev) => (prev === newPage ? prev : newPage));
+  }, []);
+
+  const goto = React.useCallback((p: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const w = track.clientWidth;
+    track.scrollTo({ left: w * p, behavior: "smooth" });
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div
+        ref={trackRef}
+        onScroll={onScroll}
+        className="dict-carousel-track overflow-x-auto snap-x snap-mandatory scroll-smooth"
+      >
+        <div className="flex gap-3">
+          {entries.map((e) => (
+            <div
+              key={e.slug}
+              className="snap-start shrink-0"
+              style={{
+                // Two cards per viewport width, minus the gap between
+                // them: calc((100% - gap) / 2).
+                width: "calc((100% - 12px) / 2)",
+              }}
+            >
+              <PopularCard
+                entry={e}
+                locale={locale}
+                hrefPrefix={hrefPrefix}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {pageCount > 1 ? (
+        <div className="flex items-center justify-center gap-1.5">
+          {Array.from({ length: pageCount }, (_, i) => {
+            const isActive = i === page;
+            return (
+              <button
+                key={i}
+                type="button"
+                aria-label={
+                  locale === "tr" ? `Sayfa ${i + 1}` : `Page ${i + 1}`
+                }
+                aria-current={isActive ? "true" : undefined}
+                onClick={() => goto(i)}
+                className="rounded-full transition-all"
+                style={{
+                  width: isActive ? 24 : 8,
+                  height: 8,
+                  background: isActive
+                    ? "var(--fg)"
+                    : "color-mix(in srgb, var(--fg) 22%, transparent)",
+                }}
+              />
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -409,6 +497,7 @@ export function ComingSoonBanner({
   className,
 }: ComingSoonBannerProps) {
   const waitlistHref = locale === "tr" ? "/tr#waitlist" : "/#waitlist";
+  const tryHref = locale === "tr" ? "/tr/try" : "/try";
   return (
     <section
       className={clsx(
@@ -442,17 +531,26 @@ export function ComingSoonBanner({
           {pick(STR.bannerBody, locale)}
         </p>
       </div>
-      <Link
-        href={waitlistHref}
-        className="inline-flex items-center gap-1.5 shrink-0 px-4 py-2.5 rounded-full font-sans font-semibold text-[13px] no-underline"
-        style={{
-          background: "var(--accent)",
-          color: "white",
-        }}
-      >
-        {pick(STR.bannerCta, locale)}
-        <Icon name="arrow-right" className="w-4 h-4" />
-      </Link>
+      <div className="flex flex-col items-start sm:items-end shrink-0 gap-1.5">
+        <Link
+          href={waitlistHref}
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full font-sans font-semibold text-[13px] no-underline"
+          style={{
+            background: "var(--accent)",
+            color: "white",
+          }}
+        >
+          {pick(STR.bannerCta, locale)}
+          <Icon name="arrow-right" className="w-4 h-4" />
+        </Link>
+        <Link
+          href={tryHref}
+          className="font-sans font-semibold text-[12px] no-underline hover:underline"
+          style={{ color: "var(--accent)" }}
+        >
+          {pick(STR.bannerTryIt, locale)}
+        </Link>
+      </div>
     </section>
   );
 }
