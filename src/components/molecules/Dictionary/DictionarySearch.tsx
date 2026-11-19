@@ -247,6 +247,7 @@ export function DictionarySearch({
       }
     } else if (e.key === "Escape") {
       setRaw("");
+      setDebounced("");
       inputRef.current?.blur();
     }
   }
@@ -305,11 +306,14 @@ export function DictionarySearch({
               e.preventDefault();
             }}
             onClick={() => {
+              // Clear raw AND debounced in the same frame so the
+              // result list unmounts on the very next render, no
+              // single-frame flash of the previous results.
               setRaw("");
-              // Blur on clear so the browse surface returns: tapping
-              // X is the signal "I am done with this search." If the
-              // user wants to type again, one tap on the bar focuses
-              // it back.
+              setDebounced("");
+              // Blur so the browse surface returns on landing;
+              // tapping X is the signal "I am done with this
+              // search." One tap on the bar refocuses it.
               inputRef.current?.blur();
             }}
             aria-label={locale === "tr" ? "Temizle" : "Clear"}
