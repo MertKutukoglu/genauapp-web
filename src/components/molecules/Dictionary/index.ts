@@ -20,6 +20,7 @@ export {
   TRANSLATION_LANG_COOKIE,
 } from "./TranslationLangContext";
 export { TranslationLangToggle } from "./TranslationLangToggle";
+export { DictWordViewTracker } from "./DictWordViewTracker";
 export type {
   DictionaryEntry,
   DictLocale,

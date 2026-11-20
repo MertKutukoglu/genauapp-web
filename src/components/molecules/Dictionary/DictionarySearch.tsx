@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { trackDict } from "@/lib/analytics/dict";
 import type { DictLocale } from "./types";
 import { TYPE_LABEL, pick } from "./strings";
 
@@ -159,7 +160,21 @@ export function DictionarySearch({
         );
         const body = (await res.json()) as SearchResponse;
         if (myId !== requestIdRef.current) return;
-        setHits(body.results ?? []);
+        const results = body.results ?? [];
+        setHits(results);
+        // Fire analytics only for the response that wins the race,
+        // so a fast typer who sent 5 requests logs one search, not 5.
+        trackDict("dict_search_submitted", {
+          query: activeQuery,
+          locale,
+          results_count: results.length,
+        });
+        if (results.length === 0) {
+          trackDict("dict_search_empty", {
+            query: activeQuery,
+            locale,
+          });
+        }
       } catch (err) {
         if ((err as Error)?.name === "AbortError") return;
         if (myId !== requestIdRef.current) return;
@@ -169,7 +184,7 @@ export function DictionarySearch({
       }
     })();
     return () => ctrl.abort();
-  }, [activeQuery, hasQuery]);
+  }, [activeQuery, hasQuery, locale]);
 
   React.useEffect(() => {
     setActiveIdx(0);
@@ -403,6 +418,14 @@ function ResultList({
           >
             <Link
               href={`${hrefPrefix}/${h.slug}`}
+              onClick={() =>
+                trackDict("dict_result_clicked", {
+                  query,
+                  slug: h.slug,
+                  position: i,
+                  locale,
+                })
+              }
               className="flex items-start justify-between gap-3 px-4 py-3 no-underline"
             >
               <span className="flex flex-col min-w-0">

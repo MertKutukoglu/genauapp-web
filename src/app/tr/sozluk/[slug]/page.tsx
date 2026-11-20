@@ -7,6 +7,7 @@ import {
   DictionarySearch,
   TranslationLangProvider,
   TranslationLangToggle,
+  DictWordViewTracker,
 } from "@/components/molecules/Dictionary";
 import { getAllSlugs, getEntryBySlug } from "@/lib/dictionary/data";
 import { TYPE_LABEL, pick } from "@/components/molecules/Dictionary/strings";
@@ -63,6 +64,12 @@ export default async function SozlukWordPage({
 
   return (
     <TranslationLangProvider initialValue="tr">
+      <DictWordViewTracker
+        slug={entry.slug}
+        type={entry.type}
+        level={entry.level}
+        locale="tr"
+      />
       <main className="min-h-screen pb-24">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
           <div className="flex items-center justify-between gap-3 mb-4">

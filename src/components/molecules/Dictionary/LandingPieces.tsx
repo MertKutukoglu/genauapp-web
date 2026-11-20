@@ -10,6 +10,7 @@ import type {
 } from "./types";
 import { useTranslationLang } from "./TranslationLangContext";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { trackDict } from "@/lib/analytics/dict";
 
 /**
  * Landing pieces for the dictionary empty state, composed by
@@ -187,6 +188,12 @@ export function WordOfTheDay({
 
       <Link
         href={`${hrefPrefix}/${entry.slug}`}
+        onClick={() =>
+          trackDict("dict_wotd_clicked", {
+            slug: entry.slug,
+            locale,
+          })
+        }
         className="dict-card-hover group flex flex-col gap-4 rounded-[20px] p-5 no-underline"
         style={{
           background: "var(--surface-card)",
@@ -373,7 +380,7 @@ function PopularCarousel({
             card has room; overflow-x on the parent would otherwise
             clip the y-axis shadow. */}
         <div className="flex gap-3 py-2">
-          {entries.map((e) => (
+          {entries.map((e, i) => (
             <div
               key={e.slug}
               className="snap-start shrink-0"
@@ -385,6 +392,7 @@ function PopularCarousel({
                 entry={e}
                 locale={locale}
                 hrefPrefix={hrefPrefix}
+                position={i}
               />
             </div>
           ))}
@@ -461,10 +469,12 @@ function PopularCard({
   entry,
   locale,
   hrefPrefix,
+  position,
 }: {
   entry: DictionaryEntry;
   locale: DictLocale;
   hrefPrefix: string;
+  position: number;
 }) {
   const tLang = useTranslationLang();
   const isNoun = entry.type === "noun" && !!entry.noun;
@@ -481,6 +491,13 @@ function PopularCard({
   return (
     <Link
       href={`${hrefPrefix}/${entry.slug}`}
+      onClick={() =>
+        trackDict("dict_popular_clicked", {
+          slug: entry.slug,
+          position,
+          locale,
+        })
+      }
       className="dict-card-hover group flex flex-col gap-3 rounded-2xl p-4 no-underline"
       style={{
         background: isNoun
@@ -601,6 +618,12 @@ export function ComingSoonBanner({
       <div className="flex flex-col items-center shrink-0 gap-2">
         <Link
           href={waitlistHref}
+          onClick={() =>
+            trackDict("dict_waitlist_click", {
+              source: "dict_banner",
+              locale,
+            })
+          }
           className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full font-sans font-semibold text-[13px] no-underline"
           style={{
             background: "var(--accent)",
@@ -612,6 +635,12 @@ export function ComingSoonBanner({
         </Link>
         <Link
           href={tryHref}
+          onClick={() =>
+            trackDict("dict_waitlist_click", {
+              source: "dict_banner_tryit",
+              locale,
+            })
+          }
           className="font-sans font-semibold text-[12px] no-underline hover:underline whitespace-nowrap text-center"
           style={{ color: "var(--accent)" }}
         >

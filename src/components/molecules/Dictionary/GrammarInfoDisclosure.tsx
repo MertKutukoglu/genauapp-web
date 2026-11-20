@@ -3,6 +3,7 @@
 import * as React from "react";
 import { clsx } from "@/lib/utils/clsx";
 import { Icon } from "@/components/atoms/Icon/Icon";
+import { trackDict } from "@/lib/analytics/dict";
 import type { DictionaryEntry, DictLocale } from "./types";
 import { STR, TYPE_LABEL, pick } from "./strings";
 import { GrammarInfoModule } from "./GrammarInfoModule";
@@ -44,6 +45,11 @@ export function GrammarInfoDisclosure({
     (e: React.SyntheticEvent<HTMLDetailsElement>) => {
       const el = e.currentTarget;
       if (!el.open) return;
+      trackDict("dict_word_anatomy_opened", {
+        slug: entry.slug,
+        type: entry.type,
+        locale,
+      });
       requestAnimationFrame(() => {
         if (!detailsRef.current) return;
         detailsRef.current.scrollIntoView({
@@ -52,7 +58,7 @@ export function GrammarInfoDisclosure({
         });
       });
     },
-    [],
+    [entry.slug, entry.type, locale],
   );
 
   return (

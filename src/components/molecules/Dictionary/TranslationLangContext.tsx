@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { trackDict } from "@/lib/analytics/dict";
 import type { DictLocale } from "./types";
 
 /**
@@ -64,16 +65,27 @@ export function TranslationLangProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setLang = React.useCallback((next: DictLocale) => {
-    setLangState(next);
-    try {
-      window.localStorage.setItem(TRANSLATION_LANG_COOKIE, next);
-    } catch {
-      /* ignore */
-    }
-    // One-year cookie, Lax so navigations within the site carry it.
-    document.cookie = `${TRANSLATION_LANG_COOKIE}=${next}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
-  }, []);
+  const setLang = React.useCallback(
+    (next: DictLocale) => {
+      setLangState((prev) => {
+        if (prev !== next) {
+          trackDict("dict_translation_lang_toggled", {
+            from: prev,
+            to: next,
+          });
+        }
+        return next;
+      });
+      try {
+        window.localStorage.setItem(TRANSLATION_LANG_COOKIE, next);
+      } catch {
+        /* ignore */
+      }
+      // One-year cookie, Lax so navigations within the site carry it.
+      document.cookie = `${TRANSLATION_LANG_COOKIE}=${next}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+    },
+    [],
+  );
 
   const value = React.useMemo<Ctx>(
     () => ({ lang, setLang }),
